@@ -1,812 +1,811 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}AuraHealth™ — Precision Pharmacy & Digital Healthcare Care Platform{% endblock %}
-
 {% block content %}
 
 <!-- =========================================================================
-     1. HERO SECTION WITH INTEGRATED PRESCRIPTION DROPZONE & LIVE DOCTOR
+     01 — NAVBAR & HERO SECTION
      ========================================================================= -->
-<section class="aura-hero-section">
-  <div class="container">
-    <div class="row align-items-center g-5">
-      
-      <!-- Left Column: Value Proposition & Hero Messaging -->
-      <div class="col-lg-7">
+<header>
+  <!-- Main Navbar -->
+  <nav class="antixor-navbar">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between">
         
-        <div class="aura-hero-badge-tag">
-          <i class="fa-solid fa-certificate text-cyan-500"></i>
-          <span>Licensed Online Pharmacy & Telehealth Network</span>
-        </div>
+        <!-- Antixor Brand Logo -->
+        <a href="#" class="antixor-brand">
+          <div class="antixor-logo-cross">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 10.5h-5.5V5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5H5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h5.5V19c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-5.5H19c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z"/>
+            </svg>
+          </div>
+          <span>Antixor <span style="font-weight: 500; font-size: 0.95rem; color: #64748b; display: block; line-height: 1;">Pharmacy</span></span>
+        </a>
 
-        <h1 class="aura-hero-title">
-          Precision Pharmacy & <br>
-          <span class="gradient-text">Clinical Care Delivered</span> <br>
-          Direct to Your Door.
-        </h1>
+        <!-- Desktop Navigation Links -->
+        <ul class="antixor-nav-links d-none d-lg-flex">
+          <li><a href="#" class="antixor-nav-link active">Home</a></li>
+          <li><a href="#products" class="antixor-nav-link">Shop</a></li>
+          <li><a href="#services" class="antixor-nav-link">Health Services</a></li>
+          <li><a href="#why-choose" class="antixor-nav-link">About Us</a></li>
+          <li><a href="#contact" class="antixor-nav-link">Contact</a></li>
+        </ul>
 
-        <p class="aura-hero-lead">
-          Access genuine prescription medicines, doctor-reviewed wellness essentials, and 24/7 tele-pharmacist consultations. Cold-chain express delivery in under 45 minutes.
-        </p>
-
-        <!-- CTA Action Buttons -->
-        <div class="d-flex flex-wrap gap-3 mb-4">
-          <a href="{% url 'shop' %}" class="aura-btn-primary">
-            <i class="fa-solid fa-basket-shopping"></i>
-            <span>Explore Pharmacy Shop</span>
-          </a>
-          <button class="aura-btn-emerald" data-bs-toggle="modal" data-bs-target="#auraPrescriptionModal">
-            <i class="fa-solid fa-file-medical"></i>
-            <span>Upload Prescription</span>
+        <!-- Right Side Icons & Login Button -->
+        <div class="d-flex align-items-center gap-3">
+          <button class="antixor-icon-btn" title="Search" aria-label="Search">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
           </button>
-          <a href="{% url 'telehealth' %}" class="aura-btn-outline">
-            <i class="fa-solid fa-user-doctor"></i>
-            <span>Consult Doctor</span>
+          
+          <button class="antixor-icon-btn position-relative" title="Shopping Cart" aria-label="Shopping Cart">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+          </button>
+
+          <a href="#" class="antixor-btn-login">
+            <span>Login / Sign Up</span>
           </a>
         </div>
 
-        <!-- Trust Badges & Clinical Guarantees -->
-        <div class="aura-hero-guarantees">
-          <div class="aura-guarantee-pill">
-            <i class="fa-solid fa-shield-check"></i>
-            <span>100% Genuine Medicines</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Content Section -->
+  <section class="antixor-hero">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        
+        <!-- Left: Text & Search Content -->
+        <div class="col-lg-7">
+          
+          <span class="antixor-hero-tag">Your Health. Our Priority.</span>
+
+          <h1 class="antixor-hero-title">
+            Trusted Pharmacy for a Healthier Tomorrow
+          </h1>
+
+          <p class="antixor-hero-desc">
+            Antixor Pharmacy provides genuine medicines, wellness products and expert healthcare support — all in one place. Because your health matters.
+          </p>
+
+          <!-- Trust Partner Badge -->
+          <div class="antixor-trust-badge">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/>
+            </svg>
+            <span>Your Trusted Health Partner Since 2020</span>
           </div>
-          <div class="aura-guarantee-pill">
-            <i class="fa-solid fa-bolt text-warning"></i>
-            <span>15-Min Express Delivery</span>
+
+          <!-- 3 Checkpoints -->
+          <div class="antixor-hero-checks">
+            <div class="antixor-check-item">
+              <span class="antixor-check-icon">✓</span>
+              <span>100% Genuine Products</span>
+            </div>
+            <div class="antixor-check-item">
+              <span class="antixor-check-icon">✓</span>
+              <span>Fast & Secure Delivery</span>
+            </div>
+            <div class="antixor-check-item">
+              <span class="antixor-check-icon">✓</span>
+              <span>Expert Pharmacists</span>
+            </div>
           </div>
-          <div class="aura-guarantee-pill">
-            <i class="fa-solid fa-user-check"></i>
-            <span>Board Certified Pharmacists</span>
+
+          <!-- Medicine Search Bar -->
+          <div class="antixor-search-box">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" class="me-2 flex-shrink-0">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" class="antixor-search-input" placeholder="Search for medicines, health products, or brands...">
+            <button type="button" class="antixor-search-btn">Search</button>
           </div>
-          <div class="aura-guarantee-pill">
-            <i class="fa-solid fa-snowflake text-info"></i>
-            <span>Cold-Chain Packaging</span>
+
+          <!-- Popular Search Tags -->
+          <div class="antixor-search-tags">
+            <span class="text-muted fw-bold me-1">Popular Searches:</span>
+            <a href="#" class="antixor-search-tag-pill">Pain Relief</a>
+            <a href="#" class="antixor-search-tag-pill">Vitamins</a>
+            <a href="#" class="antixor-search-tag-pill">Diabetes Care</a>
+            <a href="#" class="antixor-search-tag-pill">Skin Care</a>
+            <a href="#" class="antixor-search-tag-pill">Baby Care</a>
+          </div>
+
+        </div>
+
+        <!-- Right: Doctor Image -->
+        <div class="col-lg-5">
+          <div class="antixor-hero-img-wrap">
+            <img src="{% static 'images/hero_doctor.png' %}" alt="Antixor Doctor" class="antixor-hero-img img-fluid">
           </div>
         </div>
 
       </div>
+    </div>
+  </section>
+</header>
 
-      <!-- Right Column: Interactive Quick Prescription Dropzone Card -->
+
+<!-- =========================================================================
+     02 — SERVICES SECTION
+     ========================================================================= -->
+<section class="antixor-services" id="services">
+  <div class="container">
+    
+    <!-- Section Header -->
+    <div class="antixor-section-header">
+      <div>
+        <h2 class="antixor-section-title">Our Services</h2>
+        <p class="antixor-section-subtitle">More than just a pharmacy — we're here for your complete well-being.</p>
+      </div>
+      <a href="#" class="antixor-view-all">View All Services →</a>
+    </div>
+
+    <!-- 3x2 Grid of 6 Services Cards -->
+    <div class="row g-4">
+      
+      <!-- Card 1: Prescription Medicines -->
+      <div class="col-lg-4 col-md-6">
+        <div class="antixor-service-card">
+          <span class="antixor-service-arrow">→</span>
+          <div class="antixor-service-icon-box" style="background: #e0f2fe; color: #0284c7;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+          </div>
+          <h3 class="antixor-service-title">Prescription Medicines</h3>
+          <p class="antixor-service-desc">Get your medicines with a valid prescription.</p>
+        </div>
+      </div>
+
+      <!-- Card 2: Over The Counter -->
+      <div class="col-lg-4 col-md-6">
+        <div class="antixor-service-card">
+          <span class="antixor-service-arrow">→</span>
+          <div class="antixor-service-icon-box" style="background: #f3e8ff; color: #9333ea;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="6" y="2" width="12" height="20" rx="3"></rect>
+              <line x1="6" y1="7" x2="18" y2="7"></line>
+              <line x1="9" y1="13" x2="15" y2="13"></line>
+              <line x1="12" y1="10" x2="12" y2="16"></line>
+            </svg>
+          </div>
+          <h3 class="antixor-service-title">Over The Counter (OTC)</h3>
+          <p class="antixor-service-desc">Daily health essentials for your family.</p>
+        </div>
+      </div>
+
+      <!-- Card 3: Online Consultation -->
+      <div class="col-lg-4 col-md-6">
+        <div class="antixor-service-card">
+          <span class="antixor-service-arrow">→</span>
+          <div class="antixor-service-icon-box" style="background: #dcfce7; color: #16a34a;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+          </div>
+          <h3 class="antixor-service-title">Online Consultation</h3>
+          <p class="antixor-service-desc">Talk to our certified pharmacists.</p>
+        </div>
+      </div>
+
+      <!-- Card 4: Health Checkup -->
+      <div class="col-lg-4 col-md-6">
+        <div class="antixor-service-card">
+          <span class="antixor-service-arrow">→</span>
+          <div class="antixor-service-icon-box" style="background: #ffedd5; color: #ea580c;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+            </svg>
+          </div>
+          <h3 class="antixor-service-title">Health Checkup</h3>
+          <p class="antixor-service-desc">Book lab tests & health packages.</p>
+        </div>
+      </div>
+
+      <!-- Card 5: Wellness Products -->
+      <div class="col-lg-4 col-md-6">
+        <div class="antixor-service-card">
+          <span class="antixor-service-arrow">→</span>
+          <div class="antixor-service-icon-box" style="background: #fce7f3; color: #db2777;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a5 5 0 0 0-5 5v14h10V7a5 5 0 0 0-5-5z"></path>
+            </svg>
+          </div>
+          <h3 class="antixor-service-title">Wellness Products</h3>
+          <p class="antixor-service-desc">Supplements, vitamins & more.</p>
+        </div>
+      </div>
+
+      <!-- Card 6: Home Delivery -->
+      <div class="col-lg-4 col-md-6">
+        <div class="antixor-service-card">
+          <span class="antixor-service-arrow">→</span>
+          <div class="antixor-service-icon-box" style="background: #ccfbf1; color: #0d9488;">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="1" y="3" width="15" height="13"></rect>
+              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+              <circle cx="5.5" cy="18.5" r="2.5"></circle>
+              <circle cx="18.5" cy="18.5" r="2.5"></circle>
+            </svg>
+          </div>
+          <h3 class="antixor-service-title">Home Delivery</h3>
+          <p class="antixor-service-desc">Fast & reliable delivery at your doorstep.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================================================
+     03 — FEATURED PRODUCTS SECTION
+     ========================================================================= -->
+<section class="antixor-products" id="products">
+  <div class="container">
+    
+    <!-- Section Header -->
+    <div class="antixor-section-header">
+      <div>
+        <h2 class="antixor-section-title">Featured Products</h2>
+        <p class="antixor-section-subtitle">Top quality products for a healthier you.</p>
+      </div>
+      <a href="#" class="antixor-view-all">View All Products →</a>
+    </div>
+
+    <!-- 4 Products Row -->
+    <div class="row g-4">
+      
+      <!-- Product 1: Paracetamol 500mg -->
+      <div class="col-lg-3 col-sm-6">
+        <div class="antixor-product-card">
+          <button class="antixor-product-wishlist" title="Add to Wishlist" aria-label="Add to Wishlist">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+          </button>
+          <div class="antixor-product-img-box">
+            <img src="{% static 'images/product_paracetamol.jpg' %}" alt="Paracetamol 500mg" class="antixor-product-img">
+          </div>
+          <h3 class="antixor-product-name">Paracetamol 500mg</h3>
+          <div class="antixor-product-category">Pain Relief</div>
+          <div class="antixor-product-price">$2.50</div>
+          <button type="button" class="antixor-btn-add-cart">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Product 2: Vitamin D3 1000 IU -->
+      <div class="col-lg-3 col-sm-6">
+        <div class="antixor-product-card">
+          <button class="antixor-product-wishlist" title="Add to Wishlist" aria-label="Add to Wishlist">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+          </button>
+          <div class="antixor-product-img-box">
+            <img src="{% static 'images/product_vitamind3.jpg' %}" alt="Vitamin D3 1000 IU" class="antixor-product-img">
+          </div>
+          <h3 class="antixor-product-name">Vitamin D3 1000 IU</h3>
+          <div class="antixor-product-category">Bone & Immunity</div>
+          <div class="antixor-product-price">$8.99</div>
+          <button type="button" class="antixor-btn-add-cart">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Product 3: Omega 3 Fish Oil -->
+      <div class="col-lg-3 col-sm-6">
+        <div class="antixor-product-card">
+          <button class="antixor-product-wishlist" title="Add to Wishlist" aria-label="Add to Wishlist">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+          </button>
+          <div class="antixor-product-img-box">
+            <img src="{% static 'images/product_omega3.jpg' %}" alt="Omega 3 Fish Oil" class="antixor-product-img">
+          </div>
+          <h3 class="antixor-product-name">Omega 3 Fish Oil</h3>
+          <div class="antixor-product-category">Heart Health</div>
+          <div class="antixor-product-price">$12.99</div>
+          <button type="button" class="antixor-btn-add-cart">Add to Cart</button>
+        </div>
+      </div>
+
+      <!-- Product 4: Skin Care Cream -->
+      <div class="col-lg-3 col-sm-6">
+        <div class="antixor-product-card">
+          <button class="antixor-product-wishlist" title="Add to Wishlist" aria-label="Add to Wishlist">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+          </button>
+          <div class="antixor-product-img-box">
+            <img src="{% static 'images/product_skincare.jpg' %}" alt="Skin Care Cream" class="antixor-product-img">
+          </div>
+          <h3 class="antixor-product-name">Skin Care Cream</h3>
+          <div class="antixor-product-category">Healthy & Glowing Skin</div>
+          <div class="antixor-product-price">$14.50</div>
+          <button type="button" class="antixor-btn-add-cart">Add to Cart</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================================================
+     04 — HEALTH TIPS & ARTICLES SECTION (DARK TEAL)
+     ========================================================================= -->
+<section class="antixor-articles">
+  <div class="container">
+    
+    <!-- Section Header -->
+    <div class="antixor-section-header">
+      <div>
+        <h2 class="antixor-section-title">Health Tips & Articles</h2>
+        <p class="antixor-section-subtitle">Stay informed. Stay healthy.</p>
+      </div>
+      <a href="#" class="antixor-view-all">View All Articles →</a>
+    </div>
+
+    <!-- 3 Editorial Blog Cards -->
+    <div class="row g-4">
+      
+      <!-- Article 1 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="antixor-article-card">
+          <div class="antixor-article-img-wrap">
+            <img src="{% static 'images/article_vitamins.jpg' %}" alt="5 Essential Vitamins" class="antixor-article-img">
+          </div>
+          <div class="antixor-article-body">
+            <span class="antixor-article-badge">Nutrition</span>
+            <h3 class="antixor-article-title">5 Essential Vitamins for a Stronger Immune System</h3>
+            <div class="antixor-article-meta">
+              <span>Aug 25, 2025</span>
+              <a href="#" class="antixor-article-link">Read More →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Article 2 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="antixor-article-card">
+          <div class="antixor-article-img-wrap">
+            <img src="{% static 'images/article_stress.jpg' %}" alt="How to Manage Stress" class="antixor-article-img">
+          </div>
+          <div class="antixor-article-body">
+            <span class="antixor-article-badge">Wellness</span>
+            <h3 class="antixor-article-title">How to Manage Stress for Better Mental Health</h3>
+            <div class="antixor-article-meta">
+              <span>Aug 20, 2025</span>
+              <a href="#" class="antixor-article-link">Read More →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Article 3 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="antixor-article-card">
+          <div class="antixor-article-img-wrap">
+            <img src="{% static 'images/article_habits.jpg' %}" alt="Simple Daily Habits" class="antixor-article-img">
+          </div>
+          <div class="antixor-article-body">
+            <span class="antixor-article-badge">Lifestyle</span>
+            <h3 class="antixor-article-title">Simple Daily Habits for a Healthier You</h3>
+            <div class="antixor-article-meta">
+              <span>Aug 19, 2025</span>
+              <a href="#" class="antixor-article-link">Read More →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================================================
+     05 — OUR IMPACT / STATISTICS SECTION
+     ========================================================================= -->
+<section class="antixor-impact">
+  <div class="container">
+    
+    <div class="row align-items-center g-5">
+      
+      <!-- Left: Title & 4 Stat Cards -->
+      <div class="col-lg-8">
+        <h2 class="antixor-section-title">Our Impact in Numbers</h2>
+        <p class="antixor-section-subtitle mb-4">Thousands of people trust Antixor Pharmacy for a healthier life.</p>
+
+        <div class="row g-3">
+          
+          <div class="col-sm-6 col-md-3">
+            <div class="antixor-stat-card">
+              <div class="antixor-stat-icon-wrap">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                </svg>
+              </div>
+              <div class="antixor-stat-number">500K+</div>
+              <p class="antixor-stat-label">Happy Customers</p>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-md-3">
+            <div class="antixor-stat-card">
+              <div class="antixor-stat-icon-wrap">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="1" y="3" width="15" height="13"></rect>
+                  <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                  <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                  <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                </svg>
+              </div>
+              <div class="antixor-stat-number">1.2M+</div>
+              <p class="antixor-stat-label">Orders Delivered</p>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-md-3">
+            <div class="antixor-stat-card">
+              <div class="antixor-stat-icon-wrap">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="8" r="7"></circle>
+                  <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                </svg>
+              </div>
+              <div class="antixor-stat-number">50+</div>
+              <p class="antixor-stat-label">Trusted Brands</p>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-md-3">
+            <div class="antixor-stat-card">
+              <div class="antixor-stat-icon-wrap">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+              </div>
+              <div class="antixor-stat-number">99%</div>
+              <p class="antixor-stat-label">Satisfaction Rate</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Right: 3D Cross Illustration -->
+      <div class="col-lg-4 text-center">
+        <img src="{% static 'images/impact_cross.jpg' %}" alt="Antixor Impact" class="antixor-impact-graphic img-fluid">
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================================================
+     06 — WHY CHOOSE ANTIXOR SECTION
+     ========================================================================= -->
+<section class="antixor-why-choose" id="why-choose">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      
+      <!-- Left: Female Pharmacist Image -->
       <div class="col-lg-5">
-        <div class="aura-hero-dropzone-card">
+        <img src="{% static 'images/pharmacist_female.jpg' %}" alt="Licensed Pharmacist" class="antixor-pharmacist-img img-fluid">
+      </div>
+
+      <!-- Right: Feature Checkpoints -->
+      <div class="col-lg-7">
+        <h2 class="antixor-section-title mb-2">Why Choose Antixor Pharmacy?</h2>
+        <p class="antixor-section-subtitle mb-4">We make healthcare simple, safe and accessible for everyone.</p>
+
+        <!-- Feature 1 -->
+        <div class="antixor-feature-block">
+          <div class="antixor-feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 class="antixor-feature-title">Genuine & FDA Approved Products</h3>
+            <p class="antixor-feature-desc">100% authentic and trusted brands.</p>
+          </div>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="antixor-feature-block">
+          <div class="antixor-feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <div>
+            <h3 class="antixor-feature-title">Licensed Pharmacists</h3>
+            <p class="antixor-feature-desc">Professional advice, always.</p>
+          </div>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="antixor-feature-block">
+          <div class="antixor-feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+              <line x1="12" y1="18" x2="12.01" y2="18"></line>
+            </svg>
+          </div>
+          <div>
+            <h3 class="antixor-feature-title">Easy Online Ordering</h3>
+            <p class="antixor-feature-desc">Quick and hassle-free.</p>
+          </div>
+        </div>
+
+        <!-- Feature 4 -->
+        <div class="antixor-feature-block">
+          <div class="antixor-feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 class="antixor-feature-title">Secure Payment Options</h3>
+            <p class="antixor-feature-desc">100% safe and encrypted.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================================================
+     07 — CUSTOMER REVIEWS SECTION
+     ========================================================================= -->
+<section class="antixor-reviews">
+  <div class="container">
+    
+    <!-- Section Header -->
+    <div class="antixor-section-header">
+      <div>
+        <h2 class="antixor-section-title">What Our Customers Say</h2>
+        <p class="antixor-section-subtitle">Real people. Real stories. Trusted by thousands.</p>
+      </div>
+      <a href="#" class="antixor-view-all">View All Reviews →</a>
+    </div>
+
+    <!-- 3 Testimonial Cards -->
+    <div class="row g-4">
+      
+      <!-- Review 1: Sarah Ahmed -->
+      <div class="col-lg-4 col-md-6">
+        <div class="antixor-review-card">
+          <img src="{% static 'images/avatar_sarah.jpg' %}" alt="Sarah Ahmed" class="antixor-review-avatar">
+          <h3 class="antixor-review-name">Sarah Ahmed</h3>
+          <div class="antixor-review-location">Dhaka</div>
+          <div class="antixor-review-stars">★★★★★</div>
+          <p class="antixor-review-text">"Very genuine products and super fast delivery. I always order from Antixor Pharmacy!"</p>
+        </div>
+      </div>
+
+      <!-- Review 2: Rafiq Hasan -->
+      <div class="col-lg-4 col-md-6">
+        <div class="antixor-review-card">
+          <img src="{% static 'images/avatar_rafiq.jpg' %}" alt="Rafiq Hasan" class="antixor-review-avatar">
+          <h3 class="antixor-review-name">Rafiq Hasan</h3>
+          <div class="antixor-review-location">Chittagong</div>
+          <div class="antixor-review-stars">★★★★★</div>
+          <p class="antixor-review-text">"The online consultation service is amazing. The pharmacist was so helpful and professional."</p>
+        </div>
+      </div>
+
+      <!-- Review 3: Nusrat Jahan -->
+      <div class="col-lg-4 col-md-6">
+        <div class="antixor-review-card">
+          <img src="{% static 'images/avatar_nusrat.jpg' %}" alt="Nusrat Jahan" class="antixor-review-avatar">
+          <h3 class="antixor-review-name">Nusrat Jahan</h3>
+          <div class="antixor-review-location">Sylhet</div>
+          <div class="antixor-review-stars">★★★★★</div>
+          <p class="antixor-review-text">"I love the variety of products and the easy ordering process. Highly recommended!"</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- =========================================================================
+     08 — FREE HEALTH CONSULTATION CTA
+     ========================================================================= -->
+<section class="antixor-consultation-section">
+  <div class="container">
+    <div class="antixor-consultation-banner">
+      <div class="row align-items-center g-4">
+        
+        <!-- Left: CTA Details -->
+        <div class="col-lg-7">
+          <h2 class="antixor-cta-title">Book a Free Health Consultation</h2>
+          <p class="antixor-cta-desc">Get expert advice from our certified pharmacists and healthcare professionals.</p>
+          <a href="#" class="antixor-btn-cta-white">Book Now →</a>
           
-          <div class="d-flex align-items-center justify-content-between mb-3">
-            <div class="d-flex align-items-center gap-2">
-              <div class="rounded-circle bg-emerald-100 p-2 text-emerald-600">
-                <i class="fa-solid fa-file-prescription fs-5"></i>
-              </div>
-              <div>
-                <h5 class="fw-bold mb-0 text-navy-800">1-Click Rx Upload</h5>
-                <span class="text-muted small">Instant Pharmacist Verification</span>
-              </div>
+          <!-- Contact Methods Strip -->
+          <div class="antixor-cta-channels">
+            <div class="antixor-channel-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+              </svg>
+              <span>+880 1234 567890</span>
             </div>
-            <span class="aura-badge aura-badge-otc aura-badge-pulse">10-Min Triage</span>
+
+            <div class="antixor-channel-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+              <span>Live Chat (24/7 Support)</span>
+            </div>
+
+            <div class="antixor-channel-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              <span>info@antixorpharmacy.com</span>
+            </div>
           </div>
-
-          <!-- Dropzone Form -->
-          <form id="aura-rx-upload-form" enctype="multipart/form-data">
-            {% csrf_token %}
-            
-            <div class="aura-dropzone-box mb-3" id="aura-prescription-dropzone">
-              <div class="aura-dropzone-icon">
-                <i class="fa-solid fa-cloud-arrow-up"></i>
-              </div>
-              <h6 class="fw-bold mb-1">Drag & drop your prescription</h6>
-              <p class="text-muted small mb-0">or click to browse JPG, PNG, or PDF files</p>
-              <input type="file" name="prescription_file" id="aura-rx-file-input" class="d-none" accept="image/*,.pdf" required>
-            </div>
-
-            <!-- Preview File Container -->
-            <div id="aura-rx-preview-container"></div>
-
-            <div class="mb-2">
-              <input type="text" name="patient_name" class="form-control form-control-sm rounded-3" placeholder="Patient Full Name *" value="{% if user.is_authenticated %}{{ user.full_name }}{% endif %}" required>
-            </div>
-            <div class="mb-3">
-              <input type="tel" name="patient_phone" class="form-control form-control-sm rounded-3" placeholder="Mobile Number for Rx Updates *" value="{% if user.is_authenticated %}{{ user.phone_number|default:'' }}{% endif %}" required>
-            </div>
-
-            <button type="submit" class="aura-btn-emerald w-100 justify-content-center">
-              <i class="fa-solid fa-shield-halved"></i>
-              <span>Verify & Dispense Medication</span>
-            </button>
-          </form>
-
-          <!-- On-Duty Live Pharmacist Badge -->
-          {% if featured_doctor %}
-            <div class="aura-doctor-badge-card">
-              <img src="{{ featured_doctor.get_avatar }}" alt="{{ featured_doctor.full_name }}" class="aura-doctor-badge-avatar">
-              <div class="flex-grow-1">
-                <div class="d-flex justify-content-between align-items-center">
-                  <span class="fw-bold text-navy-800 small">{{ featured_doctor.full_name }}</span>
-                  <span class="aura-badge aura-badge-otc aura-badge-pulse" style="font-size: 0.65rem;">Online Now</span>
-                </div>
-                <div class="text-muted" style="font-size: 0.75rem;">{{ featured_doctor.title }}</div>
-                <div class="text-cyan-600 fw-bold mt-1" style="font-size: 0.75rem;">
-                  <i class="fa-solid fa-clock me-1"></i> Available for instant consultation
-                </div>
-              </div>
-            </div>
-          {% endif %}
-
         </div>
-      </div>
 
+        <!-- Right: Doctor Photo -->
+        <div class="col-lg-5 text-center">
+          <img src="{% static 'images/doctor_male.jpg' %}" alt="Consultation Doctor" class="antixor-cta-doctor-img img-fluid">
+        </div>
+
+      </div>
     </div>
   </div>
 </section>
 
 
 <!-- =========================================================================
-     2. SYMPTOM DIAGNOSTIC QUICK SELECTOR STRIP
+     09 — PROMOTIONAL BANNER SECTION
      ========================================================================= -->
-<div class="container">
-  <div class="aura-symptom-strip">
-    <div class="row align-items-center g-3">
-      <div class="col-lg-3 col-md-12">
-        <div class="d-flex align-items-center gap-2">
-          <i class="fa-solid fa-heart-pulse text-danger fs-4"></i>
-          <div>
-            <span class="fw-bold text-navy-800 d-block">Quick Symptom Finder</span>
-            <small class="text-muted">Find verified remedies by condition</small>
-          </div>
+<section class="antixor-promo-section">
+  <div class="container">
+    <div class="antixor-promo-card">
+      <div class="row align-items-center g-4">
+        
+        <!-- Left: Text & CTA -->
+        <div class="col-lg-7">
+          <h2 class="antixor-promo-title">Quality Medicines for a Healthier Life</h2>
+          <div class="antixor-promo-sub">Genuine products • Trusted brands • Better tomorrow</div>
+          <a href="#products" class="antixor-btn-login">Shop Now →</a>
         </div>
-      </div>
-      <div class="col-lg-9 col-md-12">
-        <div class="d-flex flex-wrap gap-2">
-          <a href="{% url 'shop' %}?q=Paracetamol" class="aura-symptom-chip"><i class="fa-solid fa-head-side-virus"></i> Headache & Fever</a>
-          <a href="{% url 'shop' %}?q=Cetirizine" class="aura-symptom-chip"><i class="fa-solid fa-shield-virus"></i> Cold & Allergies</a>
-          <a href="{% url 'shop' %}?category=chronic-care-diabetes" class="aura-symptom-chip"><i class="fa-solid fa-droplet"></i> Diabetes Care</a>
-          <a href="{% url 'shop' %}?category=vitamins-immunity" class="aura-symptom-chip"><i class="fa-solid fa-sun"></i> Immunity & Vitamins</a>
-          <a href="{% url 'shop' %}?category=skincare-cosmeceuticals" class="aura-symptom-chip"><i class="fa-solid fa-spa"></i> Skin & Dermatology</a>
-          <a href="{% url 'shop' %}?category=orthopedic-pain-relief" class="aura-symptom-chip"><i class="fa-solid fa-bone"></i> Joint & Body Pain</a>
+
+        <!-- Right: 40% OFF Graphic & Blister Packs -->
+        <div class="col-lg-5 text-center">
+          <img src="{% static 'images/promo_graphic.jpg' %}" alt="40% OFF Promotion" class="antixor-promo-graphic-img img-fluid">
         </div>
+
       </div>
     </div>
   </div>
-</div>
+</section>
 
 
 <!-- =========================================================================
-     3. HEALTHCARE SERVICES GRID
+     10 — FOOTER SECTION
      ========================================================================= -->
-<section class="py-5 my-3">
+<footer class="antixor-footer" id="contact">
   <div class="container">
-    
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 pb-2">
-      <div>
-        <div class="text-cyan-500 fw-bold text-uppercase small letter-spacing-1 mb-1">Integrated Health Ecosystem</div>
-        <h2 class="fw-bold text-navy-800 mb-0">Complete Clinical Care & Pharmacy Services</h2>
-      </div>
-      <a href="{% url 'services' %}" class="aura-nav-link text-primary fw-bold mt-2 mt-md-0">
-        <span>Explore All Services</span>
-        <i class="fa-solid fa-arrow-right ms-1"></i>
-      </a>
-    </div>
-
     <div class="row g-4">
       
-      <!-- Service 1 -->
+      <!-- Brand & Socials -->
       <div class="col-lg-4 col-md-6">
-        <div class="aura-service-card">
-          <div class="aura-service-icon">
-            <i class="fa-solid fa-prescription-bottle-medical"></i>
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <div class="antixor-logo-cross">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 10.5h-5.5V5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5H5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h5.5V19c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-5.5H19c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z"/>
+            </svg>
           </div>
-          <h4 class="fw-bold fs-5 mb-2">e-Prescription Dispensing</h4>
-          <p class="text-muted small mb-4 flex-grow-1">
-            Upload your paper or electronic doctor's prescription. Our clinical pharmacists verify dosage, drug interactions, and dispense with temperature-controlled precision.
-          </p>
-          <div class="d-flex justify-content-between align-items-center pt-3 border-top">
-            <span class="badge bg-emerald-100 text-emerald-700 fw-bold">10-Min Pharmacist Check</span>
-            <button class="btn btn-sm btn-link text-cyan-600 p-0 fw-bold text-decoration-none" data-bs-toggle="modal" data-bs-target="#auraPrescriptionModal">
-              Upload Now <i class="fa-solid fa-chevron-right ms-1"></i>
-            </button>
-          </div>
+          <span class="fs-4 fw-bold text-white">Antixor <span style="font-weight: 500; font-size: 0.95rem; color: #94a3b8; display: block; line-height: 1;">Pharmacy</span></span>
         </div>
-      </div>
-
-      <!-- Service 2 -->
-      <div class="col-lg-4 col-md-6">
-        <div class="aura-service-card">
-          <div class="aura-service-icon" style="background: var(--aura-emerald-50); color: var(--aura-emerald-600);">
-            <i class="fa-solid fa-truck-ramp-box"></i>
-          </div>
-          <h4 class="fw-bold fs-5 mb-2">Cold-Chain Express Delivery</h4>
-          <p class="text-muted small mb-4 flex-grow-1">
-            Biologics, insulin, and sensitive antibiotics transported in calibrated insulated containers with real-time temperature telemetry to your doorstep.
-          </p>
-          <div class="d-flex justify-content-between align-items-center pt-3 border-top">
-            <span class="badge bg-primary text-white fw-bold">15-45 Mins Urban</span>
-            <a href="{% url 'shop' %}" class="btn btn-sm btn-link text-primary p-0 fw-bold text-decoration-none">
-              Order Now <i class="fa-solid fa-chevron-right ms-1"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Service 3 -->
-      <div class="col-lg-4 col-md-6">
-        <div class="aura-service-card">
-          <div class="aura-service-icon" style="background: var(--aura-coral-100); color: var(--aura-coral-500);">
-            <i class="fa-solid fa-user-doctor"></i>
-          </div>
-          <h4 class="fw-bold fs-5 mb-2">24/7 Telehealth Consultations</h4>
-          <p class="text-muted small mb-4 flex-grow-1">
-            Connect instantly with licensed general physicians, pediatricians, and clinical pharmacologists via encrypted HD video, audio, or live chat.
-          </p>
-          <div class="d-flex justify-content-between align-items-center pt-3 border-top">
-            <span class="badge bg-success text-white fw-bold">Free Triage Available</span>
-            <a href="{% url 'telehealth' %}" class="btn btn-sm btn-link text-danger p-0 fw-bold text-decoration-none">
-              Book Doctor <i class="fa-solid fa-chevron-right ms-1"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Service 4 -->
-      <div class="col-lg-4 col-md-6">
-        <div class="aura-service-card">
-          <div class="aura-service-icon" style="background: var(--aura-amber-100); color: var(--aura-amber-500);">
-            <i class="fa-solid fa-calendar-plus"></i>
-          </div>
-          <h4 class="fw-bold fs-5 mb-2">Chronic Care Smart Refills</h4>
-          <p class="text-muted small mb-4 flex-grow-1">
-            Automated monthly refills for diabetes, hypertension, and thyroid medications with SMS reminders, zero lapses, and 15% subscriber savings.
-          </p>
-          <div class="d-flex justify-content-between align-items-center pt-3 border-top">
-            <span class="badge bg-warning text-dark fw-bold">Save 15% Monthly</span>
-            <a href="{% url 'shop' %}?category=chronic-care-diabetes" class="btn btn-sm btn-link text-navy-800 p-0 fw-bold text-decoration-none">
-              Set Refill <i class="fa-solid fa-chevron-right ms-1"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Service 5 -->
-      <div class="col-lg-4 col-md-6">
-        <div class="aura-service-card">
-          <div class="aura-service-icon">
-            <i class="fa-solid fa-heart-pulse"></i>
-          </div>
-          <h4 class="fw-bold fs-5 mb-2">Diagnostic Devices & Testing</h4>
-          <p class="text-muted small mb-4 flex-grow-1">
-            Clinically validated Omron blood pressure machines, Accu-Chek glucometers, nebulizers, and home lab test kits with digital app sync.
-          </p>
-          <div class="d-flex justify-content-between align-items-center pt-3 border-top">
-            <span class="badge bg-light text-dark fw-bold">FDA Approved Kits</span>
-            <a href="{% url 'shop' %}?category=medical-devices-diagnostics" class="btn btn-sm btn-link text-cyan-600 p-0 fw-bold text-decoration-none">
-              View Devices <i class="fa-solid fa-chevron-right ms-1"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Service 6 -->
-      <div class="col-lg-4 col-md-6">
-        <div class="aura-service-card">
-          <div class="aura-service-icon" style="background: #e0f2fe; color: var(--aura-blue-600);">
-            <i class="fa-solid fa-spa"></i>
-          </div>
-          <h4 class="fw-bold fs-5 mb-2">Dermatology & Cosmeceuticals</h4>
-          <p class="text-muted small mb-4 flex-grow-1">
-            Medical-grade barrier repair balms, clinical sunscreen, hyaluronic hydration, and dermatologist formulated active skincare formulas.
-          </p>
-          <div class="d-flex justify-content-between align-items-center pt-3 border-top">
-            <span class="badge bg-info text-dark fw-bold">Derm Approved</span>
-            <a href="{% url 'shop' %}?category=skincare-cosmeceuticals" class="btn btn-sm btn-link text-primary p-0 fw-bold text-decoration-none">
-              Explore Skincare <i class="fa-solid fa-chevron-right ms-1"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- =========================================================================
-     4. FEATURED PRODUCTS & MEDICINE SHOWCASE
-     ========================================================================= -->
-<section class="py-5 bg-white border-top border-bottom">
-  <div class="container">
-    
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
-      <div>
-        <div class="text-cyan-500 fw-bold text-uppercase small letter-spacing-1 mb-1">Authentic Dispensary</div>
-        <h2 class="fw-bold text-navy-800 mb-0">Essential Medicines & Health Products</h2>
-      </div>
-      
-      <!-- Quick Filter Category Tabs -->
-      <div class="d-flex gap-2 overflow-x-auto text-nowrap mt-3 mt-md-0 pb-1">
-        <a href="{% url 'shop' %}" class="btn btn-sm btn-dark rounded-pill px-3">All Products</a>
-        <a href="{% url 'shop' %}?category=over-the-counter-otc" class="btn btn-sm btn-light rounded-pill px-3">OTC Relief</a>
-        <a href="{% url 'shop' %}?category=vitamins-immunity" class="btn btn-sm btn-light rounded-pill px-3">Vitamins</a>
-        <a href="{% url 'shop' %}?category=chronic-care-diabetes" class="btn btn-sm btn-light rounded-pill px-3">Chronic Care</a>
-        <a href="{% url 'shop' %}?category=skincare-cosmeceuticals" class="btn btn-sm btn-light rounded-pill px-3">Skincare</a>
-      </div>
-    </div>
-
-    <!-- Product Grid -->
-    <div class="row g-4">
-      {% for product in featured_products %}
-        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
-          <div class="aura-product-card">
-            
-            <!-- Image & Badges -->
-            <div class="aura-product-img-wrap">
-              <img src="{{ product.get_image }}" alt="{{ product.name }}" class="aura-product-img" loading="lazy">
-              
-              <!-- Wishlist Toggle -->
-              <button class="aura-wishlist-btn" onclick="toggleWishlist({{ product.id }}, this)" title="Add to Wishlist">
-                <i class="fa-regular fa-heart"></i>
-              </button>
-
-              <!-- Rx or Discount Badge -->
-              <div class="position-absolute top-0 start-0 m-2 d-flex flex-column gap-1">
-                {% if product.prescription_required %}
-                  <span class="aura-badge aura-badge-rx"><i class="fa-solid fa-file-prescription"></i> Rx Required</span>
-                {% else %}
-                  <span class="aura-badge aura-badge-otc">OTC</span>
-                {% endif %}
-                {% if product.discount_percent > 0 %}
-                  <span class="aura-badge aura-badge-discount">-{{ product.discount_percent }}% OFF</span>
-                {% endif %}
-              </div>
-            </div>
-
-            <!-- Content -->
-            <div class="aura-product-category">{{ product.category.name }}</div>
-            <h3 class="aura-product-title">
-              <a href="{% url 'product-detail' product.slug %}" class="text-inherit">{{ product.name }}</a>
-            </h3>
-            
-            <div class="aura-product-dosage">
-              <i class="fa-solid fa-capsules text-cyan-500 me-1"></i>
-              <span>{{ product.dosage_strength|default:product.get_dosage_form_display }} • {{ product.pack_size }}</span>
-            </div>
-
-            <!-- Rating Stars -->
-            <div class="d-flex align-items-center gap-1 text-warning small mb-2">
-              <i class="fa-solid fa-star"></i>
-              <span class="fw-bold text-dark">{{ product.rating }}</span>
-              <span class="text-muted">({{ product.total_reviews }})</span>
-            </div>
-
-            <!-- Price & Add to Cart -->
-            <div class="aura-product-price-row">
-              <span class="aura-current-price">${{ product.price }}</span>
-              {% if product.mrp_price %}
-                <span class="aura-mrp-price">${{ product.mrp_price }}</span>
-              {% endif %}
-            </div>
-
-            <button class="aura-add-cart-btn" onclick="addToCart({{ product.id }}, 1, event)">
-              <i class="fa-solid fa-cart-plus"></i>
-              <span>Add to Cart</span>
-            </button>
-
-          </div>
-        </div>
-      {% endfor %}
-    </div>
-
-    <div class="text-center mt-5">
-      <a href="{% url 'shop' %}" class="aura-btn-outline px-4 py-2">
-        <i class="fa-solid fa-store me-2"></i>
-        <span>View Complete 3,500+ Medicine Catalogue</span>
-      </a>
-    </div>
-
-  </div>
-</section>
-
-
-<!-- =========================================================================
-     5. WHY CHOOSE AURAHEALTH (PRECISION CLINICAL STANDARDS)
-     ========================================================================= -->
-<section class="py-5" style="background: linear-gradient(180deg, #ffffff 0%, #f8fafd 100%);">
-  <div class="container">
-    <div class="row align-items-center g-5">
-      
-      <!-- Left Visual Container with Clinical Highlights -->
-      <div class="col-lg-6">
-        <div class="position-relative">
-          <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&auto=format&fit=crop&q=80" alt="Clinical Pharmacist Review" class="img-fluid rounded-5 shadow-lg border">
-          
-          <!-- Floating Guaranteed Card -->
-          <div class="position-absolute bottom-0 start-0 m-4 p-3 bg-white rounded-4 shadow-lg border d-flex align-items-center gap-3" style="max-width: 320px;">
-            <div class="rounded-circle bg-emerald-100 text-emerald-600 p-3 fs-3">
-              <i class="fa-solid fa-microscope"></i>
-            </div>
-            <div>
-              <h6 class="fw-bold mb-0 text-navy-800">Double-Verification</h6>
-              <p class="text-muted small mb-0">Every single prescription is cross-checked by two certified pharmacologists.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right Column: Clinical Advantages -->
-      <div class="col-lg-6">
-        <div class="text-cyan-500 fw-bold text-uppercase small letter-spacing-1 mb-1">Uncompromising Standards</div>
-        <h2 class="fw-bold text-navy-800 mb-4">Why Doctors & Patients Trust AuraHealth™</h2>
-
-        <div class="d-flex gap-3 mb-4">
-          <div class="rounded-circle bg-cyan-100 text-cyan-600 p-3 fs-5 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; flex-shrink: 0;">
-            <i class="fa-solid fa-dna"></i>
-          </div>
-          <div>
-            <h5 class="fw-bold text-navy-800 mb-1">100% Genuine, Direct-from-Manufacturer</h5>
-            <p class="text-muted small">We source medicines directly from FDA-approved pharmaceutical laboratories with verifiable batch barcodes and zero counterfeit tolerance.</p>
-          </div>
-        </div>
-
-        <div class="d-flex gap-3 mb-4">
-          <div class="rounded-circle bg-emerald-100 text-emerald-600 p-3 fs-5 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; flex-shrink: 0;">
-            <i class="fa-solid fa-snowflake"></i>
-          </div>
-          <div>
-            <h5 class="fw-bold text-navy-800 mb-1">Temperature-Shield™ Cold Chain Storage</h5>
-            <p class="text-muted small">Vaccines, insulin, and sensitive liquid biologics are stored in 2°C–8°C clinical refrigerators and transported in calibrated chilled packs.</p>
-          </div>
-        </div>
-
-        <div class="d-flex gap-3 mb-4">
-          <div class="rounded-circle bg-primary bg-opacity-10 text-primary p-3 fs-5 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; flex-shrink: 0;">
-            <i class="fa-solid fa-user-shield"></i>
-          </div>
-          <div>
-            <h5 class="fw-bold text-navy-800 mb-1">Licensed Clinical Pharmacists On Duty</h5>
-            <p class="text-muted small">Have questions about drug interactions or food side effects? Speak directly with our clinical pharmacologists free of charge.</p>
-          </div>
-        </div>
-
-        <div class="d-flex gap-3">
-          <div class="rounded-circle bg-warning bg-opacity-10 text-warning p-3 fs-5 d-flex align-items-center justify-content-center" style="width: 50px; height: 50px; flex-shrink: 0;">
-            <i class="fa-solid fa-file-shield"></i>
-          </div>
-          <div>
-            <h5 class="fw-bold text-navy-800 mb-1">HIPAA-Compliant Encrypted Medical Records</h5>
-            <p class="text-muted small">Your medical history, prescriptions, and consultation notes are safeguarded with AES-256 military-grade encryption.</p>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- =========================================================================
-     6. VIRTUAL TELEHEALTH SPECIALISTS & DOCTOR BOOKING
-     ========================================================================= -->
-<section class="py-5 bg-white border-top border-bottom">
-  <div class="container">
-    
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-5">
-      <div>
-        <div class="text-cyan-500 fw-bold text-uppercase small letter-spacing-1 mb-1">Virtual Care Specialists</div>
-        <h2 class="fw-bold text-navy-800 mb-0">Consult With Board-Certified Healthcare Experts</h2>
-      </div>
-      <a href="{% url 'telehealth' %}" class="aura-btn-outline btn-sm mt-3 mt-md-0">
-        <span>View All Specialists</span>
-        <i class="fa-solid fa-arrow-right ms-1"></i>
-      </a>
-    </div>
-
-    <div class="row g-4">
-      {% for doc in doctors %}
-        <div class="col-lg-4 col-md-6">
-          <div class="aura-doctor-card h-100 d-flex flex-column">
-            
-            <div class="d-flex align-items-center gap-3 mb-3">
-              <img src="{{ doc.get_avatar }}" alt="{{ doc.full_name }}" class="aura-doctor-avatar-wrap" style="width: 70px; height: 70px; object-fit: cover; margin-bottom: 0;">
-              <div>
-                <h5 class="fw-bold text-navy-800 mb-0 fs-6">{{ doc.full_name }}</h5>
-                <div class="text-cyan-600 small fw-bold">{{ doc.get_specialty_display }}</div>
-                <div class="text-muted" style="font-size: 0.75rem;">{{ doc.experience_years }}+ Years Clinical Experience</div>
-              </div>
-            </div>
-
-            <p class="text-muted small flex-grow-1 mb-3">{{ doc.bio|truncatechars:140 }}</p>
-
-            <div class="bg-light rounded-3 p-2 mb-3 d-flex justify-content-between align-items-center small">
-              <span class="text-muted"><i class="fa-regular fa-clock me-1"></i> Next Available:</span>
-              <span class="fw-bold text-navy-800">{{ doc.next_available_slot }}</span>
-            </div>
-
-            <div class="d-flex justify-content-between align-items-center pt-3 border-top mt-auto">
-              <div>
-                <span class="text-muted small d-block">Consultation Fee</span>
-                <span class="fw-bold text-primary fs-6">{% if doc.consultation_fee == 0 %}FREE Triage{% else %}${{ doc.consultation_fee }}{% endif %}</span>
-              </div>
-              <button class="aura-btn-primary btn-sm" onclick="openDoctorBookingModal({{ doc.id }}, '{{ doc.full_name }}', '{{ doc.get_specialty_display }}', {{ doc.consultation_fee }})">
-                <i class="fa-solid fa-video"></i>
-                <span>Book Consult</span>
-              </button>
-            </div>
-
-          </div>
-        </div>
-      {% endfor %}
-    </div>
-
-  </div>
-</section>
-
-
-<!-- =========================================================================
-     7. DIGITAL HEALTHCARE MOBILE APP & SMART REFILL BANNER
-     ========================================================================= -->
-<section class="py-5" style="background: var(--aura-navy-900);">
-  <div class="container">
-    <div class="row align-items-center g-5">
-      
-      <div class="col-lg-7 text-white">
-        <span class="aura-badge aura-badge-otc mb-3" style="background: rgba(16,185,129,0.2); color: #34d399; border: 1px solid rgba(16,185,129,0.4);">
-          <i class="fa-solid fa-mobile-screen"></i> AuraHealth Digital Ecosystem
-        </span>
-        <h2 class="display-6 fw-bold text-white mb-3">
-          Your Complete Pharmacy & Health Tracker in Your Pocket
-        </h2>
-        <p class="text-slate-300 mb-4" style="max-width: 540px;">
-          Set automated smart pill reminders, order 1-tap WhatsApp refills, track temperature-controlled delivery GPS live, and access encrypted prescription history anytime.
-        </p>
-
-        <div class="row g-3 mb-4">
-          <div class="col-sm-6">
-            <div class="d-flex align-items-center gap-3">
-              <div class="rounded-circle bg-white bg-opacity-10 p-2 text-cyan-400">
-                <i class="fa-solid fa-bell-ring fs-5"></i>
-              </div>
-              <div>
-                <div class="fw-bold text-white small">Smart Pill Alarms</div>
-                <div class="text-slate-400" style="font-size: 0.75rem;">Never miss critical doses</div>
-              </div>
-            </div>
-          </div>
-          <div class="col-sm-6">
-            <div class="d-flex align-items-center gap-3">
-              <div class="rounded-circle bg-white bg-opacity-10 p-2 text-emerald-400">
-                <i class="fa-solid fa-repeat fs-5"></i>
-              </div>
-              <div>
-                <div class="fw-bold text-white small">1-Tap Prescription Refill</div>
-                <div class="text-slate-400" style="font-size: 0.75rem;">Synced with your physician</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="d-flex flex-wrap gap-3">
-          <a href="#" class="btn btn-light rounded-pill px-4 py-2 d-inline-flex align-items-center gap-2 fw-bold text-navy-900 shadow">
-            <i class="fa-brands fa-apple fs-4"></i>
-            <div class="text-start lh-1">
-              <div style="font-size: 0.65rem;" class="text-muted">Download on the</div>
-              <div style="font-size: 0.95rem;">Apple App Store</div>
-            </div>
+        <p class="text-slate-400 small mb-3">Better Health. Brighter Future.</p>
+        
+        <div class="antixor-social-links">
+          <a href="#" class="antixor-social-btn" title="Facebook" aria-label="Facebook">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
           </a>
-          <a href="#" class="btn btn-outline-light rounded-pill px-4 py-2 d-inline-flex align-items-center gap-2 fw-bold shadow">
-            <i class="fa-brands fa-google-play fs-4 text-cyan-400"></i>
-            <div class="text-start lh-1">
-              <div style="font-size: 0.65rem;" class="text-slate-400">GET IT ON</div>
-              <div style="font-size: 0.95rem;">Google Play</div>
-            </div>
+          <a href="#" class="antixor-social-btn" title="Instagram" aria-label="Instagram">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+          <a href="#" class="antixor-social-btn" title="YouTube" aria-label="YouTube">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </a>
+          <a href="#" class="antixor-social-btn" title="LinkedIn" aria-label="LinkedIn">
+            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
           </a>
         </div>
-
       </div>
 
-      <div class="col-lg-5 text-center">
-        <div class="position-relative d-inline-block">
-          <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&auto=format&fit=crop&q=80" alt="Mobile App Experience" class="img-fluid rounded-5 shadow-2xl border border-secondary border-opacity-50" style="max-height: 480px;">
-        </div>
+      <!-- Quick Links -->
+      <div class="col-lg-2 col-md-6 col-6">
+        <h4 class="antixor-footer-title">Quick Links</h4>
+        <ul class="antixor-footer-links">
+          <li><a href="#">Home</a></li>
+          <li><a href="#products">Shop</a></li>
+          <li><a href="#services">Health Services</a></li>
+          <li><a href="#why-choose">About Us</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
       </div>
 
-    </div>
-  </div>
-</section>
-
-
-<!-- =========================================================================
-     8. CLINICAL STATISTICS & TRUST METRICS
-     ========================================================================= -->
-<section class="py-5 bg-white border-bottom">
-  <div class="container">
-    <div class="row g-4 text-center">
-      
-      <div class="col-lg-3 col-6">
-        <div class="p-4 rounded-4 bg-light">
-          <div class="text-primary fs-1 fw-800 mb-1">99.8%</div>
-          <div class="fw-bold text-navy-800">Genuine Medication Guarantee</div>
-          <div class="text-muted small">Batch-verified directly from labs</div>
-        </div>
+      <!-- Customer Support -->
+      <div class="col-lg-2 col-md-6 col-6">
+        <h4 class="antixor-footer-title">Customer Support</h4>
+        <ul class="antixor-footer-links">
+          <li><a href="#">FAQs</a></li>
+          <li><a href="#">Shipping Policy</a></li>
+          <li><a href="#">Return Policy</a></li>
+          <li><a href="#">Terms & Conditions</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+        </ul>
       </div>
 
-      <div class="col-lg-3 col-6">
-        <div class="p-4 rounded-4 bg-light">
-          <div class="text-emerald-600 fs-1 fw-800 mb-1">45,000+</div>
-          <div class="fw-bold text-navy-800">Prescriptions Dispensed</div>
-          <div class="text-muted small">Reviewed by licensed pharmacologists</div>
-        </div>
-      </div>
-
-      <div class="col-lg-3 col-6">
-        <div class="p-4 rounded-4 bg-light">
-          <div class="text-cyan-600 fs-1 fw-800 mb-1">15 Mins</div>
-          <div class="fw-bold text-navy-800">Average Express Delivery</div>
-          <div class="text-muted small">Across major metropolitan areas</div>
-        </div>
-      </div>
-
-      <div class="col-lg-3 col-6">
-        <div class="p-4 rounded-4 bg-light">
-          <div class="text-warning fs-1 fw-800 mb-1">4.96 ★</div>
-          <div class="fw-bold text-navy-800">Verified Patient TrustScore</div>
-          <div class="text-muted small">From 14,000+ real patient reviews</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- =========================================================================
-     9. PATIENT TESTIMONIALS & CLINICAL TRUST
-     ========================================================================= -->
-<section class="py-5 bg-light">
-  <div class="container">
-    
-    <div class="text-center mb-5">
-      <div class="text-cyan-500 fw-bold text-uppercase small letter-spacing-1 mb-1">Real Patient Stories</div>
-      <h2 class="fw-bold text-navy-800">Trusted by Over 14,000 Families</h2>
-      <p class="text-muted">Read authentic experiences from patients managing chronic care, acute symptoms, and family healthcare.</p>
-    </div>
-
-    <div class="row g-4">
-      
+      <!-- Newsletter -->
       <div class="col-lg-4 col-md-6">
-        <div class="p-4 rounded-4 bg-white border shadow-sm h-100 d-flex flex-column">
-          <div class="d-flex align-items-center gap-3 mb-3">
-            <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80" alt="Sarah J." class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
-            <div>
-              <h6 class="fw-bold text-navy-800 mb-0">Sarah Jenkins</h6>
-              <span class="badge bg-emerald-100 text-emerald-700" style="font-size: 0.7rem;"><i class="fa-solid fa-circle-check me-1"></i> Verified Rx Patient</span>
-            </div>
-          </div>
-          <p class="text-slate-600 small flex-grow-1">
-            "I manage Type 2 Diabetes and was worried about cold-chain insulin delivery during summer. AuraHealth delivered my insulin in a temperature-calibrated chilled pouch within 30 minutes! Truly exceptional."
-          </p>
-          <div class="d-flex text-warning small pt-2 border-top">
-            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-4 col-md-6">
-        <div class="p-4 rounded-4 bg-white border shadow-sm h-100 d-flex flex-column">
-          <div class="d-flex align-items-center gap-3 mb-3">
-            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80" alt="David R." class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
-            <div>
-              <h6 class="fw-bold text-navy-800 mb-0">David Rodriguez</h6>
-              <span class="badge bg-emerald-100 text-emerald-700" style="font-size: 0.7rem;"><i class="fa-solid fa-circle-check me-1"></i> Telehealth Patient</span>
-            </div>
-          </div>
-          <p class="text-slate-600 small flex-grow-1">
-            "The online pharmacist consultation saved me hours in hospital waiting rooms. Dr. Vance reviewed my antibiotic dosage, explained potential food interactions, and my prescription arrived at my apartment shortly after."
-          </p>
-          <div class="d-flex text-warning small pt-2 border-top">
-            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-4 col-md-6">
-        <div class="p-4 rounded-4 bg-white border shadow-sm h-100 d-flex flex-column">
-          <div class="d-flex align-items-center gap-3 mb-3">
-            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80" alt="Emily T." class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
-            <div>
-              <h6 class="fw-bold text-navy-800 mb-0">Emily Thorne</h6>
-              <span class="badge bg-emerald-100 text-emerald-700" style="font-size: 0.7rem;"><i class="fa-solid fa-circle-check me-1"></i> Mother & Baby Care</span>
-            </div>
-          </div>
-          <p class="text-slate-600 small flex-grow-1">
-            "Having a newborn with a midnight fever was terrifying. Being able to order calibrated infant paracetamol and speak to a certified pharmacist at 1 AM brought our family complete peace of mind."
-          </p>
-          <div class="d-flex text-warning small pt-2 border-top">
-            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- =========================================================================
-     10. HEALTH & WELLNESS CLINICAL ARTICLES
-     ========================================================================= -->
-<section class="py-5 bg-white border-top border-bottom">
-  <div class="container">
-    
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4">
-      <div>
-        <div class="text-cyan-500 fw-bold text-uppercase small letter-spacing-1 mb-1">Evidence-Based Wellness</div>
-        <h2 class="fw-bold text-navy-800 mb-0">Doctor-Reviewed Clinical Health Journal</h2>
-      </div>
-      <a href="{% url 'articles' %}" class="aura-btn-outline btn-sm mt-3 mt-md-0">
-        <span>Read All Articles</span>
-        <i class="fa-solid fa-arrow-right ms-1"></i>
-      </a>
-    </div>
-
-    <div class="row g-4">
-      {% for art in articles %}
-        <div class="col-lg-4 col-md-6">
-          <div class="card h-100 border rounded-4 overflow-hidden shadow-sm hover-shadow transition">
-            <img src="{{ art.get_cover_image }}" class="card-img-top" alt="{{ art.title }}" style="height: 200px; object-fit: cover;">
-            <div class="card-body p-4 d-flex flex-column">
-              
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <span class="badge bg-cyan-100 text-cyan-700 small">{{ art.category.name }}</span>
-                <span class="text-muted small"><i class="fa-regular fa-clock me-1"></i> {{ art.read_time_minutes }} min read</span>
-              </div>
-
-              <h5 class="fw-bold text-navy-800 mb-2 fs-6">
-                <a href="{% url 'article-detail' art.slug %}" class="text-inherit">{{ art.title }}</a>
-              </h5>
-
-              <p class="text-muted small flex-grow-1 mb-3">{{ art.excerpt|truncatechars:120 }}</p>
-
-              <div class="pt-3 border-top d-flex justify-content-between align-items-center">
-                <div class="text-muted" style="font-size: 0.75rem;">
-                  <i class="fa-solid fa-user-doctor text-emerald-500 me-1"></i> Fact-checked
-                </div>
-                <a href="{% url 'article-detail' art.slug %}" class="fw-bold text-cyan-600 small text-decoration-none">
-                  Read Guide <i class="fa-solid fa-arrow-right ms-1"></i>
-                </a>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      {% endfor %}
-    </div>
-
-  </div>
-</section>
-
-
-<!-- =========================================================================
-     11. EMERGENCY CLINICAL TRIAGE & PRESCRIPTION CTA BANNER
-     ========================================================================= -->
-<section class="py-5" style="background: linear-gradient(135deg, var(--aura-navy-800) 0%, var(--aura-navy-700) 100%);">
-  <div class="container">
-    <div class="row align-items-center justify-content-between g-4">
-      <div class="col-lg-8 text-white">
-        <h2 class="fw-bold text-white mb-2">Need Immediate Pharmacist Assistance or Urgent Medication?</h2>
-        <p class="text-slate-300 mb-0">Our clinical team is online 24 hours a day, 7 days a week. Speak directly with a licensed pharmacist or upload your prescription for immediate dispensing.</p>
-      </div>
-      <div class="col-lg-4 text-lg-end">
-        <div class="d-flex flex-wrap gap-2 justify-content-lg-end">
-          <a href="tel:{{ site_emergency_phone }}" class="aura-btn-emerald">
-            <i class="fa-solid fa-phone-volume"></i>
-            <span>Call 24/7 Triage</span>
-          </a>
-          <button class="aura-btn-outline text-white border-white" data-bs-toggle="modal" data-bs-target="#auraPrescriptionModal">
-            <i class="fa-solid fa-upload"></i>
-            <span>Upload Rx</span>
+        <h4 class="antixor-footer-title">Subscribe to Our Newsletter</h4>
+        <p class="text-slate-400 small mb-3">Get the latest health tips, offers and updates.</p>
+        
+        <form class="antixor-newsletter-box" onsubmit="event.preventDefault();">
+          <input type="email" class="antixor-newsletter-input" placeholder="Your email address" required>
+          <button type="submit" class="antixor-newsletter-submit" title="Subscribe" aria-label="Subscribe">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
           </button>
-        </div>
+        </form>
+      </div>
+
+    </div>
+
+    <!-- Bottom Copyright & Payment Methods -->
+    <div class="antixor-footer-bottom">
+      <div>
+        © 2025 Antixor Pharmacy. All rights reserved.
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <span class="badge bg-light text-dark fw-bold px-2 py-1">VISA</span>
+        <span class="badge bg-light text-dark fw-bold px-2 py-1">Mastercard</span>
+        <span class="badge bg-light text-dark fw-bold px-2 py-1">PayPal</span>
+        <span class="badge bg-light text-dark fw-bold px-2 py-1">Maestro</span>
       </div>
     </div>
+
   </div>
-</section>
+</footer>
 
 {% endblock %}
