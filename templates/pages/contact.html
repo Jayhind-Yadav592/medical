@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}24/7 Support & Contact — AuraHealth™ Dispensary{% endblock %}
+
+{% block content %}
+<div class="bg-light py-5 border-bottom">
+  <div class="container text-center">
+    <span class="badge bg-cyan-100 text-cyan-800 mb-2">Patient Help Center</span>
+    <h1 class="display-6 fw-bold text-navy-800 mb-2">We Are Here For You 24/7</h1>
+    <p class="text-muted mx-auto mb-0" style="max-width: 600px;">
+      Have questions regarding your prescription, delivery status, or medicine dosage? Reach our clinical care coordinators anytime.
+    </p>
+  </div>
+</div>
+
+<div class="container py-5">
+  <div class="row g-5">
+    
+    <!-- Contact Form -->
+    <div class="col-lg-7">
+      <div class="card border rounded-4 p-4 shadow-sm bg-white">
+        <h4 class="fw-bold text-navy-800 mb-3">Send Care Coordinator a Message</h4>
+        <form id="aura-contact-form">
+          {% csrf_token %}
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label fw-bold small">Your Name <span class="text-danger">*</span></label>
+              <input type="text" name="name" class="form-control rounded-3" placeholder="Full name" value="{% if user.is_authenticated %}{{ user.full_name }}{% endif %}" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold small">Email Address <span class="text-danger">*</span></label>
+              <input type="email" name="email" class="form-control rounded-3" placeholder="you@domain.com" value="{% if user.is_authenticated %}{{ user.email }}{% endif %}" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold small">Phone Number</label>
+              <input type="tel" name="phone" class="form-control rounded-3" placeholder="+1 (555) 000-0000" value="{% if user.is_authenticated %}{{ user.phone_number|default:'' }}{% endif %}">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold small">Inquiry Subject</label>
+              <select name="subject" class="form-select rounded-3">
+                <option value="Prescription Verification Status">Prescription Verification Status</option>
+                <option value="Order & Delivery Tracking">Order & Delivery Tracking</option>
+                <option value="Drug Interaction / Pharmacist Question">Drug Interaction / Pharmacist Question</option>
+                <option value="General Support">General Support</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-bold small">Your Message <span class="text-danger">*</span></label>
+              <textarea name="message" class="form-control rounded-3" rows="4" placeholder="How can our clinical team help you today?" required></textarea>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="aura-btn-primary w-100 justify-content-center py-2">
+                <i class="fa-solid fa-paper-plane"></i>
+                <span>Submit Inquiry</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Contact Details & Map/Location -->
+    <div class="col-lg-5">
+      <div class="card border rounded-4 p-4 shadow-sm bg-white mb-4">
+        <h5 class="fw-bold text-navy-800 mb-3">Direct Clinical Hotlines</h5>
+        
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div class="rounded-circle bg-danger bg-opacity-10 text-danger p-3 fs-5">
+            <i class="fa-solid fa-phone-volume"></i>
+          </div>
+          <div>
+            <div class="text-muted small">24/7 Emergency Pharmacist Triage</div>
+            <strong class="text-navy-800 fs-6">+1 (800) 911-CARE (2273)</strong>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div class="rounded-circle bg-primary bg-opacity-10 text-primary p-3 fs-5">
+            <i class="fa-solid fa-headset"></i>
+          </div>
+          <div>
+            <div class="text-muted small">Customer Care & Orders</div>
+            <strong class="text-navy-800 fs-6">+1 (800) 584-AURA (2872)</strong>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div class="rounded-circle bg-success bg-opacity-10 text-success p-3 fs-5">
+            <i class="fa-solid fa-envelope"></i>
+          </div>
+          <div>
+            <div class="text-muted small">Email Inquiries</div>
+            <strong class="text-navy-800 fs-6">care@aurahealth.pharmacy</strong>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+          <div class="rounded-circle bg-info bg-opacity-10 text-info p-3 fs-5">
+            <i class="fa-solid fa-location-dot"></i>
+          </div>
+          <div>
+            <div class="text-muted small">Central Cleanroom Hub</div>
+            <strong class="text-navy-800 fs-6">450 Lexington Ave, New York, NY 10017</strong>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const cForm = document.getElementById('aura-contact-form');
+  if (cForm) {
+    cForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const jsonBody = {};
+      formData.forEach((v, k) => jsonBody[k] = v);
+
+      try {
+        const res = await fetch('/api/contact/submit/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]') ? document.querySelector('[name=csrfmiddlewaretoken]').value : ''
+          },
+          body: JSON.stringify(jsonBody)
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showAuraToast(data.message, 'success');
+          cForm.reset();
+        } else {
+          showAuraToast(data.error || 'Failed to submit inquiry', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    });
+  }
+});
+</script>
+{% endblock %}

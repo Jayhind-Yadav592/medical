@@ -1,0 +1,124 @@
+<!-- Authentication Modal (Sign In / Register) -->
+<div class="modal fade" id="auraAuthModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg">
+      
+      <div class="modal-header bg-light border-0 py-3 px-4">
+        <ul class="nav nav-pills w-100 nav-justified" id="authTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active rounded-pill fw-bold" id="login-tab" data-bs-toggle="pill" data-bs-target="#tab-login" type="button" role="tab">Sign In</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link rounded-pill fw-bold" id="register-tab" data-bs-toggle="pill" data-bs-target="#tab-register" type="button" role="tab">Create Patient Account</button>
+          </li>
+        </ul>
+        <button type="button" class="btn-close ms-2" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body p-4">
+        <div class="tab-content" id="authTabContent">
+          
+          <!-- Login Tab -->
+          <div class="tab-pane fade show active" id="tab-login" role="tabpanel">
+            <form id="aura-modal-login-form">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label class="form-label fw-bold small">Username or Email</label>
+                <input type="text" name="username" class="form-control rounded-3" placeholder="Enter username (e.g. admin or patient_sarah)" required>
+              </div>
+              <div class="mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                  <label class="form-label fw-bold small">Password</label>
+                  <a href="#" class="small text-muted">Forgot password?</a>
+                </div>
+                <input type="password" name="password" class="form-control rounded-3" placeholder="••••••••" required>
+              </div>
+              <button type="submit" class="aura-btn-primary w-100 justify-content-center mb-3">
+                <span>Sign In to AuraHealth</span>
+                <i class="fa-solid fa-arrow-right"></i>
+              </button>
+              
+              <div class="p-3 bg-light rounded-3 text-muted small">
+                <strong>Demo Credentials:</strong><br>
+                • Admin / Pharmacist: <code>admin</code> / <code>admin</code><br>
+                • Patient User: <code>patient_sarah</code> / <code>password123</code>
+              </div>
+            </form>
+          </div>
+
+          <!-- Register Tab -->
+          <div class="tab-pane fade" id="tab-register" role="tabpanel">
+            <form id="aura-modal-register-form">
+              {% csrf_token %}
+              <div class="row g-2 mb-3">
+                <div class="col-6">
+                  <label class="form-label fw-bold small">First Name</label>
+                  <input type="text" name="first_name" class="form-control rounded-3" placeholder="First" required>
+                </div>
+                <div class="col-6">
+                  <label class="form-label fw-bold small">Last Name</label>
+                  <input type="text" name="last_name" class="form-control rounded-3" placeholder="Last" required>
+                </div>
+              </div>
+              <div class="mb-2">
+                <label class="form-label fw-bold small">Username</label>
+                <input type="text" name="username" class="form-control rounded-3" placeholder="Choose a username" required>
+              </div>
+              <div class="mb-2">
+                <label class="form-label fw-bold small">Email Address</label>
+                <input type="email" name="email" class="form-control rounded-3" placeholder="you@domain.com" required>
+              </div>
+              <div class="mb-2">
+                <label class="form-label fw-bold small">Phone Number</label>
+                <input type="tel" name="phone_number" class="form-control rounded-3" placeholder="+1 (555) 000-0000">
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-bold small">Create Password</label>
+                <input type="password" name="password" class="form-control rounded-3" placeholder="••••••••" required>
+              </div>
+              <button type="submit" class="aura-btn-emerald w-100 justify-content-center">
+                <span>Create Patient Profile</span>
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const regForm = document.getElementById('aura-modal-register-form');
+  if (regForm) {
+    regForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const jsonBody = {};
+      formData.forEach((val, key) => jsonBody[key] = val);
+
+      try {
+        const res = await fetch('/api/auth/register/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]') ? document.querySelector('[name=csrfmiddlewaretoken]').value : ''
+          },
+          body: JSON.stringify(jsonBody)
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showAuraToast(data.message, 'success');
+          setTimeout(() => window.location.reload(), 800);
+        } else {
+          showAuraToast(JSON.stringify(data), 'error');
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    });
+  }
+});
+</script>

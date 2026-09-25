@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ article.title }} — AuraHealth™ Journal{% endblock %}
+
+{% block content %}
+<div class="bg-light py-3 border-bottom">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0 small">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'articles' %}">Clinical Journal</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ article.title|truncatechars:40 }}</li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      
+      <!-- Article Header -->
+      <div class="mb-4">
+        <span class="badge bg-cyan-100 text-cyan-800 mb-2">{{ article.category.name }}</span>
+        <h1 class="h2 fw-bold text-navy-800 mb-3">{{ article.title }}</h1>
+        
+        <div class="d-flex align-items-center gap-3 p-3 bg-light rounded-4">
+          <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold" style="width: 44px; height: 44px;">
+            <i class="fa-solid fa-user-doctor"></i>
+          </div>
+          <div>
+            <div class="fw-bold text-navy-800">{{ article.author_name }} <span class="badge bg-light text-dark border ms-1">{{ article.author_title }}</span></div>
+            <div class="text-muted small">
+              <i class="fa-solid fa-circle-check text-emerald-500 me-1"></i> Medically Reviewed by {{ article.medical_reviewer }} • {{ article.read_time_minutes }} min read • {{ article.views_count }} views
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cover Image -->
+      <img src="{{ article.get_cover_image }}" alt="{{ article.title }}" class="img-fluid rounded-4 shadow-sm mb-4 w-100" style="max-height: 420px; object-fit: cover;">
+
+      <!-- Excerpt Callout -->
+      <div class="alert alert-info border-info rounded-4 mb-4">
+        <p class="mb-0 fw-bold">{{ article.excerpt }}</p>
+      </div>
+
+      <!-- Content -->
+      <div class="article-content text-slate-700 fs-6 lh-lg mb-5">
+        {{ article.content|linebreaks }}
+      </div>
+
+      <!-- Tags & Share -->
+      <div class="d-flex justify-content-between align-items-center pt-4 border-top">
+        <div class="d-flex gap-2">
+          <span class="text-muted small">Tags:</span>
+          {% for tag in article.tags.split %}
+            <span class="badge bg-light text-dark border">{{ tag }}</span>
+          {% endfor %}
+        </div>
+        <div>
+          <button class="btn btn-sm btn-outline-primary rounded-pill" onclick="navigator.clipboard.writeText(window.location.href); showAuraToast('Article link copied to clipboard!', 'success');">
+            <i class="fa-solid fa-share-nodes me-1"></i> Share Article
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

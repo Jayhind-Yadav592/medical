@@ -1,0 +1,104 @@
+<!-- Doctor Consultation Booking Modal -->
+<div class="modal fade" id="auraConsultationModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow-lg">
+      
+      <div class="modal-header bg-light border-0 py-3 px-4">
+        <div class="d-flex align-items-center gap-2">
+          <div class="rounded-circle bg-cyan-100 p-2 text-cyan-600" style="background-color: var(--aura-cyan-100);">
+            <i class="fa-solid fa-user-doctor fs-5"></i>
+          </div>
+          <div>
+            <h5 class="modal-title fw-bold mb-0">Book Doctor / Pharmacist Telehealth Consult</h5>
+            <span class="text-muted small">Virtual Video, Audio, or Encrypted Chat with Certified Specialist</span>
+          </div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body p-4">
+        <form id="aura-consultation-form">
+          <input type="hidden" name="doctor_id" id="aura-modal-doc-id" value="1">
+          
+          <!-- Doctor Banner -->
+          <div class="alert alert-light border rounded-4 d-flex justify-content-between align-items-center p-3 mb-4">
+            <div class="d-flex align-items-center gap-3">
+              <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width: 44px; height: 44px;">
+                <i class="fa-solid fa-stethoscope"></i>
+              </div>
+              <div>
+                <h6 class="mb-0 fw-bold" id="aura-modal-doc-name">Dr. Elena Vance, PharmD</h6>
+                <div class="text-muted small" id="aura-modal-doc-specialty">Lead Clinical Pharmacist</div>
+              </div>
+            </div>
+            <div class="text-end">
+              <span class="badge bg-success" id="aura-modal-doc-fee">FREE Triage</span>
+              <div class="text-muted" style="font-size: 0.75rem;">Instant Virtual Room</div>
+            </div>
+          </div>
+
+          <div class="row g-3">
+            
+            <div class="col-md-6">
+              <label class="form-label fw-bold small">Patient Name <span class="text-danger">*</span></label>
+              <input type="text" name="patient_name" class="form-control rounded-3" placeholder="Full name" value="{% if user.is_authenticated %}{{ user.full_name }}{% endif %}" required>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-bold small">Patient Email <span class="text-danger">*</span></label>
+              <input type="email" name="patient_email" class="form-control rounded-3" placeholder="email@domain.com" value="{% if user.is_authenticated %}{{ user.email }}{% endif %}" required>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-bold small">Phone Number <span class="text-danger">*</span></label>
+              <input type="tel" name="patient_phone" class="form-control rounded-3" placeholder="+1 (555) 012-3456" value="{% if user.is_authenticated %}{{ user.phone_number|default:'' }}{% endif %}" required>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-bold small">Preferred Consultation Mode</label>
+              <select name="consultation_type" class="form-select rounded-3">
+                <option value="VIDEO">HD Video Call (Encrypted Browser Link)</option>
+                <option value="AUDIO">Direct Phone Call</option>
+                <option value="CHAT">Live Pharmacist Chat</option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-bold small">Appointment Date <span class="text-danger">*</span></label>
+              <input type="date" name="preferred_date" class="form-control rounded-3" value="2026-09-26" required>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label fw-bold small">Preferred Time Slot</label>
+              <select name="preferred_time" class="form-select rounded-3">
+                <option value="Available Now (Express Queue)">Available Now (Express Queue)</option>
+                <option value="10:00 AM - 10:30 AM">10:00 AM - 10:30 AM</option>
+                <option value="02:00 PM - 02:30 PM">02:00 PM - 02:30 PM</option>
+                <option value="04:30 PM - 05:00 PM">04:30 PM - 05:00 PM</option>
+                <option value="07:00 PM - 07:30 PM">07:00 PM - 07:30 PM</option>
+              </select>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label fw-bold small">Primary Symptoms or Medication Questions <span class="text-danger">*</span></label>
+              <textarea name="symptoms" class="form-control rounded-3" rows="3" placeholder="Describe symptoms, current medication list, allergy history, or dosage questions..." required></textarea>
+            </div>
+
+          </div>
+
+          <div class="d-flex align-items-center justify-content-between mt-4 pt-3 border-top">
+            <div class="text-muted small">
+              <i class="fa-solid fa-lock text-success me-1"></i> Private End-to-End Encrypted Consultation
+            </div>
+            <button type="submit" class="aura-btn-primary">
+              <i class="fa-solid fa-calendar-check"></i>
+              <span>Confirm Appointment</span>
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>

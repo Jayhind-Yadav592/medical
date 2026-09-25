@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Patient Medical Portal — AuraHealth™{% endblock %}
+
+{% block content %}
+<div class="bg-light py-4 border-bottom">
+  <div class="container">
+    <div class="d-flex align-items-center gap-3">
+      <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold fs-4" style="width: 54px; height: 54px;">
+        {{ user.first_name|default:user.username|make_list|first|upper }}
+      </div>
+      <div>
+        <h1 class="h3 fw-bold text-navy-800 mb-0">Welcome, {{ user.full_name|default:user.username }}</h1>
+        <div class="text-muted small">AuraHealth Patient ID #AUR-P-{{ user.id }} • Blood Group: {{ user.blood_group|default:"Not specified" }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container py-5">
+  <div class="row g-4">
+    
+    <!-- Navigation Tabs -->
+    <div class="col-lg-3">
+      <div class="card border rounded-4 p-3 shadow-sm bg-white mb-4">
+        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist">
+          <button class="nav-link active rounded-3 text-start fw-bold py-2 mb-1" id="tab-orders-t" data-bs-toggle="pill" data-bs-target="#tab-orders" type="button"><i class="fa-solid fa-boxes-stacked me-2"></i> Orders History ({{ orders.count }})</button>
+          <button class="nav-link rounded-3 text-start fw-bold py-2 mb-1" id="tab-rx-t" data-bs-toggle="pill" data-bs-target="#tab-rx" type="button"><i class="fa-solid fa-file-prescription me-2"></i> Prescriptions ({{ prescriptions.count }})</button>
+          <button class="nav-link rounded-3 text-start fw-bold py-2 mb-1" id="tab-consult-t" data-bs-toggle="pill" data-bs-target="#tab-consult" type="button"><i class="fa-solid fa-user-doctor me-2"></i> Doctor Consults ({{ consultations.count }})</button>
+          <button class="nav-link rounded-3 text-start fw-bold py-2 text-danger" onclick="document.getElementById('nav-logout-form').submit()"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign Out</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="col-lg-9">
+      <div class="tab-content" id="v-pills-tabContent">
+        
+        <!-- Orders Tab -->
+        <div class="tab-pane fade show active" id="tab-orders" role="tabpanel">
+          <div class="card border rounded-4 p-4 shadow-sm bg-white">
+            <h5 class="fw-bold text-navy-800 mb-4">Your Past Orders</h5>
+            {% if orders %}
+              {% for ord in orders %}
+                <div class="border rounded-4 p-3 mb-3">
+                  <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+                    <div>
+                      <strong class="text-navy-800">Order #{{ ord.order_number }}</strong>
+                      <div class="text-muted small">{{ ord.created_at|date:"M d, Y H:i" }}</div>
+                    </div>
+                    <div class="text-end">
+                      <span class="badge bg-success">{{ ord.get_order_status_display }}</span>
+                      <div class="fw-bold text-primary mt-1">${{ ord.final_amount }}</div>
+                    </div>
+                  </div>
+                  <div class="small text-muted mb-2">
+                    Items: {% for item in ord.items.all %}{{ item.quantity }}x {{ item.product_name }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                  </div>
+                  <a href="{% url 'order-track' %}?order_number={{ ord.order_number }}" class="btn btn-sm btn-outline-primary rounded-pill">
+                    <i class="fa-solid fa-location-dot me-1"></i> Track Live Delivery
+                  </a>
+                </div>
+              {% endfor %}
+            {% else %}
+              <p class="text-muted small">You haven't placed any medication orders yet.</p>
+              <a href="{% url 'shop' %}" class="aura-btn-primary btn-sm">Explore Store</a>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Prescriptions Tab -->
+        <div class="tab-pane fade" id="tab-rx" role="tabpanel">
+          <div class="card border rounded-4 p-4 shadow-sm bg-white">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h5 class="fw-bold text-navy-800 mb-0">Uploaded Prescriptions</h5>
+              <button class="aura-btn-emerald aura-btn-sm" data-bs-toggle="modal" data-bs-target="#auraPrescriptionModal">
+                <i class="fa-solid fa-upload"></i> Upload New Rx
+              </button>
+            </div>
+            {% if prescriptions %}
+              {% for rx in prescriptions %}
+                <div class="border rounded-4 p-3 mb-3 d-flex justify-content-between align-items-center">
+                  <div>
+                    <h6 class="fw-bold text-navy-800 mb-0">Rx Reference #{{ rx.id }} - {{ rx.patient_name }}</h6>
+                    <div class="text-muted small">Doctor: {{ rx.doctor_name|default:"General Clinical" }} • {{ rx.uploaded_at|date:"M d, Y" }}</div>
+                    {% if rx.notes %}<div class="text-muted small fst-italic">Notes: {{ rx.notes }}</div>{% endif %}
+                  </div>
+                  <span class="badge {% if rx.status == 'VERIFIED' %}bg-success{% elif rx.status == 'PENDING' %}bg-warning text-dark{% else %}bg-secondary{% endif %}">
+                    {{ rx.get_status_display }}
+                  </span>
+                </div>
+              {% endfor %}
+            {% else %}
+              <p class="text-muted small">No prescriptions on file.</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Consultations Tab -->
+        <div class="tab-pane fade" id="tab-consult" role="tabpanel">
+          <div class="card border rounded-4 p-4 shadow-sm bg-white">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h5 class="fw-bold text-navy-800 mb-0">Telehealth Appointments</h5>
+              <a href="{% url 'telehealth' %}" class="aura-btn-primary aura-btn-sm">
+                <i class="fa-solid fa-calendar-plus"></i> Book Consultation
+              </a>
+            </div>
+            {% if consultations %}
+              {% for c in consultations %}
+                <div class="border rounded-4 p-3 mb-3">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <strong class="text-navy-800">{{ c.doctor.full_name }} ({{ c.doctor.get_specialty_display }})</strong>
+                    <span class="badge bg-success">{{ c.get_status_display }}</span>
+                  </div>
+                  <div class="text-muted small mb-2">
+                    <i class="fa-regular fa-calendar me-1"></i> {{ c.preferred_date }} at {{ c.preferred_time_slot }} ({{ c.get_consultation_type_display }})
+                  </div>
+                  <div class="small text-muted mb-2">Symptoms: {{ c.symptoms }}</div>
+                  {% if c.meeting_link %}
+                    <a href="{{ c.meeting_link }}" target="_blank" class="btn btn-sm btn-primary rounded-pill">
+                      <i class="fa-solid fa-video me-1"></i> Enter Telehealth Room
+                    </a>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            {% else %}
+              <p class="text-muted small">No consultation appointments booked.</p>
+            {% endif %}
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

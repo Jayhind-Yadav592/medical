@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Clinical Health Journal & Evidence-Based Articles — AuraHealth™{% endblock %}
+
+{% block content %}
+<div class="bg-light py-5 border-bottom">
+  <div class="container text-center">
+    <span class="badge bg-cyan-100 text-cyan-800 mb-2">Evidence-Based Medicine</span>
+    <h1 class="display-6 fw-bold text-navy-800 mb-2">AuraHealth™ Clinical Journal</h1>
+    <p class="text-muted mx-auto mb-4" style="max-width: 600px;">
+      Doctor-reviewed health guides, medication safety insights, immunology updates, and longevity strategies.
+    </p>
+
+    <!-- Categories Filters -->
+    <div class="d-flex flex-wrap justify-content-center gap-2">
+      <a href="{% url 'articles' %}" class="btn btn-sm {% if not selected_category %}btn-dark{% else %}btn-outline-dark{% endif %} rounded-pill">All Topics</a>
+      {% for c in categories %}
+        <a href="{% url 'articles' %}?category={{ c.slug }}" class="btn btn-sm {% if selected_category == c.slug %}btn-dark{% else %}btn-outline-dark{% endif %} rounded-pill">{{ c.name }}</a>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div class="container py-5">
+  <div class="row g-4">
+    {% for art in articles %}
+      <div class="col-lg-4 col-md-6">
+        <div class="card h-100 border rounded-4 overflow-hidden shadow-sm hover-shadow transition bg-white d-flex flex-column">
+          <img src="{{ art.get_cover_image }}" class="card-img-top" alt="{{ art.title }}" style="height: 220px; object-fit: cover;">
+          
+          <div class="card-body p-4 d-flex flex-column flex-grow-1">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <span class="badge bg-cyan-100 text-cyan-800">{{ art.category.name }}</span>
+              <span class="text-muted small"><i class="fa-regular fa-clock me-1"></i> {{ art.read_time_minutes }} min read</span>
+            </div>
+
+            <h5 class="fw-bold text-navy-800 mb-2 fs-6">
+              <a href="{% url 'article-detail' art.slug %}" class="text-inherit">{{ art.title }}</a>
+            </h5>
+
+            <p class="text-muted small flex-grow-1 mb-3">{{ art.excerpt }}</p>
+
+            <div class="pt-3 border-top d-flex justify-content-between align-items-center mt-auto">
+              <div>
+                <div class="fw-bold text-navy-800 small">{{ art.author_name }}</div>
+                <div class="text-muted" style="font-size: 0.7rem;">Reviewer: {{ art.medical_reviewer }}</div>
+              </div>
+              <a href="{% url 'article-detail' art.slug %}" class="btn btn-sm btn-outline-primary rounded-pill">Read</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

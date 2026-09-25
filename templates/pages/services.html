@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Clinical & Healthcare Services — AuraHealth™ Platform{% endblock %}
+
+{% block content %}
+<!-- Services Header -->
+<div class="py-5 text-white" style="background: linear-gradient(135deg, var(--aura-navy-900) 0%, var(--aura-navy-800) 100%);">
+  <div class="container text-center py-4">
+    <span class="aura-badge aura-badge-otc mb-3" style="background: rgba(16,185,129,0.2); color: #34d399;">Comprehensive Healthcare</span>
+    <h1 class="display-5 fw-bold text-white mb-3">Our Clinical Care & Pharmacy Services</h1>
+    <p class="text-slate-300 mx-auto mb-0" style="max-width: 640px;">
+      From urgent e-prescription fulfillment and cold-chain biologics transport to 24/7 virtual tele-pharmacist consultations and automated chronic care refills.
+    </p>
+  </div>
+</div>
+
+<div class="container py-5">
+  <div class="row g-5">
+    
+    <!-- Service 1: e-Prescriptions -->
+    <div class="col-lg-6">
+      <div class="card border rounded-4 p-4 shadow-sm h-100">
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div class="rounded-circle bg-emerald-100 text-emerald-600 p-3 fs-4">
+            <i class="fa-solid fa-file-prescription"></i>
+          </div>
+          <div>
+            <h4 class="fw-bold text-navy-800 mb-0">e-Prescription Verification & Dispensing</h4>
+            <span class="badge bg-success">10-Minute Pharmacist Triage</span>
+          </div>
+        </div>
+        <p class="text-slate-600 mb-4">
+          Simply take a photo of your handwritten doctor's prescription or attach your digital clinic e-script. Our board-certified clinical pharmacologists cross-check drug allergies, interactions, and dispense with tamper-evident safety seals.
+        </p>
+        <button class="aura-btn-emerald btn-sm w-100 justify-content-center" data-bs-toggle="modal" data-bs-target="#auraPrescriptionModal">
+          <i class="fa-solid fa-upload"></i> Upload Your Prescription Now
+        </button>
+      </div>
+    </div>
+
+    <!-- Service 2: Cold-Chain Delivery -->
+    <div class="col-lg-6">
+      <div class="card border rounded-4 p-4 shadow-sm h-100">
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div class="rounded-circle bg-cyan-100 text-cyan-600 p-3 fs-4">
+            <i class="fa-solid fa-snowflake"></i>
+          </div>
+          <div>
+            <h4 class="fw-bold text-navy-800 mb-0">Temperature-Shield™ Cold-Chain Delivery</h4>
+            <span class="badge bg-primary">15-45 Min Urban Delivery</span>
+          </div>
+        </div>
+        <p class="text-slate-600 mb-4">
+          Insulins, monoclonal antibodies, eye drops, and live probiotics are vulnerable to temperature spikes. We pack your medications in certified thermal phases with real-time temperature loggers.
+        </p>
+        <a href="{% url 'shop' %}" class="aura-btn-primary btn-sm w-100 justify-content-center">
+          <i class="fa-solid fa-truck-fast"></i> Order Temperature-Shielded Meds
+        </a>
+      </div>
+    </div>
+
+    <!-- Service 3: Telehealth Consultations -->
+    <div class="col-lg-6">
+      <div class="card border rounded-4 p-4 shadow-sm h-100">
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div class="rounded-circle bg-coral-100 text-danger p-3 fs-4" style="background: var(--aura-coral-100);">
+            <i class="fa-solid fa-video"></i>
+          </div>
+          <div>
+            <h4 class="fw-bold text-navy-800 mb-0">24/7 Virtual Telehealth Consultations</h4>
+            <span class="badge bg-danger">Free Triage Available</span>
+          </div>
+        </div>
+        <p class="text-slate-600 mb-4">
+          Speak with our certified doctors, family physicians, and clinical pharmacologists from the comfort of your home. Get digital prescriptions issued directly to your AuraHealth cart.
+        </p>
+        <a href="{% url 'telehealth' %}" class="aura-btn-outline btn-sm w-100 justify-content-center">
+          <i class="fa-solid fa-calendar-check"></i> Book Doctor Consultation
+        </a>
+      </div>
+    </div>
+
+    <!-- Service 4: Chronic Care Smart Refills -->
+    <div class="col-lg-6">
+      <div class="card border rounded-4 p-4 shadow-sm h-100">
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div class="rounded-circle bg-amber-100 text-warning p-3 fs-4">
+            <i class="fa-solid fa-repeat"></i>
+          </div>
+          <div>
+            <h4 class="fw-bold text-navy-800 mb-0">Chronic Disease Medication Management</h4>
+            <span class="badge bg-warning text-dark">Save 15% Monthly</span>
+          </div>
+        </div>
+        <p class="text-slate-600 mb-4">
+          Managing hypertension, high cholesterol, asthma, or Type 2 diabetes? Enroll in our automated 30 or 90-day smart refill program with doctor renewal reminders and subsidized medication rates.
+        </p>
+        <a href="{% url 'shop' %}?category=chronic-care-diabetes" class="aura-btn-primary btn-sm w-100 justify-content-center">
+          <i class="fa-solid fa-heart-pulse"></i> Set Up Chronic Care Refill
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

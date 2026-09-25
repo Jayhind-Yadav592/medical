@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Prescription Verification Portal — AuraHealth™ Dispensary{% endblock %}
+
+{% block content %}
+<div class="bg-light py-4 border-bottom">
+  <div class="container">
+    <h1 class="h3 fw-bold text-navy-800 mb-1">Prescription Verification & Dispensing Portal</h1>
+    <p class="text-muted small mb-0">Upload new doctor prescriptions or track the verification status of your previous uploads.</p>
+  </div>
+</div>
+
+<div class="container py-5">
+  <div class="row g-5">
+    
+    <!-- Upload Dropzone Form -->
+    <div class="col-lg-6">
+      <div class="card border rounded-4 p-4 shadow-sm bg-white">
+        <h5 class="fw-bold text-navy-800 mb-3"><i class="fa-solid fa-cloud-arrow-up text-primary me-2"></i> Submit New Prescription</h5>
+        
+        <form id="portal-rx-upload-form" enctype="multipart/form-data">
+          {% csrf_token %}
+          
+          <div class="mb-3">
+            <label class="form-label fw-bold small">Patient Full Name <span class="text-danger">*</span></label>
+            <input type="text" name="patient_name" class="form-control rounded-3" placeholder="Full legal name" value="{% if user.is_authenticated %}{{ user.full_name }}{% endif %}" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-bold small">Patient Mobile Phone <span class="text-danger">*</span></label>
+            <input type="tel" name="patient_phone" class="form-control rounded-3" placeholder="+1 (555) 000-0000" value="{% if user.is_authenticated %}{{ user.phone_number|default:'' }}{% endif %}" required>
+          </div>
+
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <label class="form-label fw-bold small">Doctor's Name</label>
+              <input type="text" name="doctor_name" class="form-control rounded-3" placeholder="Dr. First Last, MD">
+            </div>
+            <div class="col-6">
+              <label class="form-label fw-bold small">Hospital / Clinic</label>
+              <input type="text" name="clinic_hospital" class="form-control rounded-3" placeholder="Clinic Name">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-bold small">Upload File (JPG, PNG, PDF) <span class="text-danger">*</span></label>
+            <input type="file" name="prescription_file" class="form-control rounded-3" accept="image/*,.pdf" required>
+            <div class="form-text small">Ensure dosage, doctor's signature, patient name, and clinic stamp are clearly legible.</div>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label fw-bold small">Pharmacist Notes & Specific Needs</label>
+            <textarea name="notes" class="form-control rounded-3" rows="2" placeholder="e.g. Please dispense generic equivalent, 30 days supply..."></textarea>
+          </div>
+
+          <button type="submit" class="aura-btn-emerald w-100 justify-content-center">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>Submit for Pharmacist Review</span>
+          </button>
+        </form>
+
+      </div>
+    </div>
+
+    <!-- Verification Guidelines & Past Uploads -->
+    <div class="col-lg-6">
+      
+      <!-- Verification Steps Card -->
+      <div class="card border rounded-4 p-4 shadow-sm bg-white mb-4">
+        <h5 class="fw-bold text-navy-800 mb-3"><i class="fa-solid fa-list-check text-success me-2"></i> Clinical Verification Flow</h5>
+        
+        <div class="d-flex gap-3 mb-3">
+          <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold" style="width: 32px; height: 32px; flex-shrink: 0;">1</div>
+          <div>
+            <div class="fw-bold text-navy-800 small">Upload & Secure Triage</div>
+            <div class="text-muted small">Your file is encrypted and assigned to the nearest certified clinical pharmacy hub.</div>
+          </div>
+        </div>
+
+        <div class="d-flex gap-3 mb-3">
+          <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold" style="width: 32px; height: 32px; flex-shrink: 0;">2</div>
+          <div>
+            <div class="fw-bold text-navy-800 small">Doctor Validation & Drug Safety Check</div>
+            <div class="text-muted small">Our pharmacists cross-examine active ingredients, potential drug interactions, and dosage accuracy.</div>
+          </div>
+        </div>
+
+        <div class="d-flex gap-3">
+          <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold" style="width: 32px; height: 32px; flex-shrink: 0;">3</div>
+          <div>
+            <div class="fw-bold text-navy-800 small">Dispensing & Cold-Chain Delivery</div>
+            <div class="text-muted small">Medication is packaged in tamper-evident cold-chain containers and dispatched to your door.</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Past Uploaded Prescriptions -->
+      {% if user_prescriptions %}
+        <div class="card border rounded-4 p-4 shadow-sm bg-white">
+          <h6 class="fw-bold text-navy-800 mb-3">Your Prescription History</h6>
+          {% for rx in user_prescriptions %}
+            <div class="border-bottom pb-2 mb-2 d-flex justify-content-between align-items-center">
+              <div>
+                <strong class="text-navy-800">Rx #{{ rx.id }}</strong> - {{ rx.patient_name }}
+                <div class="text-muted small">{{ rx.uploaded_at|date:"M d, Y H:i" }}</div>
+              </div>
+              <span class="badge {% if rx.status == 'VERIFIED' %}bg-success{% elif rx.status == 'PENDING' %}bg-warning text-dark{% else %}bg-secondary{% endif %}">
+                {{ rx.get_status_display }}
+              </span>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const pForm = document.getElementById('portal-rx-upload-form');
+  if (pForm) {
+    pForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const submitBtn = this.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin me-2"></i> Uploading...';
+
+      try {
+        const res = await fetch('/api/prescriptions/upload/', {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]') ? document.querySelector('[name=csrfmiddlewaretoken]').value : ''
+          },
+          body: formData
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showAuraToast(data.message, 'success');
+          pForm.reset();
+          setTimeout(() => window.location.reload(), 1200);
+        } else {
+          showAuraToast(data.error || 'Upload failed', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fa-solid fa-shield-halved"></i> <span>Submit for Pharmacist Review</span>';
+      }
+    });
+  }
+});
+</script>
+{% endblock %}

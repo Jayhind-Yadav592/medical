@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Secure Clinical Checkout — AuraHealth™ Dispensary{% endblock %}
+
+{% block content %}
+<div class="bg-light py-4 border-bottom">
+  <div class="container">
+    <h1 class="h3 fw-bold text-navy-800 mb-0">Secure Prescription & Medicine Checkout</h1>
+  </div>
+</div>
+
+<div class="container py-5">
+  <form id="aura-checkout-form">
+    {% csrf_token %}
+    <div class="row g-5">
+      
+      <!-- Left: Delivery & Payment Details -->
+      <div class="col-lg-8">
+        
+        <!-- Step 1: Patient Delivery Address -->
+        <div class="card border rounded-4 p-4 shadow-sm bg-white mb-4">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold" style="width: 28px; height: 28px;">1</div>
+            <h5 class="fw-bold text-navy-800 mb-0">Patient Delivery Information</h5>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label fw-bold small">Full Legal Name <span class="text-danger">*</span></label>
+              <input type="text" name="full_name" class="form-control rounded-3" placeholder="Eleanor Vance" value="{% if user.is_authenticated %}{{ user.full_name }}{% endif %}" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold small">Email Address <span class="text-danger">*</span></label>
+              <input type="email" name="email" class="form-control rounded-3" placeholder="eleanor@example.com" value="{% if user.is_authenticated %}{{ user.email }}{% endif %}" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold small">Phone Number (For Delivery & Pharmacist Contact) <span class="text-danger">*</span></label>
+              <input type="tel" name="phone" class="form-control rounded-3" placeholder="+1 (555) 019-2834" value="{% if user.is_authenticated %}{{ user.phone_number|default:'' }}{% endif %}" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold small">City / Region <span class="text-danger">*</span></label>
+              <input type="text" name="city" class="form-control rounded-3" value="New York, NY" required>
+            </div>
+            <div class="col-12">
+              <label class="form-label fw-bold small">Street Address <span class="text-danger">*</span></label>
+              <input type="text" name="street_address" class="form-control rounded-3" placeholder="Apt, Suite, Building, Street" value="450 Lexington Ave, Suite 1200" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold small">Postal / ZIP Code <span class="text-danger">*</span></label>
+              <input type="text" name="postal_code" class="form-control rounded-3" value="10017" required>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label fw-bold small">Delivery Instructions</label>
+              <input type="text" name="delivery_notes" class="form-control rounded-3" placeholder="e.g. Ring buzzer 12B, leave with concierge">
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Payment Method -->
+        <div class="card border rounded-4 p-4 shadow-sm bg-white mb-4">
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold" style="width: 28px; height: 28px;">2</div>
+            <h5 class="fw-bold text-navy-800 mb-0">Select Payment Method</h5>
+          </div>
+
+          <div class="d-flex flex-column gap-3">
+            <label class="border rounded-4 p-3 d-flex align-items-center gap-3 cursor-pointer bg-light">
+              <input type="radio" name="payment_method" value="COD" checked class="form-check-input">
+              <div class="flex-grow-1">
+                <div class="fw-bold text-navy-800">Cash / Card on Express Delivery (COD)</div>
+                <div class="text-muted small">Pay securely upon receiving your temperature-sealed medical package.</div>
+              </div>
+              <i class="fa-solid fa-hand-holding-dollar fs-4 text-success"></i>
+            </label>
+
+            <label class="border rounded-4 p-3 d-flex align-items-center gap-3 cursor-pointer">
+              <input type="radio" name="payment_method" value="CARD" class="form-check-input">
+              <div class="flex-grow-1">
+                <div class="fw-bold text-navy-800">Credit / Debit Card (Online 256-Bit SSL)</div>
+                <div class="text-muted small">Visa, MasterCard, American Express, Discover.</div>
+              </div>
+              <i class="fa-solid fa-credit-card fs-4 text-primary"></i>
+            </label>
+
+            <label class="border rounded-4 p-3 d-flex align-items-center gap-3 cursor-pointer">
+              <input type="radio" name="payment_method" value="APPLE_PAY" class="form-check-input">
+              <div class="flex-grow-1">
+                <div class="fw-bold text-navy-800">Apple Pay / Google Pay</div>
+                <div class="text-muted small">Instant 1-touch biometric checkout.</div>
+              </div>
+              <i class="fa-brands fa-apple-pay fs-3 text-dark"></i>
+            </label>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right: Summary Box -->
+      <div class="col-lg-4">
+        <div class="card border rounded-4 p-4 shadow-sm bg-white sticky-top" style="top: 100px;">
+          <h5 class="fw-bold text-navy-800 mb-3">Order Review</h5>
+          
+          <div class="d-flex justify-content-between text-muted mb-2">
+            <span>Items Subtotal</span>
+            <span class="fw-bold text-dark aura-cart-subtotal-val">${{ global_cart_total|floatformat:2 }}</span>
+          </div>
+
+          <div class="d-flex justify-content-between text-muted mb-3">
+            <span>Cold-Chain Delivery</span>
+            <span class="text-success fw-bold">FREE ($35+)</span>
+          </div>
+
+          <div class="d-flex justify-content-between fs-4 fw-bold text-navy-800 pt-3 border-top mb-4">
+            <span>Total Payable</span>
+            <span class="text-primary aura-cart-total-val">${{ global_cart_total|floatformat:2 }}</span>
+          </div>
+
+          <button type="submit" id="aura-submit-order-btn" class="aura-btn-emerald w-100 justify-content-center py-3">
+            <i class="fa-solid fa-lock"></i>
+            <span>Confirm & Place Order</span>
+          </button>
+
+          <div class="text-center mt-3 text-muted small">
+            <i class="fa-solid fa-shield-halved text-success me-1"></i> Guaranteed 100% genuine medical supplies.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const cForm = document.getElementById('aura-checkout-form');
+  if (cForm) {
+    cForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const jsonBody = {};
+      formData.forEach((val, key) => jsonBody[key] = val);
+
+      const btn = document.getElementById('aura-submit-order-btn');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin me-2"></i> Placing Order...';
+
+      try {
+        const res = await fetch('/api/orders/checkout/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]') ? document.querySelector('[name=csrfmiddlewaretoken]').value : ''
+          },
+          body: JSON.stringify(jsonBody)
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showAuraToast(data.message, 'success');
+          setTimeout(() => {
+            window.location.href = `/track/?order_number=${data.order.order_number}`;
+          }, 800);
+        } else {
+          showAuraToast(data.error || 'Checkout failed. Ensure your cart is not empty.', 'error');
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-lock"></i> <span>Confirm & Place Order</span>';
+        }
+      } catch (err) {
+        console.error(err);
+        showAuraToast('Network error while placing order', 'error');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-lock"></i> <span>Confirm & Place Order</span>';
+      }
+    });
+  }
+});
+</script>
+{% endblock %}

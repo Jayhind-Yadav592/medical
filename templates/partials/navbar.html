@@ -1,0 +1,102 @@
+<nav class="aura-navbar" id="main-navbar">
+  <div class="container">
+    <div class="d-flex align-items-center justify-content-between gap-3 w-100">
+      
+      <!-- Brand Logo -->
+      <a class="aura-brand" href="{% url 'home' %}">
+        <div class="aura-brand-icon">
+          <i class="fa-solid fa-notes-medical"></i>
+        </div>
+        <div>
+          <span>Aura</span><span class="text-cyan-500">Health</span>
+          <span class="d-block text-muted" style="font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;">Precision Pharmacy</span>
+        </div>
+      </a>
+
+      <!-- Smart Interactive Medicine Search Bar -->
+      <div class="aura-search-wrapper d-none d-lg-block" style="max-width: 440px;">
+        <form action="{% url 'shop' %}" method="GET" class="aura-search-input-group">
+          <i class="fa-solid fa-magnifying-glass text-muted"></i>
+          <input type="text" name="q" id="aura-global-search-input" class="aura-search-input" placeholder="Search medicines, active ingredients, vitamins..." autocomplete="off">
+          <button type="submit" class="aura-search-btn">
+            <span>Search</span>
+          </button>
+        </form>
+        <!-- Real-Time Autocomplete Dropdown -->
+        <div id="aura-search-results-dropdown" class="aura-search-autocomplete"></div>
+      </div>
+
+      <!-- Quick Action Buttons -->
+      <div class="d-flex align-items-center gap-2">
+        
+        <!-- Upload Rx Quick Trigger -->
+        <button class="aura-btn-emerald aura-btn-sm d-none d-sm-inline-flex" data-bs-toggle="modal" data-bs-target="#auraPrescriptionModal">
+          <i class="fa-solid fa-file-arrow-up"></i>
+          <span>Upload Rx</span>
+        </button>
+
+        <!-- Wishlist Button -->
+        <a href="{% if user.is_authenticated %}{% url 'dashboard' %}{% else %}#{% endif %}" class="btn btn-light rounded-circle p-2 text-slate-700 position-relative shadow-sm" {% if not user.is_authenticated %}data-bs-toggle="modal" data-bs-target="#auraAuthModal"{% endif %} title="Wishlist">
+          <i class="fa-regular fa-heart"></i>
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger aura-wishlist-count-badge" style="display: {% if global_wishlist_count > 0 %}inline-flex{% else %}none{% endif %}; font-size: 0.65rem;">
+            {{ global_wishlist_count }}
+          </span>
+        </a>
+
+        <!-- Cart Drawer Toggle -->
+        <button class="btn btn-light rounded-circle p-2 text-slate-700 position-relative shadow-sm" onclick="openCartDrawer()" title="Shopping Cart">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary aura-cart-count-badge" style="display: {% if global_cart_count > 0 %}inline-flex{% else %}none{% endif %}; font-size: 0.65rem;">
+            {{ global_cart_count }}
+          </span>
+        </button>
+
+        <!-- User Authentication & Account -->
+        {% if user.is_authenticated %}
+          <div class="dropdown">
+            <button class="btn btn-light rounded-pill px-3 py-1 d-flex align-items-center gap-2 shadow-sm dropdown-toggle" data-bs-toggle="dropdown">
+              <i class="fa-solid fa-circle-user text-primary fs-5"></i>
+              <span class="small fw-bold d-none d-md-inline">{{ user.first_name|default:user.username }}</span>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 mt-2">
+              <li><a class="dropdown-item py-2" href="{% url 'dashboard' %}"><i class="fa-solid fa-user-shield me-2 text-primary"></i> Patient Dashboard</a></li>
+              <li><a class="dropdown-item py-2" href="{% url 'order-track' %}"><i class="fa-solid fa-boxes-stacked me-2 text-cyan-500"></i> My Orders & Rx</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <form action="{% url 'api-auth-logout' %}" method="POST" id="nav-logout-form">
+                  {% csrf_token %}
+                  <button type="submit" class="dropdown-item py-2 text-danger"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout</button>
+                </form>
+              </li>
+            </ul>
+          </div>
+        {% else %}
+          <button class="aura-btn-primary aura-btn-sm" data-bs-toggle="modal" data-bs-target="#auraAuthModal">
+            <i class="fa-regular fa-user"></i>
+            <span>Sign In</span>
+          </button>
+        {% endif %}
+
+      </div>
+    </div>
+
+    <!-- Secondary Navigation Menu Strip -->
+    <div class="d-flex align-items-center justify-content-between pt-2 mt-2 border-top overflow-x-auto text-nowrap">
+      <div class="d-flex align-items-center gap-1">
+        <a href="{% url 'home' %}" class="aura-nav-link active"><i class="fa-solid fa-house-chimney-medical"></i> Home</a>
+        <a href="{% url 'shop' %}" class="aura-nav-link"><i class="fa-solid fa-pills"></i> Pharmacy Store</a>
+        <a href="{% url 'services' %}" class="aura-nav-link"><i class="fa-solid fa-stethoscope"></i> Clinical Services</a>
+        <a href="{% url 'telehealth' %}" class="aura-nav-link"><i class="fa-solid fa-user-doctor"></i> Consult Doctors</a>
+        <a href="{% url 'prescriptions' %}" class="aura-nav-link"><i class="fa-solid fa-receipt"></i> Prescription Portal</a>
+        <a href="{% url 'articles' %}" class="aura-nav-link"><i class="fa-solid fa-book-medical"></i> Health Journal</a>
+        <a href="{% url 'about' %}" class="aura-nav-link d-none d-xl-inline-flex">About Us</a>
+        <a href="{% url 'contact' %}" class="aura-nav-link d-none d-xl-inline-flex">24/7 Support</a>
+      </div>
+
+      <div class="d-none d-md-flex align-items-center gap-2 text-muted small">
+        <i class="fa-solid fa-location-dot text-cyan-500"></i>
+        <span>Deliver to: <strong class="text-slate-800">New York, NY (10001)</strong></span>
+      </div>
+    </div>
+  </div>
+</nav>

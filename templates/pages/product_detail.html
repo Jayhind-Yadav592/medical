@@ -1,0 +1,288 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} ({{ product.dosage_strength }}) — AuraHealth™ Dispensary{% endblock %}
+
+{% block content %}
+<!-- Breadcrumb -->
+<div class="bg-light py-3 border-bottom">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0 small">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'shop' %}">Pharmacy</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'shop' %}?category={{ product.category.slug }}">{{ product.category.name }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+      </ol>
+    </nav>
+  </div>
+</div>
+
+<div class="container py-5">
+  <div class="row g-5">
+    
+    <!-- Left: Product Image Gallery & Trust Badges -->
+    <div class="col-lg-5">
+      <div class="card border rounded-4 p-4 shadow-sm text-center bg-white sticky-top" style="top: 100px;">
+        <img src="{{ product.get_image }}" alt="{{ product.name }}" class="img-fluid rounded-4 mb-4" style="max-height: 380px; object-fit: contain;">
+        
+        <div class="d-flex justify-content-center gap-3 pt-3 border-top">
+          <div class="text-muted small"><i class="fa-solid fa-certificate text-emerald-500 me-1"></i> FDA Verified</div>
+          <div class="text-muted small"><i class="fa-solid fa-snowflake text-info me-1"></i> Cold-Chain Shield</div>
+          <div class="text-muted small"><i class="fa-solid fa-shield-halved text-primary me-1"></i> 100% Genuine</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Product Information & Purchase Panel -->
+    <div class="col-lg-7">
+      
+      <!-- Category & Status Badges -->
+      <div class="d-flex align-items-center gap-2 mb-2">
+        <span class="badge bg-cyan-100 text-cyan-800">{{ product.category.name }}</span>
+        {% if product.prescription_required %}
+          <span class="badge bg-danger text-white"><i class="fa-solid fa-file-prescription me-1"></i> Prescription Required</span>
+        {% else %}
+          <span class="badge bg-success text-white"><i class="fa-solid fa-check me-1"></i> OTC (Over The Counter)</span>
+        {% endif %}
+        {% if product.in_stock %}
+          <span class="badge bg-light text-success border border-success"><i class="fa-solid fa-circle-check me-1"></i> In Stock ({{ product.stock }} units)</span>
+        {% else %}
+          <span class="badge bg-danger text-white">Out of Stock</span>
+        {% endif %}
+      </div>
+
+      <h1 class="h2 fw-bold text-navy-800 mb-2">{{ product.name }}</h1>
+      
+      <div class="d-flex align-items-center gap-3 mb-3">
+        <div class="text-warning small">
+          <i class="fa-solid fa-star"></i>
+          <span class="fw-bold text-dark fs-6">{{ product.rating }}</span>
+          <span class="text-muted">({{ product.total_reviews }} verified reviews)</span>
+        </div>
+        <span class="text-muted">•</span>
+        <div class="text-muted small">SKU: <strong class="text-dark">{{ product.sku }}</strong></div>
+        <span class="text-muted">•</span>
+        <div class="text-muted small">Brand: <strong class="text-primary">{{ product.brand.name|default:"AuraBio Pharmaceuticals" }}</strong></div>
+      </div>
+
+      <!-- Pricing Box -->
+      <div class="p-3 bg-light rounded-4 mb-4 d-flex align-items-baseline gap-3">
+        <span class="fs-2 fw-800 text-navy-800">${{ product.price }}</span>
+        {% if product.mrp_price %}
+          <span class="fs-5 text-muted text-decoration-line-through">${{ product.mrp_price }}</span>
+          <span class="badge bg-warning text-dark">Save {{ product.discount_percent }}%</span>
+        {% endif %}
+        <span class="ms-auto text-muted small"><i class="fa-solid fa-truck-fast text-cyan-600 me-1"></i> Free delivery on $35+</span>
+      </div>
+
+      <!-- Short Description -->
+      <p class="text-slate-700 mb-4">{{ product.short_description }}</p>
+
+      <!-- Prescription Notice Card -->
+      {% if product.prescription_required %}
+        <div class="alert alert-warning border-warning d-flex align-items-center justify-content-between p-3 rounded-4 mb-4">
+          <div class="d-flex align-items-center gap-3">
+            <i class="fa-solid fa-triangle-exclamation fs-3 text-warning"></i>
+            <div>
+              <div class="fw-bold text-dark small">Prescription Required for this Medication</div>
+              <div class="text-muted" style="font-size: 0.8rem;">Upload your doctor's Rx or request a free clinical telehealth review.</div>
+            </div>
+          </div>
+          <button class="aura-btn-emerald aura-btn-sm" data-bs-toggle="modal" data-bs-target="#auraPrescriptionModal">
+            <i class="fa-solid fa-upload"></i> Upload Rx
+          </button>
+        </div>
+      {% endif %}
+
+      <!-- Purchase Controls -->
+      <div class="d-flex flex-wrap align-items-center gap-3 mb-4 pb-4 border-bottom">
+        <div class="d-flex align-items-center border rounded-pill bg-white px-2 py-1">
+          <button class="btn btn-sm btn-link text-dark p-1" onclick="let q = document.getElementById('p-qty'); if(q.value > 1) q.value--;">-</button>
+          <input type="number" id="p-qty" class="form-control form-control-sm text-center border-0 fw-bold" value="1" min="1" max="20" style="width: 50px;">
+          <button class="btn btn-sm btn-link text-dark p-1" onclick="let q = document.getElementById('p-qty'); q.value++;">+</button>
+        </div>
+
+        <button class="aura-btn-primary flex-grow-1 justify-content-center py-2" onclick="addToCart({{ product.id }}, parseInt(document.getElementById('p-qty').value), event)">
+          <i class="fa-solid fa-cart-plus"></i>
+          <span>Add to Medicine Cart</span>
+        </button>
+
+        <button class="btn btn-outline-danger rounded-circle p-2" onclick="toggleWishlist({{ product.id }}, this)" title="Add to Wishlist">
+          <i class="fa-regular fa-heart fs-5"></i>
+        </button>
+      </div>
+
+      <!-- Quick Medicine Metadata -->
+      <div class="row g-3 small mb-5">
+        <div class="col-sm-6">
+          <div class="text-muted">Active Ingredient:</div>
+          <strong class="text-navy-800">{{ product.active_ingredient|default:"Standard Clinical Compound" }}</strong>
+        </div>
+        <div class="col-sm-6">
+          <div class="text-muted">Dosage Strength & Pack:</div>
+          <strong class="text-navy-800">{{ product.dosage_strength }} • {{ product.pack_size }}</strong>
+        </div>
+        <div class="col-sm-6">
+          <div class="text-muted">Dosage Form:</div>
+          <strong class="text-navy-800">{{ product.get_dosage_form_display }}</strong>
+        </div>
+        <div class="col-sm-6">
+          <div class="text-muted">Manufacturer:</div>
+          <strong class="text-navy-800">{{ product.manufacturer }}</strong>
+        </div>
+      </div>
+
+      <!-- Clinical Information Tabs -->
+      <ul class="nav nav-tabs mb-4" id="medTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active fw-bold" id="desc-tab" data-bs-toggle="tab" data-bs-target="#tab-desc" type="button" role="tab">Clinical Indication</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link fw-bold" id="usage-tab" data-bs-toggle="tab" data-bs-target="#tab-usage" type="button" role="tab">Dosage & Usage</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link fw-bold" id="safety-tab" data-bs-toggle="tab" data-bs-target="#tab-safety" type="button" role="tab">Safety & Side Effects</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link fw-bold" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#tab-reviews" type="button" role="tab">Patient Reviews ({{ reviews.count }})</button>
+        </li>
+      </ul>
+
+      <div class="tab-content mb-5" id="medTabContent">
+        <div class="tab-pane fade show active" id="tab-desc" role="tabpanel">
+          <p class="text-slate-700">{{ product.full_description|linebreaks }}</p>
+          <div class="alert alert-light border small mt-3">
+            <strong>Storage Instructions:</strong> {{ product.storage_condition }}
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="tab-usage" role="tabpanel">
+          <h6 class="fw-bold text-navy-800">Standard Administration Guidelines</h6>
+          <p class="text-slate-700">{{ product.usage_instructions|linebreaks }}</p>
+        </div>
+
+        <div class="tab-pane fade" id="tab-safety" role="tabpanel">
+          <h6 class="fw-bold text-navy-800">Known Side Effects & Precautions</h6>
+          <p class="text-slate-700">{{ product.side_effects|linebreaks }}</p>
+          <div class="alert alert-danger bg-opacity-10 border-danger small">
+            <i class="fa-solid fa-circle-exclamation me-1"></i> If you experience any severe breathing difficulty, hives, or swelling, seek immediate emergency care.
+          </div>
+        </div>
+
+        <div class="tab-pane fade" id="tab-reviews" role="tabpanel">
+          <!-- Write Review Form -->
+          {% if user.is_authenticated %}
+            <div class="p-3 bg-light rounded-4 mb-4">
+              <h6 class="fw-bold mb-2">Leave a Verified Patient Review</h6>
+              <form id="aura-product-review-form">
+                {% csrf_token %}
+                <div class="mb-2">
+                  <label class="small fw-bold">Rating</label>
+                  <select name="rating" class="form-select form-select-sm rounded-3">
+                    <option value="5">5 Stars - Excellent / Fast Relief</option>
+                    <option value="4">4 Stars - Good</option>
+                    <option value="3">3 Stars - Average</option>
+                  </select>
+                </div>
+                <div class="mb-2">
+                  <input type="text" name="title" class="form-control form-control-sm rounded-3" placeholder="Review Title (e.g. Effective & Fast Acting)" required>
+                </div>
+                <div class="mb-2">
+                  <textarea name="comment" class="form-control form-control-sm rounded-3" rows="2" placeholder="Describe your experience with this medication..." required></textarea>
+                </div>
+                <button type="submit" class="aura-btn-primary btn-sm">Submit Verified Review</button>
+              </form>
+            </div>
+          {% else %}
+            <div class="alert alert-light border small mb-3">
+              <a href="#" data-bs-toggle="modal" data-bs-target="#auraAuthModal" class="fw-bold">Sign in</a> to leave a verified patient review.
+            </div>
+          {% endif %}
+
+          <!-- Reviews List -->
+          {% for r in reviews %}
+            <div class="border-bottom pb-3 mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="fw-bold text-navy-800">{{ r.user.full_name|default:r.user.username }}</span>
+                <span class="text-warning small">
+                  {% for i in "12345" %}
+                    {% if forloop.counter <= r.rating %}★{% else %}☆{% endif %}
+                  {% endfor %}
+                </span>
+              </div>
+              <h6 class="small fw-bold mb-1">{{ r.title }}</h6>
+              <p class="text-muted small mb-1">{{ r.comment }}</p>
+              <div class="text-muted" style="font-size: 0.7rem;"><i class="fa-solid fa-circle-check text-success me-1"></i> Verified Purchase • {{ r.created_at|date:"M d, Y" }}</div>
+            </div>
+          {% empty %}
+            <p class="text-muted small">No reviews yet for this product. Be the first to review!</p>
+          {% endfor %}
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Related Medicines -->
+  {% if related_products %}
+    <div class="mt-5 pt-5 border-top">
+      <h3 class="fw-bold text-navy-800 mb-4">Related Healthcare Products in this Category</h3>
+      <div class="row g-4">
+        {% for rp in related_products %}
+          <div class="col-lg-3 col-md-6">
+            <div class="aura-product-card">
+              <div class="aura-product-img-wrap">
+                <img src="{{ rp.get_image }}" alt="{{ rp.name }}" class="aura-product-img">
+              </div>
+              <div class="aura-product-category">{{ rp.category.name }}</div>
+              <h4 class="aura-product-title"><a href="{% url 'product-detail' rp.slug %}">{{ rp.name }}</a></h4>
+              <div class="aura-product-dosage">{{ rp.dosage_strength }}</div>
+              <div class="aura-product-price-row">
+                <span class="aura-current-price">${{ rp.price }}</span>
+              </div>
+              <button class="aura-add-cart-btn" onclick="addToCart({{ rp.id }}, 1, event)">Add to Cart</button>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% endif %}
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const rForm = document.getElementById('aura-product-review-form');
+  if (rForm) {
+    rForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const jsonBody = {};
+      formData.forEach((val, key) => jsonBody[key] = val);
+
+      try {
+        const res = await fetch('/api/products/{{ product.slug }}/reviews/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]') ? document.querySelector('[name=csrfmiddlewaretoken]').value : ''
+          },
+          body: JSON.stringify(jsonBody)
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showAuraToast(data.message, 'success');
+          setTimeout(() => window.location.reload(), 1000);
+        } else {
+          showAuraToast(data.error || 'Failed to submit review', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    });
+  }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}About AuraHealth™ — Clinical Excellence & Pharmacy Innovation{% endblock %}
+
+{% block content %}
+<div class="py-5 text-white" style="background: linear-gradient(135deg, var(--aura-navy-900) 0%, var(--aura-navy-800) 100%);">
+  <div class="container text-center py-4">
+    <h1 class="display-5 fw-bold text-white mb-3">Pioneering Next-Generation Pharmacy</h1>
+    <p class="text-slate-300 mx-auto mb-0" style="max-width: 640px;">
+      Merging certified pharmacology, cold-chain logistics, and virtual clinical care to make genuine healthcare accessible to every household.
+    </p>
+  </div>
+</div>
+
+<div class="container py-5">
+  <div class="row g-5 align-items-center mb-5">
+    <div class="col-lg-6">
+      <h2 class="fw-bold text-navy-800 mb-3">Our Clinical Mission</h2>
+      <p class="text-slate-700">
+        AuraHealth was founded with a singular purpose: to remove friction and counterfeit risks from the healthcare supply chain. We believe every patient deserves authentic, lab-verified medications dispensed with the highest degree of pharmaceutical precision.
+      </p>
+      <p class="text-slate-700">
+        Every prescription submitted to AuraHealth is evaluated by two board-certified clinical pharmacists for therapeutic drug interactions, dosage accuracy, and patient allergy profiles prior to dispatch.
+      </p>
+      <div class="row g-3 pt-3">
+        <div class="col-6">
+          <div class="border rounded-4 p-3 bg-light text-center">
+            <h3 class="fw-bold text-primary mb-0">100%</h3>
+            <small class="text-muted">Batch Traceability</small>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="border rounded-4 p-3 bg-light text-center">
+            <h3 class="fw-bold text-emerald-600 mb-0">45 Min</h3>
+            <small class="text-muted">Metro Express Transit</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <img src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=800&auto=format&fit=crop&q=80" alt="Pharmacy Clean Lab" class="img-fluid rounded-5 shadow-lg border">
+    </div>
+  </div>
+</div>
+{% endblock %}

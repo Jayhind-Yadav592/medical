@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Live Prescription & Order Tracking — AuraHealth™ Dispensary{% endblock %}
+
+{% block content %}
+<div class="bg-light py-4 border-bottom">
+  <div class="container">
+    <h1 class="h3 fw-bold text-navy-800 mb-0">Live Prescription & Order Tracking</h1>
+  </div>
+</div>
+
+<div class="container py-5">
+  
+  <!-- Search Order Number Form -->
+  <div class="row justify-content-center mb-5">
+    <div class="col-lg-6">
+      <form action="{% url 'order-track' %}" method="GET" class="aura-search-input-group shadow-sm bg-white">
+        <i class="fa-solid fa-barcode text-muted"></i>
+        <input type="text" name="order_number" class="aura-search-input" placeholder="Enter AuraHealth Order # (e.g. AUR-A1B2C3D4)" value="{{ searched_number|default:'' }}" required>
+        <button type="submit" class="aura-search-btn">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <span>Track Order</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  {% if order %}
+    <div class="row g-4 justify-content-center">
+      <div class="col-lg-10">
+        
+        <!-- Order Header Status Card -->
+        <div class="card border rounded-4 p-4 shadow-sm bg-white mb-4">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 pb-3 border-bottom mb-4">
+            <div>
+              <span class="badge bg-cyan-100 text-cyan-800 mb-1">Live Order Status</span>
+              <h4 class="fw-bold text-navy-800 mb-0">Order #{{ order.order_number }}</h4>
+              <div class="text-muted small">Placed on {{ order.created_at|date:"M d, Y • H:i" }} | Recipient: <strong class="text-dark">{{ order.full_name }}</strong></div>
+            </div>
+            <div class="text-md-end">
+              <span class="badge bg-success fs-6 px-3 py-2 rounded-pill">{{ order.get_order_status_display }}</span>
+              <div class="text-muted small mt-1">Est. Delivery: <strong>{{ order.estimated_delivery }}</strong></div>
+            </div>
+          </div>
+
+          <!-- Visual Timeline Steps -->
+          <div class="aura-timeline-track px-3">
+            
+            <div class="aura-track-step completed">
+              <div class="aura-track-icon"><i class="fa-solid fa-receipt"></i></div>
+              <div>
+                <h6 class="fw-bold text-navy-800 mb-0">Order Placed & Confirmed</h6>
+                <div class="text-muted small">Digital order received and queued for triage.</div>
+              </div>
+            </div>
+
+            <div class="aura-track-step {% if order.order_status != 'PLACED' %}completed{% else %}active{% endif %}">
+              <div class="aura-track-icon"><i class="fa-solid fa-user-doctor"></i></div>
+              <div>
+                <h6 class="fw-bold text-navy-800 mb-0">Pharmacist Verification</h6>
+                <div class="text-muted small">Clinical team double-checks dosage and drug interactions.</div>
+              </div>
+            </div>
+
+            <div class="aura-track-step {% if order.order_status in 'PROCESSING PACKED OUT_FOR_DELIVERY DELIVERED' %}completed{% elif order.order_status == 'PRESCRIPTION_VERIFICATION' %}active{% endif %}">
+              <div class="aura-track-icon"><i class="fa-solid fa-box-open"></i></div>
+              <div>
+                <h6 class="fw-bold text-navy-800 mb-0">Cold-Chain Packaging & Dispensing</h6>
+                <div class="text-muted small">Sealed in Temperature-Shield™ insulated containers.</div>
+              </div>
+            </div>
+
+            <div class="aura-track-step {% if order.order_status in 'OUT_FOR_DELIVERY DELIVERED' %}completed{% elif order.order_status == 'PACKED' %}active{% endif %}">
+              <div class="aura-track-icon"><i class="fa-solid fa-truck-fast"></i></div>
+              <div>
+                <h6 class="fw-bold text-navy-800 mb-0">Out for Express Delivery</h6>
+                <div class="text-muted small">Courier dispatched with live GPS temperature monitoring.</div>
+              </div>
+            </div>
+
+            <div class="aura-track-step {% if order.order_status == 'DELIVERED' %}completed{% endif %}">
+              <div class="aura-track-icon"><i class="fa-solid fa-circle-check"></i></div>
+              <div>
+                <h6 class="fw-bold text-navy-800 mb-0">Delivered to Doorstep</h6>
+                <div class="text-muted small">Handed to recipient with digital signature confirmation.</div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Ordered Items & Delivery Address Details -->
+        <div class="row g-4">
+          
+          <div class="col-md-7">
+            <div class="card border rounded-4 p-4 shadow-sm bg-white h-100">
+              <h5 class="fw-bold text-navy-800 mb-3">Medications in this Delivery</h5>
+              {% for item in order.items.all %}
+                <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
+                  <div>
+                    <div class="fw-bold text-navy-800 small">{{ item.product_name }}</div>
+                    <div class="text-muted" style="font-size: 0.75rem;">Qty: {{ item.quantity }} × ${{ item.unit_price }}</div>
+                  </div>
+                  <strong class="text-navy-800">${{ item.subtotal }}</strong>
+                </div>
+              {% endfor %}
+              
+              <div class="d-flex justify-content-between fs-5 fw-bold text-navy-800 pt-3 mt-auto">
+                <span>Final Total (Paid):</span>
+                <span class="text-primary">${{ order.final_amount }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-5">
+            <div class="card border rounded-4 p-4 shadow-sm bg-white h-100">
+              <h5 class="fw-bold text-navy-800 mb-3">Delivery Destination</h5>
+              <div class="mb-2">
+                <strong class="text-dark">{{ order.full_name }}</strong>
+              </div>
+              <div class="text-muted small mb-2">
+                <i class="fa-solid fa-location-dot text-danger me-1"></i>
+                {{ order.shipping_address }}, {{ order.city }}, {{ order.postal_code }}
+              </div>
+              <div class="text-muted small mb-3">
+                <i class="fa-solid fa-phone text-success me-1"></i>
+                {{ order.phone }}
+              </div>
+              <div class="bg-light p-3 rounded-3 small">
+                <div class="text-muted">Payment: <strong>{{ order.get_payment_method_display }}</strong></div>
+                <div class="text-muted">Payment Status: <span class="badge bg-success">{{ order.get_payment_status_display }}</span></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  {% elif searched_number %}
+    <div class="text-center py-5 bg-white rounded-4 border">
+      <i class="fa-solid fa-circle-question fa-3x text-warning mb-3"></i>
+      <h4 class="fw-bold text-navy-800">No Order Found for "{{ searched_number }}"</h4>
+      <p class="text-muted small">Please verify the reference order number on your receipt or SMS confirmation.</p>
+      <a href="{% url 'shop' %}" class="btn aura-btn-primary btn-sm">Return to Pharmacy</a>
+    </div>
+  {% else %}
+    <div class="text-center py-5 bg-white rounded-4 border">
+      <i class="fa-solid fa-boxes-packing fa-3x text-primary mb-3"></i>
+      <h4 class="fw-bold text-navy-800">Track Any AuraHealth Prescription or Medication</h4>
+      <p class="text-muted small">Enter your order ID (e.g. AUR-XXXXX) above to view real-time cold-chain dispensing progress.</p>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}
