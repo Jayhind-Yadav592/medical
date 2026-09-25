@@ -60,8 +60,8 @@ class AuraHealthIntegrationTests(TestCase):
     def test_homepage_render(self):
         response = self.client.get(reverse('home'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'AuraHealth')
-        self.assertContains(response, 'Amoxicillin Trihydrate 500mg')
+        self.assertContains(response, 'Antixor')
+        self.assertContains(response, 'Paracetamol 500mg')
 
     def test_shop_page_render_and_filter(self):
         response = self.client.get(reverse('shop') + f'?category={self.category.slug}')
