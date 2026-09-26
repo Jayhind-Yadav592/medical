@@ -6,7 +6,7 @@
 {% block extra_css %}
 <style>
 /* =========================================================================
-   ANTIXOR PHARMACY — PIXEL-PERFECT CATALOG DESIGN SYSTEM
+   ANTIXOR PHARMACY — FULL-WIDTH & SLIM HERO DESIGN SYSTEM
    ========================================================================= */
 
 body {
@@ -15,45 +15,45 @@ body {
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 }
 
-/* 1. HERO SECTION */
-.antixor-shop-hero {
+/* 1. SLIM / COMPACT FULL-WIDTH HERO SECTION */
+.antixor-shop-hero-slim {
   background: linear-gradient(135deg, #053b34 0%, #084c42 55%, #032b25 100%);
-  border-radius: 20px;
-  padding: 38px 42px;
+  border-radius: 16px;
+  padding: 16px 28px;
   position: relative;
   overflow: hidden;
   color: #ffffff;
-  margin-top: 16px;
-  margin-bottom: 24px;
-  box-shadow: 0 10px 30px -5px rgba(5, 59, 52, 0.25);
+  margin-top: 10px;
+  margin-bottom: 18px;
+  box-shadow: 0 8px 24px -4px rgba(5, 59, 52, 0.22);
 }
 
 .hero-pill-badge {
-  font-size: 0.72rem;
+  font-size: 0.65rem;
   font-weight: 800;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.14em;
   color: #a7f3d0;
   text-transform: uppercase;
-  margin-bottom: 8px;
+  margin-bottom: 3px;
   display: inline-block;
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 .hero-heading {
-  font-size: 2.3rem;
+  font-size: 1.55rem;
   font-weight: 800;
   color: #ffffff;
-  line-height: 1.18;
-  margin-bottom: 10px;
+  line-height: 1.15;
+  margin-bottom: 4px;
   letter-spacing: -0.02em;
 }
 
 .hero-subtext {
-  font-size: 0.92rem;
+  font-size: 0.8rem;
   color: #d1fae5;
-  line-height: 1.5;
-  max-width: 520px;
-  margin-bottom: 24px;
+  line-height: 1.35;
+  max-width: 620px;
+  margin-bottom: 12px;
   font-weight: 400;
 }
 
@@ -61,106 +61,106 @@ body {
   background-color: #ffffff;
   color: #072635;
   font-weight: 700;
-  font-size: 0.88rem;
-  padding: 10px 24px;
+  font-size: 0.78rem;
+  padding: 6px 18px;
   border-radius: 50px;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
 }
 
 .hero-cta-pill:hover {
   background-color: #f8fafc;
   color: #009b72;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+  transform: translateY(-1px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.12);
 }
 
 .hero-feat-row {
   display: flex;
   align-items: center;
-  gap: 24px;
-  margin-top: 26px;
+  gap: 18px;
+  margin-top: 10px;
   flex-wrap: wrap;
 }
 
 .hero-feat-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.8rem;
+  gap: 6px;
+  font-size: 0.74rem;
   font-weight: 600;
-  color: rgba(255,255,255,0.95);
+  color: rgba(255,255,255,0.92);
 }
 
 .hero-feat-icon {
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: rgba(255,255,255,0.16);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.72rem;
+  font-size: 0.65rem;
   color: #34d399;
 }
 
 .hero-floating-badge {
   position: absolute;
-  top: 20px;
-  right: 26px;
+  top: 14px;
+  right: 22px;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(8px);
-  border-radius: 12px;
-  padding: 8px 14px;
+  border-radius: 10px;
+  padding: 5px 12px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  gap: 8px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.1);
   z-index: 5;
 }
 
 .hero-floating-icon {
-  width: 32px;
-  height: 32px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   background: #e6f9f0;
   color: #009b72;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.95rem;
+  font-size: 0.82rem;
 }
 
 /* 2. STORE NAVIGATION SIDEBAR (LEFT) */
 .nav-store-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  padding: 16px 14px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+  border-radius: 14px;
+  padding: 14px 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
 }
 
 .nav-section-title {
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   font-weight: 800;
   letter-spacing: 0.12em;
   color: #94a3b8;
   text-transform: uppercase;
-  margin-bottom: 8px;
-  padding-left: 8px;
+  margin-bottom: 6px;
+  padding-left: 6px;
 }
 
 .nav-cat-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 7px 10px;
-  border-radius: 10px;
-  font-size: 0.82rem;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 0.8rem;
   font-weight: 600;
   color: #334155;
   text-decoration: none;
@@ -180,9 +180,9 @@ body {
 }
 
 .nav-cat-pill {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  padding: 2px 8px;
+  padding: 1px 7px;
   border-radius: 20px;
 }
 
@@ -201,30 +201,30 @@ body {
   background: #ffffff;
   border: 1px solid #eef2f6;
   border-radius: 14px;
-  padding: 12px;
+  padding: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.02);
 }
 
 .shop-med-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px -4px rgba(0, 0, 0, 0.07);
   border-color: #cbd5e1;
 }
 
 .shop-med-img-box {
   background-color: #f8fafc;
   border-radius: 10px;
-  height: 135px;
+  height: 130px;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   overflow: hidden;
 }
 
@@ -236,19 +236,19 @@ body {
 }
 
 .shop-med-card:hover .shop-med-img {
-  transform: scale(1.06);
+  transform: scale(1.05);
 }
 
 .badge-tag-pill {
   position: absolute;
-  top: 8px;
-  left: 8px;
-  font-size: 0.65rem;
+  top: 6px;
+  left: 6px;
+  font-size: 0.62rem;
   font-weight: 800;
-  padding: 2px 8px;
-  border-radius: 12px;
+  padding: 2px 7px;
+  border-radius: 10px;
   z-index: 2;
-  line-height: 1.3;
+  line-height: 1.2;
 }
 
 .badge-otc {
@@ -273,10 +273,10 @@ body {
 
 .med-wishlist-circle {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 28px;
-  height: 28px;
+  top: 6px;
+  right: 6px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   background: #ffffff;
   border: 1px solid #e2e8f0;
@@ -284,7 +284,7 @@ body {
   align-items: center;
   justify-content: center;
   color: #64748b;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   cursor: pointer;
   z-index: 2;
   transition: all 0.2s ease;
@@ -297,7 +297,7 @@ body {
 }
 
 .shop-med-category {
-  font-size: 0.62rem;
+  font-size: 0.6rem;
   font-weight: 800;
   letter-spacing: 0.06em;
   color: #009b72;
@@ -306,12 +306,12 @@ body {
 }
 
 .shop-med-title {
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   font-weight: 700;
   color: #0f172a;
-  margin-bottom: 3px;
-  line-height: 1.25;
-  min-height: 34px;
+  margin-bottom: 2px;
+  line-height: 1.22;
+  min-height: 32px;
 }
 
 .shop-med-title a {
@@ -324,20 +324,20 @@ body {
 }
 
 .shop-med-spec {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   color: #64748b;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .shop-med-rating {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   display: flex;
   align-items: center;
   gap: 3px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .shop-med-rating .star {
@@ -348,17 +348,17 @@ body {
   display: flex;
   align-items: baseline;
   gap: 6px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .shop-med-price {
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 800;
   color: #0f172a;
 }
 
 .shop-med-mrp {
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   color: #94a3b8;
   text-decoration: line-through;
 }
@@ -369,13 +369,13 @@ body {
   border: none;
   border-radius: 8px;
   font-weight: 700;
-  font-size: 0.78rem;
-  padding: 7px 0;
+  font-size: 0.76rem;
+  padding: 6px 0;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 5px;
   transition: background-color 0.2s, transform 0.15s;
 }
 
@@ -388,30 +388,30 @@ body {
 .offers-sidebar-wrap {
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 16px;
-  padding: 16px 14px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+  border-radius: 14px;
+  padding: 14px 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
 }
 
 .promo-box-inner {
   background: linear-gradient(135deg, #e6f9f0 0%, #d1fae5 100%);
   border: 1px solid #a7f3d0;
-  border-radius: 12px;
-  padding: 14px;
+  border-radius: 10px;
+  padding: 12px;
   position: relative;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   overflow: hidden;
 }
 
 .promo-flat-text {
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   font-weight: 800;
   color: #065f46;
   letter-spacing: 0.08em;
 }
 
 .promo-discount-text {
-  font-size: 1.45rem;
+  font-size: 1.35rem;
   font-weight: 800;
   color: #047857;
   line-height: 1.1;
@@ -419,10 +419,10 @@ body {
 }
 
 .promo-target-text {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   color: #065f46;
   font-weight: 600;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .promo-code-box {
@@ -432,13 +432,13 @@ body {
   background: #ffffff;
   border: 1px dashed #009b72;
   border-radius: 20px;
-  padding: 3px 10px;
-  font-size: 0.72rem;
+  padding: 2px 8px;
+  font-size: 0.68rem;
 }
 
 .carousel-dot {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: #cbd5e1;
   display: inline-block;
@@ -446,52 +446,52 @@ body {
 
 .carousel-dot.active {
   background: #009b72;
-  width: 16px;
+  width: 14px;
   border-radius: 10px;
 }
 
 .benefit-row {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
-  margin-bottom: 12px;
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
 .benefit-icon-box {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.82rem;
+  font-size: 0.75rem;
   flex-shrink: 0;
 }
 
 .benefit-title {
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 700;
   color: #0f172a;
   line-height: 1.2;
 }
 
 .benefit-subtitle {
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   color: #64748b;
 }
 
 .upload-rx-box {
   background: #e6f9f0;
   border: 1px solid #a7f3d0;
-  border-radius: 12px;
-  padding: 12px;
+  border-radius: 10px;
+  padding: 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
   transition: all 0.2s ease;
   text-decoration: none;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .upload-rx-box:hover {
@@ -506,12 +506,12 @@ body {
 <!-- Include Top Navigation Bar -->
 {% include 'partials/navbar.html' %}
 
-<div class="container">
+<div class="container-fluid px-3 px-xl-4">
   
   <!-- =========================================================================
-       HERO BANNER: ANTIXOR HEALTHCARE PROMOTION
+       HERO BANNER: ANTIXOR HEALTHCARE PROMOTION (SLIM & WIDE EDITION)
        ========================================================================= -->
-  <div class="antixor-shop-hero">
+  <div class="antixor-shop-hero-slim">
     
     <!-- Floating "Better Health, Happier Tomorrow" Badge -->
     <div class="hero-floating-badge d-none d-md-flex">
@@ -519,68 +519,69 @@ body {
         <i class="fa-solid fa-leaf"></i>
       </div>
       <div>
-        <div class="fw-bold text-dark" style="font-size: 0.82rem; line-height: 1.2;">Better Health</div>
-        <div class="text-muted" style="font-size: 0.7rem;">Happier Tomorrow</div>
+        <div class="fw-bold text-dark" style="font-size: 0.75rem; line-height: 1.15;">Better Health</div>
+        <div class="text-muted" style="font-size: 0.65rem;">Happier Tomorrow</div>
       </div>
     </div>
 
     <div class="row align-items-center position-relative" style="z-index: 2;">
       
       <!-- Left Hero Content -->
-      <div class="col-lg-7 col-xl-6">
+      <div class="col-lg-8 col-xl-7">
         <div class="hero-pill-badge">TRUSTED • SAFE • AFFORDABLE</div>
         <h1 class="hero-heading">Your Health, Our Priority</h1>
         <p class="hero-subtext">
           Wide range of medicines, healthcare products, wellness essentials and clinical care solutions — delivered to your doorstep.
         </p>
 
-        <div>
+        <div class="d-flex align-items-center gap-3 flex-wrap">
           <a href="#catalog-grid" class="hero-cta-pill">
             <span>Explore Products</span>
             <i class="fa-solid fa-arrow-right"></i>
           </a>
+          
+          <div class="d-none d-sm-flex align-items-center gap-3">
+            <div class="hero-feat-item">
+              <div class="hero-feat-icon"><i class="fa-solid fa-shield-halved"></i></div>
+              <span>Genuine &amp; FDA Approved Products</span>
+            </div>
+            <div class="hero-feat-item">
+              <div class="hero-feat-icon"><i class="fa-solid fa-truck-fast"></i></div>
+              <span>Fast &amp; Secure Delivery</span>
+            </div>
+            <div class="hero-feat-item d-none d-md-flex">
+              <div class="hero-feat-icon"><i class="fa-solid fa-headset"></i></div>
+              <span>24/7 Pharmacist Support</span>
+            </div>
+          </div>
         </div>
 
-        <div class="hero-feat-row">
-          <div class="hero-feat-item">
-            <div class="hero-feat-icon"><i class="fa-solid fa-shield-halved"></i></div>
-            <span>Genuine &amp; FDA Approved Products</span>
-          </div>
-          <div class="hero-feat-item">
-            <div class="hero-feat-icon"><i class="fa-solid fa-truck-fast"></i></div>
-            <span>Fast &amp; Secure Delivery</span>
-          </div>
-          <div class="hero-feat-item">
-            <div class="hero-feat-icon"><i class="fa-solid fa-headset"></i></div>
-            <span>24/7 Pharmacist Support</span>
-          </div>
-        </div>
       </div>
 
       <!-- Right Visual Studio Composition -->
-      <div class="col-lg-5 col-xl-6 d-none d-lg-flex justify-content-end align-items-center position-relative">
-        <div class="position-relative d-flex align-items-center justify-content-center" style="width: 100%; max-width: 440px; height: 260px;">
+      <div class="col-lg-4 col-xl-5 d-none d-lg-flex justify-content-end align-items-center position-relative">
+        <div class="position-relative d-flex align-items-center justify-content-center" style="width: 100%; max-width: 320px; height: 130px;">
           
           <!-- Background Ambient Glow -->
-          <div class="position-absolute rounded-circle" style="width: 240px; height: 240px; background: radial-gradient(circle, rgba(16, 185, 129, 0.35) 0%, rgba(5, 59, 52, 0) 70%); filter: blur(20px);"></div>
+          <div class="position-absolute rounded-circle" style="width: 160px; height: 160px; background: radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, rgba(5, 59, 52, 0) 70%); filter: blur(14px);"></div>
 
           <!-- Product 1: Vitamins Bottle -->
-          <div class="position-absolute shadow-lg rounded-4 overflow-hidden" style="width: 155px; height: 195px; background: #ffffff; top: 25px; left: 130px; z-index: 3; border: 2px solid rgba(255,255,255,0.2);">
+          <div class="position-absolute shadow rounded-3 overflow-hidden" style="width: 90px; height: 110px; background: #ffffff; top: 10px; right: 50px; z-index: 3; border: 1.5px solid rgba(255,255,255,0.25);">
             <img src="{% static 'images/product_vitamind3.jpg' %}" alt="Antixor Vitamins" style="width: 100%; height: 100%; object-fit: cover;">
           </div>
 
           <!-- Product 2: Medicine Blister & Shield -->
-          <div class="position-absolute shadow rounded-4 overflow-hidden" style="width: 135px; height: 150px; background: #ffffff; bottom: 15px; left: 15px; z-index: 2; opacity: 0.95;">
+          <div class="position-absolute shadow-sm rounded-3 overflow-hidden" style="width: 80px; height: 85px; background: #ffffff; bottom: 8px; right: 125px; z-index: 2; opacity: 0.95;">
             <img src="{% static 'images/product_paracetamol.jpg' %}" alt="Antixor Paracetamol" style="width: 100%; height: 100%; object-fit: cover;">
           </div>
 
           <!-- Glowing Green Clinical Shield -->
-          <div class="position-absolute d-flex align-items-center justify-content-center shadow-lg rounded-circle text-white" style="width: 76px; height: 76px; background: linear-gradient(135deg, #10b981 0%, #047857 100%); top: 75px; left: 70px; z-index: 4; border: 3px solid rgba(255,255,255,0.6);">
-            <i class="fa-solid fa-shield-heart fs-2"></i>
+          <div class="position-absolute d-flex align-items-center justify-content-center shadow rounded-circle text-white" style="width: 48px; height: 48px; background: linear-gradient(135deg, #10b981 0%, #047857 100%); top: 40px; right: 90px; z-index: 4; border: 2px solid rgba(255,255,255,0.7);">
+            <i class="fa-solid fa-shield-heart fs-5"></i>
           </div>
 
           <!-- Organic Leaf Accent -->
-          <div class="position-absolute text-emerald-300" style="bottom: 10px; right: 25px; z-index: 4; font-size: 2.2rem; color: #6ee7b7; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));">
+          <div class="position-absolute text-emerald-300" style="bottom: 5px; right: 10px; z-index: 4; font-size: 1.5rem; color: #6ee7b7; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));">
             <i class="fa-solid fa-spa"></i>
           </div>
 
@@ -598,15 +599,15 @@ body {
     <!-- =======================================================================
          COLUMN 1: STORE NAVIGATION SIDEBAR (LEFT)
          ======================================================================= -->
-    <div class="col-xl-2 col-lg-3 col-md-4">
+    <div class="col-xxl-2 col-xl-2 col-lg-3 col-md-4">
       <aside class="nav-store-card">
         
         <!-- Header -->
-        <div class="d-flex justify-content-between align-items-center mb-3 pb-1 border-bottom">
-          <h6 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2" style="font-size: 0.9rem;">
+        <div class="d-flex justify-content-between align-items-center mb-2 pb-1 border-bottom">
+          <h6 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2" style="font-size: 0.84rem;">
             <i class="fa-solid fa-layer-group text-success" style="color: #009b72 !important;"></i> Store Navigation
           </h6>
-          <a href="{% url 'shop' %}" class="small text-muted text-decoration-none d-flex align-items-center gap-1" style="font-size: 0.75rem;" title="Reset filters">
+          <a href="{% url 'shop' %}" class="small text-muted text-decoration-none d-flex align-items-center gap-1" style="font-size: 0.72rem;" title="Reset filters">
             <i class="fa-solid fa-rotate-left"></i> Reset
           </a>
         </div>
@@ -617,7 +618,7 @@ body {
         <div class="d-flex flex-column">
           <a href="{% url 'shop' %}" class="nav-cat-row {% if not current_category %}active{% endif %}">
             <span class="d-flex align-items-center gap-2">
-              <i class="fa-solid fa-boxes-stacked" style="width: 16px; font-size: 0.8rem;"></i>
+              <i class="fa-solid fa-boxes-stacked" style="width: 14px; font-size: 0.75rem;"></i>
               <span>All Formulations</span>
             </span>
             <span class="nav-cat-pill">{{ total_catalog_count|default:"245" }}</span>
@@ -626,7 +627,7 @@ body {
           {% for cat in categories %}
             <a href="{% url 'shop' %}?category={{ cat.slug }}" class="nav-cat-row {% if current_category == cat.slug %}active{% endif %}">
               <span class="d-flex align-items-center gap-2 text-truncate">
-                <i class="{{ cat.icon_class|default:'fa-solid fa-pills' }}" style="width: 16px; font-size: 0.8rem;"></i>
+                <i class="{{ cat.icon_class|default:'fa-solid fa-pills' }}" style="width: 14px; font-size: 0.75rem;"></i>
                 <span class="text-truncate">{{ cat.name }}</span>
               </span>
               <span class="nav-cat-pill">{{ cat.products.count }}</span>
@@ -640,18 +641,18 @@ body {
     <!-- =======================================================================
          COLUMN 2: PRODUCT CATALOG & TOOLBAR (CENTER)
          ======================================================================= -->
-    <div class="col-xl-8 col-lg-6 col-md-8">
+    <div class="col-xxl-8 col-xl-8 col-lg-6 col-md-8">
       
       <!-- Top Toolbar -->
-      <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-3 px-1">
-        <div class="small text-muted" style="font-size: 0.82rem;">
+      <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-2 px-1">
+        <div class="small text-muted" style="font-size: 0.78rem;">
           Showing <strong class="text-dark">{{ page_obj.start_index|default:"1" }}–{{ page_obj.end_index|default:"8" }}</strong> of <strong class="text-dark">{{ total_count|default:"245" }}</strong> products
           {% if search_query %} for <span class="badge bg-success text-white" style="background-color: #009b72 !important;">"{{ search_query }}"</span>{% endif %}
         </div>
 
         <div class="d-flex align-items-center gap-2">
-          <label class="small text-muted text-nowrap" style="font-size: 0.78rem;">Sort by:</label>
-          <select class="form-select form-select-sm rounded-3 py-1" onchange="location = this.value;" style="min-width: 155px; font-size: 0.8rem; border-color: #cbd5e1;">
+          <label class="small text-muted text-nowrap" style="font-size: 0.75rem;">Sort by:</label>
+          <select class="form-select form-select-sm rounded-3 py-1" onchange="location = this.value;" style="min-width: 150px; font-size: 0.78rem; border-color: #cbd5e1;">
             <option value="{% url 'shop' %}?sort=featured" {% if current_sort == 'featured' %}selected{% endif %}>Featured Clinical</option>
             <option value="{% url 'shop' %}?sort=price_low" {% if current_sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
             <option value="{% url 'shop' %}?sort=price_high" {% if current_sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
@@ -661,11 +662,11 @@ body {
 
           <!-- View Switchers -->
           <div class="d-none d-md-flex align-items-center gap-1">
-            <button class="btn btn-sm btn-light border p-1 rounded-2 text-success" title="Grid View" style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background: #e6f9f0; border-color: #a7f3d0 !important; color: #009b72 !important;">
-              <i class="fa-solid fa-grip" style="font-size: 0.8rem;"></i>
+            <button class="btn btn-sm btn-light border p-1 rounded-2 text-success" title="Grid View" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; background: #e6f9f0; border-color: #a7f3d0 !important; color: #009b72 !important;">
+              <i class="fa-solid fa-grip" style="font-size: 0.75rem;"></i>
             </button>
-            <button class="btn btn-sm btn-light border p-1 rounded-2 text-muted" title="List View" style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background: #ffffff; border-color: #e2e8f0 !important;">
-              <i class="fa-solid fa-list-ul" style="font-size: 0.8rem;"></i>
+            <button class="btn btn-sm btn-light border p-1 rounded-2 text-muted" title="List View" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; background: #ffffff; border-color: #e2e8f0 !important;">
+              <i class="fa-solid fa-list-ul" style="font-size: 0.75rem;"></i>
             </button>
           </div>
         </div>
@@ -673,9 +674,9 @@ body {
 
       <!-- Products Grid -->
       {% if page_obj %}
-        <div class="row g-3" id="catalog-grid">
+        <div class="row g-2 g-xl-3" id="catalog-grid">
           {% for product in page_obj %}
-            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+            <div class="col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6">
               <div class="shop-med-card">
                 
                 <!-- Image & Badges Wrap -->
@@ -773,15 +774,15 @@ body {
     <!-- =======================================================================
          COLUMN 3: TODAY'S OFFERS & CLINICAL SERVICES (RIGHT)
          ======================================================================= -->
-    <div class="col-xl-2 col-lg-3 col-md-12">
+    <div class="col-xxl-2 col-xl-2 col-lg-3 col-md-12">
       <aside class="offers-sidebar-wrap">
         
         <!-- Header -->
-        <div class="d-flex justify-content-between align-items-center mb-3 pb-1 border-bottom">
-          <h6 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2" style="font-size: 0.9rem;">
+        <div class="d-flex justify-content-between align-items-center mb-2 pb-1 border-bottom">
+          <h6 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2" style="font-size: 0.84rem;">
             <i class="fa-solid fa-certificate text-success" style="color:#009b72;"></i> Today's Offers
           </h6>
-          <a href="#" class="small text-muted text-decoration-none" style="font-size: 0.75rem;">View All</a>
+          <a href="#" class="small text-muted text-decoration-none" style="font-size: 0.72rem;">View All</a>
         </div>
 
         <!-- Promotional Box: FLAT 20% OFF -->
@@ -791,12 +792,12 @@ body {
           <div class="promo-target-text">on Vitamins &amp; Supplements</div>
           
           <div class="promo-code-box">
-            <span class="text-muted" style="font-size: 0.68rem;">Use Code:</span>
-            <strong class="text-success font-monospace" style="color:#009b72 !important; font-size: 0.72rem;">HEALTH20</strong>
+            <span class="text-muted" style="font-size: 0.65rem;">Use Code:</span>
+            <strong class="text-success font-monospace" style="color:#009b72 !important; font-size: 0.68rem;">HEALTH20</strong>
           </div>
 
           <!-- Carousel Indicator Dots -->
-          <div class="d-flex justify-content-center align-items-center gap-1 mt-3">
+          <div class="d-flex justify-content-center align-items-center gap-1 mt-2">
             <span class="carousel-dot active"></span>
             <span class="carousel-dot"></span>
             <span class="carousel-dot"></span>
@@ -804,7 +805,7 @@ body {
         </div>
 
         <!-- Clinical Benefit Highlights -->
-        <div class="d-flex flex-column gap-2 mb-3">
+        <div class="d-flex flex-column gap-2 mb-2">
           
           <div class="benefit-row">
             <div class="benefit-icon-box" style="background-color: #e6f9f0; color: #009b72;">
@@ -851,15 +852,15 @@ body {
         <!-- Prescription Upload CTA Card -->
         <div class="upload-rx-box" data-bs-toggle="modal" data-bs-target="#auraPrescriptionModal">
           <div class="d-flex align-items-center gap-2">
-            <div class="rounded-3 d-flex align-items-center justify-content-center bg-white shadow-sm" style="width: 32px; height: 32px; color: #009b72;">
-              <i class="fa-solid fa-cloud-arrow-up" style="font-size: 0.9rem;"></i>
+            <div class="rounded-3 d-flex align-items-center justify-content-center bg-white shadow-sm" style="width: 28px; height: 28px; color: #009b72;">
+              <i class="fa-solid fa-cloud-arrow-up" style="font-size: 0.8rem;"></i>
             </div>
             <div>
-              <div class="fw-bold" style="font-size: 0.78rem; color: #065f46; line-height: 1.2;">Upload Prescription</div>
-              <div class="text-muted" style="font-size: 0.68rem;">Get medicines with expert verification</div>
+              <div class="fw-bold" style="font-size: 0.74rem; color: #065f46; line-height: 1.15;">Upload Prescription</div>
+              <div class="text-muted" style="font-size: 0.65rem;">Get medicines with expert verification</div>
             </div>
           </div>
-          <i class="fa-solid fa-chevron-right text-success" style="color: #009b72; font-size: 0.8rem;"></i>
+          <i class="fa-solid fa-chevron-right text-success" style="color: #009b72; font-size: 0.75rem;"></i>
         </div>
 
       </aside>

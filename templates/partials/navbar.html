@@ -1,7 +1,7 @@
 {% load static %}
 <!-- Top Service Bar -->
 <div class="text-white py-1 px-3 d-none d-md-block" style="background-color: #062e2c; font-size: 0.76rem; border-bottom: 1px solid rgba(255,255,255,0.08);">
-  <div class="container d-flex justify-content-between align-items-center">
+  <div class="container-fluid px-3 px-xl-4 d-flex justify-content-between align-items-center">
     <div class="d-flex align-items-center gap-3">
       <span class="d-flex align-items-center"><i class="fa-solid fa-truck-fast text-success me-1" style="color: #00b87c !important;"></i> Express 24-Hour Delivery across India</span>
       <span class="text-white-50">|</span>
@@ -21,7 +21,7 @@
 
 <!-- Main Antixor Header Navigation -->
 <header class="bg-white border-bottom sticky-top" style="z-index: 1030; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
-  <div class="container py-2 py-lg-3">
+  <div class="container-fluid px-3 px-xl-4 py-2 py-lg-3">
     <div class="d-flex align-items-center justify-content-between gap-3">
       
       <!-- Brand Logo -->
@@ -36,7 +36,7 @@
       </a>
 
       <!-- Smart Center Search Bar -->
-      <div class="flex-grow-1 mx-2 mx-xl-4 d-none d-lg-block" style="max-width: 580px;">
+      <div class="flex-grow-1 mx-2 mx-xl-4 d-none d-lg-block" style="max-width: 640px;">
         <form action="{% url 'shop' %}" method="GET" class="position-relative">
           <div class="input-group rounded-pill overflow-hidden border p-1 bg-light" style="border-color: #e2e8f0 !important; background-color: #f8fafc !important;">
             <span class="input-group-text bg-transparent border-0 ps-3 pe-2 text-muted">
@@ -119,7 +119,7 @@
 
   <!-- Secondary Clean Navigation Strip -->
   <div class="border-top py-2" style="background-color: #ffffff; border-color: #f1f5f9 !important;">
-    <div class="container d-flex align-items-center justify-content-between">
+    <div class="container-fluid px-3 px-xl-4 d-flex align-items-center justify-content-between">
       <div class="d-flex align-items-center gap-1 gap-lg-2 flex-wrap">
         <a href="{% url 'home' %}" class="btn btn-sm border-0 fw-semibold text-dark rounded-pill px-3 py-1-5 {% if request.path == '/' %}bg-emerald-50 text-emerald-700 fw-bold{% else %}btn-light{% endif %}" style="font-size: 0.85rem; {% if request.path == '/' %}background-color: #e6f9f0 !important; color: #009b72 !important;{% endif %}">
           <i class="fa-solid fa-house text-emerald-600 me-1" style="color:#009b72;"></i> Home
