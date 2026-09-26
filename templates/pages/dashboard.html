@@ -1,43 +1,55 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Patient Medical Command Center — Antixor Healthcare OS{% endblock %}
+{% block title %}Antixor MedOS — Clinical Patient Medical Dashboard{% endblock %}
 
 {% block extra_css %}
+<!-- Include Chart.js for Health Insights Analytics Chart -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
 <style>
 /* ==========================================================================
-   PROFESSIONAL HEALTHCARE COMMAND CENTER STYLES
+   ANTIXOR MEDOS CLINICAL ERP v3.0 — EXACT DESIGN SYSTEM
    ========================================================================== */
 :root {
-  --med-primary: #059669;
-  --med-primary-dark: #064e3b;
-  --med-primary-light: #ecfdf5;
-  --med-accent: #0284c7;
-  --med-dark: #0f172a;
-  --med-slate: #1e293b;
-  --med-gray-bg: #f8fafc;
-  --med-border: #e2e8f0;
-  --med-card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+  --medos-bg: #f4f7fb;
+  --medos-sidebar-bg: #0c1427;
+  --medos-sidebar-hover: rgba(255, 255, 255, 0.06);
+  --medos-sidebar-text: #94a3b8;
+  --medos-emerald: #00b87c;
+  --medos-emerald-hover: #009e6a;
+  --medos-emerald-light: #ecfdf5;
+  --medos-hero-bg: #e6fcf5;
+  --medos-card-bg: #ffffff;
+  --medos-border: #eaedf3;
+  --medos-text-dark: #0f172a;
+  --medos-text-muted: #64748b;
+  --medos-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
 }
 
 body {
-  background-color: var(--med-gray-bg);
-  color: #1e293b;
+  background-color: var(--medos-bg) !important;
+  color: var(--medos-text-dark);
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
 }
 
-/* Dashboard Shell Layout */
-.dashboard-wrapper {
+/* App Shell */
+.medos-shell {
   display: flex;
   min-height: 100vh;
   width: 100%;
 }
 
-/* Sidebar Styles */
-.dashboard-sidebar {
-  width: 290px;
-  background-color: #0b1329;
-  color: #94a3b8;
+/* --------------------------------------------------------------------------
+   1. LEFT SIDEBAR
+   -------------------------------------------------------------------------- */
+.medos-sidebar {
+  width: 270px;
+  background-color: var(--medos-sidebar-bg);
+  color: var(--medos-sidebar-text);
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
@@ -45,1163 +57,1161 @@ body {
   top: 0;
   height: 100vh;
   overflow-y: auto;
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
   z-index: 1040;
-  transition: all 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
-.sidebar-brand {
-  padding: 24px 20px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+.medos-sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+.medos-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+.medos-brand-wrap {
+  padding: 24px 22px 20px;
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.sidebar-nav-group-title {
+.medos-brand-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background-color: var(--medos-emerald);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  box-shadow: 0 4px 12px rgba(0, 184, 124, 0.35);
+}
+
+.medos-brand-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.medos-brand-sub {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #34d399;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-family: monospace;
+}
+
+.medos-nav-section-title {
   font-size: 0.68rem;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: #64748b;
-  padding: 16px 20px 8px;
+  color: #475569;
+  padding: 18px 22px 8px;
 }
 
-.sidebar-nav-link {
+.medos-nav-link {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 11px 20px;
+  padding: 10px 18px;
   color: #94a3b8;
   text-decoration: none;
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   font-weight: 600;
   border-radius: 12px;
-  margin: 2px 12px;
-  transition: all 0.2s ease;
-  border: 1px solid transparent;
+  margin: 2px 14px;
+  transition: all 0.18s ease;
   background: transparent;
+  border: none;
   cursor: pointer;
-  width: calc(100% - 24px);
+  width: calc(100% - 28px);
   text-align: left;
 }
 
-.sidebar-nav-link i {
+.medos-nav-link i {
   width: 22px;
-  font-size: 1rem;
-  transition: transform 0.2s ease;
+  font-size: 0.95rem;
+  color: #64748b;
+  transition: color 0.18s ease;
 }
 
-.sidebar-nav-link:hover {
-  color: #f8fafc;
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-.sidebar-nav-link.active {
+.medos-nav-link:hover {
   color: #ffffff;
-  background: linear-gradient(135deg, #059669 0%, #047857 100%);
-  box-shadow: 0 4px 15px rgba(5, 150, 105, 0.35);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background-color: var(--medos-sidebar-hover);
+}
+.medos-nav-link:hover i {
+  color: #ffffff;
 }
 
-.sidebar-nav-link.active i {
+/* Active State matches Reference Image */
+.medos-nav-link.active {
+  background-color: var(--medos-emerald) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(0, 184, 124, 0.4);
+}
+.medos-nav-link.active i {
   color: #ffffff !important;
 }
 
-.sidebar-badge {
-  font-size: 0.7rem;
-  padding: 3px 8px;
-  border-radius: 20px;
-  font-weight: 700;
+.medos-pill-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 12px;
+  line-height: 1.2;
 }
 
-/* Main Content Area */
-.dashboard-main {
+/* Bottom Help Card */
+.medos-help-card {
+  margin: 16px 14px 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 16px;
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   2. MAIN CONTENT & TOP HEADER
+   -------------------------------------------------------------------------- */
+.medos-main {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   min-width: 0;
-  background-color: #f8fafc;
+  background-color: var(--medos-bg);
 }
 
-/* Top App Header */
-.dashboard-topbar {
-  height: 72px;
+.medos-topbar {
   background: #ffffff;
-  border-bottom: 1px solid var(--med-border);
+  border-bottom: 1px solid var(--medos-border);
+  padding: 12px 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 28px;
   position: sticky;
   top: 0;
   z-index: 1020;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
 }
 
-/* Cards & Widgets */
-.med-card {
-  background: #ffffff;
-  border-radius: 20px;
-  border: 1px solid var(--med-border);
-  box-shadow: var(--med-card-shadow);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.med-card-hover:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.08);
-}
-
-.kpi-card {
-  border-radius: 20px;
-  padding: 22px;
-  background: #ffffff;
-  border: 1px solid var(--med-border);
+.medos-search-input-wrap {
+  width: 100%;
+  max-width: 440px;
   position: relative;
-  overflow: hidden;
-  box-shadow: var(--med-card-shadow);
 }
 
-.kpi-icon-wrap {
-  width: 52px;
-  height: 52px;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.35rem;
+.medos-search-input {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 30px;
+  padding: 9px 18px 9px 40px;
+  font-size: 0.86rem;
+  width: 100%;
+  transition: all 0.2s ease;
+  color: #1e293b;
+}
+.medos-search-input:focus {
+  background-color: #ffffff;
+  border-color: var(--medos-emerald);
+  box-shadow: 0 0 0 3px rgba(0, 184, 124, 0.12);
+  outline: none;
 }
 
-/* Order Stepper Tracker */
-.stepper-track {
-  display: flex;
-  justify-content: space-between;
-  position: relative;
-  margin: 20px 0 10px;
-}
-
-.stepper-track::before {
-  content: '';
+.medos-search-icon {
   position: absolute;
-  top: 18px;
-  left: 20px;
-  right: 20px;
-  height: 3px;
-  background: #e2e8f0;
-  z-index: 1;
-}
-
-.stepper-track .progress-line {
-  position: absolute;
-  top: 18px;
-  left: 20px;
-  height: 3px;
-  background: #059669;
-  z-index: 2;
-  transition: width 0.4s ease;
-}
-
-.stepper-node {
-  position: relative;
-  z-index: 3;
-  text-align: center;
-}
-
-.stepper-dot {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: #ffffff;
-  border: 3px solid #cbd5e1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 6px;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
   font-size: 0.9rem;
-  font-weight: 700;
-  color: #64748b;
-  transition: all 0.3s ease;
 }
 
-.stepper-node.active .stepper-dot {
-  background: #059669;
-  border-color: #a7f3d0;
-  color: #ffffff;
-  box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.15);
-}
-
-.stepper-node.completed .stepper-dot {
-  background: #059669;
-  border-color: #059669;
-  color: #ffffff;
-}
-
-/* Health Passport Wallet Preview */
-.passport-mini-card {
-  background: linear-gradient(135deg, #064e3b 0%, #0f172a 65%, #1e293b 100%);
-  border-radius: 20px;
-  color: #ffffff;
-  padding: 24px;
+/* --------------------------------------------------------------------------
+   3. HERO WELCOME SECTION
+   -------------------------------------------------------------------------- */
+.medos-hero-card {
+  background: linear-gradient(135deg, #e6fcf5 0%, #d1fae5 50%, #dcfce7 100%);
+  border-radius: 22px;
+  border: 1px solid #bbf7d0;
+  padding: 32px 36px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 12px 32px rgba(6, 78, 59, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  margin-bottom: 24px;
 }
 
-.passport-mini-card::after {
-  content: '';
+.medos-hero-title {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+}
+
+.medos-hero-subtitle {
+  color: #475569;
+  font-size: 0.95rem;
+  margin-bottom: 22px;
+}
+
+.medos-btn-primary {
+  background-color: var(--medos-emerald);
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: 12px;
+  padding: 10px 20px;
+  border: none;
+  font-size: 0.88rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(0, 184, 124, 0.3);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.medos-btn-primary:hover {
+  background-color: var(--medos-emerald-hover);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.medos-btn-white {
+  background-color: #ffffff;
+  color: #1e293b;
+  font-weight: 700;
+  border-radius: 12px;
+  padding: 10px 18px;
+  border: 1px solid #e2e8f0;
+  font-size: 0.88rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.medos-btn-white:hover {
+  background-color: #f8fafc;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+
+.medos-hero-float-badge {
   position: absolute;
-  right: -30px;
-  bottom: -30px;
-  width: 160px;
-  height: 160px;
-  background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 70%);
-  border-radius: 50%;
+  right: 32px;
+  bottom: 28px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 10px 25px rgba(0, 184, 124, 0.15);
+  border: 1px solid #e2e8f0;
+  z-index: 3;
+}
+
+/* --------------------------------------------------------------------------
+   4. STATISTIC CARDS (4 COLUMNS)
+   -------------------------------------------------------------------------- */
+.medos-stat-card {
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid var(--medos-border);
+  padding: 20px;
+  box-shadow: var(--medos-shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+}
+.medos-stat-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px -4px rgba(15, 23, 42, 0.08);
+}
+
+.medos-stat-icon-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.medos-stat-value {
+  font-size: 1.65rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+  margin: 4px 0 2px;
+}
+
+/* --------------------------------------------------------------------------
+   5. CARDS & SECTIONS
+   -------------------------------------------------------------------------- */
+.medos-card {
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid var(--medos-border);
+  padding: 22px;
+  box-shadow: var(--medos-shadow);
+  height: 100%;
+}
+
+.medos-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.medos-card-title {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+}
+
+.medos-link-action {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #0284c7;
+  text-decoration: none;
+  padding: 4px 10px;
+  border-radius: 8px;
+  transition: background 0.15s ease;
+}
+.medos-link-action:hover {
+  background: #f0f9ff;
+  color: #0369a1;
+}
+
+/* Mini Vitals 2x2 Grid Inside Health Vitals Card */
+.medos-mini-vital-box {
+  background: #f8fafc;
+  border: 1px solid #edf2f7;
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Quick Actions Tile */
+.medos-quick-action-tile {
+  background: #f8fafc;
+  border: 1px solid #edf2f7;
+  border-radius: 14px;
+  padding: 16px 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  color: #334155;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.medos-quick-action-tile:hover {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  color: #0f172a;
+}
+
+.medos-action-icon-circle {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  margin-bottom: 8px;
 }
 
 /* Mobile Responsiveness */
 @media (max-width: 991px) {
-  .dashboard-sidebar {
+  .medos-sidebar {
     position: fixed;
-    left: -290px;
+    left: -270px;
   }
-  .dashboard-sidebar.show {
+  .medos-sidebar.open {
     left: 0;
+  }
+  .medos-topbar {
+    padding: 12px 16px;
   }
 }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="dashboard-wrapper">
+<div class="medos-shell">
   
-  <!-- =====================================================================
-       1. SLEEK LEFT SIDEBAR NAVIGATION
-       ===================================================================== -->
-  <aside class="dashboard-sidebar" id="dashboardSidebar">
+  <!-- =========================================================================
+       1. LEFT SIDEBAR (EXACT MATCH WITH REFERENCE IMAGE)
+       ========================================================================= -->
+  <aside class="medos-sidebar" id="medosSidebar">
     
-    <!-- Brand Header -->
-    <div class="sidebar-brand">
-      <div class="rounded-3 bg-emerald-600 text-white p-2 d-flex align-items-center justify-content-center shadow-sm" style="width: 40px; height: 40px; background-color: #059669 !important;">
-        <i class="fa-solid fa-staff-snake fs-5"></i>
+    <!-- Top Branding -->
+    <div class="medos-brand-wrap">
+      <div class="medos-brand-icon">
+        <i class="fa-solid fa-square-plus"></i>
       </div>
       <div>
-        <div class="fw-bold text-white fs-5 tracking-tight lh-1">Antixor<span style="color: #34d399;">.MedOS</span></div>
-        <div class="text-emerald-400 small font-monospace mt-1" style="font-size: 0.65rem; color: #34d399;">
-          <i class="fa-solid fa-circle text-success me-1" style="font-size: 0.5rem;"></i> CLINICAL EHR v2.4
-        </div>
+        <div class="medos-brand-title">Antixor MedOS</div>
+        <div class="medos-brand-sub">CLINICAL ERP v3.0</div>
       </div>
     </div>
 
-    <!-- Navigation Links -->
-    <div class="flex-grow-1 py-2">
+    <!-- Navigation List -->
+    <div class="flex-grow-1 py-1">
       
-      <!-- Group 1: Overview -->
-      <div class="sidebar-nav-group-title">Clinical Overview</div>
-      <button class="sidebar-nav-link active tab-trigger" data-target="pane-overview">
-        <span class="d-flex align-items-center gap-3">
-          <i class="fa-solid fa-gauge-high text-emerald-400"></i>
-          <span>Command Overview</span>
+      <!-- Group 1: Main / Clinical Overview -->
+      <div class="medos-nav-section-title">Main / Clinical Overview</div>
+      
+      <button class="medos-nav-link active tab-btn" data-target="dashboard-main-view">
+        <span class="d-flex align-items-center gap-2">
+          <i class="fa-solid fa-house"></i>
+          <span>Dashboard</span>
         </span>
-        <span class="sidebar-badge bg-emerald-500 bg-opacity-25 text-emerald-300">Live</span>
       </button>
-      
-      <button class="sidebar-nav-link tab-trigger" data-target="pane-vitals">
-        <span class="d-flex align-items-center gap-3">
-          <i class="fa-solid fa-heart-pulse text-danger"></i>
+
+      <button class="medos-nav-link tab-btn" data-target="dashboard-main-view" onclick="document.getElementById('healthVitalsCard').scrollIntoView({behavior:'smooth'});">
+        <span class="d-flex align-items-center gap-2">
+          <i class="fa-solid fa-heart-pulse"></i>
           <span>Vitals & Biometrics</span>
         </span>
-        <span class="sidebar-badge bg-light bg-opacity-10 text-slate-300">{{ vitals.count|default:"3" }}</span>
+        <span class="medos-pill-badge bg-danger text-white">3</span>
       </button>
 
-      <button class="sidebar-nav-link tab-trigger" data-target="pane-pills">
-        <span class="d-flex align-items-center gap-3">
-          <i class="fa-solid fa-pills text-warning"></i>
+      <button class="medos-nav-link tab-btn" data-target="dashboard-main-view" onclick="document.getElementById('todayScheduleCard').scrollIntoView({behavior:'smooth'});">
+        <span class="d-flex align-items-center gap-2">
+          <i class="fa-solid fa-pills"></i>
           <span>Daily Pill Schedule</span>
         </span>
-        <span class="sidebar-badge bg-warning bg-opacity-25 text-warning">14d 🔥</span>
       </button>
 
-      <!-- Group 2: Care & Dispensary -->
-      <div class="sidebar-nav-group-title">Care & Dispensary</div>
-      <button class="sidebar-nav-link tab-trigger" data-target="pane-orders">
-        <span class="d-flex align-items-center gap-3">
-          <i class="fa-solid fa-boxes-stacked text-info"></i>
+      <a href="{% url 'health-card' %}" class="medos-nav-link text-decoration-none">
+        <span class="d-flex align-items-center gap-2">
+          <i class="fa-solid fa-id-card-clip"></i>
+          <span>Clinical Records</span>
+        </span>
+      </a>
+
+      <a href="{% url 'prescriptions' %}" class="medos-nav-link text-decoration-none">
+        <span class="d-flex align-items-center gap-2">
+          <i class="fa-solid fa-file-prescription"></i>
+          <span>Prescriptions</span>
+        </span>
+        <span class="medos-pill-badge bg-primary text-white">2</span>
+      </a>
+
+      <button class="medos-nav-link tab-btn" data-target="dashboard-main-view" onclick="document.getElementById('recentOrdersCard').scrollIntoView({behavior:'smooth'});">
+        <span class="d-flex align-items-center gap-2">
+          <i class="fa-solid fa-truck-fast"></i>
           <span>Orders & Delivery</span>
         </span>
-        <span class="sidebar-badge bg-info bg-opacity-25 text-info">{{ orders.count|default:"1" }}</span>
       </button>
 
-      <button class="sidebar-nav-link tab-trigger" data-target="pane-prescriptions">
-        <span class="d-flex align-items-center gap-3">
-          <i class="fa-solid fa-file-shield text-emerald-400"></i>
-          <span>Prescriptions & Rx</span>
+      <a href="{% url 'intake' %}" class="medos-nav-link text-decoration-none">
+        <span class="d-flex align-items-center gap-2">
+          <i class="fa-solid fa-stethoscope"></i>
+          <span>Symptom Intake</span>
         </span>
-        <span class="sidebar-badge bg-light bg-opacity-10 text-slate-300">{{ prescriptions.count|default:"2" }}</span>
+      </a>
+
+      <a href="{% url 'telehealth' %}" class="medos-nav-link text-decoration-none">
+        <span class="d-flex align-items-center gap-2">
+          <i class="fa-solid fa-video" style="color: #c084fc;"></i>
+          <span>Telehealth</span>
+        </span>
+        <span class="medos-pill-badge bg-success text-white" style="font-size: 0.6rem;">HD</span>
+      </a>
+
+      <a href="{% url 'articles' %}" class="medos-nav-link text-decoration-none">
+        <span class="d-flex align-items-center gap-2">
+          <i class="fa-solid fa-flask-vial"></i>
+          <span>Lab Reports</span>
+        </span>
+      </a>
+
+      <a href="{% url 'telehealth' %}" class="medos-nav-link text-decoration-none">
+        <span class="d-flex align-items-center gap-2">
+          <i class="fa-solid fa-calendar-check"></i>
+          <span>Appointments</span>
+        </span>
+      </a>
+
+      <a href="{% url 'contact' %}" class="medos-nav-link text-decoration-none">
+        <span class="d-flex align-items-center gap-2">
+          <i class="fa-solid fa-comments"></i>
+          <span>Messages</span>
+        </span>
+        <span class="medos-pill-badge bg-danger text-white">4</span>
+      </a>
+
+      <!-- Group 2: Care & Tools -->
+      <div class="medos-nav-section-title">Care & Tools</div>
+
+      <button class="medos-nav-link" data-bs-toggle="modal" data-bs-target="#addPillModal">
+        <span class="d-flex align-items-center gap-2">
+          <i class="fa-solid fa-bell"></i>
+          <span>Medication Reminders</span>
+        </span>
       </button>
 
-      <a href="{% url 'intake' %}" class="sidebar-nav-link text-decoration-none">
-        <span class="d-flex align-items-center gap-3">
-          <i class="fa-solid fa-stethoscope text-primary"></i>
-          <span>Symptom Intake Form</span>
+      <a href="{% url 'articles' %}" class="medos-nav-link text-decoration-none">
+        <span class="d-flex align-items-center gap-2">
+          <i class="fa-solid fa-book-medical"></i>
+          <span>Health Library</span>
         </span>
-        <span class="sidebar-badge bg-primary text-white" style="font-size: 0.65rem;">+ New</span>
       </a>
 
-      <button class="sidebar-nav-link tab-trigger" data-target="pane-telehealth">
-        <span class="d-flex align-items-center gap-3">
-          <i class="fa-solid fa-video text-purple-400" style="color:#c084fc;"></i>
-          <span>Telehealth Video Room</span>
+      <a href="{% url 'contact' %}" class="medos-nav-link text-decoration-none">
+        <span class="d-flex align-items-center gap-2">
+          <i class="fa-solid fa-headset"></i>
+          <span>Support</span>
         </span>
-        <span class="sidebar-badge bg-success text-white" style="font-size: 0.65rem;">HD</span>
-      </button>
-
-      <!-- Group 3: Health Records & Facilities -->
-      <div class="sidebar-nav-group-title">Patient Records & Network</div>
-      <a href="{% url 'health-card' %}" class="sidebar-nav-link text-decoration-none">
-        <span class="d-flex align-items-center gap-3">
-          <i class="fa-solid fa-id-card text-emerald-300"></i>
-          <span>Digital Health Passport</span>
-        </span>
-        <i class="fa-solid fa-arrow-up-right-from-square small opacity-50"></i>
       </a>
 
-      <a href="{% url 'facilities' %}" class="sidebar-nav-link text-decoration-none">
-        <span class="d-flex align-items-center gap-3">
-          <i class="fa-solid fa-hospital text-danger"></i>
-          <span>Nearest Hospitals & Map</span>
+      <a href="{% url 'health-card' %}" class="medos-nav-link text-decoration-none">
+        <span class="d-flex align-items-center gap-2">
+          <i class="fa-solid fa-gear"></i>
+          <span>Settings</span>
         </span>
-        <i class="fa-solid fa-location-crosshairs text-danger small"></i>
       </a>
 
-      <a href="{% url 'shop' %}" class="sidebar-nav-link text-decoration-none">
-        <span class="d-flex align-items-center gap-3">
-          <i class="fa-solid fa-store text-info"></i>
-          <span>Online Pharmacy Store</span>
-        </span>
-        <i class="fa-solid fa-arrow-right small opacity-50"></i>
-      </a>
     </div>
 
-    <!-- Sidebar Bottom Emergency & User Profile Card -->
-    <div class="p-3 border-top border-secondary border-opacity-25 bg-black bg-opacity-25">
-      <!-- 24/7 SOS Quick Card -->
-      <div class="p-3 rounded-4 bg-danger bg-opacity-10 border border-danger border-opacity-25 mb-3 text-center">
-        <div class="d-flex align-items-center justify-content-center gap-2 text-danger fw-bold small mb-1">
-          <i class="fa-solid fa-truck-medical animate-pulse"></i>
-          <span>24/7 Emergency SOS</span>
+    <!-- Bottom Help Card (Exact Match) -->
+    <div class="medos-help-card">
+      <div class="d-flex align-items-center gap-2 mb-2 text-start">
+        <img src="{% static 'images/doctor_female.jpg' %}" alt="Support Doctor" class="rounded-circle border border-2 border-white" style="width: 38px; height: 38px; object-fit: cover;">
+        <div>
+          <div class="fw-bold text-white small">Need Help?</div>
+          <div class="text-slate-400" style="font-size: 0.72rem;">Chat with our care team</div>
         </div>
-        <a href="{% url 'facilities' %}" class="btn btn-sm btn-danger rounded-pill w-100 fw-bold py-1 text-white shadow-sm" style="font-size: 0.75rem;">
-          Dispatch Ambulance
-        </a>
       </div>
-
-      <!-- User Profile Snapshot -->
-      <div class="d-flex align-items-center justify-content-between">
-        <div class="d-flex align-items-center gap-2">
-          <div class="rounded-circle bg-emerald-600 text-white d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 38px; height: 38px; background-color: #059669 !important;">
-            {{ user.first_name|default:user.username|make_list|first|upper }}
-          </div>
-          <div class="overflow-hidden" style="max-width: 130px;">
-            <div class="text-white fw-bold small text-truncate">{{ user.get_full_name|default:user.username }}</div>
-            <div class="text-slate-400 font-monospace" style="font-size: 0.65rem;">{{ user.digital_health_id|default:"ANT-P-882910" }}</div>
-          </div>
-        </div>
-        <a href="{% url 'logout' %}" class="btn btn-sm btn-outline-secondary rounded-circle p-2 text-slate-300" title="Sign Out">
-          <i class="fa-solid fa-arrow-right-from-bracket"></i>
-        </a>
-      </div>
+      <a href="{% url 'contact' %}" class="btn btn-emerald text-white rounded-pill w-100 fw-bold py-1 small" style="background-color: #00b87c; font-size: 0.78rem;">
+        Start Chat
+      </a>
     </div>
 
   </aside>
 
-  <!-- =====================================================================
-       2. MAIN CONTENT AREA & TOPBAR
-       ===================================================================== -->
-  <main class="dashboard-main">
+  <!-- =========================================================================
+       2. MAIN CONTENT STAGE
+       ========================================================================= -->
+  <main class="medos-main">
     
-    <!-- Topbar Navigation -->
-    <header class="dashboard-topbar">
+    <!-- Top Header Navigation Bar (Exact Match) -->
+    <header class="medos-topbar">
+      <!-- Search Input Left -->
       <div class="d-flex align-items-center gap-3">
-        <button class="btn btn-light d-lg-none rounded-3 p-2 border" id="sidebarToggleBtn">
+        <button class="btn btn-light d-lg-none rounded-circle p-2 border" id="medosSidebarToggle">
           <i class="fa-solid fa-bars"></i>
         </button>
-        <div>
-          <nav aria-label="breadcrumb">
-            <ol class="breadcrumb small mb-0 font-monospace text-muted" style="font-size: 0.75rem;">
-              <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-muted">Antixor Health</a></li>
-              <li class="breadcrumb-item active text-dark fw-semibold" aria-current="page">Patient Command Center</li>
-            </ol>
-          </nav>
-          <h5 class="fw-bold text-dark mb-0 d-none d-sm-block">Clinical Patient Medical Dashboard</h5>
+        
+        <div class="medos-search-input-wrap">
+          <i class="fa-solid fa-magnifying-glass medos-search-icon"></i>
+          <form action="{% url 'shop' %}" method="GET">
+            <input type="text" name="q" class="medos-search-input" placeholder="Search medicines, records, orders...">
+          </form>
         </div>
       </div>
 
-      <!-- Quick Action Buttons on Topbar -->
-      <div class="d-flex align-items-center gap-2">
-        <button class="btn btn-sm btn-outline-success rounded-pill px-3 fw-bold d-none d-md-inline-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#addVitalModal">
-          <i class="fa-solid fa-heart-pulse text-danger"></i>
-          <span>Log Vitals</span>
-        </button>
-        
-        <a href="{% url 'intake' %}" class="btn btn-sm btn-emerald text-white rounded-pill px-3 fw-bold d-inline-flex align-items-center gap-2 shadow-sm" style="background-color: #059669;">
-          <i class="fa-solid fa-clipboard-check"></i>
-          <span>Symptom Intake</span>
+      <!-- User Profile & Notifications Right -->
+      <div class="d-flex align-items-center gap-3">
+        <!-- Notification Bell -->
+        <a href="javascript:void(0)" class="btn btn-light rounded-circle p-2 position-relative border" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;">
+          <i class="fa-regular fa-bell text-slate-600"></i>
+          <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
         </a>
 
-        <div class="vr mx-2 d-none d-sm-block"></div>
+        <!-- Messages Chat -->
+        <a href="{% url 'contact' %}" class="btn btn-light rounded-circle p-2 position-relative border" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;">
+          <i class="fa-regular fa-comment-dots text-slate-600"></i>
+        </a>
 
-        <div class="d-none d-lg-flex flex-column text-end">
-          <span class="small fw-bold text-dark" id="liveClockDisplay">Saturday, Sep 26</span>
-          <span class="text-muted font-monospace" style="font-size: 0.7rem;">New York, NY (UTC-4)</span>
+        <!-- User Profile Dropdown -->
+        <div class="dropdown">
+          <button class="btn p-0 d-flex align-items-center gap-2 border-0 bg-transparent dropdown-toggle" data-bs-toggle="dropdown">
+            <img src="{% static 'images/hero_doctor.jpg' %}" alt="Avatar" class="rounded-circle border border-2 border-emerald-500 shadow-sm" style="width: 40px; height: 40px; object-fit: cover;">
+            <div class="text-start d-none d-md-block">
+              <div class="fw-bold text-dark lh-1" style="font-size: 0.9rem;">{{ user.first_name|default:"Alexander" }}</div>
+              <div class="text-muted font-monospace" style="font-size: 0.7rem;">Patient ID: {{ user.digital_health_id|default:"AX45892" }}</div>
+            </div>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 mt-2 p-2" style="min-width: 220px;">
+            <li><a class="dropdown-item py-2 rounded-3" href="{% url 'health-card' %}"><i class="fa-solid fa-id-card me-2 text-primary"></i> Health Passport</a></li>
+            <li><a class="dropdown-item py-2 rounded-3" href="{% url 'intake' %}"><i class="fa-solid fa-clipboard-check me-2 text-warning"></i> Clinical Intake</a></li>
+            <li><a class="dropdown-item py-2 rounded-3" href="{% url 'facilities' %}"><i class="fa-solid fa-hospital me-2 text-danger"></i> Nearest Hospital</a></li>
+            <li><hr class="dropdown-divider my-1"></li>
+            <li><a class="dropdown-item py-2 rounded-3 text-danger fw-semibold" href="{% url 'logout' %}"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Sign Out</a></li>
+          </ul>
         </div>
-
-        <a href="{% url 'health-card' %}" class="btn btn-light rounded-circle p-2 border shadow-sm ms-1" title="Digital Health Passport">
-          <i class="fa-solid fa-qrcode text-emerald-700" style="color:#047857;"></i>
-        </a>
       </div>
     </header>
 
-    <!-- Main Dashboard Scrollable Content -->
-    <div class="p-3 p-md-4 p-xl-5 flex-grow-1">
+    <!-- Dashboard Container Body -->
+    <div class="p-3 p-md-4 p-xl-4 flex-grow-1">
       
-      <!-- ===================================================================
-           TAB 1: COMMAND OVERVIEW (DEFAULT ACTIVE PANE)
-           =================================================================== -->
-      <div class="tab-pane-content" id="pane-overview">
+      <!-- =====================================================================
+           HERO WELCOME BANNER (EXACT MATCH WITH REFERENCE)
+           ===================================================================== -->
+      <div class="medos-hero-card">
+        <div class="row align-items-center position-relative" style="z-index: 2;">
+          <div class="col-lg-8 col-xl-7">
+            <div class="text-slate-600 fw-semibold mb-1" style="font-size: 1.05rem;">Good Morning,</div>
+            <h1 class="medos-hero-title">Chief Pharmacist {{ user.first_name|default:"Alexander" }}!</h1>
+            <p class="medos-hero-subtitle">
+              Your health, our priority. Here's your health summary for today.
+            </p>
+
+            <!-- 3 Primary Action Buttons -->
+            <div class="d-flex gap-2 gap-md-3 flex-wrap align-items-center">
+              <a href="{% url 'health-card' %}" class="medos-btn-primary">
+                <i class="fa-solid fa-id-card"></i>
+                <span>View Digital Health Passport</span>
+              </a>
+
+              <button class="medos-btn-white" data-bs-toggle="modal" data-bs-target="#addVitalModal">
+                <i class="fa-regular fa-heart text-danger"></i>
+                <span>Log Vitals</span>
+              </button>
+
+              <a href="{% url 'intake' %}" class="medos-btn-white">
+                <i class="fa-solid fa-clipboard-check text-primary"></i>
+                <span>Symptom Intake</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Hero Right Doctor Visual & Floating Badge -->
+          <div class="col-lg-4 col-xl-5 text-end d-none d-lg-block position-relative">
+            <img src="{% static 'images/hero_doctor.png' %}" alt="Doctor Graphic" class="img-fluid" style="max-height: 230px; object-fit: contain; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.1));">
+            
+            <!-- Floating Leaf/Shield Badge (Exact Match) -->
+            <div class="medos-hero-float-badge">
+              <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background: #e6fcf5; color: #00b87c; font-size: 1.15rem;">
+                <i class="fa-solid fa-shield-heart"></i>
+              </div>
+              <div class="text-start lh-1">
+                <div class="fw-bold text-dark" style="font-size: 0.78rem;">Stay Healthy</div>
+                <div class="text-muted" style="font-size: 0.7rem;">Stay Ahead</div>
+                <div class="fw-bold text-emerald-600 font-monospace" style="font-size: 0.65rem; color:#00b87c;">with Antixor</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =====================================================================
+           4 PRIMARY STATISTIC CARDS (EXACT MATCH GRID)
+           ===================================================================== -->
+      <div class="row g-3 mb-4">
         
-        <!-- Welcome Hero Banner -->
-        <div class="med-card p-4 p-md-5 mb-4 position-relative overflow-hidden" style="background: linear-gradient(135deg, #064e3b 0%, #0f172a 70%, #1e293b 100%); color: white; border: 1px solid rgba(255,255,255,0.1);">
-          <div class="row align-items-center">
-            <div class="col-lg-8">
-              <div class="d-flex align-items-center gap-2 mb-2">
-                <span class="badge bg-emerald-500 text-white rounded-pill px-3 py-1 font-monospace" style="background-color: #059669 !important;">
-                  <i class="fa-solid fa-shield-check me-1"></i> EHR AUTHENTICATED
-                </span>
-                <span class="badge bg-white bg-opacity-10 text-emerald-200 rounded-pill px-3 py-1 font-monospace">
-                  ID: {{ user.digital_health_id|default:"ANT-P-882910" }}
-                </span>
+        <!-- Stat 1: Adherence Streak -->
+        <div class="col-sm-6 col-xl-3">
+          <div class="medos-stat-card">
+            <div class="d-flex align-items-start gap-3">
+              <div class="medos-stat-icon-circle" style="background: #fef3c7; color: #f59e0b;">
+                <i class="fa-solid fa-fire"></i>
               </div>
-              <h2 class="display-6 fw-bold mb-2">Welcome back, {{ user.get_full_name|default:user.username }}!</h2>
-              <p class="text-slate-300 lead fs-6 mb-3" style="max-width: 600px;">
-                Your daily medication adherence streak is at <strong class="text-emerald-400">14 Days</strong>. All baseline vitals are currently within optimal clinical ranges.
-              </p>
-              <div class="d-flex gap-2 flex-wrap">
-                <a href="{% url 'health-card' %}" class="btn btn-sm btn-light rounded-pill px-3 fw-bold text-dark">
-                  <i class="fa-solid fa-id-card me-1 text-emerald-700"></i> View Digital Health Passport
-                </a>
-                <button class="btn btn-sm btn-outline-light rounded-pill px-3 fw-bold" onclick="document.querySelector('[data-target=\'pane-vitals\']').click()">
-                  <i class="fa-solid fa-wave-square me-1"></i> Biometrics Telemetry
-                </button>
+              <div>
+                <div class="text-muted small fw-bold text-uppercase" style="font-size: 0.72rem;">Adherence Streak</div>
+                <div class="medos-stat-value">14 <span class="fs-6 text-muted fw-semibold">Days</span></div>
               </div>
             </div>
-
-            <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
-              <div class="d-inline-block bg-white bg-opacity-10 backdrop-blur rounded-4 p-3 border border-white border-opacity-15 text-start">
-                <div class="text-emerald-300 small fw-bold font-monospace text-uppercase mb-1"><i class="fa-solid fa-droplet text-danger me-1"></i> Blood Profile</div>
-                <div class="h4 fw-bold text-white mb-2">{{ user.blood_group|default:"O+" }} <span class="fs-6 text-slate-300 fw-normal">• Rh Positive</span></div>
-                <div class="small text-slate-300 mb-1">Known Allergies: <strong class="text-white">{{ user.medical_allergies|default:"None Reported" }}</strong></div>
-                <div class="small text-slate-300">Emergency Contact: <strong class="text-white">{{ user.emergency_phone|default:"+1 (800) 555-0199" }}</strong></div>
-              </div>
+            <div class="d-flex justify-content-between align-items-center pt-2 mt-2 border-top">
+              <span class="small fw-bold text-success"><i class="fa-solid fa-arrow-up me-1"></i> 100% On Schedule</span>
+              <span class="text-muted small">›</span>
             </div>
           </div>
         </div>
 
-        <!-- 4 Core Metric KPI Highlights -->
-        <div class="row g-3 mb-4">
-          <div class="col-sm-6 col-xl-3">
-            <div class="kpi-card med-card-hover">
-              <div class="d-flex justify-content-between align-items-start">
-                <div>
-                  <div class="text-muted small fw-bold text-uppercase">Adherence Streak</div>
-                  <div class="h3 fw-bold text-dark my-1">14 <span class="fs-6 text-success fw-semibold">Days</span></div>
-                  <div class="small text-success fw-semibold"><i class="fa-solid fa-fire me-1"></i> 100% On Schedule</div>
-                </div>
-                <div class="kpi-icon-wrap bg-success bg-opacity-10 text-success">
-                  <i class="fa-solid fa-fire-flame-curved"></i>
-                </div>
+        <!-- Stat 2: Active Orders -->
+        <div class="col-sm-6 col-xl-3">
+          <div class="medos-stat-card">
+            <div class="d-flex align-items-start gap-3">
+              <div class="medos-stat-icon-circle" style="background: #e0f2fe; color: #0284c7;">
+                <i class="fa-solid fa-truck-medical"></i>
               </div>
-              <div class="progress mt-3" style="height: 6px;">
-                <div class="progress-bar bg-success" role="progressbar" style="width: 100%;"></div>
+              <div>
+                <div class="text-muted small fw-bold text-uppercase" style="font-size: 0.72rem;">Active Orders</div>
+                <div class="medos-stat-value">{{ orders.count|default:"1" }} <span class="fs-6 text-muted fw-semibold">Delivery</span></div>
               </div>
             </div>
-          </div>
-
-          <div class="col-sm-6 col-xl-3">
-            <div class="kpi-card med-card-hover">
-              <div class="d-flex justify-content-between align-items-start">
-                <div>
-                  <div class="text-muted small fw-bold text-uppercase">Active Order</div>
-                  <div class="h3 fw-bold text-dark my-1">{{ orders.count|default:"1" }} <span class="fs-6 text-primary fw-semibold">Delivery</span></div>
-                  <div class="small text-primary fw-semibold"><i class="fa-solid fa-temperature-arrow-down me-1"></i> Cold-Chain 4°C Active</div>
-                </div>
-                <div class="kpi-icon-wrap bg-primary bg-opacity-10 text-primary">
-                  <i class="fa-solid fa-truck-medical"></i>
-                </div>
-              </div>
-              <div class="progress mt-3" style="height: 6px;">
-                <div class="progress-bar bg-primary" role="progressbar" style="width: 65%;"></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-sm-6 col-xl-3">
-            <div class="kpi-card med-card-hover">
-              <div class="d-flex justify-content-between align-items-start">
-                <div>
-                  <div class="text-muted small fw-bold text-uppercase">Latest Blood Pressure</div>
-                  <div class="h3 fw-bold text-dark my-1">{{ latest_vital.blood_pressure|default:"120/80" }}</div>
-                  <div class="small text-info fw-semibold"><i class="fa-solid fa-heart-pulse me-1"></i> {{ latest_vital.heart_rate|default:"72" }} bpm • Optimal</div>
-                </div>
-                <div class="kpi-icon-wrap bg-info bg-opacity-10 text-info">
-                  <i class="fa-solid fa-wave-square"></i>
-                </div>
-              </div>
-              <div class="progress mt-3" style="height: 6px;">
-                <div class="progress-bar bg-info" role="progressbar" style="width: 80%;"></div>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-sm-6 col-xl-3">
-            <div class="kpi-card med-card-hover">
-              <div class="d-flex justify-content-between align-items-start">
-                <div>
-                  <div class="text-muted small fw-bold text-uppercase">Verified Prescriptions</div>
-                  <div class="h3 fw-bold text-dark my-1">{{ prescriptions.count|default:"2" }} <span class="fs-6 text-warning fw-semibold">On File</span></div>
-                  <div class="small text-success fw-semibold"><i class="fa-solid fa-circle-check me-1"></i> Pharmacist Approved</div>
-                </div>
-                <div class="kpi-icon-wrap bg-warning bg-opacity-10 text-warning">
-                  <i class="fa-solid fa-file-shield"></i>
-                </div>
-              </div>
-              <div class="progress mt-3" style="height: 6px;">
-                <div class="progress-bar bg-warning" role="progressbar" style="width: 90%;"></div>
-              </div>
+            <div class="d-flex justify-content-between align-items-center pt-2 mt-2 border-top">
+              <span class="small fw-bold text-primary"><i class="fa-solid fa-temperature-arrow-down me-1"></i> Cold-Chain 4°C</span>
+              <span class="text-muted small">›</span>
             </div>
           </div>
         </div>
 
-        <!-- 2-Column Split Operations Section -->
-        <div class="row g-4">
-          
-          <!-- Left Main Stream (Col 7) -->
-          <div class="col-lg-7">
-            
-            <!-- Live Active Order Timeline -->
-            {% if orders %}
-              {% with ord=orders.first %}
-              <div class="med-card p-4 mb-4">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                  <div>
-                    <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-truck-fast text-emerald-600 me-2" style="color: #059669;"></i> Active Prescription Delivery #{{ ord.order_number }}</h5>
-                    <span class="small text-muted">Dispensed from Antixor Flagship Hub • Cold-Chain Packaging</span>
-                  </div>
-                  <a href="{% url 'order-invoice' ord.order_number %}" class="btn btn-sm btn-outline-secondary rounded-pill fw-semibold">
-                    <i class="fa-solid fa-file-invoice me-1"></i> Tax Invoice
-                  </a>
-                </div>
-
-                <!-- 5-Step Stepper -->
-                <div class="stepper-track">
-                  <div class="progress-line" style="width: 60%;"></div>
-                  
-                  <div class="stepper-node completed">
-                    <div class="stepper-dot"><i class="fa-solid fa-check"></i></div>
-                    <div class="small fw-bold text-dark">Placed</div>
-                    <div class="text-muted font-monospace" style="font-size: 0.65rem;">10:15 AM</div>
-                  </div>
-                  
-                  <div class="stepper-node completed">
-                    <div class="stepper-dot"><i class="fa-solid fa-user-doctor"></i></div>
-                    <div class="small fw-bold text-dark">Rx Verified</div>
-                    <div class="text-muted font-monospace" style="font-size: 0.65rem;">10:30 AM</div>
-                  </div>
-
-                  <div class="stepper-node active">
-                    <div class="stepper-dot"><i class="fa-solid fa-box-open"></i></div>
-                    <div class="small fw-bold text-emerald-700" style="color:#047857;">Cold Packed</div>
-                    <div class="text-success font-monospace" style="font-size: 0.65rem;">2°C - 8°C OK</div>
-                  </div>
-
-                  <div class="stepper-node">
-                    <div class="stepper-dot"><i class="fa-solid fa-motorcycle"></i></div>
-                    <div class="small text-muted">Dispatched</div>
-                    <div class="text-muted font-monospace" style="font-size: 0.65rem;">ETA ~20m</div>
-                  </div>
-
-                  <div class="stepper-node">
-                    <div class="stepper-dot"><i class="fa-solid fa-house-chimney-medical"></i></div>
-                    <div class="small text-muted">Delivered</div>
-                    <div class="text-muted font-monospace" style="font-size: 0.65rem;">Pending</div>
-                  </div>
-                </div>
-
-                <div class="p-3 bg-light rounded-4 mt-3 d-flex justify-content-between align-items-center">
-                  <span class="small text-muted"><i class="fa-solid fa-location-dot text-danger me-1"></i> Shipping to: <strong>{{ ord.shipping_address|default:"100 Wall Street, New York, NY" }}</strong></span>
-                  <a href="{% url 'order-track' %}?order_number={{ ord.order_number }}" class="btn btn-sm btn-emerald text-white rounded-pill px-3 fw-bold" style="background-color:#059669;">
-                    <i class="fa-solid fa-crosshairs me-1"></i> Live Tracking
-                  </a>
-                </div>
+        <!-- Stat 3: Blood Pressure -->
+        <div class="col-sm-6 col-xl-3">
+          <div class="medos-stat-card">
+            <div class="d-flex align-items-start gap-3">
+              <div class="medos-stat-icon-circle" style="background: #ffe4e6; color: #f43f5e;">
+                <i class="fa-solid fa-heart-pulse"></i>
               </div>
-              {% endwith %}
-            {% endif %}
-
-            <!-- Today's Pill Schedule & Interactive Checklist -->
-            <div class="med-card p-4 mb-4">
-              <div class="d-flex justify-content-between align-items-center mb-4">
-                <div>
-                  <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-calendar-check text-success me-2"></i> Today's Pill Reminders</h5>
-                  <p class="small text-muted mb-0">Check off your doses to maintain your daily adherence score.</p>
-                </div>
-                <button class="btn btn-sm btn-outline-success rounded-pill px-3 fw-bold" data-bs-toggle="modal" data-bs-target="#addPillModal">
-                  <i class="fa-solid fa-plus me-1"></i> Add Medication
-                </button>
+              <div>
+                <div class="text-muted small fw-bold text-uppercase" style="font-size: 0.72rem;">Blood Pressure</div>
+                <div class="medos-stat-value">{{ latest_vital.blood_pressure|default:"120/80" }}</div>
               </div>
-
-              {% if pill_reminders %}
-                <div class="d-flex flex-column gap-3">
-                  {% for pill in pill_reminders %}
-                    <div class="p-3 rounded-4 border d-flex justify-content-between align-items-center {% if pill.is_taken %}bg-light bg-opacity-75{% else %}bg-white shadow-sm{% endif %}">
-                      <div class="d-flex align-items-center gap-3">
-                        <div class="form-check form-switch fs-4">
-                          <input class="form-check-input pill-toggle-btn" type="checkbox" role="switch" data-pill-id="{{ pill.id }}" {% if pill.is_taken %}checked{% endif %}>
-                        </div>
-                        <div>
-                          <div class="h6 fw-bold mb-1 {% if pill.is_taken %}text-decoration-line-through text-muted{% else %}text-dark{% endif %}" id="pill-name-{{ pill.id }}">
-                            {{ pill.medication_name }} <span class="badge bg-light text-dark border ms-2 font-monospace">{{ pill.dosage }}</span>
-                          </div>
-                          <div class="small text-muted">
-                            <span class="badge bg-secondary-subtle text-secondary me-2"><i class="fa-regular fa-clock me-1"></i>{{ pill.time_slot|upper }}</span>
-                            <span>{{ pill.instructions|default:"Take with food and full glass of water" }}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="text-end">
-                        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2">
-                          <i class="fa-solid fa-fire me-1"></i> {{ pill.streak_days }} Day Streak
-                        </span>
-                      </div>
-                    </div>
-                  {% endfor %}
-                </div>
-              {% else %}
-                <div class="text-center py-4 text-muted">
-                  <p class="small mb-0">No pill reminders scheduled for today.</p>
-                </div>
-              {% endif %}
             </div>
-
-            <!-- Doctor Consultation Preview Card -->
-            <div class="med-card p-4">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-user-doctor text-primary me-2"></i> Telehealth Specialists</h5>
-                <a href="{% url 'telehealth' %}" class="btn btn-sm btn-outline-primary rounded-pill fw-semibold">
-                  <i class="fa-solid fa-calendar-plus me-1"></i> Book Specialist
-                </a>
-              </div>
-
-              {% if consultations %}
-                {% with c=consultations.first %}
-                <div class="p-3 bg-light rounded-4 border d-flex justify-content-between align-items-center">
-                  <div class="d-flex align-items-center gap-3">
-                    <img src="{% static 'images/doctor_female.jpg' %}" alt="Doctor" class="rounded-circle border" style="width: 50px; height: 50px; object-fit: cover;">
-                    <div>
-                      <div class="fw-bold text-dark">{{ c.doctor.full_name }} ({{ c.doctor.get_specialty_display }})</div>
-                      <div class="small text-muted"><i class="fa-regular fa-clock me-1"></i> Scheduled: {{ c.preferred_date }} at {{ c.preferred_time_slot }}</div>
-                    </div>
-                  </div>
-                  <a href="{% url 'consultation-room' c.id %}" class="btn btn-sm btn-emerald text-white rounded-pill px-4 fw-bold" style="background-color: #059669;">
-                    <i class="fa-solid fa-video me-1"></i> Enter Room
-                  </a>
-                </div>
-                {% endwith %}
-              {% else %}
-                <div class="p-3 bg-light rounded-4 text-center">
-                  <p class="small text-muted mb-2">Connect with board-certified physicians and clinical pharmacists.</p>
-                  <a href="{% url 'telehealth' %}" class="btn btn-sm btn-primary rounded-pill px-4 fw-bold">Book Free Consultation</a>
-                </div>
-              {% endif %}
+            <div class="d-flex justify-content-between align-items-center pt-2 mt-2 border-top">
+              <span class="small fw-bold text-cyan-600" style="color:#0891b2;"><i class="fa-solid fa-heart me-1 text-danger"></i> 72 bpm • Optimal</span>
+              <span class="text-cyan-500"><i class="fa-solid fa-waveform-lines"></i> ›</span>
             </div>
-
           </div>
+        </div>
 
-          <!-- Right Sidebar Operations (Col 5) -->
-          <div class="col-lg-5">
-            
-            <!-- Digital Health Passport Wallet Card -->
-            <div class="passport-mini-card mb-4">
-              <div class="d-flex justify-content-between align-items-start mb-3">
-                <div class="d-flex align-items-center gap-2">
-                  <i class="fa-solid fa-staff-snake fs-4 text-emerald-400"></i>
-                  <div>
-                    <div class="fw-bold fs-6 tracking-wide text-white">ANTIXOR PASSPORT</div>
-                    <div class="text-emerald-300 font-monospace" style="font-size: 0.65rem;">VERIFIED MEDICAL ID</div>
-                  </div>
-                </div>
-                <span class="badge bg-emerald-500 text-white font-monospace rounded-pill px-2 py-1" style="font-size: 0.7rem; background-color: #059669 !important;">ACTIVE</span>
+        <!-- Stat 4: Verified Prescriptions -->
+        <div class="col-sm-6 col-xl-3">
+          <div class="medos-stat-card">
+            <div class="d-flex align-items-start gap-3">
+              <div class="medos-stat-icon-circle" style="background: #fef9c3; color: #ca8a04;">
+                <i class="fa-solid fa-file-shield"></i>
               </div>
-
-              <div class="row g-2 mb-3">
-                <div class="col-8">
-                  <div class="text-slate-400 small text-uppercase font-monospace" style="font-size: 0.65rem;">Patient Name</div>
-                  <div class="fw-bold text-white fs-5 text-uppercase font-monospace mb-2">{{ user.get_full_name|default:user.username }}</div>
-                  
-                  <div class="row g-2">
-                    <div class="col-6">
-                      <div class="text-slate-400 small text-uppercase font-monospace" style="font-size: 0.65rem;">Health ID</div>
-                      <div class="fw-bold text-emerald-300 font-monospace small">{{ user.digital_health_id|default:"ANT-P-882910" }}</div>
-                    </div>
-                    <div class="col-6">
-                      <div class="text-slate-400 small text-uppercase font-monospace" style="font-size: 0.65rem;">Blood Type</div>
-                      <div class="fw-bold text-danger font-monospace small">{{ user.blood_group|default:"O+" }}</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-4 text-end">
-                  <div class="bg-white p-2 rounded-3 d-inline-block shadow-sm">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://antixorpharmacy.com/patient/verify/{{ user.digital_health_id|default:'ANT-P-882910' }}" alt="QR ID" class="img-fluid" style="width: 70px; height: 70px;">
-                  </div>
-                </div>
-              </div>
-
-              <div class="pt-3 border-top border-secondary border-opacity-50 d-flex justify-content-between align-items-center">
-                <span class="small text-slate-300 font-monospace" style="font-size: 0.7rem;"><i class="fa-solid fa-lock text-emerald-400 me-1"></i> HIPAA 256-bit Encrypted</span>
-                <a href="{% url 'health-card' %}" class="btn btn-sm btn-outline-light rounded-pill px-3 py-1 font-monospace" style="font-size: 0.75rem;">
-                  Print Card <i class="fa-solid fa-arrow-right ms-1"></i>
-                </a>
+              <div>
+                <div class="text-muted small fw-bold text-uppercase" style="font-size: 0.72rem;">Verified Prescriptions</div>
+                <div class="medos-stat-value">{{ prescriptions.count|default:"2" }} <span class="fs-6 text-muted fw-semibold">On File</span></div>
               </div>
             </div>
+            <div class="d-flex justify-content-between align-items-center pt-2 mt-2 border-top">
+              <span class="small fw-bold text-success"><i class="fa-solid fa-circle-check me-1"></i> Pharmacist Approved</span>
+              <span class="text-muted small">›</span>
+            </div>
+          </div>
+        </div>
 
-            <!-- Vitals Quick Radar -->
-            <div class="med-card p-4 mb-4">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 class="fw-bold text-dark mb-0"><i class="fa-solid fa-heart-pulse text-danger me-2"></i> Current Biometrics</h6>
-                <button class="btn btn-sm btn-outline-danger rounded-pill px-3 py-1 fw-bold" style="font-size: 0.75rem;" data-bs-toggle="modal" data-bs-target="#addVitalModal">
-                  + Log
-                </button>
-              </div>
+      </div>
 
-              <div class="row g-2">
-                <div class="col-6">
-                  <div class="p-3 bg-light rounded-3 border">
-                    <div class="text-muted small">Blood Pressure</div>
-                    <div class="fw-bold text-dark fs-5">{{ latest_vital.blood_pressure|default:"120/80" }}</div>
-                    <span class="badge bg-success-subtle text-success font-monospace" style="font-size: 0.65rem;">Optimal</span>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="p-3 bg-light rounded-3 border">
-                    <div class="text-muted small">Blood Sugar</div>
-                    <div class="fw-bold text-dark fs-5">{{ latest_vital.blood_sugar|default:"95" }} <small class="fs-6 text-muted">mg/dL</small></div>
-                    <span class="badge bg-success-subtle text-success font-monospace" style="font-size: 0.65rem;">Normal</span>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="p-3 bg-light rounded-3 border">
-                    <div class="text-muted small">Heart Rate</div>
-                    <div class="fw-bold text-dark fs-5">{{ latest_vital.heart_rate|default:"72" }} <small class="fs-6 text-muted">bpm</small></div>
-                    <span class="badge bg-info-subtle text-info font-monospace" style="font-size: 0.65rem;">Resting</span>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="p-3 bg-light rounded-3 border">
-                    <div class="text-muted small">SpO2 Oxygen</div>
-                    <div class="fw-bold text-dark fs-5">{{ latest_vital.spo2|default:"98" }}%</div>
-                    <span class="badge bg-primary-subtle text-primary font-monospace" style="font-size: 0.65rem;">Healthy</span>
-                  </div>
-                </div>
-              </div>
+      <!-- =====================================================================
+           MIDDLE 3-COLUMN SECTION (SCHEDULE | VITALS | ORDERS)
+           ===================================================================== -->
+      <div class="row g-4 mb-4">
+        
+        <!-- 1. Today's Schedule Card (Col 4) -->
+        <div class="col-lg-4" id="todayScheduleCard">
+          <div class="medos-card">
+            <div class="medos-card-header">
+              <h3 class="medos-card-title">
+                <i class="fa-solid fa-calendar-days text-primary"></i>
+                <span>Today's Schedule</span>
+              </h3>
+              <button class="medos-link-action border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#addPillModal">View All</button>
             </div>
 
-            <!-- Nearest Facilities & Emergency Hubs -->
-            <div class="med-card p-4">
-              <div class="d-flex justify-content-between align-items-center mb-3">
-                <h6 class="fw-bold text-dark mb-0"><i class="fa-solid fa-hospital text-emerald-600 me-2" style="color:#059669;"></i> Nearest Medical Hubs</h6>
-                <a href="{% url 'facilities' %}" class="small fw-bold text-decoration-none" style="color: #059669;">View Map</a>
-              </div>
+            <!-- Schedule Items Timeline -->
+            <div class="d-flex flex-column gap-3">
               
-              {% if nearest_facilities %}
-                <div class="d-flex flex-column gap-2">
-                  {% for f in nearest_facilities %}
-                    <div class="p-2 rounded-3 border bg-light d-flex justify-content-between align-items-center">
-                      <div class="overflow-hidden">
-                        <div class="fw-bold text-dark small text-truncate">{{ f.name }}</div>
-                        <div class="text-muted" style="font-size: 0.7rem;">{{ f.address }} • <span class="badge bg-secondary-subtle text-secondary">{{ f.get_facility_type_display }}</span></div>
-                      </div>
-                      <a href="tel:{{ f.phone }}" class="btn btn-sm btn-outline-success rounded-circle p-2 ms-2" title="Call Hub">
-                        <i class="fa-solid fa-phone"></i>
-                      </a>
-                    </div>
-                  {% endfor %}
-                </div>
-              {% endif %}
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- ===================================================================
-           TAB 2: VITALS & BIOMETRICS TELEMETRY PANE
-           =================================================================== -->
-      <div class="tab-pane-content d-none" id="pane-vitals">
-        <div class="med-card p-4 p-md-5 mb-4">
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-              <h4 class="fw-bold text-dark mb-1">Patient Biometrics & Vitals Telemetry</h4>
-              <p class="text-muted small mb-0">Live physiological records synced with clinical chart.</p>
-            </div>
-            <button class="btn btn-emerald text-white rounded-pill px-4 fw-bold shadow-sm" style="background-color: #059669;" data-bs-toggle="modal" data-bs-target="#addVitalModal">
-              <i class="fa-solid fa-plus me-1"></i> Log New Biometrics
-            </button>
-          </div>
-
-          <!-- Vitals Visual Cards -->
-          <div class="row g-3 mb-5">
-            <div class="col-md-4 col-sm-6">
-              <div class="p-4 rounded-4 bg-light border">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <span class="text-muted small fw-bold text-uppercase">Blood Pressure</span>
-                  <i class="fa-solid fa-heart-pulse text-danger fs-5"></i>
-                </div>
-                <div class="h2 fw-bold text-dark mb-1">{{ latest_vital.blood_pressure|default:"120/80" }} <span class="fs-6 text-muted fw-normal">mmHg</span></div>
-                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">Optimal Range</span>
-              </div>
-            </div>
-
-            <div class="col-md-4 col-sm-6">
-              <div class="p-4 rounded-4 bg-light border">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <span class="text-muted small fw-bold text-uppercase">Fasting Blood Sugar</span>
-                  <i class="fa-solid fa-droplet text-warning fs-5"></i>
-                </div>
-                <div class="h2 fw-bold text-dark mb-1">{{ latest_vital.blood_sugar|default:"95" }} <span class="fs-6 text-muted fw-normal">mg/dL</span></div>
-                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">Normal (&lt;100 mg/dL)</span>
-              </div>
-            </div>
-
-            <div class="col-md-4 col-sm-6">
-              <div class="p-4 rounded-4 bg-light border">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <span class="text-muted small fw-bold text-uppercase">Pulse Rate</span>
-                  <i class="fa-solid fa-wave-square text-info fs-5"></i>
-                </div>
-                <div class="h2 fw-bold text-dark mb-1">{{ latest_vital.heart_rate|default:"72" }} <span class="fs-6 text-muted fw-normal">bpm</span></div>
-                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">Resting Normal</span>
-              </div>
-            </div>
-
-            <div class="col-md-4 col-sm-6">
-              <div class="p-4 rounded-4 bg-light border">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <span class="text-muted small fw-bold text-uppercase">Blood Oxygen (SpO2)</span>
-                  <i class="fa-solid fa-lungs text-primary fs-5"></i>
-                </div>
-                <div class="h2 fw-bold text-dark mb-1">{{ latest_vital.spo2|default:"98" }} <span class="fs-6 text-muted fw-normal">%</span></div>
-                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">Excellent Oxygenation</span>
-              </div>
-            </div>
-
-            <div class="col-md-4 col-sm-6">
-              <div class="p-4 rounded-4 bg-light border">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <span class="text-muted small fw-bold text-uppercase">Body Weight & BMI</span>
-                  <i class="fa-solid fa-weight-scale text-success fs-5"></i>
-                </div>
-                <div class="h2 fw-bold text-dark mb-1">{{ latest_vital.weight_kg|default:"68.5" }} <span class="fs-6 text-muted fw-normal">kg</span></div>
-                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">BMI: {{ latest_vital.bmi|default:"22.4" }} (Healthy)</span>
-              </div>
-            </div>
-
-            <div class="col-md-4 col-sm-6">
-              <div class="p-4 rounded-4 bg-light border">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <span class="text-muted small fw-bold text-uppercase">Last Sync</span>
-                  <i class="fa-solid fa-clock-rotate-left text-muted fs-5"></i>
-                </div>
-                <div class="h4 fw-bold text-dark mb-1">{{ latest_vital.recorded_at|date:"M d, Y"|default:"Today, 08:30 AM" }}</div>
-                <small class="text-muted"><i class="fa-solid fa-circle-check text-success me-1"></i> Auto-synced with EHR</small>
-              </div>
-            </div>
-          </div>
-
-          <!-- Historical Log Table -->
-          <h5 class="fw-bold text-dark mb-3">Historical Telemetry Logs</h5>
-          <div class="table-responsive">
-            <table class="table table-hover align-middle">
-              <thead class="table-light small font-monospace">
-                <tr>
-                  <th>Timestamp</th>
-                  <th>Blood Pressure</th>
-                  <th>Sugar (mg/dL)</th>
-                  <th>Heart Rate</th>
-                  <th>SpO2</th>
-                  <th>Weight</th>
-                  <th>Clinical Notes</th>
-                </tr>
-              </thead>
-              <tbody class="small">
-                {% if vitals %}
-                  {% for v in vitals %}
-                    <tr>
-                      <td class="fw-semibold">{{ v.recorded_at|date:"M d, Y H:i" }}</td>
-                      <td><span class="badge bg-light text-dark border">{{ v.blood_pressure|default:"—" }}</span></td>
-                      <td>{{ v.blood_sugar|default:"—" }}</td>
-                      <td>{{ v.heart_rate|default:"—" }} bpm</td>
-                      <td>{{ v.spo2|default:"—" }}%</td>
-                      <td>{{ v.weight_kg|default:"—" }} kg</td>
-                      <td class="text-muted">{{ v.notes|default:"Routine self check" }}</td>
-                    </tr>
-                  {% endfor %}
-                {% else %}
-                  <tr>
-                    <td colspan="7" class="text-center py-4 text-muted">No historical vitals recorded yet.</td>
-                  </tr>
-                {% endif %}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      <!-- ===================================================================
-           TAB 3: DAILY PILL REMINDERS PANE
-           =================================================================== -->
-      <div class="tab-pane-content d-none" id="pane-pills">
-        <div class="med-card p-4 p-md-5 mb-4">
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-              <h4 class="fw-bold text-dark mb-1">Medication Regimen & Pill Streaks</h4>
-              <p class="text-muted small mb-0">Build your health habits with automated alerts and dose logging.</p>
-            </div>
-            <button class="btn btn-emerald text-white rounded-pill px-4 fw-bold shadow-sm" style="background-color: #059669;" data-bs-toggle="modal" data-bs-target="#addPillModal">
-              <i class="fa-solid fa-plus me-1"></i> Add Medication
-            </button>
-          </div>
-
-          <div class="row g-3">
-            {% if pill_reminders %}
-              {% for pill in pill_reminders %}
-                <div class="col-12">
-                  <div class="p-4 rounded-4 border d-flex justify-content-between align-items-center {% if pill.is_taken %}bg-light bg-opacity-75{% else %}bg-white shadow-sm{% endif %}">
-                    <div class="d-flex align-items-center gap-3">
-                      <div class="form-check form-switch fs-3">
-                        <input class="form-check-input pill-toggle-btn" type="checkbox" role="switch" data-pill-id="{{ pill.id }}" {% if pill.is_taken %}checked{% endif %}>
-                      </div>
-                      <div>
-                        <div class="h5 fw-bold mb-1 {% if pill.is_taken %}text-decoration-line-through text-muted{% else %}text-dark{% endif %}">
-                          {{ pill.medication_name }} <span class="badge bg-light text-dark border ms-2 font-monospace">{{ pill.dosage }}</span>
-                        </div>
-                        <div class="small text-muted">
-                          <span class="badge bg-secondary-subtle text-secondary me-2"><i class="fa-regular fa-clock me-1"></i>{{ pill.time_slot|upper }}</span>
-                          <span>{{ pill.instructions|default:"Take with food" }}</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="text-end">
-                      <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2 fs-6">
-                        <i class="fa-solid fa-fire me-1"></i> {{ pill.streak_days }} Days Streak
-                      </span>
-                    </div>
+              <!-- Item 1: Metformin (Taken) -->
+              <div class="d-flex align-items-center justify-content-between p-2 rounded-3 bg-light bg-opacity-50">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge bg-success bg-opacity-25 text-success rounded-circle p-1" style="width:8px; height:8px;"></span>
+                  <span class="text-muted font-monospace small fw-bold" style="font-size: 0.75rem;">08:00 AM</span>
+                  <div class="rounded-circle d-flex align-items-center justify-content-center text-emerald-600 bg-emerald-100 ms-1" style="width:32px; height:32px; background-color: #d1fae5; color: #059669;">
+                    <i class="fa-solid fa-pills" style="font-size: 0.85rem;"></i>
                   </div>
-                </div>
-              {% endfor %}
-            {% else %}
-              <div class="text-center py-5 text-muted">
-                <i class="fa-solid fa-prescription-bottle-medical fs-1 text-muted mb-2 d-block"></i>
-                <p>No medication reminders added yet. Click "+ Add Medication" to create your regimen.</p>
-              </div>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-
-      <!-- ===================================================================
-           TAB 4: ORDERS & INVOICES PANE
-           =================================================================== -->
-      <div class="tab-pane-content d-none" id="pane-orders">
-        <div class="med-card p-4 p-md-5 mb-4">
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-              <h4 class="fw-bold text-dark mb-1">Medication Orders & Official Tax Invoices</h4>
-              <p class="text-muted small mb-0">Cold-chain tracked delivery records with printable tax dispense slips.</p>
-            </div>
-            <a href="{% url 'shop' %}" class="btn btn-emerald text-white rounded-pill px-4 fw-bold shadow-sm" style="background-color: #059669;">
-              <i class="fa-solid fa-cart-plus me-1"></i> Order Medications
-            </a>
-          </div>
-
-          {% if orders %}
-            {% for ord in orders %}
-              <div class="border rounded-4 p-4 mb-4 bg-white shadow-sm">
-                <div class="d-flex justify-content-between align-items-start border-bottom pb-3 mb-3">
                   <div>
-                    <h5 class="fw-bold text-dark mb-1">Order #{{ ord.order_number }}</h5>
-                    <div class="text-muted small font-monospace">Placed on: {{ ord.created_at|date:"M d, Y H:i" }} • Payment: {{ ord.payment_method|default:"Credit Card" }}</div>
-                  </div>
-                  <div class="text-end">
-                    <span class="badge {% if ord.order_status == 'DELIVERED' %}bg-success{% elif ord.order_status == 'CANCELLED' %}bg-danger{% else %}bg-primary{% endif %} fs-6 px-3 py-1 rounded-pill">
-                      {{ ord.get_order_status_display }}
-                    </span>
-                    <div class="fw-bold text-emerald-700 fs-5 mt-1" style="color:#047857;">${{ ord.final_amount }}</div>
+                    <div class="fw-bold text-dark small">Metformin 500mg</div>
+                    <div class="text-muted" style="font-size: 0.7rem;">1 tablet after breakfast</div>
                   </div>
                 </div>
-
-                <div class="small text-muted mb-3">
-                  <strong>Prescribed Items:</strong>
-                  {% for item in ord.items.all %}
-                    <span class="badge bg-light text-dark border me-1">{{ item.quantity }}x {{ item.product_name }}</span>
-                  {% endfor %}
-                </div>
-
-                <div class="d-flex gap-2 flex-wrap">
-                  <a href="{% url 'order-track' %}?order_number={{ ord.order_number }}" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold">
-                    <i class="fa-solid fa-location-dot me-1"></i> Track Courier Live
-                  </a>
-                  <a href="{% url 'order-invoice' ord.order_number %}" class="btn btn-sm btn-outline-secondary rounded-pill px-3 fw-bold">
-                    <i class="fa-solid fa-file-invoice-dollar me-1"></i> Official Tax Invoice & Rx Slip
-                  </a>
-                </div>
-              </div>
-            {% endfor %}
-          {% else %}
-            <div class="text-center py-5">
-              <i class="fa-solid fa-boxes-stacked fs-1 text-muted mb-3 d-block"></i>
-              <p class="text-muted">You haven't placed any medication orders yet.</p>
-              <a href="{% url 'shop' %}" class="btn btn-emerald text-white rounded-pill px-4" style="background-color:#059669;">Explore Pharmacy Store</a>
-            </div>
-          {% endif %}
-        </div>
-      </div>
-
-      <!-- ===================================================================
-           TAB 5: PRESCRIPTIONS & INTAKES PANE
-           =================================================================== -->
-      <div class="tab-pane-content d-none" id="pane-prescriptions">
-        <div class="med-card p-4 p-md-5 mb-4">
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-              <h4 class="fw-bold text-dark mb-1">Prescriptions & Clinical Symptom Intakes</h4>
-              <p class="text-muted small mb-0">Certified clinician reviews and dispensary allocations.</p>
-            </div>
-            <a href="{% url 'intake' %}" class="btn btn-emerald text-white rounded-pill px-4 fw-bold shadow-sm" style="background-color: #059669;">
-              <i class="fa-solid fa-plus me-1"></i> New Symptom Intake
-            </a>
-          </div>
-
-          <!-- Intakes -->
-          {% if intakes %}
-            <h6 class="fw-bold text-dark mb-3">Recent Clinical Intakes</h6>
-            {% for intk in intakes %}
-              <div class="border rounded-4 p-3 mb-3 bg-light">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                  <div>
-                    <strong class="text-dark">Intake #{{ intk.id }} — {{ intk.patient_name }}</strong>
-                    <div class="text-muted small">{{ intk.created_at|date:"M d, Y H:i" }}</div>
-                  </div>
-                  <span class="badge {% if intk.status == 'APPROVED' %}bg-success{% elif intk.status == 'REVIEWING' %}bg-primary{% else %}bg-warning text-dark{% endif %} rounded-pill px-3 py-1">
-                    {{ intk.get_status_display }}
-                  </span>
-                </div>
-                <div class="small text-muted mb-2">
-                  <strong>Symptoms:</strong> {{ intk.symptoms }} • <strong>Pain Severity:</strong> {{ intk.pain_severity }}/10
-                </div>
-                {% if intk.allocated_facility %}
-                  <div class="p-2 bg-white rounded-3 small text-muted border">
-                    <i class="fa-solid fa-hospital text-emerald-600 me-1" style="color:#059669;"></i> Allocated Dispensary: <strong>{{ intk.allocated_facility.name }}</strong> ({{ intk.allocated_facility.address }})
-                  </div>
-                {% endif %}
-              </div>
-            {% endfor %}
-          {% endif %}
-
-          <!-- Prescriptions -->
-          <h6 class="fw-bold text-dark mt-4 mb-3">Uploaded Physician Prescriptions</h6>
-          {% if prescriptions %}
-            {% for rx in prescriptions %}
-              <div class="border rounded-4 p-3 mb-3 d-flex justify-content-between align-items-center bg-white shadow-sm">
-                <div>
-                  <h6 class="fw-bold text-dark mb-0">Rx Slip #{{ rx.id }} - {{ rx.patient_name }}</h6>
-                  <div class="text-muted small">Doctor: {{ rx.doctor_name|default:"Board Certified Physician" }} • {{ rx.uploaded_at|date:"M d, Y" }}</div>
-                  {% if rx.notes %}<div class="text-muted small fst-italic mt-1">Notes: {{ rx.notes }}</div>{% endif %}
-                </div>
-                <span class="badge {% if rx.status == 'VERIFIED' %}bg-success{% elif rx.status == 'PENDING' %}bg-warning text-dark{% else %}bg-secondary{% endif %} rounded-pill px-3 py-2">
-                  {{ rx.get_status_display }}
+                <span class="badge bg-emerald-100 text-emerald-800 font-monospace rounded-pill px-2 py-1" style="background-color: #d1fae5; color: #065f46; font-size: 0.7rem;">
+                  Taken ✓
                 </span>
               </div>
-            {% endfor %}
-          {% else %}
-            <p class="text-muted small">No prescriptions uploaded yet.</p>
-          {% endif %}
-        </div>
-      </div>
 
-      <!-- ===================================================================
-           TAB 6: TELEHEALTH SPECIALIST ROOM PANE
-           =================================================================== -->
-      <div class="tab-pane-content d-none" id="pane-telehealth">
-        <div class="med-card p-4 p-md-5 mb-4">
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-              <h4 class="fw-bold text-dark mb-1">Telehealth Virtual Consultation Room</h4>
-              <p class="text-muted small mb-0">Encrypted HD video clinical sessions with board-certified physicians.</p>
-            </div>
-            <a href="{% url 'telehealth' %}" class="btn btn-emerald text-white rounded-pill px-4 fw-bold shadow-sm" style="background-color: #059669;">
-              <i class="fa-solid fa-calendar-plus me-1"></i> Book New Doctor
-            </a>
-          </div>
-
-          {% if consultations %}
-            <div class="row g-3">
-              {% for c in consultations %}
-                <div class="col-md-6">
-                  <div class="p-4 rounded-4 border bg-white shadow-sm h-100 d-flex flex-column justify-content-between">
-                    <div>
-                      <div class="d-flex justify-content-between align-items-start mb-3">
-                        <div>
-                          <h5 class="fw-bold text-dark mb-0">{{ c.doctor.full_name }}</h5>
-                          <span class="badge bg-emerald-100 text-emerald-800 font-monospace" style="background-color: #d1fae5; color: #065f46;">{{ c.doctor.get_specialty_display }}</span>
-                        </div>
-                        <span class="badge bg-success rounded-pill px-3 py-1">{{ c.get_status_display }}</span>
-                      </div>
-                      <div class="small text-muted mb-2">
-                        <i class="fa-regular fa-calendar me-1"></i> {{ c.preferred_date }} at {{ c.preferred_time_slot }}
-                      </div>
-                      <div class="small text-muted mb-3">Symptoms: {{ c.symptoms }}</div>
-                    </div>
-
-                    <a href="{% url 'consultation-room' c.id %}" class="btn btn-emerald text-white rounded-pill w-100 fw-bold py-2" style="background-color: #059669;">
-                      <i class="fa-solid fa-video me-2"></i> Join Live Video Room
-                    </a>
+              <!-- Item 2: Vitamin D3 (Pending) -->
+              <div class="d-flex align-items-center justify-content-between p-2 rounded-3 bg-light bg-opacity-50">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge bg-primary bg-opacity-25 text-primary rounded-circle p-1" style="width:8px; height:8px;"></span>
+                  <span class="text-muted font-monospace small fw-bold" style="font-size: 0.75rem;">12:00 PM</span>
+                  <div class="rounded-circle d-flex align-items-center justify-content-center text-primary bg-primary-subtle ms-1" style="width:32px; height:32px;">
+                    <i class="fa-solid fa-capsules" style="font-size: 0.85rem;"></i>
+                  </div>
+                  <div>
+                    <div class="fw-bold text-dark small">Vitamin D3</div>
+                    <div class="text-muted" style="font-size: 0.7rem;">1 tablet</div>
                   </div>
                 </div>
-              {% endfor %}
+                <span class="badge bg-warning-subtle text-warning-emphasis font-monospace rounded-pill px-2 py-1" style="font-size: 0.7rem;">
+                  Pending
+                </span>
+              </div>
+
+              <!-- Item 3: Atorvastatin (Pending) -->
+              <div class="d-flex align-items-center justify-content-between p-2 rounded-3 bg-light bg-opacity-50">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge bg-purple-500 bg-opacity-25 text-purple-600 rounded-circle p-1" style="width:8px; height:8px; background-color:#c084fc;"></span>
+                  <span class="text-muted font-monospace small fw-bold" style="font-size: 0.75rem;">06:00 PM</span>
+                  <div class="rounded-circle d-flex align-items-center justify-content-center ms-1" style="width:32px; height:32px; background-color: #ede9fe; color: #7c3aed;">
+                    <i class="fa-solid fa-tablets" style="font-size: 0.85rem;"></i>
+                  </div>
+                  <div>
+                    <div class="fw-bold text-dark small">Atorvastatin 10mg</div>
+                    <div class="text-muted" style="font-size: 0.7rem;">1 tablet after dinner</div>
+                  </div>
+                </div>
+                <span class="badge bg-warning-subtle text-warning-emphasis font-monospace rounded-pill px-2 py-1" style="font-size: 0.7rem;">
+                  Pending
+                </span>
+              </div>
+
             </div>
-          {% else %}
-            <div class="text-center py-5">
-              <i class="fa-solid fa-user-doctor fs-1 text-muted mb-3 d-block"></i>
-              <p class="text-muted">No scheduled telehealth consultations.</p>
-              <a href="{% url 'telehealth' %}" class="btn btn-emerald text-white rounded-pill px-4" style="background-color:#059669;">Book a Doctor Consultation</a>
-            </div>
-          {% endif %}
+          </div>
         </div>
+
+        <!-- 2. Health Vitals (Latest) Card (Col 4) -->
+        <div class="col-lg-4" id="healthVitalsCard">
+          <div class="medos-card">
+            <div class="medos-card-header">
+              <h3 class="medos-card-title">
+                <i class="fa-solid fa-wave-square text-emerald-600" style="color:#00b87c;"></i>
+                <span>Health Vitals (Latest)</span>
+              </h3>
+              <button class="medos-link-action border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#addVitalModal">
+                <i class="fa-solid fa-plus me-1"></i> Log Vitals
+              </button>
+            </div>
+
+            <!-- 2x2 Mini Vitals Grid (Exact Match) -->
+            <div class="row g-2">
+              
+              <!-- Mini 1: Blood Pressure -->
+              <div class="col-6">
+                <div class="medos-mini-vital-box">
+                  <div class="rounded-circle d-flex align-items-center justify-content-center text-danger" style="width:36px; height:36px; background:#ffe4e6;">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                  </div>
+                  <div>
+                    <div class="text-muted" style="font-size: 0.68rem; font-weight: 700; text-transform: uppercase;">Blood Pressure</div>
+                    <div class="fw-bold text-dark" style="font-size: 1.15rem; line-height: 1.1;">{{ latest_vital.blood_pressure|default:"120/80" }}</div>
+                    <div class="text-muted font-monospace" style="font-size: 0.65rem;">mmHg</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Mini 2: Heart Rate -->
+              <div class="col-6">
+                <div class="medos-mini-vital-box">
+                  <div class="rounded-circle d-flex align-items-center justify-content-center text-success" style="width:36px; height:36px; background:#dcfce7;">
+                    <i class="fa-solid fa-activity"></i>
+                  </div>
+                  <div>
+                    <div class="text-muted" style="font-size: 0.68rem; font-weight: 700; text-transform: uppercase;">Heart Rate</div>
+                    <div class="fw-bold text-dark" style="font-size: 1.15rem; line-height: 1.1;">{{ latest_vital.heart_rate|default:"72" }}</div>
+                    <div class="text-muted font-monospace" style="font-size: 0.65rem;">bpm</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Mini 3: Blood Oxygen -->
+              <div class="col-6">
+                <div class="medos-mini-vital-box">
+                  <div class="rounded-circle d-flex align-items-center justify-content-center text-info" style="width:36px; height:36px; background:#e0f2fe;">
+                    <i class="fa-solid fa-droplet"></i>
+                  </div>
+                  <div>
+                    <div class="text-muted" style="font-size: 0.68rem; font-weight: 700; text-transform: uppercase;">Blood Oxygen</div>
+                    <div class="fw-bold text-dark" style="font-size: 1.15rem; line-height: 1.1;">{{ latest_vital.spo2|default:"98" }}</div>
+                    <div class="text-muted font-monospace" style="font-size: 0.65rem;">SpO₂ %</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Mini 4: Temperature -->
+              <div class="col-6">
+                <div class="medos-mini-vital-box">
+                  <div class="rounded-circle d-flex align-items-center justify-content-center text-purple-600" style="width:36px; height:36px; background:#ede9fe; color:#7c3aed;">
+                    <i class="fa-solid fa-temperature-half"></i>
+                  </div>
+                  <div>
+                    <div class="text-muted" style="font-size: 0.68rem; font-weight: 700; text-transform: uppercase;">Temperature</div>
+                    <div class="fw-bold text-dark" style="font-size: 1.15rem; line-height: 1.1;">36.6</div>
+                    <div class="text-muted font-monospace" style="font-size: 0.65rem;">°C</div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Recent Orders Card (Col 4) -->
+        <div class="col-lg-4" id="recentOrdersCard">
+          <div class="medos-card">
+            <div class="medos-card-header">
+              <h3 class="medos-card-title">
+                <i class="fa-solid fa-bag-shopping text-info"></i>
+                <span>Recent Orders</span>
+              </h3>
+              <a href="{% url 'shop' %}" class="medos-link-action">View All</a>
+            </div>
+
+            <!-- Order Items List -->
+            <div class="d-flex flex-column gap-3">
+              
+              <!-- Order 1: Diabetes Care Kit -->
+              <div class="d-flex align-items-center justify-content-between p-2 rounded-3 bg-light bg-opacity-50">
+                <div class="d-flex align-items-center gap-2">
+                  <img src="{% static 'images/product_paracetamol.jpg' %}" alt="Product" class="rounded-3 border" style="width: 36px; height: 36px; object-fit: cover;">
+                  <div>
+                    <div class="fw-bold text-dark small">Diabetes Care Kit</div>
+                    <div class="text-muted font-monospace" style="font-size: 0.7rem;">Order #AX7823</div>
+                  </div>
+                </div>
+                <div class="text-end">
+                  <span class="badge bg-emerald-100 text-emerald-800 font-monospace rounded-pill px-2 py-1" style="background-color: #d1fae5; color: #065f46; font-size: 0.65rem;">
+                    ✓ Delivered
+                  </span>
+                  <div class="text-muted font-monospace" style="font-size: 0.65rem;">Sep 24, 2024</div>
+                </div>
+              </div>
+
+              <!-- Order 2: BP Monitor -->
+              <div class="d-flex align-items-center justify-content-between p-2 rounded-3 bg-light bg-opacity-50">
+                <div class="d-flex align-items-center gap-2">
+                  <img src="{% static 'images/product_vitamind3.jpg' %}" alt="Product" class="rounded-3 border" style="width: 36px; height: 36px; object-fit: cover;">
+                  <div>
+                    <div class="fw-bold text-dark small">Blood Pressure Monitor</div>
+                    <div class="text-muted font-monospace" style="font-size: 0.7rem;">Order #AX7819</div>
+                  </div>
+                </div>
+                <div class="text-end">
+                  <span class="badge bg-primary-subtle text-primary font-monospace rounded-pill px-2 py-1" style="font-size: 0.65rem;">
+                    🚚 In Transit
+                  </span>
+                  <div class="text-muted font-monospace" style="font-size: 0.65rem;">Sep 26, 2024</div>
+                </div>
+              </div>
+
+              <!-- Order 3: Vitamin D3 -->
+              <div class="d-flex align-items-center justify-content-between p-2 rounded-3 bg-light bg-opacity-50">
+                <div class="d-flex align-items-center gap-2">
+                  <img src="{% static 'images/product_omega3.jpg' %}" alt="Product" class="rounded-3 border" style="width: 36px; height: 36px; object-fit: cover;">
+                  <div>
+                    <div class="fw-bold text-dark small">Vitamin D3 Tablets</div>
+                    <div class="text-muted font-monospace" style="font-size: 0.7rem;">Order #AX7812</div>
+                  </div>
+                </div>
+                <div class="text-end">
+                  <span class="badge bg-emerald-100 text-emerald-800 font-monospace rounded-pill px-2 py-1" style="background-color: #d1fae5; color: #065f46; font-size: 0.65rem;">
+                    ✓ Delivered
+                  </span>
+                  <div class="text-muted font-monospace" style="font-size: 0.65rem;">Sep 20, 2024</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- =====================================================================
+           BOTTOM 3-COLUMN SECTION (ANALYTICS CHART | QUICK ACTIONS | NOTIFICATIONS)
+           ===================================================================== -->
+      <div class="row g-4">
+        
+        <!-- 1. Health Insights Analytics Bar Chart (Col 5) -->
+        <div class="col-lg-5">
+          <div class="medos-card">
+            <div class="medos-card-header">
+              <h3 class="medos-card-title">
+                <i class="fa-solid fa-chart-simple text-emerald-600" style="color:#00b87c;"></i>
+                <span>Health Insights</span>
+              </h3>
+              <select class="form-select form-select-sm rounded-pill font-monospace" style="width: auto; font-size: 0.75rem;">
+                <option selected>Weekly</option>
+                <option>Monthly</option>
+                <option>Quarterly</option>
+              </select>
+            </div>
+
+            <!-- Chart Canvas Container -->
+            <div style="height: 190px; position: relative;">
+              <canvas id="healthInsightsChart"></canvas>
+            </div>
+
+            <!-- Chart Legend Bottom (Exact Match) -->
+            <div class="d-flex justify-content-center gap-3 pt-3 mt-2 border-top small" style="font-size: 0.75rem;">
+              <span><i class="fa-solid fa-circle text-primary me-1" style="font-size: 0.6rem;"></i> Blood Pressure (Systolic)</span>
+              <span><i class="fa-solid fa-circle text-success me-1" style="font-size: 0.6rem; color:#00b87c !important;"></i> Heart Rate</span>
+              <span><i class="fa-solid fa-circle text-purple-600 me-1" style="font-size: 0.6rem; color:#9333ea !important;"></i> SpO₂</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Quick Actions Grid (Col 4) -->
+        <div class="col-lg-4">
+          <div class="medos-card">
+            <div class="medos-card-header mb-3">
+              <h3 class="medos-card-title">
+                <i class="fa-solid fa-bolt text-primary"></i>
+                <span>Quick Actions</span>
+              </h3>
+            </div>
+
+            <!-- 3x2 Grid of Actions (Exact Match) -->
+            <div class="row g-2">
+              
+              <!-- 1: Upload Prescription -->
+              <div class="col-4">
+                <div class="medos-quick-action-tile" data-bs-toggle="modal" data-bs-target="#auraPrescriptionModal">
+                  <div class="medos-action-icon-circle" style="background:#ede9fe; color:#7c3aed;">
+                    <i class="fa-solid fa-file-arrow-up"></i>
+                  </div>
+                  <span style="font-size: 0.7rem; font-weight: 700; line-height: 1.2;">Upload Rx</span>
+                </div>
+              </div>
+
+              <!-- 2: Book Appointment -->
+              <div class="col-4">
+                <a href="{% url 'telehealth' %}" class="medos-quick-action-tile">
+                  <div class="medos-action-icon-circle" style="background:#e0f2fe; color:#0284c7;">
+                    <i class="fa-solid fa-calendar-plus"></i>
+                  </div>
+                  <span style="font-size: 0.7rem; font-weight: 700; line-height: 1.2;">Book Appt</span>
+                </a>
+              </div>
+
+              <!-- 3: Order Medicines -->
+              <div class="col-4">
+                <a href="{% url 'shop' %}" class="medos-quick-action-tile">
+                  <div class="medos-action-icon-circle" style="background:#dcfce7; color:#059669;">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                  </div>
+                  <span style="font-size: 0.7rem; font-weight: 700; line-height: 1.2;">Order Meds</span>
+                </a>
+              </div>
+
+              <!-- 4: Consult Online -->
+              <div class="col-4">
+                <a href="{% url 'telehealth' %}" class="medos-quick-action-tile">
+                  <div class="medos-action-icon-circle" style="background:#cffafe; color:#0891b2;">
+                    <i class="fa-solid fa-video"></i>
+                  </div>
+                  <span style="font-size: 0.7rem; font-weight: 700; line-height: 1.2;">Consult Live</span>
+                </a>
+              </div>
+
+              <!-- 5: View Lab Reports -->
+              <div class="col-4">
+                <a href="{% url 'health-card' %}" class="medos-quick-action-tile">
+                  <div class="medos-action-icon-circle" style="background:#e0e7ff; color:#4f46e5;">
+                    <i class="fa-solid fa-flask"></i>
+                  </div>
+                  <span style="font-size: 0.7rem; font-weight: 700; line-height: 1.2;">Lab Reports</span>
+                </a>
+              </div>
+
+              <!-- 6: Medication Reminder -->
+              <div class="col-4">
+                <div class="medos-quick-action-tile" data-bs-toggle="modal" data-bs-target="#addPillModal">
+                  <div class="medos-action-icon-circle" style="background:#fef3c7; color:#d97706;">
+                    <i class="fa-solid fa-bell"></i>
+                  </div>
+                  <span style="font-size: 0.7rem; font-weight: 700; line-height: 1.2;">Reminders</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Latest Notifications (Col 3) -->
+        <div class="col-lg-3">
+          <div class="medos-card">
+            <div class="medos-card-header">
+              <h3 class="medos-card-title">
+                <i class="fa-solid fa-bell text-cyan-600" style="color:#0891b2;"></i>
+                <span>Notifications</span>
+              </h3>
+              <a href="javascript:void(0)" class="medos-link-action">View All</a>
+            </div>
+
+            <!-- Notification Items List -->
+            <div class="d-flex flex-column gap-2">
+              
+              <div class="d-flex align-items-start gap-2 p-2 rounded-3 bg-light bg-opacity-50">
+                <div class="rounded-circle d-flex align-items-center justify-content-center text-primary bg-primary-subtle flex-shrink-0" style="width:28px; height:28px; font-size: 0.75rem;">
+                  <i class="fa-solid fa-truck"></i>
+                </div>
+                <div>
+                  <div class="text-dark" style="font-size: 0.75rem; font-weight: 600; line-height: 1.2;">Your medicine order has been shipped.</div>
+                  <div class="text-muted font-monospace" style="font-size: 0.65rem;">2 hours ago</div>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-start gap-2 p-2 rounded-3 bg-light bg-opacity-50">
+                <div class="rounded-circle d-flex align-items-center justify-content-center text-purple-600 flex-shrink-0" style="width:28px; height:28px; background:#ede9fe; color:#7c3aed; font-size: 0.75rem;">
+                  <i class="fa-solid fa-flask"></i>
+                </div>
+                <div>
+                  <div class="text-dark" style="font-size: 0.75rem; font-weight: 600; line-height: 1.2;">Lab report results are now available.</div>
+                  <div class="text-muted font-monospace" style="font-size: 0.65rem;">5 hours ago</div>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-start gap-2 p-2 rounded-3 bg-light bg-opacity-50">
+                <div class="rounded-circle d-flex align-items-center justify-content-center text-danger flex-shrink-0" style="width:28px; height:28px; background:#ffe4e6; font-size: 0.75rem;">
+                  <i class="fa-solid fa-clock"></i>
+                </div>
+                <div>
+                  <div class="text-dark" style="font-size: 0.75rem; font-weight: 600; line-height: 1.2;">It's time for afternoon medication.</div>
+                  <div class="text-muted font-monospace" style="font-size: 0.65rem;">Today, 12:00 PM</div>
+                </div>
+              </div>
+
+              <div class="d-flex align-items-start gap-2 p-2 rounded-3 bg-light bg-opacity-50">
+                <div class="rounded-circle d-flex align-items-center justify-content-center text-info flex-shrink-0" style="width:28px; height:28px; background:#e0f2fe; font-size: 0.75rem;">
+                  <i class="fa-solid fa-calendar-check"></i>
+                </div>
+                <div>
+                  <div class="text-dark" style="font-size: 0.75rem; font-weight: 600; line-height: 1.2;">Your appointment is confirmed.</div>
+                  <div class="text-muted font-monospace" style="font-size: 0.65rem;">Sep 26, 2024</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
       </div>
 
     </div>
   </main>
 </div>
 
-<!-- =====================================================================
-     MODAL: LOG NEW VITAL BIOMETRICS
-     ===================================================================== -->
+<!-- =========================================================================
+     MODAL: LOG NEW HEALTH VITALS
+     ========================================================================= -->
 <div class="modal fade" id="addVitalModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content rounded-4 border-0 shadow">
+    <div class="modal-content rounded-4 border-0 shadow-lg">
       <div class="modal-header bg-light border-bottom">
         <h5 class="modal-title fw-bold text-dark"><i class="fa-solid fa-heart-pulse text-danger me-2"></i> Log Health Biometrics</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -1231,32 +1241,32 @@ body {
               <input type="number" name="spo2" class="form-control rounded-3" value="98">
             </div>
             <div class="col-6">
-              <label class="form-label small fw-bold">Weight (kg)</label>
-              <input type="number" name="weight_kg" step="0.1" class="form-control rounded-3" value="68.5">
+              <label class="form-label small fw-bold">Temperature (°C)</label>
+              <input type="number" step="0.1" class="form-control rounded-3" value="36.6">
             </div>
             <div class="col-12">
               <label class="form-label small fw-bold">Clinical Notes</label>
-              <input type="text" name="notes" class="form-control rounded-3" placeholder="e.g. Morning routine check, normal feeling">
+              <input type="text" name="notes" class="form-control rounded-3" placeholder="e.g. Routine morning health check, feeling great">
             </div>
           </div>
         </div>
         <div class="modal-footer bg-light border-top">
           <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-emerald text-white rounded-pill px-4 fw-bold" style="background-color:#059669;">Save Biometrics</button>
+          <button type="submit" class="btn btn-emerald text-white rounded-pill px-4 fw-bold" style="background-color:#00b87c;">Save Biometrics</button>
         </div>
       </form>
     </div>
   </div>
 </div>
 
-<!-- =====================================================================
-     MODAL: ADD PILL REMINDER
-     ===================================================================== -->
+<!-- =========================================================================
+     MODAL: ADD MEDICATION REMINDER
+     ========================================================================= -->
 <div class="modal fade" id="addPillModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content rounded-4 border-0 shadow">
+    <div class="modal-content rounded-4 border-0 shadow-lg">
       <div class="modal-header bg-light border-bottom">
-        <h5 class="modal-title fw-bold text-dark"><i class="fa-solid fa-pills text-success me-2"></i> Add Daily Medication</h5>
+        <h5 class="modal-title fw-bold text-dark"><i class="fa-solid fa-pills text-success me-2" style="color:#00b87c;"></i> Add Medication Reminder</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form id="pillForm">
@@ -1265,102 +1275,116 @@ body {
           <div class="row g-3">
             <div class="col-12">
               <label class="form-label small fw-bold">Medication Name</label>
-              <input type="text" name="medicine_name" class="form-control rounded-3" placeholder="e.g. High-Potency Vitamin D3 5000 IU" required>
+              <input type="text" name="medicine_name" class="form-control rounded-3" placeholder="e.g. Metformin 500mg" required>
             </div>
             <div class="col-6">
               <label class="form-label small fw-bold">Dosage</label>
               <input type="text" name="dosage" class="form-control rounded-3" placeholder="e.g. 1 Tablet" required>
             </div>
             <div class="col-6">
-              <label class="form-label small fw-bold">Frequency</label>
+              <label class="form-label small fw-bold">Frequency Slot</label>
               <select name="frequency" class="form-select rounded-3">
-                <option value="MORNING">Morning (8:00 AM)</option>
-                <option value="AFTERNOON">Afternoon (1:00 PM)</option>
-                <option value="NIGHT">Night (9:00 PM)</option>
+                <option value="MORNING">Morning (08:00 AM)</option>
+                <option value="AFTERNOON">Afternoon (12:00 PM)</option>
+                <option value="NIGHT">Evening (06:00 PM)</option>
                 <option value="TWICE_DAILY">Twice Daily</option>
               </select>
             </div>
             <div class="col-12">
               <label class="form-label small fw-bold">Instructions</label>
-              <input type="text" name="notes" class="form-control rounded-3" placeholder="e.g. Take with food and full glass of water">
+              <input type="text" name="notes" class="form-control rounded-3" placeholder="e.g. Take after breakfast with water">
             </div>
           </div>
         </div>
         <div class="modal-footer bg-light border-top">
           <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-emerald text-white rounded-pill px-4 fw-bold" style="background-color:#059669;" onclick="alert('Medication added to schedule!'); window.location.reload();">Save Medication</button>
+          <button type="button" class="btn btn-emerald text-white rounded-pill px-4 fw-bold" style="background-color:#00b87c;" onclick="alert('Medication added to schedule!'); window.location.reload();">Save Medication</button>
         </div>
       </form>
     </div>
   </div>
 </div>
 
+<!-- =========================================================================
+     JAVASCRIPT: SIDEBAR TOGGLE, AJAX VITALS, & CHART.JS ANALYTICS
+     ========================================================================= -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Mobile Sidebar Toggle
-  const sidebar = document.getElementById('dashboardSidebar');
-  const toggleBtn = document.getElementById('sidebarToggleBtn');
+  
+  // 1. Mobile Sidebar Toggle
+  const sidebar = document.getElementById('medosSidebar');
+  const toggleBtn = document.getElementById('medosSidebarToggle');
   if(toggleBtn && sidebar) {
     toggleBtn.addEventListener('click', function() {
-      sidebar.classList.toggle('show');
+      sidebar.classList.toggle('open');
     });
   }
 
-  // Sidebar Tab Navigation Controller
-  const navTriggers = document.querySelectorAll('.tab-trigger');
-  const panes = document.querySelectorAll('.tab-pane-content');
-
-  navTriggers.forEach(btn => {
-    btn.addEventListener('click', function() {
-      const targetId = this.dataset.target;
-      
-      // Update sidebar active class
-      navTriggers.forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-
-      // Update active pane
-      panes.forEach(pane => pane.classList.add('d-none'));
-      const activePane = document.getElementById(targetId);
-      if(activePane) {
-        activePane.classList.remove('d-none');
-      }
-
-      // Close mobile sidebar if open
-      if(window.innerWidth < 992 && sidebar) {
-        sidebar.classList.remove('show');
-      }
-    });
-  });
-
-  // Toggle Pill Taken Status
-  document.querySelectorAll('.pill-toggle-btn').forEach(function(toggle) {
-    toggle.addEventListener('change', function() {
-      const pillId = this.dataset.pillId;
-      fetch(`/api/patient/pill-reminders/${pillId}/toggle/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': getCsrfToken()
-        }
-      })
-      .then(res => res.json())
-      .then(data => {
-        if(data.reminder) {
-          const nameEl = document.getElementById(`pill-name-${pillId}`);
-          if(nameEl) {
-            if(data.reminder.is_taken) {
-              nameEl.classList.add('text-decoration-line-through', 'text-muted');
-            } else {
-              nameEl.classList.remove('text-decoration-line-through', 'text-muted');
-            }
+  // 2. Health Insights Multi-Bar Chart (Chart.js)
+  const ctx = document.getElementById('healthInsightsChart');
+  if(ctx) {
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        datasets: [
+          {
+            label: 'Blood Pressure (Systolic)',
+            data: [122, 118, 120, 125, 119, 121, 120],
+            backgroundColor: '#3b82f6',
+            borderRadius: 6,
+            barPercentage: 0.6,
+            categoryPercentage: 0.8
+          },
+          {
+            label: 'Heart Rate',
+            data: [74, 71, 72, 76, 73, 70, 72],
+            backgroundColor: '#00b87c',
+            borderRadius: 6,
+            barPercentage: 0.6,
+            categoryPercentage: 0.8
+          },
+          {
+            label: 'SpO2',
+            data: [98, 99, 98, 97, 98, 99, 98],
+            backgroundColor: '#9333ea',
+            borderRadius: 6,
+            barPercentage: 0.6,
+            categoryPercentage: 0.8
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            backgroundColor: '#0f172a',
+            padding: 10,
+            cornerRadius: 8,
+            titleFont: { size: 12, weight: 'bold' }
+          }
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            ticks: { color: '#64748b', font: { size: 11, weight: 'bold' } }
+          },
+          y: {
+            min: 60,
+            max: 150,
+            grid: { color: '#f1f5f9' },
+            ticks: { color: '#94a3b8', font: { size: 10 }, stepSize: 30 }
           }
         }
-      })
-      .catch(err => console.error('Pill toggle error:', err));
+      }
     });
-  });
+  }
 
-  // Handle Log Vitals AJAX
+  // 3. Handle Log Vitals AJAX
   const vitalsForm = document.getElementById('vitalsForm');
   if(vitalsForm) {
     vitalsForm.addEventListener('submit', function(e) {
