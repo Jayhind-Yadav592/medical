@@ -52,6 +52,9 @@
 {% endblock %}
 
 {% block content %}
+<div class="no-print">
+  {% include 'partials/navbar.html' %}
+</div>
 <div class="bg-light py-4 border-bottom no-print">
   <div class="container">
     <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
@@ -183,5 +186,8 @@
 
     </div>
   </div>
+</div>
+<div class="no-print">
+  {% include 'partials/footer.html' %}
 </div>
 {% endblock %}

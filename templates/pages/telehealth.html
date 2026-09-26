@@ -1,24 +1,29 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Virtual Care & Doctor Directory — AuraHealth™ Telehealth{% endblock %}
+{% block title %}Virtual Care & Doctor Directory — Antixor Telehealth{% endblock %}
 
 {% block content %}
+<!-- Top Header Navigation -->
+{% include 'partials/navbar.html' %}
+
 <!-- Telehealth Header -->
 <div class="bg-light py-5 border-bottom">
   <div class="container text-center">
-    <span class="badge bg-cyan-100 text-cyan-800 mb-2">Virtual Clinical Care</span>
-    <h1 class="display-6 fw-bold text-navy-800 mb-2">Connect With Certified Doctors & Pharmacists</h1>
-    <p class="text-muted mx-auto mb-4" style="max-width: 600px;">
+    <span class="badge bg-success bg-opacity-10 text-success fw-bold px-3 py-1 rounded-pill mb-2 font-monospace">
+      <i class="fa-solid fa-video me-1"></i> VIRTUAL CLINICAL CARE &amp; TELEHEALTH
+    </span>
+    <h1 class="display-6 fw-bold text-dark mb-2">Connect With Certified Doctors &amp; Pharmacists</h1>
+    <p class="text-muted mx-auto mb-4" style="max-width: 620px;">
       Consult with board-certified physicians, clinical pharmacologists, pediatricians, and dermatologists via secure video, audio, or instant chat.
     </p>
 
     <!-- Specialty Quick Filter Pills -->
     <div class="d-flex flex-wrap justify-content-center gap-2">
-      <a href="{% url 'telehealth' %}" class="btn btn-sm {% if not selected_specialty %}btn-dark{% else %}btn-outline-dark{% endif %} rounded-pill">All Specialists</a>
-      <a href="{% url 'telehealth' %}?specialty=CLINICAL_PHARMACIST" class="btn btn-sm {% if selected_specialty == 'CLINICAL_PHARMACIST' %}btn-dark{% else %}btn-outline-dark{% endif %} rounded-pill">Clinical Pharmacists</a>
-      <a href="{% url 'telehealth' %}?specialty=GENERAL_PHYSICIAN" class="btn btn-sm {% if selected_specialty == 'GENERAL_PHYSICIAN' %}btn-dark{% else %}btn-outline-dark{% endif %} rounded-pill">General Physicians</a>
-      <a href="{% url 'telehealth' %}?specialty=DERMATOLOGIST" class="btn btn-sm {% if selected_specialty == 'DERMATOLOGIST' %}btn-dark{% else %}btn-outline-dark{% endif %} rounded-pill">Dermatology & Skin</a>
+      <a href="{% url 'telehealth' %}" class="btn btn-sm {% if not selected_specialty %}btn-success text-white{% else %}btn-outline-secondary bg-white{% endif %} rounded-pill fw-bold px-3" {% if not selected_specialty %}style="background-color:#009b72;"{% endif %}>All Specialists</a>
+      <a href="{% url 'telehealth' %}?specialty=CLINICAL_PHARMACIST" class="btn btn-sm {% if selected_specialty == 'CLINICAL_PHARMACIST' %}btn-success text-white{% else %}btn-outline-secondary bg-white{% endif %} rounded-pill fw-bold px-3" {% if selected_specialty == 'CLINICAL_PHARMACIST' %}style="background-color:#009b72;"{% endif %}>Clinical Pharmacists</a>
+      <a href="{% url 'telehealth' %}?specialty=GENERAL_PHYSICIAN" class="btn btn-sm {% if selected_specialty == 'GENERAL_PHYSICIAN' %}btn-success text-white{% else %}btn-outline-secondary bg-white{% endif %} rounded-pill fw-bold px-3" {% if selected_specialty == 'GENERAL_PHYSICIAN' %}style="background-color:#009b72;"{% endif %}>General Physicians</a>
+      <a href="{% url 'telehealth' %}?specialty=DERMATOLOGIST" class="btn btn-sm {% if selected_specialty == 'DERMATOLOGIST' %}btn-success text-white{% else %}btn-outline-secondary bg-white{% endif %} rounded-pill fw-bold px-3" {% if selected_specialty == 'DERMATOLOGIST' %}style="background-color:#009b72;"{% endif %}>Dermatology &amp; Skin</a>
     </div>
   </div>
 </div>
@@ -30,41 +35,53 @@
         <div class="card border rounded-4 p-4 shadow-sm h-100 d-flex flex-column bg-white">
           
           <div class="d-flex align-items-center gap-3 mb-3">
-            <img src="{{ doc.get_avatar }}" alt="{{ doc.full_name }}" class="rounded-circle border border-2 border-primary" style="width: 72px; height: 72px; object-fit: cover;">
+            <img src="{{ doc.get_avatar }}" alt="{{ doc.full_name }}" class="rounded-circle border border-2 border-success" style="width: 72px; height: 72px; object-fit: cover;">
             <div>
-              <h5 class="fw-bold text-navy-800 mb-0 fs-6">{{ doc.full_name }}</h5>
-              <div class="text-cyan-600 fw-bold small">{{ doc.get_specialty_display }}</div>
+              <h5 class="fw-bold text-dark mb-0 fs-6">{{ doc.full_name }}</h5>
+              <div class="text-success fw-bold small" style="color: #009b72 !important;">{{ doc.get_specialty_display }}</div>
               <div class="text-muted" style="font-size: 0.75rem;">{{ doc.experience_years }}+ Years Clinical Experience</div>
             </div>
           </div>
 
-          <p class="text-slate-600 small flex-grow-1 mb-3">{{ doc.bio }}</p>
+          <p class="text-muted small flex-grow-1 mb-3">{{ doc.bio }}</p>
 
           <div class="bg-light rounded-3 p-2 mb-3 small">
             <div class="d-flex justify-content-between text-muted mb-1">
-              <span><i class="fa-solid fa-graduation-cap me-1 text-primary"></i> Qualification:</span>
+              <span><i class="fa-solid fa-graduation-cap me-1 text-success" style="color:#009b72;"></i> Qualification:</span>
               <span class="text-dark fw-bold text-truncate" style="max-width: 160px;">{{ doc.qualification }}</span>
             </div>
             <div class="d-flex justify-content-between text-muted">
-              <span><i class="fa-regular fa-clock me-1 text-success"></i> Next Available:</span>
+              <span><i class="fa-regular fa-clock me-1 text-success" style="color:#009b72;"></i> Next Available:</span>
               <span class="text-dark fw-bold">{{ doc.next_available_slot }}</span>
             </div>
           </div>
 
           <div class="d-flex justify-content-between align-items-center pt-3 border-top mt-auto">
             <div>
-              <span class="text-muted small d-block">Consultation Fee</span>
-              <span class="fw-bold text-navy-800 fs-6">{% if doc.consultation_fee == 0 %}<span class="text-success">FREE Triage</span>{% else %}${{ doc.consultation_fee }}{% endif %}</span>
+              <span class="text-muted small d-block" style="font-size: 0.72rem;">Consultation Fee</span>
+              <span class="fw-bold text-dark fs-6">{% if doc.consultation_fee == 0 %}<span class="text-success" style="color:#009b72 !important;">FREE Triage</span>{% else %}${{ doc.consultation_fee }}{% endif %}</span>
             </div>
-            <button class="aura-btn-primary btn-sm" onclick="openDoctorBookingModal({{ doc.id }}, '{{ doc.full_name }}', '{{ doc.get_specialty_display }}', {{ doc.consultation_fee }})">
-              <i class="fa-solid fa-video"></i>
-              <span>Book Appointment</span>
-            </button>
+            <div class="d-flex gap-2">
+              <a href="{% url 'consultation-room' 'ANT-DOC-101' %}" class="btn btn-sm btn-outline-dark rounded-pill px-2 py-1" title="Join Video Room">
+                <i class="fa-solid fa-video"></i>
+              </a>
+              <button class="btn btn-sm btn-success rounded-pill px-3 py-1 fw-bold text-white shadow-sm" style="background-color: #009b72;" onclick="openDoctorBookingModal({{ doc.id }}, '{{ doc.full_name }}', '{{ doc.get_specialty_display }}', {{ doc.consultation_fee }})">
+                <span>Book Consult</span>
+              </button>
+            </div>
           </div>
 
         </div>
       </div>
+    {% empty %}
+      <div class="col-12 text-center py-5">
+        <h5 class="text-dark fw-bold">No specialists found in this category</h5>
+        <a href="{% url 'telehealth' %}" class="btn btn-sm btn-success rounded-pill px-3 py-2 fw-bold" style="background-color: #009b72;">View All Specialists</a>
+      </div>
     {% endfor %}
   </div>
 </div>
+
+<!-- Include Global Footer -->
+{% include 'partials/footer.html' %}
 {% endblock %}

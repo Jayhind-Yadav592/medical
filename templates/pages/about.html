@@ -1,46 +1,110 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}About AuraHealth™ — Clinical Excellence & Pharmacy Innovation{% endblock %}
+{% block title %}About Us — Antixor Pharmacy Clinical Excellence{% endblock %}
 
 {% block content %}
-<div class="py-5 text-white" style="background: linear-gradient(135deg, var(--aura-navy-900) 0%, var(--aura-navy-800) 100%);">
+<!-- Top Header Navigation -->
+{% include 'partials/navbar.html' %}
+
+<div class="py-5 text-white" style="background: linear-gradient(135deg, #062e2c 0%, #0a4b47 50%, #064e3b 100%);">
   <div class="container text-center py-4">
-    <h1 class="display-5 fw-bold text-white mb-3">Pioneering Next-Generation Pharmacy</h1>
-    <p class="text-slate-300 mx-auto mb-0" style="max-width: 640px;">
-      Merging certified pharmacology, cold-chain logistics, and virtual clinical care to make genuine healthcare accessible to every household.
+    <span class="badge bg-success bg-opacity-25 text-white px-3 py-1 rounded-pill mb-3 font-monospace">
+      <i class="fa-solid fa-staff-snake me-1"></i> TRUSTED HEALTHCARE NETWORK SINCE 2020
+    </span>
+    <h1 class="display-5 fw-bold text-white mb-3">Pioneering Next-Generation Digital Pharmacy</h1>
+    <p class="text-white-50 mx-auto mb-0" style="max-width: 660px; font-size: 1.05rem;">
+      Merging certified pharmacology, cold-chain logistics, and virtual clinical care to make genuine, lab-verified healthcare accessible to every household.
     </p>
   </div>
 </div>
 
 <div class="container py-5">
+  
+  <!-- Clinical Mission & Story -->
   <div class="row g-5 align-items-center mb-5">
     <div class="col-lg-6">
-      <h2 class="fw-bold text-navy-800 mb-3">Our Clinical Mission</h2>
-      <p class="text-slate-700">
-        AuraHealth was founded with a singular purpose: to remove friction and counterfeit risks from the healthcare supply chain. We believe every patient deserves authentic, lab-verified medications dispensed with the highest degree of pharmaceutical precision.
+      <span class="badge bg-success bg-opacity-10 text-success fw-bold px-3 py-1 rounded-pill mb-2">OUR PURPOSE</span>
+      <h2 class="fw-bold text-dark mb-3">Our Clinical Mission &amp; Standards</h2>
+      <p class="text-muted mb-3">
+        Antixor Pharmacy was founded with a singular commitment: to remove counterfeit risks, friction, and delays from the medical supply chain. We believe every patient deserves authentic, lab-verified medications dispensed with the highest degree of pharmaceutical precision.
       </p>
-      <p class="text-slate-700">
-        Every prescription submitted to AuraHealth is evaluated by two board-certified clinical pharmacists for therapeutic drug interactions, dosage accuracy, and patient allergy profiles prior to dispatch.
+      <p class="text-muted mb-4">
+        Every prescription submitted to Antixor is evaluated by two board-certified clinical pharmacists for therapeutic drug interactions, dosage accuracy, and patient allergy profiles prior to cold-chain dispatch.
       </p>
-      <div class="row g-3 pt-3">
+      
+      <div class="row g-3">
         <div class="col-6">
           <div class="border rounded-4 p-3 bg-light text-center">
-            <h3 class="fw-bold text-primary mb-0">100%</h3>
-            <small class="text-muted">Batch Traceability</small>
+            <h3 class="fw-bold text-success mb-0" style="color: #009b72 !important;">100%</h3>
+            <small class="text-muted fw-bold">Batch Traceability</small>
           </div>
         </div>
         <div class="col-6">
           <div class="border rounded-4 p-3 bg-light text-center">
-            <h3 class="fw-bold text-emerald-600 mb-0">45 Min</h3>
-            <small class="text-muted">Metro Express Transit</small>
+            <h3 class="fw-bold text-dark mb-0">2–4 Hrs</h3>
+            <small class="text-muted fw-bold">Express Delivery</small>
           </div>
         </div>
       </div>
     </div>
+    
     <div class="col-lg-6">
-      <img src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=800&auto=format&fit=crop&q=80" alt="Pharmacy Clean Lab" class="img-fluid rounded-5 shadow-lg border">
+      <div class="card border-0 rounded-4 overflow-hidden shadow-lg p-2 bg-white">
+        <img src="{% static 'images/hero_doctor.jpg' %}" alt="Antixor Lead Physician" class="img-fluid rounded-3" style="max-height: 420px; object-fit: cover; width: 100%;">
+      </div>
     </div>
   </div>
+
+  <!-- Key Pillars Grid -->
+  <div class="row g-4 my-4">
+    <div class="col-md-4">
+      <div class="card border rounded-4 p-4 shadow-sm bg-white h-100">
+        <div class="rounded-circle text-white d-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 48px; height: 48px; background-color: #009b72;">
+          <i class="fa-solid fa-shield-halved fs-5"></i>
+        </div>
+        <h5 class="fw-bold text-dark mb-2">100% Genuine Certified</h5>
+        <p class="text-muted small mb-0">All formulations sourced directly from FDA/GMP licensed pharmaceutical manufacturers with unique batch barcodes.</p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card border rounded-4 p-4 shadow-sm bg-white h-100">
+        <div class="rounded-circle text-white d-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 48px; height: 48px; background-color: #0284c7;">
+          <i class="fa-solid fa-snowflake fs-5"></i>
+        </div>
+        <h5 class="fw-bold text-dark mb-2">Cold-Chain Assurance</h5>
+        <p class="text-muted small mb-0">Temperature-sensitive medications (biologics, insulins, vaccines) maintained strictly at 2°C – 8°C throughout transit.</p>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card border rounded-4 p-4 shadow-sm bg-white h-100">
+        <div class="rounded-circle text-white d-flex align-items-center justify-content-center mb-3 shadow-sm" style="width: 48px; height: 48px; background-color: #9333ea;">
+          <i class="fa-solid fa-user-doctor fs-5"></i>
+        </div>
+        <h5 class="fw-bold text-dark mb-2">Licensed Medical Triage</h5>
+        <p class="text-muted small mb-0">24/7 on-demand clinical consultation with certified general practitioners, pediatricians, and clinical pharmacologists.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Banner -->
+  <div class="p-4 p-md-5 rounded-4 text-white text-center mt-5" style="background: linear-gradient(135deg, #062e2c 0%, #009b72 100%);">
+    <h3 class="fw-bold mb-2">Ready to Experience Smarter Healthcare?</h3>
+    <p class="text-white-50 mx-auto mb-4" style="max-width: 500px;">Explore authentic medications, upload your prescription, or consult with our on-call medical specialists.</p>
+    <div class="d-flex gap-3 justify-content-center flex-wrap">
+      <a href="{% url 'shop' %}" class="btn btn-light rounded-pill px-4 py-2 fw-bold text-dark">
+        <i class="fa-solid fa-store me-1"></i> Browse Medicine Catalog
+      </a>
+      <a href="{% url 'telehealth' %}" class="btn btn-outline-light rounded-pill px-4 py-2 fw-bold">
+        <i class="fa-solid fa-user-doctor me-1"></i> Consult Doctors
+      </a>
+    </div>
+  </div>
+
 </div>
+
+<!-- Include Global Footer -->
+{% include 'partials/footer.html' %}
 {% endblock %}

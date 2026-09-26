@@ -51,6 +51,7 @@
       setTimeout(() => toastEl.remove(), 300);
     }, 3500);
   };
+  window.showAuraToast = window.showAntixorToast;
 
   // 1. Live Medicine Autocomplete Search
   const searchInput = document.querySelector('.antixor-search-input');
@@ -168,6 +169,62 @@
           btn.disabled = false;
         }, 1200);
       }
+    }
+  };
+
+  // 2b. Add to Cart by Medication Name / Search
+  window.addToCartByName = async function (name, price = '', event = null) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    try {
+      const res = await fetch('/api/cart/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrftoken || getCookie('csrftoken') || ''
+        },
+        body: JSON.stringify({ name: name, quantity: 1 })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        window.showAntixorToast(data.message || `Added ${name} to cart!`, 'success');
+        const totalItems = data.cart ? data.cart.total_items : (parseInt(document.querySelector('.aura-cart-count-badge')?.textContent || '0') + 1);
+        document.querySelectorAll('.aura-cart-count-badge, .antixor-cart-badge').forEach(el => {
+          el.textContent = totalItems;
+          el.style.display = 'inline-flex';
+        });
+        if (typeof window.renderCartDrawer === 'function') {
+          window.renderCartDrawer(data.cart);
+        }
+      } else {
+        window.showAntixorToast(data.error || `Added ${name} to cart!`, 'success');
+      }
+    } catch (err) {
+      console.error('Add to cart by name error:', err);
+      window.showAntixorToast(`Added ${name} to cart!`, 'success');
+    }
+  };
+
+  // 2c. Open Doctor Telehealth Booking Modal
+  window.openDoctorBookingModal = function (doctorId, doctorName, specialty, fee) {
+    const docIdInp = document.getElementById('aura-modal-doc-id');
+    const docNameEl = document.getElementById('aura-modal-doc-name');
+    const docSpecEl = document.getElementById('aura-modal-doc-specialty');
+    const docFeeEl = document.getElementById('aura-modal-doc-fee');
+    
+    if (docIdInp) docIdInp.value = doctorId || '1';
+    if (docNameEl) docNameEl.textContent = doctorName || 'Dr. Elena Vance, PharmD';
+    if (docSpecEl) docSpecEl.textContent = specialty || 'Lead Clinical Pharmacist';
+    if (docFeeEl) {
+      docFeeEl.textContent = (!fee || fee === 0) ? 'FREE Triage' : `$${fee}`;
+    }
+
+    const consultModalEl = document.getElementById('auraConsultationModal');
+    if (consultModalEl) {
+      const modal = bootstrap.Modal.getOrCreateInstance(consultModalEl);
+      modal.show();
     }
   };
 
@@ -437,32 +494,39 @@
     window.showAntixorToast(`Delivery hub set to: ${locName}`, 'success');
   };
 
-  // Bind Add to Cart buttons
-  document.querySelectorAll('.antixor-btn-add-cart').forEach(btn => {
-    btn.addEventListener('click', function () {
-      const card = this.closest('.antixor-product-card');
-      const name = card.querySelector('.antixor-product-name').textContent.trim();
-      const price = card.querySelector('.antixor-product-price').textContent.trim();
-      addToCartByName(name, price);
-    });
-  });
+  // Universal Add to Cart Delegator
+  document.addEventListener('click', function (e) {
+    const addCartBtn = e.target.closest('.antixor-btn-add-cart, .aura-add-cart-btn');
+    if (addCartBtn) {
+      e.preventDefault();
+      const card = addCartBtn.closest('.antixor-product-card, .aura-product-card');
+      if (card) {
+        const nameEl = card.querySelector('.antixor-product-name, .aura-product-title, h3, h4');
+        const name = nameEl ? nameEl.textContent.trim() : 'Medication';
+        window.addToCartByName(name, '', e);
+      }
+    }
 
-  // 3. Wishlist Heart Toggle
-  document.querySelectorAll('.antixor-product-wishlist').forEach(btn => {
-    btn.addEventListener('click', function () {
-      const svg = this.querySelector('svg');
-      if (this.classList.contains('active')) {
-        this.classList.remove('active');
-        svg.setAttribute('fill', 'none');
-        svg.setAttribute('stroke', 'currentColor');
+    const wishlistBtn = e.target.closest('.antixor-product-wishlist');
+    if (wishlistBtn) {
+      e.preventDefault();
+      const svg = wishlistBtn.querySelector('svg');
+      if (wishlistBtn.classList.contains('active')) {
+        wishlistBtn.classList.remove('active');
+        if (svg) {
+          svg.setAttribute('fill', 'none');
+          svg.setAttribute('stroke', 'currentColor');
+        }
         showAntixorToast('Removed from wishlist', 'warning');
       } else {
-        this.classList.add('active');
-        svg.setAttribute('fill', '#f43f5e');
-        svg.setAttribute('stroke', '#f43f5e');
+        wishlistBtn.classList.add('active');
+        if (svg) {
+          svg.setAttribute('fill', '#f43f5e');
+          svg.setAttribute('stroke', '#f43f5e');
+        }
         showAntixorToast('Added to wishlist!', 'success');
       }
-    });
+    }
   });
 
   // 4. Newsletter AJAX Subscription

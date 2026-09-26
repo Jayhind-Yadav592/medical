@@ -4,6 +4,9 @@
 {% block title %}Sign In — Antixor Pharmacy{% endblock %}
 
 {% block content %}
+<!-- Top Header Navigation -->
+{% include 'partials/navbar.html' %}
+
 <div class="antixor-auth-wrapper py-5" style="background: #f8fafc; min-height: 80vh;">
   <div class="container py-4">
     <div class="row justify-content-center">
@@ -107,4 +110,6 @@
     </div>
   </div>
 </div>
+<!-- Include Global Footer -->
+{% include 'partials/footer.html' %}
 {% endblock %}

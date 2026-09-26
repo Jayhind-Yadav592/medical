@@ -4,6 +4,9 @@
 {% block title %}Smart Clinical Symptom Intake & Prescription Dispatch — Antixor Pharmacy{% endblock %}
 
 {% block content %}
+<!-- Top Header Navigation -->
+{% include 'partials/navbar.html' %}
+
 <!-- Header Hero -->
 <div class="bg-navy-900 text-white py-5" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #064e3b 100%);">
   <div class="container text-center max-w-700">
@@ -416,4 +419,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
+<!-- Include Global Footer -->
+{% include 'partials/footer.html' %}
 {% endblock %}

@@ -1,107 +1,157 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Clinical & Healthcare Services — AuraHealth™ Platform{% endblock %}
+{% block title %}Clinical Care & Healthcare Services — Antixor Pharmacy{% endblock %}
 
 {% block content %}
+<!-- Top Header Navigation -->
+{% include 'partials/navbar.html' %}
+
 <!-- Services Header -->
-<div class="py-5 text-white" style="background: linear-gradient(135deg, var(--aura-navy-900) 0%, var(--aura-navy-800) 100%);">
+<div class="py-5 text-white" style="background: linear-gradient(135deg, #062e2c 0%, #0a4b47 50%, #064e3b 100%);">
   <div class="container text-center py-4">
-    <span class="aura-badge aura-badge-otc mb-3" style="background: rgba(16,185,129,0.2); color: #34d399;">Comprehensive Healthcare</span>
-    <h1 class="display-5 fw-bold text-white mb-3">Our Clinical Care & Pharmacy Services</h1>
-    <p class="text-slate-300 mx-auto mb-0" style="max-width: 640px;">
-      From urgent e-prescription fulfillment and cold-chain biologics transport to 24/7 virtual tele-pharmacist consultations and automated chronic care refills.
+    <span class="badge bg-success bg-opacity-25 text-white px-3 py-1 rounded-pill mb-3 font-monospace">
+      <i class="fa-solid fa-stethoscope me-1"></i> INTEGRATED PHARMACY &amp; HEALTHCARE
+    </span>
+    <h1 class="display-5 fw-bold text-white mb-3">Our Clinical Care &amp; Pharmacy Services</h1>
+    <p class="text-white-50 mx-auto mb-0" style="max-width: 660px; font-size: 1.05rem;">
+      From rapid 5-minute prescription verification and cold-chain door dispatch to 24/7 virtual doctor consultations and automated chronic care refills.
     </p>
   </div>
 </div>
 
 <div class="container py-5">
-  <div class="row g-5">
+  <div class="row g-4">
     
     <!-- Service 1: e-Prescriptions -->
-    <div class="col-lg-6">
-      <div class="card border rounded-4 p-4 shadow-sm h-100">
+    <div class="col-lg-4 col-md-6">
+      <div class="card border rounded-4 p-4 shadow-sm h-100 bg-white d-flex flex-column">
         <div class="d-flex align-items-center gap-3 mb-3">
-          <div class="rounded-circle bg-emerald-100 text-emerald-600 p-3 fs-4">
-            <i class="fa-solid fa-file-prescription"></i>
+          <div class="rounded-circle text-white d-flex align-items-center justify-content-center shadow-sm" style="width: 50px; height: 50px; background-color: #009b72;">
+            <i class="fa-solid fa-file-prescription fs-4"></i>
           </div>
           <div>
-            <h4 class="fw-bold text-navy-800 mb-0">e-Prescription Verification & Dispensing</h4>
-            <span class="badge bg-success">10-Minute Pharmacist Triage</span>
+            <h5 class="fw-bold text-dark mb-0 fs-6">Prescription Verification &amp; Dispensing</h5>
+            <span class="badge bg-success bg-opacity-10 text-success fw-bold">5-Min Verification</span>
           </div>
         </div>
-        <p class="text-slate-600 mb-4">
-          Simply take a photo of your handwritten doctor's prescription or attach your digital clinic e-script. Our board-certified clinical pharmacologists cross-check drug allergies, interactions, and dispense with tamper-evident safety seals.
+        <p class="text-muted small mb-4 flex-grow-1">
+          Take a photo of your doctor's handwritten Rx or digital e-script. Our licensed clinical pharmacists cross-check drug interactions, dosages, and dispense with tamper-evident safety seals.
         </p>
-        <button class="aura-btn-emerald btn-sm w-100 justify-content-center" data-bs-toggle="modal" data-bs-target="#auraPrescriptionModal">
-          <i class="fa-solid fa-upload"></i> Upload Your Prescription Now
+        <button class="btn btn-success rounded-pill w-100 py-2 fw-bold text-white shadow-sm mt-auto" style="background-color: #009b72;" data-bs-toggle="modal" data-bs-target="#auraPrescriptionModal">
+          <i class="fa-solid fa-cloud-arrow-up me-1"></i> Upload Prescription
         </button>
       </div>
     </div>
 
     <!-- Service 2: Cold-Chain Delivery -->
-    <div class="col-lg-6">
-      <div class="card border rounded-4 p-4 shadow-sm h-100">
+    <div class="col-lg-4 col-md-6">
+      <div class="card border rounded-4 p-4 shadow-sm h-100 bg-white d-flex flex-column">
         <div class="d-flex align-items-center gap-3 mb-3">
-          <div class="rounded-circle bg-cyan-100 text-cyan-600 p-3 fs-4">
-            <i class="fa-solid fa-snowflake"></i>
+          <div class="rounded-circle text-white d-flex align-items-center justify-content-center shadow-sm" style="width: 50px; height: 50px; background-color: #0284c7;">
+            <i class="fa-solid fa-snowflake fs-4"></i>
           </div>
           <div>
-            <h4 class="fw-bold text-navy-800 mb-0">Temperature-Shield™ Cold-Chain Delivery</h4>
-            <span class="badge bg-primary">15-45 Min Urban Delivery</span>
+            <h5 class="fw-bold text-dark mb-0 fs-6">Temperature-Shield™ Cold-Chain Delivery</h5>
+            <span class="badge bg-primary bg-opacity-10 text-primary fw-bold">2°C – 8°C Monitored</span>
           </div>
         </div>
-        <p class="text-slate-600 mb-4">
-          Insulins, monoclonal antibodies, eye drops, and live probiotics are vulnerable to temperature spikes. We pack your medications in certified thermal phases with real-time temperature loggers.
+        <p class="text-muted small mb-4 flex-grow-1">
+          Insulins, vaccines, biologics, eye drops, and live probiotics are packed in certified thermal phases with real-time temperature tracking delivered directly to your doorstep.
         </p>
-        <a href="{% url 'shop' %}" class="aura-btn-primary btn-sm w-100 justify-content-center">
-          <i class="fa-solid fa-truck-fast"></i> Order Temperature-Shielded Meds
+        <a href="{% url 'shop' %}" class="btn btn-outline-primary rounded-pill w-100 py-2 fw-bold mt-auto">
+          <i class="fa-solid fa-truck-fast me-1"></i> Order Cold-Chain Meds
         </a>
       </div>
     </div>
 
     <!-- Service 3: Telehealth Consultations -->
-    <div class="col-lg-6">
-      <div class="card border rounded-4 p-4 shadow-sm h-100">
+    <div class="col-lg-4 col-md-6">
+      <div class="card border rounded-4 p-4 shadow-sm h-100 bg-white d-flex flex-column">
         <div class="d-flex align-items-center gap-3 mb-3">
-          <div class="rounded-circle bg-coral-100 text-danger p-3 fs-4" style="background: var(--aura-coral-100);">
-            <i class="fa-solid fa-video"></i>
+          <div class="rounded-circle text-white d-flex align-items-center justify-content-center shadow-sm" style="width: 50px; height: 50px; background-color: #9333ea;">
+            <i class="fa-solid fa-video fs-4"></i>
           </div>
           <div>
-            <h4 class="fw-bold text-navy-800 mb-0">24/7 Virtual Telehealth Consultations</h4>
-            <span class="badge bg-danger">Free Triage Available</span>
+            <h5 class="fw-bold text-dark mb-0 fs-6">24/7 Virtual Telehealth Consultations</h5>
+            <span class="badge bg-purple bg-opacity-10 text-purple fw-bold" style="background:#f3e8ff; color:#9333ea;">Instant Video &amp; Chat</span>
           </div>
         </div>
-        <p class="text-slate-600 mb-4">
-          Speak with our certified doctors, family physicians, and clinical pharmacologists from the comfort of your home. Get digital prescriptions issued directly to your AuraHealth cart.
+        <p class="text-muted small mb-4 flex-grow-1">
+          Speak with our certified doctors, family physicians, and clinical pharmacologists from home. Get e-prescriptions issued directly to your Antixor cart.
         </p>
-        <a href="{% url 'telehealth' %}" class="aura-btn-outline btn-sm w-100 justify-content-center">
-          <i class="fa-solid fa-calendar-check"></i> Book Doctor Consultation
+        <a href="{% url 'telehealth' %}" class="btn btn-outline-dark rounded-pill w-100 py-2 fw-bold mt-auto">
+          <i class="fa-solid fa-calendar-check me-1"></i> Book Doctor Consult
         </a>
       </div>
     </div>
 
     <!-- Service 4: Chronic Care Smart Refills -->
-    <div class="col-lg-6">
-      <div class="card border rounded-4 p-4 shadow-sm h-100">
+    <div class="col-lg-4 col-md-6">
+      <div class="card border rounded-4 p-4 shadow-sm h-100 bg-white d-flex flex-column">
         <div class="d-flex align-items-center gap-3 mb-3">
-          <div class="rounded-circle bg-amber-100 text-warning p-3 fs-4">
-            <i class="fa-solid fa-repeat"></i>
+          <div class="rounded-circle text-white d-flex align-items-center justify-content-center shadow-sm" style="width: 50px; height: 50px; background-color: #ea580c;">
+            <i class="fa-solid fa-repeat fs-4"></i>
           </div>
           <div>
-            <h4 class="fw-bold text-navy-800 mb-0">Chronic Disease Medication Management</h4>
-            <span class="badge bg-warning text-dark">Save 15% Monthly</span>
+            <h5 class="fw-bold text-dark mb-0 fs-6">Chronic Disease Medication Management</h5>
+            <span class="badge bg-warning bg-opacity-25 text-dark fw-bold">Save 15% Monthly</span>
           </div>
         </div>
-        <p class="text-slate-600 mb-4">
-          Managing hypertension, high cholesterol, asthma, or Type 2 diabetes? Enroll in our automated 30 or 90-day smart refill program with doctor renewal reminders and subsidized medication rates.
+        <p class="text-muted small mb-4 flex-grow-1">
+          Managing hypertension, high cholesterol, asthma, or Type 2 diabetes? Enroll in automated 30 or 90-day smart refills with doctor renewal reminders and subsidized rates.
         </p>
-        <a href="{% url 'shop' %}?category=chronic-care-diabetes" class="aura-btn-primary btn-sm w-100 justify-content-center">
-          <i class="fa-solid fa-heart-pulse"></i> Set Up Chronic Care Refill
+        <a href="{% url 'shop' %}?category=chronic-care-diabetes" class="btn btn-outline-warning text-dark rounded-pill w-100 py-2 fw-bold mt-auto">
+          <i class="fa-solid fa-heart-pulse me-1"></i> Set Up Chronic Care Refill
+        </a>
+      </div>
+    </div>
+
+    <!-- Service 5: Hospital & Emergency Locator -->
+    <div class="col-lg-4 col-md-6">
+      <div class="card border rounded-4 p-4 shadow-sm h-100 bg-white d-flex flex-column">
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div class="rounded-circle text-white d-flex align-items-center justify-content-center shadow-sm" style="width: 50px; height: 50px; background-color: #f43f5e;">
+            <i class="fa-solid fa-hospital fs-4"></i>
+          </div>
+          <div>
+            <h5 class="fw-bold text-dark mb-0 fs-6">24/7 Hospital &amp; Emergency Hubs</h5>
+            <span class="badge bg-danger bg-opacity-10 text-danger fw-bold">GPS Spatial Radar</span>
+          </div>
+        </div>
+        <p class="text-muted small mb-4 flex-grow-1">
+          Locate the nearest open Antixor pharmacy, Level-1 trauma centers, and diagnostic pathology labs with live travel distance and immediate emergency dialing.
+        </p>
+        <a href="{% url 'facilities' %}" class="btn btn-outline-danger rounded-pill w-100 py-2 fw-bold mt-auto">
+          <i class="fa-solid fa-location-dot me-1"></i> Find Nearest Hospital
+        </a>
+      </div>
+    </div>
+
+    <!-- Service 6: Digital Health ID & Records -->
+    <div class="col-lg-4 col-md-6">
+      <div class="card border rounded-4 p-4 shadow-sm h-100 bg-white d-flex flex-column">
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <div class="rounded-circle text-white d-flex align-items-center justify-content-center shadow-sm" style="width: 50px; height: 50px; background-color: #0d9488;">
+            <i class="fa-solid fa-id-card-clip fs-4"></i>
+          </div>
+          <div>
+            <h5 class="fw-bold text-dark mb-0 fs-6">Digital Health ID &amp; EHR Passport</h5>
+            <span class="badge bg-success bg-opacity-10 text-success fw-bold">QR Emergency Stamp</span>
+          </div>
+        </div>
+        <p class="text-muted small mb-4 flex-grow-1">
+          Access your digital biometric ID card with blood group, documented medical allergies, emergency doctor contacts, and instant printable prescription records.
+        </p>
+        <a href="{% url 'health-card' %}" class="btn btn-outline-success rounded-pill w-100 py-2 fw-bold mt-auto">
+          <i class="fa-solid fa-address-card me-1"></i> View Digital Health Card
         </a>
       </div>
     </div>
 
   </div>
 </div>
+
+<!-- Include Global Footer -->
+{% include 'partials/footer.html' %}
 {% endblock %}

@@ -1,12 +1,34 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Live Prescription & Order Tracking — AuraHealth™ Dispensary{% endblock %}
+{% block title %}Live Prescription & Order Tracking — Antixor Pharmacy{% endblock %}
 
 {% block content %}
+<!-- Top Header Navigation -->
+{% include 'partials/navbar.html' %}
+
 <div class="bg-light py-4 border-bottom">
   <div class="container">
-    <h1 class="h3 fw-bold text-navy-800 mb-0">Live Prescription & Order Tracking</h1>
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+      <div>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-1 small">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-muted">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'shop' %}" class="text-decoration-none text-muted">Pharmacy</a></li>
+            <li class="breadcrumb-item active text-dark fw-bold" aria-current="page">Track Orders</li>
+          </ol>
+        </nav>
+        <h1 class="h3 fw-bold text-dark mb-0 d-flex align-items-center gap-2">
+          <i class="fa-solid fa-boxes-stacked text-success" style="color: #009b72 !important;"></i>
+          Live Prescription &amp; Order Tracking
+        </h1>
+      </div>
+      <div>
+        <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-secondary rounded-pill px-3 fw-bold">
+          <i class="fa-solid fa-gauge-high me-1"></i> Patient Dashboard
+        </a>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -14,14 +36,17 @@
   
   <!-- Search Order Number Form -->
   <div class="row justify-content-center mb-5">
-    <div class="col-lg-6">
-      <form action="{% url 'order-track' %}" method="GET" class="aura-search-input-group shadow-sm bg-white">
-        <i class="fa-solid fa-barcode text-muted"></i>
-        <input type="text" name="order_number" class="aura-search-input" placeholder="Enter AuraHealth Order # (e.g. AUR-A1B2C3D4)" value="{{ searched_number|default:'' }}" required>
-        <button type="submit" class="aura-search-btn">
-          <i class="fa-solid fa-magnifying-glass"></i>
-          <span>Track Order</span>
-        </button>
+    <div class="col-lg-7">
+      <form action="{% url 'order-track' %}" method="GET" class="card border-0 shadow-sm rounded-pill p-2 bg-white">
+        <div class="input-group">
+          <span class="input-group-text bg-transparent border-0 ps-3 text-muted">
+            <i class="fa-solid fa-barcode fs-5" style="color: #009b72;"></i>
+          </span>
+          <input type="text" name="order_number" class="form-control border-0 py-2" placeholder="Enter Order # (e.g. ANT-2026-001 or ANT-A1B2C3D4)" value="{{ searched_number|default:'' }}" required style="font-size: 0.95rem;">
+          <button type="submit" class="btn text-white rounded-pill px-4 fw-bold shadow-sm" style="background-color: #009b72;">
+            <i class="fa-solid fa-magnifying-glass me-1"></i> Track Order
+          </button>
+        </div>
       </form>
     </div>
   </div>
@@ -34,59 +59,60 @@
         <div class="card border rounded-4 p-4 shadow-sm bg-white mb-4">
           <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 pb-3 border-bottom mb-4">
             <div>
-              <span class="badge bg-cyan-100 text-cyan-800 mb-1">Live Order Status</span>
-              <h4 class="fw-bold text-navy-800 mb-0">Order #{{ order.order_number }}</h4>
+              <span class="badge bg-success bg-opacity-10 text-success fw-bold mb-1 px-3 py-1 rounded-pill" style="color: #009b72 !important;">Live Clinical Order Status</span>
+              <h4 class="fw-bold text-dark mb-0">Order #{{ order.order_number }}</h4>
               <div class="text-muted small">Placed on {{ order.created_at|date:"M d, Y • H:i" }} | Recipient: <strong class="text-dark">{{ order.full_name }}</strong></div>
             </div>
-            <div class="text-md-end">
-              <span class="badge bg-success fs-6 px-3 py-2 rounded-pill">{{ order.get_order_status_display }}</span>
-              <div class="text-muted small mt-1">Est. Delivery: <strong>{{ order.estimated_delivery }}</strong></div>
+            <div class="text-md-end d-flex flex-column align-items-md-end gap-1">
+              <span class="badge bg-success fs-6 px-3 py-2 rounded-pill shadow-sm" style="background-color: #009b72 !important;">{{ order.get_order_status_display }}</span>
+              <div class="text-muted small">Est. Delivery: <strong>{{ order.estimated_delivery|default:"2-4 Hours (Express)" }}</strong></div>
+              <a href="{% url 'order-invoice' order.order_number %}" class="btn btn-sm btn-outline-dark rounded-pill px-3 py-1 fw-bold mt-1">
+                <i class="fa-solid fa-file-invoice me-1"></i> View Tax Invoice
+              </a>
             </div>
           </div>
 
           <!-- Visual Timeline Steps -->
-          <div class="aura-timeline-track px-3">
-            
-            <div class="aura-track-step completed">
-              <div class="aura-track-icon"><i class="fa-solid fa-receipt"></i></div>
-              <div>
-                <h6 class="fw-bold text-navy-800 mb-0">Order Placed & Confirmed</h6>
-                <div class="text-muted small">Digital order received and queued for triage.</div>
+          <div class="row g-3 text-center my-3">
+            <div class="col-md col-6">
+              <div class="p-3 rounded-4 bg-light border">
+                <div class="rounded-circle text-white mx-auto d-flex align-items-center justify-content-center mb-2 shadow-sm" style="width: 36px; height: 36px; background-color: #009b72;">
+                  <i class="fa-solid fa-receipt"></i>
+                </div>
+                <h6 class="fw-bold text-dark small mb-0">Order Confirmed</h6>
+                <div class="text-muted" style="font-size: 0.7rem;">Digital Triage Received</div>
               </div>
             </div>
 
-            <div class="aura-track-step {% if order.order_status != 'PLACED' %}completed{% else %}active{% endif %}">
-              <div class="aura-track-icon"><i class="fa-solid fa-user-doctor"></i></div>
-              <div>
-                <h6 class="fw-bold text-navy-800 mb-0">Pharmacist Verification</h6>
-                <div class="text-muted small">Clinical team double-checks dosage and drug interactions.</div>
+            <div class="col-md col-6">
+              <div class="p-3 rounded-4 bg-light border">
+                <div class="rounded-circle text-white mx-auto d-flex align-items-center justify-content-center mb-2 shadow-sm" style="width: 36px; height: 36px; background-color: #009b72;">
+                  <i class="fa-solid fa-user-doctor"></i>
+                </div>
+                <h6 class="fw-bold text-dark small mb-0">Pharmacist Verified</h6>
+                <div class="text-muted" style="font-size: 0.7rem;">Dosage &amp; Safety Checked</div>
               </div>
             </div>
 
-            <div class="aura-track-step {% if order.order_status in 'PROCESSING PACKED OUT_FOR_DELIVERY DELIVERED' %}completed{% elif order.order_status == 'PRESCRIPTION_VERIFICATION' %}active{% endif %}">
-              <div class="aura-track-icon"><i class="fa-solid fa-box-open"></i></div>
-              <div>
-                <h6 class="fw-bold text-navy-800 mb-0">Cold-Chain Packaging & Dispensing</h6>
-                <div class="text-muted small">Sealed in Temperature-Shield™ insulated containers.</div>
+            <div class="col-md col-6">
+              <div class="p-3 rounded-4 bg-light border">
+                <div class="rounded-circle text-white mx-auto d-flex align-items-center justify-content-center mb-2 shadow-sm" style="width: 36px; height: 36px; background-color: #009b72;">
+                  <i class="fa-solid fa-snowflake"></i>
+                </div>
+                <h6 class="fw-bold text-dark small mb-0">Cold-Chain Sealed</h6>
+                <div class="text-muted" style="font-size: 0.7rem;">2°C - 8°C Insulated Pack</div>
               </div>
             </div>
 
-            <div class="aura-track-step {% if order.order_status in 'OUT_FOR_DELIVERY DELIVERED' %}completed{% elif order.order_status == 'PACKED' %}active{% endif %}">
-              <div class="aura-track-icon"><i class="fa-solid fa-truck-fast"></i></div>
-              <div>
-                <h6 class="fw-bold text-navy-800 mb-0">Out for Express Delivery</h6>
-                <div class="text-muted small">Courier dispatched with live GPS temperature monitoring.</div>
+            <div class="col-md col-6">
+              <div class="p-3 rounded-4 bg-light border">
+                <div class="rounded-circle text-white mx-auto d-flex align-items-center justify-content-center mb-2 shadow-sm" style="width: 36px; height: 36px; background-color: #009b72;">
+                  <i class="fa-solid fa-truck-fast"></i>
+                </div>
+                <h6 class="fw-bold text-dark small mb-0">Express Dispatch</h6>
+                <div class="text-muted" style="font-size: 0.7rem;">Live Courier En Route</div>
               </div>
             </div>
-
-            <div class="aura-track-step {% if order.order_status == 'DELIVERED' %}completed{% endif %}">
-              <div class="aura-track-icon"><i class="fa-solid fa-circle-check"></i></div>
-              <div>
-                <h6 class="fw-bold text-navy-800 mb-0">Delivered to Doorstep</h6>
-                <div class="text-muted small">Handed to recipient with digital signature confirmation.</div>
-              </div>
-            </div>
-
           </div>
 
         </div>
@@ -96,27 +122,29 @@
           
           <div class="col-md-7">
             <div class="card border rounded-4 p-4 shadow-sm bg-white h-100">
-              <h5 class="fw-bold text-navy-800 mb-3">Medications in this Delivery</h5>
+              <h5 class="fw-bold text-dark mb-3 pb-2 border-bottom">Medications in this Delivery</h5>
               {% for item in order.items.all %}
                 <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
                   <div>
-                    <div class="fw-bold text-navy-800 small">{{ item.product_name }}</div>
+                    <div class="fw-bold text-dark small">{{ item.product_name }}</div>
                     <div class="text-muted" style="font-size: 0.75rem;">Qty: {{ item.quantity }} × ${{ item.unit_price }}</div>
                   </div>
-                  <strong class="text-navy-800">${{ item.subtotal }}</strong>
+                  <strong class="text-dark">${{ item.subtotal }}</strong>
                 </div>
+              {% empty %}
+                <div class="text-muted small py-2">Clinical package details attached with order.</div>
               {% endfor %}
               
-              <div class="d-flex justify-content-between fs-5 fw-bold text-navy-800 pt-3 mt-auto">
+              <div class="d-flex justify-content-between fs-5 fw-bold text-dark pt-3 mt-auto">
                 <span>Final Total (Paid):</span>
-                <span class="text-primary">${{ order.final_amount }}</span>
+                <span class="text-success" style="color: #009b72 !important;">${{ order.final_amount }}</span>
               </div>
             </div>
           </div>
 
           <div class="col-md-5">
             <div class="card border rounded-4 p-4 shadow-sm bg-white h-100">
-              <h5 class="fw-bold text-navy-800 mb-3">Delivery Destination</h5>
+              <h5 class="fw-bold text-dark mb-3 pb-2 border-bottom">Delivery Destination</h5>
               <div class="mb-2">
                 <strong class="text-dark">{{ order.full_name }}</strong>
               </div>
@@ -129,8 +157,8 @@
                 {{ order.phone }}
               </div>
               <div class="bg-light p-3 rounded-3 small">
-                <div class="text-muted">Payment: <strong>{{ order.get_payment_method_display }}</strong></div>
-                <div class="text-muted">Payment Status: <span class="badge bg-success">{{ order.get_payment_status_display }}</span></div>
+                <div class="text-muted mb-1">Payment Method: <strong class="text-dark">{{ order.get_payment_method_display }}</strong></div>
+                <div class="text-muted">Payment Status: <span class="badge bg-success" style="background-color: #009b72 !important;">{{ order.get_payment_status_display }}</span></div>
               </div>
             </div>
           </div>
@@ -140,19 +168,28 @@
       </div>
     </div>
   {% elif searched_number %}
-    <div class="text-center py-5 bg-white rounded-4 border">
+    <div class="text-center py-5 bg-white rounded-4 border p-4 shadow-sm">
       <i class="fa-solid fa-circle-question fa-3x text-warning mb-3"></i>
-      <h4 class="fw-bold text-navy-800">No Order Found for "{{ searched_number }}"</h4>
-      <p class="text-muted small">Please verify the reference order number on your receipt or SMS confirmation.</p>
-      <a href="{% url 'shop' %}" class="btn aura-btn-primary btn-sm">Return to Pharmacy</a>
+      <h4 class="fw-bold text-dark">No Order Found for "{{ searched_number }}"</h4>
+      <p class="text-muted small mb-3">Please verify the reference order number on your receipt or SMS confirmation.</p>
+      <a href="{% url 'shop' %}" class="btn btn-success rounded-pill px-4 py-2 fw-bold" style="background-color: #009b72;">
+        <i class="fa-solid fa-store me-1"></i> Return to Pharmacy Store
+      </a>
     </div>
   {% else %}
-    <div class="text-center py-5 bg-white rounded-4 border">
-      <i class="fa-solid fa-boxes-packing fa-3x text-primary mb-3"></i>
-      <h4 class="fw-bold text-navy-800">Track Any AuraHealth Prescription or Medication</h4>
-      <p class="text-muted small">Enter your order ID (e.g. AUR-XXXXX) above to view real-time cold-chain dispensing progress.</p>
+    <div class="text-center py-5 bg-white rounded-4 border p-4 shadow-sm">
+      <i class="fa-solid fa-boxes-packing fa-3x text-success mb-3" style="color: #009b72 !important;"></i>
+      <h4 class="fw-bold text-dark">Track Any Antixor Prescription or Medication</h4>
+      <p class="text-muted small mb-3">Enter your order ID (e.g. ANT-2026-001) above to view real-time cold-chain dispensing progress.</p>
+      <div class="d-flex gap-2 justify-content-center">
+        <a href="{% url 'shop' %}" class="btn btn-sm btn-success rounded-pill px-3 py-2 fw-bold" style="background-color: #009b72;">Browse Store</a>
+        <a href="{% url 'prescriptions' %}" class="btn btn-sm btn-outline-secondary rounded-pill px-3 py-2 fw-bold">Upload New Rx</a>
+      </div>
     </div>
   {% endif %}
 
 </div>
+
+<!-- Include Global Footer -->
+{% include 'partials/footer.html' %}
 {% endblock %}

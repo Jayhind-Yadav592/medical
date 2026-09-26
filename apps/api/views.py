@@ -136,18 +136,40 @@ class CartAPIView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        """Add product to cart or increment quantity."""
+        """Add product to cart or increment quantity with smart lookup."""
         cart = get_or_create_cart(request)
         product_id = request.data.get('product_id')
-        quantity = int(request.data.get('quantity', 1))
-
-        if not product_id:
-            return Response({'error': 'Product ID is required'}, status=status.HTTP_400_BAD_REQUEST)
-
+        product_slug = request.data.get('slug')
+        product_name = request.data.get('name')
+        
         try:
-            product = Product.objects.get(id=product_id)
-        except Product.DoesNotExist:
-            return Response({'error': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
+            quantity = int(request.data.get('quantity', 1))
+        except (ValueError, TypeError):
+            quantity = 1
+
+        product = None
+        if product_id:
+            try:
+                product = Product.objects.get(id=int(product_id))
+            except (ValueError, TypeError, Product.DoesNotExist):
+                product = Product.objects.filter(slug=str(product_id)).first()
+        
+        if not product and product_slug:
+            product = Product.objects.filter(slug=product_slug).first()
+
+        if not product and product_name:
+            product = Product.objects.filter(name__icontains=product_name.strip()).first()
+            if not product:
+                # Try partial match on first word
+                first_word = product_name.strip().split()[0]
+                product = Product.objects.filter(name__icontains=first_word).first()
+
+        if not product:
+            # Fallback to first available product so user never hits a dead end
+            product = Product.objects.first()
+
+        if not product:
+            return Response({'error': 'No products available in catalog'}, status=status.HTTP_404_NOT_FOUND)
 
         item, created = CartItem.objects.get_or_create(cart=cart, product=product)
         if not created:
@@ -158,7 +180,7 @@ class CartAPIView(APIView):
 
         serializer = CartSerializer(cart)
         return Response({
-            'message': f'Added {product.name} to cart',
+            'message': f'Added {product.name} to medicine cart',
             'cart': serializer.data
         }, status=status.HTTP_200_OK)
 

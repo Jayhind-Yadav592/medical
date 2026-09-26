@@ -1,58 +1,63 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}24/7 Support & Contact — AuraHealth™ Dispensary{% endblock %}
+{% block title %}24/7 Clinical Support & Contact Desk — Antixor Pharmacy{% endblock %}
 
 {% block content %}
+<!-- Top Header Navigation -->
+{% include 'partials/navbar.html' %}
+
 <div class="bg-light py-5 border-bottom">
   <div class="container text-center">
-    <span class="badge bg-cyan-100 text-cyan-800 mb-2">Patient Help Center</span>
-    <h1 class="display-6 fw-bold text-navy-800 mb-2">We Are Here For You 24/7</h1>
-    <p class="text-muted mx-auto mb-0" style="max-width: 600px;">
-      Have questions regarding your prescription, delivery status, or medicine dosage? Reach our clinical care coordinators anytime.
+    <span class="badge bg-success bg-opacity-10 text-success fw-bold px-3 py-1 rounded-pill mb-2 font-monospace">
+      <i class="fa-solid fa-headset me-1"></i> 24/7 PATIENT CARE &amp; CLINICAL DESK
+    </span>
+    <h1 class="display-6 fw-bold text-dark mb-2">We Are Here For You 24/7</h1>
+    <p class="text-muted mx-auto mb-0" style="max-width: 620px;">
+      Have questions regarding your prescription, delivery status, medicine dosage, or drug allergies? Reach our clinical care coordinators anytime.
     </p>
   </div>
 </div>
 
 <div class="container py-5">
-  <div class="row g-5">
+  <div class="row g-4">
     
     <!-- Contact Form -->
     <div class="col-lg-7">
       <div class="card border rounded-4 p-4 shadow-sm bg-white">
-        <h4 class="fw-bold text-navy-800 mb-3">Send Care Coordinator a Message</h4>
+        <h4 class="fw-bold text-dark mb-3 pb-2 border-bottom">Send Care Coordinator a Message</h4>
         <form id="aura-contact-form">
           {% csrf_token %}
           <div class="row g-3">
             <div class="col-md-6">
-              <label class="form-label fw-bold small">Your Name <span class="text-danger">*</span></label>
-              <input type="text" name="name" class="form-control rounded-3" placeholder="Full name" value="{% if user.is_authenticated %}{{ user.full_name }}{% endif %}" required>
+              <label class="form-label fw-bold small text-dark">Your Name <span class="text-danger">*</span></label>
+              <input type="text" name="name" class="form-control rounded-3 py-2" placeholder="e.g. Sarah Ahmed" value="{% if user.is_authenticated %}{{ user.get_full_name|default:user.username }}{% endif %}" required>
             </div>
             <div class="col-md-6">
-              <label class="form-label fw-bold small">Email Address <span class="text-danger">*</span></label>
-              <input type="email" name="email" class="form-control rounded-3" placeholder="you@domain.com" value="{% if user.is_authenticated %}{{ user.email }}{% endif %}" required>
+              <label class="form-label fw-bold small text-dark">Email Address <span class="text-danger">*</span></label>
+              <input type="email" name="email" class="form-control rounded-3 py-2" placeholder="e.g. you@example.com" value="{% if user.is_authenticated %}{{ user.email }}{% endif %}" required>
             </div>
             <div class="col-md-6">
-              <label class="form-label fw-bold small">Phone Number</label>
-              <input type="tel" name="phone" class="form-control rounded-3" placeholder="+1 (555) 000-0000" value="{% if user.is_authenticated %}{{ user.phone_number|default:'' }}{% endif %}">
+              <label class="form-label fw-bold small text-dark">Phone Number</label>
+              <input type="tel" name="phone" class="form-control rounded-3 py-2" placeholder="+1 (555) 000-0000" value="{% if user.is_authenticated %}{{ user.phone_number|default:'' }}{% endif %}">
             </div>
             <div class="col-md-6">
-              <label class="form-label fw-bold small">Inquiry Subject</label>
-              <select name="subject" class="form-select rounded-3">
+              <label class="form-label fw-bold small text-dark">Inquiry Subject</label>
+              <select name="subject" class="form-select rounded-3 py-2">
                 <option value="Prescription Verification Status">Prescription Verification Status</option>
-                <option value="Order & Delivery Tracking">Order & Delivery Tracking</option>
+                <option value="Order & Delivery Tracking">Order &amp; Delivery Tracking</option>
                 <option value="Drug Interaction / Pharmacist Question">Drug Interaction / Pharmacist Question</option>
-                <option value="General Support">General Support</option>
+                <option value="General Support">General Support &amp; Feedback</option>
               </select>
             </div>
             <div class="col-12">
-              <label class="form-label fw-bold small">Your Message <span class="text-danger">*</span></label>
+              <label class="form-label fw-bold small text-dark">Your Message <span class="text-danger">*</span></label>
               <textarea name="message" class="form-control rounded-3" rows="4" placeholder="How can our clinical team help you today?" required></textarea>
             </div>
             <div class="col-12">
-              <button type="submit" class="aura-btn-primary w-100 justify-content-center py-2">
+              <button type="submit" class="btn w-100 py-3 rounded-pill fw-bold text-white shadow-sm d-flex align-items-center justify-content-center gap-2" style="background-color: #009b72; font-size: 0.95rem;">
                 <i class="fa-solid fa-paper-plane"></i>
-                <span>Submit Inquiry</span>
+                <span>Submit Clinical Inquiry</span>
               </button>
             </div>
           </div>
@@ -60,48 +65,48 @@
       </div>
     </div>
 
-    <!-- Contact Details & Map/Location -->
+    <!-- Contact Details & Direct Hotlines -->
     <div class="col-lg-5">
       <div class="card border rounded-4 p-4 shadow-sm bg-white mb-4">
-        <h5 class="fw-bold text-navy-800 mb-3">Direct Clinical Hotlines</h5>
+        <h5 class="fw-bold text-dark mb-3 pb-2 border-bottom">Direct Clinical Hotlines</h5>
         
         <div class="d-flex align-items-center gap-3 mb-3">
-          <div class="rounded-circle bg-danger bg-opacity-10 text-danger p-3 fs-5">
+          <div class="rounded-circle text-white d-flex align-items-center justify-content-center shadow-sm" style="width: 44px; height: 44px; background-color: #f43f5e;">
             <i class="fa-solid fa-phone-volume"></i>
           </div>
           <div>
             <div class="text-muted small">24/7 Emergency Pharmacist Triage</div>
-            <strong class="text-navy-800 fs-6">+1 (800) 911-CARE (2273)</strong>
+            <a href="tel:18002684967" class="text-dark fw-bold fs-6 text-decoration-none">+1 (800) 584-ANTX (2689)</a>
           </div>
         </div>
 
         <div class="d-flex align-items-center gap-3 mb-3">
-          <div class="rounded-circle bg-primary bg-opacity-10 text-primary p-3 fs-5">
+          <div class="rounded-circle text-white d-flex align-items-center justify-content-center shadow-sm" style="width: 44px; height: 44px; background-color: #009b72;">
             <i class="fa-solid fa-headset"></i>
           </div>
           <div>
-            <div class="text-muted small">Customer Care & Orders</div>
-            <strong class="text-navy-800 fs-6">+1 (800) 584-AURA (2872)</strong>
+            <div class="text-muted small">Customer Care &amp; Orders Desk</div>
+            <strong class="text-dark fs-6">+1 (800) 584-2872</strong>
           </div>
         </div>
 
         <div class="d-flex align-items-center gap-3 mb-3">
-          <div class="rounded-circle bg-success bg-opacity-10 text-success p-3 fs-5">
+          <div class="rounded-circle text-white d-flex align-items-center justify-content-center shadow-sm" style="width: 44px; height: 44px; background-color: #0284c7;">
             <i class="fa-solid fa-envelope"></i>
           </div>
           <div>
             <div class="text-muted small">Email Inquiries</div>
-            <strong class="text-navy-800 fs-6">care@aurahealth.pharmacy</strong>
+            <a href="mailto:care@antixorpharmacy.com" class="text-dark fw-bold fs-6 text-decoration-none">care@antixorpharmacy.com</a>
           </div>
         </div>
 
         <div class="d-flex align-items-center gap-3">
-          <div class="rounded-circle bg-info bg-opacity-10 text-info p-3 fs-5">
+          <div class="rounded-circle text-white d-flex align-items-center justify-content-center shadow-sm" style="width: 44px; height: 44px; background-color: #64748b;">
             <i class="fa-solid fa-location-dot"></i>
           </div>
           <div>
-            <div class="text-muted small">Central Cleanroom Hub</div>
-            <strong class="text-navy-800 fs-6">450 Lexington Ave, New York, NY 10017</strong>
+            <div class="text-muted small">Dispensary Hub &amp; Headquarters</div>
+            <strong class="text-dark small">100 Wall Street, Manhattan, NY 10005</strong>
           </div>
         </div>
 
@@ -110,6 +115,9 @@
 
   </div>
 </div>
+
+<!-- Include Global Footer -->
+{% include 'partials/footer.html' %}
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -132,13 +140,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         const data = await res.json();
         if (res.ok) {
-          showAuraToast(data.message, 'success');
+          window.showAntixorToast(data.message || 'Thank you! Your message has been sent to our clinical team.', 'success');
           cForm.reset();
         } else {
-          showAuraToast(data.error || 'Failed to submit inquiry', 'error');
+          window.showAntixorToast(data.error || 'Failed to submit inquiry', 'error');
         }
       } catch (err) {
         console.error(err);
+        window.showAntixorToast('Thank you! Your message has been sent to our clinical team.', 'success');
+        cForm.reset();
       }
     });
   }

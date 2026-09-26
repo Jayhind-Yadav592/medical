@@ -1,88 +1,172 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Shopping Cart & Prescriptions — AuraHealth™ Dispensary{% endblock %}
+{% block title %}Shopping Cart & Prescription Review — Antixor Pharmacy{% endblock %}
 
 {% block content %}
+<!-- Top Header Navigation -->
+{% include 'partials/navbar.html' %}
+
 <div class="bg-light py-4 border-bottom">
   <div class="container">
-    <h1 class="h3 fw-bold text-navy-800 mb-0">Your Medicine Cart & Prescription Review</h1>
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+      <div>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-1 small">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-decoration-none text-muted">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'shop' %}" class="text-decoration-none text-muted">Pharmacy</a></li>
+            <li class="breadcrumb-item active text-dark fw-bold" aria-current="page">Cart</li>
+          </ol>
+        </nav>
+        <h1 class="h3 fw-bold text-dark mb-0 d-flex align-items-center gap-2">
+          <i class="fa-solid fa-basket-shopping text-success" style="color: #009b72 !important;"></i>
+          Your Medicine Cart &amp; Prescription Review
+        </h1>
+      </div>
+      <div>
+        <a href="{% url 'shop' %}" class="btn btn-sm btn-outline-secondary rounded-pill px-3 fw-bold">
+          <i class="fa-solid fa-arrow-left me-1"></i> Continue Shopping
+        </a>
+      </div>
+    </div>
   </div>
 </div>
 
 <div class="container py-5">
-  <div class="row g-5">
+  <div class="row g-4">
     
     <!-- Left: Cart Items List -->
     <div class="col-lg-8">
       <div class="card border rounded-4 p-4 shadow-sm bg-white mb-4">
-        <h5 class="fw-bold text-navy-800 mb-3">Order Items</h5>
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+          <h5 class="fw-bold text-dark mb-0">Order Items ({{ global_cart_count|default:"0" }})</h5>
+          <span class="badge bg-success bg-opacity-10 text-success fw-bold px-3 py-1 rounded-pill">
+            <i class="fa-solid fa-shield-check me-1"></i> Verified Pharmacy Hub
+          </span>
+        </div>
+
         <div id="full-cart-page-items">
-          <!-- Populated by JavaScript and Django fallback -->
           {% if global_cart_items %}
             {% for item in global_cart_items %}
-              <div class="d-flex align-items-center gap-3 py-3 border-bottom">
-                <img src="{{ item.product.get_image }}" alt="{{ item.product.name }}" class="rounded-3" style="width: 70px; height: 70px; object-fit: cover;">
-                <div class="flex-grow-1">
-                  <h6 class="fw-bold text-navy-800 mb-0">{{ item.product.name }}</h6>
-                  <div class="text-muted small">{{ item.product.dosage_strength }} • {{ item.product.category.name }}</div>
-                  {% if item.product.prescription_required %}
-                    <span class="badge bg-danger mt-1" style="font-size: 0.65rem;">Rx Required</span>
-                  {% endif %}
+              <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3 py-3 border-bottom">
+                <div class="d-flex align-items-center gap-3">
+                  <img src="{{ item.product.get_image }}" alt="{{ item.product.name }}" class="rounded-3 border" style="width: 70px; height: 70px; object-fit: contain; background: #f8fafc;">
+                  <div>
+                    <h6 class="fw-bold text-dark mb-1">
+                      <a href="{% url 'product-detail' item.product.slug %}" class="text-decoration-none text-dark">{{ item.product.name }}</a>
+                    </h6>
+                    <div class="text-muted small">{{ item.product.dosage_strength|default:item.product.get_dosage_form_display }} • {{ item.product.category.name }}</div>
+                    {% if item.product.prescription_required %}
+                      <span class="badge bg-danger mt-1" style="font-size: 0.65rem;"><i class="fa-solid fa-file-prescription me-1"></i> Rx Required</span>
+                    {% else %}
+                      <span class="badge bg-success mt-1" style="font-size: 0.65rem; background-color: #009b72 !important;">OTC</span>
+                    {% endif %}
+                  </div>
                 </div>
-                <div class="aura-qty-stepper">
-                  <button class="aura-qty-btn" onclick="updateCartItemQty({{ item.id }}, {{ item.quantity|add:'-1' }})">-</button>
-                  <span class="px-2 small fw-bold">{{ item.quantity }}</span>
-                  <button class="aura-qty-btn" onclick="updateCartItemQty({{ item.id }}, {{ item.quantity|add:'1' }})">+</button>
-                </div>
-                <div class="text-end" style="min-width: 90px;">
-                  <div class="fw-bold text-navy-800">${{ item.subtotal }}</div>
-                  <button class="btn btn-sm text-danger p-0 border-0 small" onclick="removeCartItem({{ item.id }})">Remove</button>
+
+                <div class="d-flex align-items-center justify-content-between justify-content-sm-end gap-4 mt-2 mt-sm-0">
+                  <div class="d-inline-flex align-items-center border rounded-pill bg-light p-1">
+                    <button class="btn btn-sm p-0 px-2 fw-bold text-dark border-0" onclick="updateCartItemQty({{ item.id }}, {{ item.quantity|add:'-1' }})">-</button>
+                    <span class="px-2 small fw-bold">{{ item.quantity }}</span>
+                    <button class="btn btn-sm p-0 px-2 fw-bold text-dark border-0" onclick="updateCartItemQty({{ item.id }}, {{ item.quantity|add:'1' }})">+</button>
+                  </div>
+
+                  <div class="text-end" style="min-width: 90px;">
+                    <div class="fw-bold text-dark fs-6">${{ item.subtotal }}</div>
+                    <button class="btn btn-sm text-danger p-0 border-0 small" onclick="removeCartItem({{ item.id }})" title="Remove item">
+                      <i class="fa-regular fa-trash-can me-1"></i> Remove
+                    </button>
+                  </div>
                 </div>
               </div>
             {% endfor %}
           {% else %}
             <div class="text-center py-5">
-              <i class="fa-solid fa-basket-shopping fa-3x text-muted mb-3"></i>
-              <h5 class="fw-bold">Your cart is empty</h5>
-              <a href="{% url 'shop' %}" class="btn aura-btn-primary btn-sm mt-2">Browse Medicines</a>
+              <div class="mb-3 text-muted">
+                <i class="fa-solid fa-basket-shopping fa-3x" style="color: #cbd5e1;"></i>
+              </div>
+              <h5 class="fw-bold text-dark mb-1">Your medicine cart is empty</h5>
+              <p class="text-muted small mb-3">Browse our verified catalog to add authentic medicines, health supplements, and clinical supplies.</p>
+              <a href="{% url 'shop' %}" class="btn btn-success rounded-pill px-4 py-2 fw-bold" style="background-color: #009b72;">
+                <i class="fa-solid fa-store me-1"></i> Browse Pharmacy Store
+              </a>
             </div>
           {% endif %}
         </div>
       </div>
+
+      <!-- Trust Badges Bar -->
+      <div class="row g-3 text-center">
+        <div class="col-md-4">
+          <div class="p-3 bg-white border rounded-4 shadow-sm">
+            <i class="fa-solid fa-truck-fast text-success fs-4 mb-2" style="color:#009b72;"></i>
+            <h6 class="fw-bold text-dark small mb-1">Cold-Chain Express Delivery</h6>
+            <p class="text-muted small mb-0" style="font-size: 0.75rem;">Temperature-sealed 2°C - 8°C packaging across India &amp; USA.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="p-3 bg-white border rounded-4 shadow-sm">
+            <i class="fa-solid fa-shield-halved text-success fs-4 mb-2" style="color:#009b72;"></i>
+            <h6 class="fw-bold text-dark small mb-1">100% Genuine Pharmacy</h6>
+            <p class="text-muted small mb-0" style="font-size: 0.75rem;">Directly sourced from GMP &amp; FDA certified manufacturing labs.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="p-3 bg-white border rounded-4 shadow-sm">
+            <i class="fa-solid fa-user-doctor text-success fs-4 mb-2" style="color:#009b72;"></i>
+            <h6 class="fw-bold text-dark small mb-1">Pharmacist Verification</h6>
+            <p class="text-muted small mb-0" style="font-size: 0.75rem;">Every prescription checked twice for dosage safety &amp; allergies.</p>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- Right: Summary & Checkout Trigger -->
     <div class="col-lg-4">
       <div class="card border rounded-4 p-4 shadow-sm bg-white sticky-top" style="top: 100px;">
-        <h5 class="fw-bold text-navy-800 mb-3">Order Summary</h5>
+        <h5 class="fw-bold text-dark mb-3">Order Summary</h5>
         
         <div class="d-flex justify-content-between text-muted mb-2">
-          <span>Subtotal</span>
-          <span class="fw-bold text-dark aura-cart-subtotal-val">${{ global_cart_total|floatformat:2 }}</span>
+          <span>Items Subtotal</span>
+          <span class="fw-bold text-dark aura-cart-subtotal-val">${{ global_cart_total|default:"0.00"|floatformat:2 }}</span>
         </div>
 
-        <div class="d-flex justify-content-between text-muted mb-3">
-          <span>Cold-Chain Express Delivery</span>
+        <div class="d-flex justify-content-between text-muted mb-2">
+          <span>Cold-Chain Delivery</span>
           <span class="aura-cart-shipping-val text-success fw-bold">FREE ($35+)</span>
         </div>
 
-        <div class="d-flex justify-content-between fs-4 fw-bold text-navy-800 pt-3 border-top mb-4">
-          <span>Total</span>
-          <span class="text-primary aura-cart-total-val">${{ global_cart_total|floatformat:2 }}</span>
+        <div class="d-flex justify-content-between text-muted mb-3">
+          <span>Estimated Tax &amp; GST</span>
+          <span class="text-dark fw-semibold">$0.00</span>
         </div>
 
-        <a href="{% url 'checkout' %}" class="aura-btn-emerald w-100 justify-content-center py-3 {% if not global_cart_items %}disabled{% endif %}">
+        <!-- Coupon Code Box -->
+        <div class="input-group mb-3">
+          <input type="text" class="form-control rounded-start-pill py-2 small" placeholder="Coupon code (e.g. HEALTH20)" id="cartCouponInput">
+          <button class="btn btn-outline-success rounded-end-pill px-3 fw-bold" onclick="copyCouponCode(document.getElementById('cartCouponInput').value || 'HEALTH20')">Apply</button>
+        </div>
+
+        <div class="d-flex justify-content-between fs-5 fw-bold text-dark pt-3 border-top mb-4">
+          <span>Estimated Total</span>
+          <span class="text-success aura-cart-total-val" style="color: #009b72 !important;">${{ global_cart_total|default:"0.00"|floatformat:2 }}</span>
+        </div>
+
+        <a href="{% url 'checkout' %}" class="btn w-100 py-3 rounded-pill fw-bold text-white shadow-sm d-flex align-items-center justify-content-center gap-2 {% if not global_cart_items %}disabled{% endif %}" style="background-color: #009b72; font-size: 0.95rem;">
           <i class="fa-solid fa-lock"></i>
-          <span>Proceed to Checkout</span>
+          <span>Proceed to Secure Checkout</span>
         </a>
 
-        <div class="text-center mt-3 text-muted small">
-          <i class="fa-solid fa-shield-halved text-success me-1"></i> 100% Genuine Prescription Guarantee
+        <div class="text-center mt-3 text-muted small" style="font-size: 0.75rem;">
+          <i class="fa-solid fa-lock text-success me-1"></i> 256-Bit SSL Encrypted Healthcare Checkout
         </div>
       </div>
     </div>
 
   </div>
 </div>
+
+<!-- Include Global Footer -->
+{% include 'partials/footer.html' %}
 {% endblock %}

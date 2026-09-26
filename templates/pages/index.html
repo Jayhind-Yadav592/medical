@@ -49,11 +49,13 @@
         <!-- Desktop Navigation Links -->
         <ul class="antixor-nav-links d-none d-lg-flex">
           <li><a href="{% url 'home' %}" class="antixor-nav-link active">Home</a></li>
-          <li><a href="#products" class="antixor-nav-link">Medicines & Shop</a></li>
-          <li><a href="#services" class="antixor-nav-link">Health Services</a></li>
-          <li><a href="#articles" class="antixor-nav-link">Health Articles</a></li>
-          <li><a href="#why-choose" class="antixor-nav-link">About Us</a></li>
-          <li><a href="#contact" class="antixor-nav-link">Contact</a></li>
+          <li><a href="{% url 'shop' %}" class="antixor-nav-link">Medicines &amp; Shop</a></li>
+          <li><a href="{% url 'services' %}" class="antixor-nav-link">Health Services</a></li>
+          <li><a href="{% url 'telehealth' %}" class="antixor-nav-link">Doctors &amp; Telehealth</a></li>
+          <li><a href="{% url 'facilities' %}" class="antixor-nav-link">Nearest Hospitals</a></li>
+          <li><a href="{% url 'articles' %}" class="antixor-nav-link">Health Articles</a></li>
+          <li><a href="{% url 'about' %}" class="antixor-nav-link">About Us</a></li>
+          <li><a href="{% url 'contact' %}" class="antixor-nav-link">Contact</a></li>
         </ul>
 
         <!-- Right Side Icons & Login / Profile Button -->
@@ -347,16 +349,18 @@
       <div class="col-lg-3 col-sm-6">
         <div class="antixor-product-card">
           <span class="antixor-product-badge-discount">-35% OFF</span>
-          <button class="antixor-product-wishlist" title="Add to Wishlist" aria-label="Add to Wishlist">
+          <button class="antixor-product-wishlist" onclick="toggleWishlist(13, this)" title="Add to Wishlist" aria-label="Add to Wishlist">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
             </svg>
           </button>
-          <div class="antixor-product-img-box">
+          <a href="/product/paracetamol-500mg-500mg-ant-para-500/" class="antixor-product-img-box d-block text-decoration-none">
             <img src="{% static 'images/product_paracetamol.jpg' %}" alt="Paracetamol 500mg" class="antixor-product-img">
-          </div>
-          <h3 class="antixor-product-name">Paracetamol 500mg</h3>
-          <div class="antixor-product-category">Pain Relief & Fever • OTC</div>
+          </a>
+          <h3 class="antixor-product-name">
+            <a href="/product/paracetamol-500mg-500mg-ant-para-500/" class="text-decoration-none text-dark">Paracetamol 500mg</a>
+          </h3>
+          <div class="antixor-product-category">Pain Relief &amp; Fever • OTC</div>
           <div class="antixor-product-rating">
             <span>★★★★★</span> <strong class="text-dark">4.9</strong> <span class="text-muted">(142)</span>
           </div>
@@ -364,7 +368,7 @@
             <div class="antixor-product-price">$2.50</div>
             <div class="antixor-product-mrp">$3.99</div>
           </div>
-          <button type="button" class="antixor-btn-add-cart">
+          <button type="button" class="antixor-btn-add-cart" onclick="addToCart(13, 1, event)">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
             Add to Cart
           </button>
@@ -375,16 +379,18 @@
       <div class="col-lg-3 col-sm-6">
         <div class="antixor-product-card">
           <span class="antixor-product-badge-discount">-25% OFF</span>
-          <button class="antixor-product-wishlist" title="Add to Wishlist" aria-label="Add to Wishlist">
+          <button class="antixor-product-wishlist" onclick="toggleWishlist(14, this)" title="Add to Wishlist" aria-label="Add to Wishlist">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
             </svg>
           </button>
-          <div class="antixor-product-img-box">
+          <a href="/product/vitamin-d3-1000-iu-1000-iu-ant-vitd3-1000/" class="antixor-product-img-box d-block text-decoration-none">
             <img src="{% static 'images/product_vitamind3.jpg' %}" alt="Vitamin D3 1000 IU" class="antixor-product-img">
-          </div>
-          <h3 class="antixor-product-name">Vitamin D3 1000 IU</h3>
-          <div class="antixor-product-category">Bone & Immunity Support</div>
+          </a>
+          <h3 class="antixor-product-name">
+            <a href="/product/vitamin-d3-1000-iu-1000-iu-ant-vitd3-1000/" class="text-decoration-none text-dark">Vitamin D3 1000 IU</a>
+          </h3>
+          <div class="antixor-product-category">Bone &amp; Immunity Support</div>
           <div class="antixor-product-rating">
             <span>★★★★★</span> <strong class="text-dark">4.8</strong> <span class="text-muted">(98)</span>
           </div>
@@ -392,7 +398,7 @@
             <div class="antixor-product-price">$8.99</div>
             <div class="antixor-product-mrp">$12.00</div>
           </div>
-          <button type="button" class="antixor-btn-add-cart">
+          <button type="button" class="antixor-btn-add-cart" onclick="addToCart(14, 1, event)">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
             Add to Cart
           </button>
@@ -403,16 +409,18 @@
       <div class="col-lg-3 col-sm-6">
         <div class="antixor-product-card">
           <span class="antixor-product-badge-discount">-20% OFF</span>
-          <button class="antixor-product-wishlist" title="Add to Wishlist" aria-label="Add to Wishlist">
+          <button class="antixor-product-wishlist" onclick="toggleWishlist(15, this)" title="Add to Wishlist" aria-label="Add to Wishlist">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
             </svg>
           </button>
-          <div class="antixor-product-img-box">
+          <a href="/product/omega-3-fish-oil-1000mg/" class="antixor-product-img-box d-block text-decoration-none">
             <img src="{% static 'images/product_omega3.jpg' %}" alt="Omega 3 Fish Oil" class="antixor-product-img">
-          </div>
-          <h3 class="antixor-product-name">Omega 3 Fish Oil</h3>
-          <div class="antixor-product-category">Heart & Cardiovascular Health</div>
+          </a>
+          <h3 class="antixor-product-name">
+            <a href="/product/omega-3-fish-oil-1000mg/" class="text-decoration-none text-dark">Omega 3 Fish Oil</a>
+          </h3>
+          <div class="antixor-product-category">Heart &amp; Cardiovascular Health</div>
           <div class="antixor-product-rating">
             <span>★★★★★</span> <strong class="text-dark">5.0</strong> <span class="text-muted">(215)</span>
           </div>
@@ -420,7 +428,7 @@
             <div class="antixor-product-price">$12.99</div>
             <div class="antixor-product-mrp">$16.50</div>
           </div>
-          <button type="button" class="antixor-btn-add-cart">
+          <button type="button" class="antixor-btn-add-cart" onclick="addToCart(15, 1, event)">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
             Add to Cart
           </button>
@@ -431,15 +439,17 @@
       <div class="col-lg-3 col-sm-6">
         <div class="antixor-product-card">
           <span class="antixor-product-badge-discount">-15% OFF</span>
-          <button class="antixor-product-wishlist" title="Add to Wishlist" aria-label="Add to Wishlist">
+          <button class="antixor-product-wishlist" onclick="toggleWishlist(16, this)" title="Add to Wishlist" aria-label="Add to Wishlist">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
             </svg>
           </button>
-          <div class="antixor-product-img-box">
+          <a href="/product/skin-care-cream-50ml-jar-ant-skin-cream/" class="antixor-product-img-box d-block text-decoration-none">
             <img src="{% static 'images/product_skincare.jpg' %}" alt="Skin Care Cream" class="antixor-product-img">
-          </div>
-          <h3 class="antixor-product-name">Skin Care Cream</h3>
+          </a>
+          <h3 class="antixor-product-name">
+            <a href="/product/skin-care-cream-50ml-jar-ant-skin-cream/" class="text-decoration-none text-dark">Skin Care Cream</a>
+          </h3>
           <div class="antixor-product-category">Hydrating Barrier Repair</div>
           <div class="antixor-product-rating">
             <span>★★★★★</span> <strong class="text-dark">4.9</strong> <span class="text-muted">(84)</span>
@@ -448,7 +458,7 @@
             <div class="antixor-product-price">$14.50</div>
             <div class="antixor-product-mrp">$18.00</div>
           </div>
-          <button type="button" class="antixor-btn-add-cart">
+          <button type="button" class="antixor-btn-add-cart" onclick="addToCart(16, 1, event)">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
             Add to Cart
           </button>
