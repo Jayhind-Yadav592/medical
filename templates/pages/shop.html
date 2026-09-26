@@ -1,127 +1,282 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Online Pharmacy Catalog & Dispensary — Antixor Pharmacy{% endblock %}
+{% block title %}Antixor Pharmacy — Authentic Medicine Catalog & Clinical Dispensary{% endblock %}
 
 {% block extra_css %}
 <style>
-/* Professional Shop Hero Banner with Studio Background */
-.shop-hero-banner {
-  background: linear-gradient(135deg, rgba(6, 78, 59, 0.90) 0%, rgba(15, 23, 42, 0.85) 100%), url('{% static "images/promo_graphic.jpg" %}') center/cover no-repeat;
-  color: white;
-  padding: 50px 0;
-  border-bottom: 3px solid #059669;
-  position: relative;
+/* =========================================================================
+   ANTIXOR PHARMACY — PIXEL-PERFECT CATALOG DESIGN SYSTEM
+   ========================================================================= */
+
+body {
+  background-color: #f6f9f8;
+  color: #1e293b;
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 }
 
-/* Dedicated Modern Sidebar */
-.shop-sidebar-card {
-  background: #ffffff;
+/* 1. HERO SECTION */
+.antixor-shop-hero {
+  background: linear-gradient(135deg, #053b34 0%, #084c42 55%, #032b25 100%);
   border-radius: 20px;
-  border: 1px solid #e2e8f0;
-  padding: 24px;
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
-  position: sticky;
-  top: 100px;
+  padding: 38px 42px;
+  position: relative;
+  overflow: hidden;
+  color: #ffffff;
+  margin-top: 16px;
+  margin-bottom: 24px;
+  box-shadow: 0 10px 30px -5px rgba(5, 59, 52, 0.25);
 }
 
-.shop-sidebar-title {
-  font-size: 0.75rem;
+.hero-pill-badge {
+  font-size: 0.72rem;
   font-weight: 800;
+  letter-spacing: 0.15em;
+  color: #a7f3d0;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: #64748b;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
+  display: inline-block;
+  font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-.shop-category-link {
-  display: flex;
-  justify-content: space-between;
+.hero-heading {
+  font-size: 2.3rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.18;
+  margin-bottom: 10px;
+  letter-spacing: -0.02em;
+}
+
+.hero-subtext {
+  font-size: 0.92rem;
+  color: #d1fae5;
+  line-height: 1.5;
+  max-width: 520px;
+  margin-bottom: 24px;
+  font-weight: 400;
+}
+
+.hero-cta-pill {
+  background-color: #ffffff;
+  color: #072635;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 10px 24px;
+  border-radius: 50px;
+  text-decoration: none;
+  display: inline-flex;
   align-items: center;
-  padding: 9px 14px;
+  gap: 8px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+}
+
+.hero-cta-pill:hover {
+  background-color: #f8fafc;
+  color: #009b72;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+.hero-feat-row {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-top: 26px;
+  flex-wrap: wrap;
+}
+
+.hero-feat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.95);
+}
+
+.hero-feat-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.16);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  color: #34d399;
+}
+
+.hero-floating-badge {
+  position: absolute;
+  top: 20px;
+  right: 26px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
   border-radius: 12px;
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  z-index: 5;
+}
+
+.hero-floating-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #e6f9f0;
+  color: #009b72;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+}
+
+/* 2. STORE NAVIGATION SIDEBAR (LEFT) */
+.nav-store-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 16px 14px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+}
+
+.nav-section-title {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #94a3b8;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  padding-left: 8px;
+}
+
+.nav-cat-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 10px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
   color: #334155;
   text-decoration: none;
-  font-size: 0.88rem;
-  font-weight: 600;
-  transition: all 0.2s ease;
-  margin-bottom: 3px;
+  margin-bottom: 2px;
+  transition: all 0.15s ease;
 }
 
-.shop-category-link:hover {
+.nav-cat-row:hover {
   background-color: #f1f5f9;
   color: #0f172a;
 }
 
-.shop-category-link.active {
-  background: #ecfdf5;
-  color: #047857;
+.nav-cat-row.active {
+  background-color: #e6f9f0;
+  color: #009b72;
   font-weight: 700;
-  border-left: 3px solid #059669;
 }
 
-/* Antixor Product Card Grid */
-.antixor-shop-grid .antixor-product-card {
-  background: #ffffff;
+.nav-cat-pill {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
   border-radius: 20px;
-  border: 1px solid #e2e8f0;
-  padding: 18px;
+}
+
+.nav-cat-row.active .nav-cat-pill {
+  background-color: #009b72;
+  color: #ffffff;
+}
+
+.nav-cat-row:not(.active) .nav-cat-pill {
+  color: #94a3b8;
+  background-color: transparent;
+}
+
+/* 3. PRODUCT CATALOG GRID (CENTER) */
+.shop-med-card {
+  background: #ffffff;
+  border: 1px solid #eef2f6;
+  border-radius: 14px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   height: 100%;
-  position: relative;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
 }
 
-.antixor-shop-grid .antixor-product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 15px 30px -4px rgba(0, 0, 0, 0.1);
+.shop-med-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.08);
   border-color: #cbd5e1;
 }
 
-.antixor-shop-grid .antixor-product-img-box {
-  width: 100%;
-  height: 180px;
+.shop-med-img-box {
   background-color: #f8fafc;
-  border-radius: 14px;
+  border-radius: 10px;
+  height: 135px;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  margin-bottom: 14px;
   position: relative;
+  margin-bottom: 10px;
+  overflow: hidden;
 }
 
-.antixor-shop-grid .antixor-product-img {
-  max-width: 90%;
-  max-height: 90%;
+.shop-med-img {
+  max-width: 82%;
+  max-height: 82%;
   object-fit: contain;
-  transition: transform 0.3s ease;
+  transition: transform 0.25s ease;
 }
 
-.antixor-shop-grid .antixor-product-card:hover .antixor-product-img {
+.shop-med-card:hover .shop-med-img {
   transform: scale(1.06);
 }
 
-.antixor-badge-rx-pill {
+.badge-tag-pill {
   position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 2;
-  font-size: 0.7rem;
+  top: 8px;
+  left: 8px;
+  font-size: 0.65rem;
   font-weight: 800;
-  padding: 3px 8px;
-  border-radius: 20px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  z-index: 2;
+  line-height: 1.3;
 }
 
-.antixor-wishlist-circle {
+.badge-otc {
+  background-color: #009b72;
+  color: #ffffff;
+}
+
+.badge-rx {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+
+.badge-new {
+  background-color: #8b5cf6;
+  color: #ffffff;
+}
+
+.badge-bestseller {
+  background-color: #f59e0b;
+  color: #ffffff;
+}
+
+.med-wishlist-circle {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 2;
-  width: 34px;
-  height: 34px;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: #ffffff;
   border: 1px solid #e2e8f0;
@@ -129,15 +284,220 @@
   align-items: center;
   justify-content: center;
   color: #64748b;
+  font-size: 0.75rem;
   cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  z-index: 2;
   transition: all 0.2s ease;
 }
 
-.antixor-wishlist-circle:hover {
+.med-wishlist-circle:hover {
   color: #ef4444;
-  background-color: #fef2f2;
-  transform: scale(1.08);
+  background: #fef2f2;
+  transform: scale(1.1);
+}
+
+.shop-med-category {
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #009b72;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.shop-med-title {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 3px;
+  line-height: 1.25;
+  min-height: 34px;
+}
+
+.shop-med-title a {
+  color: #0f172a;
+  text-decoration: none;
+}
+
+.shop-med-title a:hover {
+  color: #009b72;
+}
+
+.shop-med-spec {
+  font-size: 0.72rem;
+  color: #64748b;
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shop-med-rating {
+  font-size: 0.72rem;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-bottom: 8px;
+}
+
+.shop-med-rating .star {
+  color: #f59e0b;
+}
+
+.shop-med-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.shop-med-price {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.shop-med-mrp {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  text-decoration: line-through;
+}
+
+.shop-med-cart-btn {
+  background-color: #009b72;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.78rem;
+  padding: 7px 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background-color 0.2s, transform 0.15s;
+}
+
+.shop-med-cart-btn:hover {
+  background-color: #077959;
+  transform: translateY(-1px);
+}
+
+/* 4. TODAY'S OFFERS & SERVICES (RIGHT) */
+.offers-sidebar-wrap {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 16px 14px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+}
+
+.promo-box-inner {
+  background: linear-gradient(135deg, #e6f9f0 0%, #d1fae5 100%);
+  border: 1px solid #a7f3d0;
+  border-radius: 12px;
+  padding: 14px;
+  position: relative;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.promo-flat-text {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #065f46;
+  letter-spacing: 0.08em;
+}
+
+.promo-discount-text {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #047857;
+  line-height: 1.1;
+  margin-bottom: 2px;
+}
+
+.promo-target-text {
+  font-size: 0.72rem;
+  color: #065f46;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.promo-code-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #ffffff;
+  border: 1px dashed #009b72;
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 0.72rem;
+}
+
+.carousel-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  display: inline-block;
+}
+
+.carousel-dot.active {
+  background: #009b72;
+  width: 16px;
+  border-radius: 10px;
+}
+
+.benefit-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.benefit-icon-box {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  flex-shrink: 0;
+}
+
+.benefit-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+.benefit-subtitle {
+  font-size: 0.68rem;
+  color: #64748b;
+}
+
+.upload-rx-box {
+  background: #e6f9f0;
+  border: 1px solid #a7f3d0;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  margin-top: 10px;
+}
+
+.upload-rx-box:hover {
+  background: #d1fae5;
+  border-color: #6ee7b7;
+  transform: translateY(-2px);
 }
 </style>
 {% endblock %}
@@ -146,192 +506,230 @@
 <!-- Include Top Navigation Bar -->
 {% include 'partials/navbar.html' %}
 
-<!-- Shop Header Banner with Studio Photography Background -->
-<div class="shop-hero-banner shadow-sm">
-  <div class="container position-relative" style="z-index: 2;">
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-4">
-      <div>
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb mb-2 small font-monospace">
-            <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-emerald-300 text-decoration-none" style="color: #6ee7b7;">Home</a></li>
-            <li class="breadcrumb-item active text-white" aria-current="page">Online Pharmacy Catalog</li>
-          </ol>
-        </nav>
-        <h1 class="display-6 fw-bold text-white mb-2">Authentic Online Pharmacy & Dispensary</h1>
-        <p class="text-slate-200 lead fs-6 mb-0" style="max-width: 680px;">
-          Browse {{ total_count }} verified medicines, pharmaceutical formulations, cold-chain biologics, and clinical healthcare essentials.
-        </p>
+<div class="container">
+  
+  <!-- =========================================================================
+       HERO BANNER: ANTIXOR HEALTHCARE PROMOTION
+       ========================================================================= -->
+  <div class="antixor-shop-hero">
+    
+    <!-- Floating "Better Health, Happier Tomorrow" Badge -->
+    <div class="hero-floating-badge d-none d-md-flex">
+      <div class="hero-floating-icon">
+        <i class="fa-solid fa-leaf"></i>
       </div>
-
-      <div class="d-flex gap-2 flex-wrap">
-        <a href="{% url 'facilities' %}" class="btn btn-outline-light rounded-pill px-3 py-2 fw-semibold">
-          <i class="fa-solid fa-hospital me-1 text-danger"></i> Nearest Dispensary
-        </a>
-        <button class="btn btn-emerald text-white rounded-pill px-4 py-2 fw-bold shadow" style="background-color: #059669;" data-bs-toggle="modal" data-bs-target="#auraPrescriptionModal">
-          <i class="fa-solid fa-file-arrow-up me-1"></i> Upload Rx for Instant Dispense
-        </button>
+      <div>
+        <div class="fw-bold text-dark" style="font-size: 0.82rem; line-height: 1.2;">Better Health</div>
+        <div class="text-muted" style="font-size: 0.7rem;">Happier Tomorrow</div>
       </div>
     </div>
+
+    <div class="row align-items-center position-relative" style="z-index: 2;">
+      
+      <!-- Left Hero Content -->
+      <div class="col-lg-7 col-xl-6">
+        <div class="hero-pill-badge">TRUSTED • SAFE • AFFORDABLE</div>
+        <h1 class="hero-heading">Your Health, Our Priority</h1>
+        <p class="hero-subtext">
+          Wide range of medicines, healthcare products, wellness essentials and clinical care solutions — delivered to your doorstep.
+        </p>
+
+        <div>
+          <a href="#catalog-grid" class="hero-cta-pill">
+            <span>Explore Products</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+
+        <div class="hero-feat-row">
+          <div class="hero-feat-item">
+            <div class="hero-feat-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <span>Genuine &amp; FDA Approved Products</span>
+          </div>
+          <div class="hero-feat-item">
+            <div class="hero-feat-icon"><i class="fa-solid fa-truck-fast"></i></div>
+            <span>Fast &amp; Secure Delivery</span>
+          </div>
+          <div class="hero-feat-item">
+            <div class="hero-feat-icon"><i class="fa-solid fa-headset"></i></div>
+            <span>24/7 Pharmacist Support</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Visual Studio Composition -->
+      <div class="col-lg-5 col-xl-6 d-none d-lg-flex justify-content-end align-items-center position-relative">
+        <div class="position-relative d-flex align-items-center justify-content-center" style="width: 100%; max-width: 440px; height: 260px;">
+          
+          <!-- Background Ambient Glow -->
+          <div class="position-absolute rounded-circle" style="width: 240px; height: 240px; background: radial-gradient(circle, rgba(16, 185, 129, 0.35) 0%, rgba(5, 59, 52, 0) 70%); filter: blur(20px);"></div>
+
+          <!-- Product 1: Vitamins Bottle -->
+          <div class="position-absolute shadow-lg rounded-4 overflow-hidden" style="width: 155px; height: 195px; background: #ffffff; top: 25px; left: 130px; z-index: 3; border: 2px solid rgba(255,255,255,0.2);">
+            <img src="{% static 'images/product_vitamind3.jpg' %}" alt="Antixor Vitamins" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+
+          <!-- Product 2: Medicine Blister & Shield -->
+          <div class="position-absolute shadow rounded-4 overflow-hidden" style="width: 135px; height: 150px; background: #ffffff; bottom: 15px; left: 15px; z-index: 2; opacity: 0.95;">
+            <img src="{% static 'images/product_paracetamol.jpg' %}" alt="Antixor Paracetamol" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+
+          <!-- Glowing Green Clinical Shield -->
+          <div class="position-absolute d-flex align-items-center justify-content-center shadow-lg rounded-circle text-white" style="width: 76px; height: 76px; background: linear-gradient(135deg, #10b981 0%, #047857 100%); top: 75px; left: 70px; z-index: 4; border: 3px solid rgba(255,255,255,0.6);">
+            <i class="fa-solid fa-shield-heart fs-2"></i>
+          </div>
+
+          <!-- Organic Leaf Accent -->
+          <div class="position-absolute text-emerald-300" style="bottom: 10px; right: 25px; z-index: 4; font-size: 2.2rem; color: #6ee7b7; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));">
+            <i class="fa-solid fa-spa"></i>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
   </div>
-</div>
 
-<div class="container py-5">
-  <div class="row g-4">
+  <!-- =========================================================================
+       MAIN 3-COLUMN LAYOUT: SIDEBAR (LEFT) + CATALOG (CENTER) + OFFERS (RIGHT)
+       ========================================================================= -->
+  <div class="row g-3 pb-5">
     
-    <!-- Left Dedicated E-Commerce Sidebar -->
-    <div class="col-lg-3">
-      <aside class="shop-sidebar-card">
+    <!-- =======================================================================
+         COLUMN 1: STORE NAVIGATION SIDEBAR (LEFT)
+         ======================================================================= -->
+    <div class="col-xl-2 col-lg-3 col-md-4">
+      <aside class="nav-store-card">
         
-        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
-          <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-layer-group text-emerald-600 me-2" style="color:#059669;"></i> Store Navigation</h5>
-          <a href="{% url 'shop' %}" class="small text-muted text-decoration-none" title="Reset Filters">
-            <i class="fa-solid fa-rotate-left me-1"></i> Reset
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-1 border-bottom">
+          <h6 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2" style="font-size: 0.9rem;">
+            <i class="fa-solid fa-layer-group text-success" style="color: #009b72 !important;"></i> Store Navigation
+          </h6>
+          <a href="{% url 'shop' %}" class="small text-muted text-decoration-none d-flex align-items-center gap-1" style="font-size: 0.75rem;" title="Reset filters">
+            <i class="fa-solid fa-rotate-left"></i> Reset
           </a>
         </div>
 
-        <!-- Categories Navigation List -->
-        <div class="mb-4">
-          <div class="shop-sidebar-title font-monospace">Product Categories</div>
-          <div class="d-flex flex-column">
-            <a href="{% url 'shop' %}" class="shop-category-link {% if not current_category %}active{% endif %}">
+        <div class="nav-section-title">PRODUCT CATEGORIES</div>
+
+        <!-- Categories List -->
+        <div class="d-flex flex-column">
+          <a href="{% url 'shop' %}" class="nav-cat-row {% if not current_category %}active{% endif %}">
+            <span class="d-flex align-items-center gap-2">
+              <i class="fa-solid fa-boxes-stacked" style="width: 16px; font-size: 0.8rem;"></i>
               <span>All Formulations</span>
-              <span class="badge {% if not current_category %}bg-emerald-600 text-white{% else %}bg-light text-dark border{% endif %} rounded-pill" {% if not current_category %}style="background-color:#059669 !important;"{% endif %}>{{ total_count }}</span>
-            </a>
-            {% for cat in categories %}
-              <a href="{% url 'shop' %}?category={{ cat.slug }}" class="shop-category-link {% if current_category == cat.slug %}active{% endif %}">
-                <span>{{ cat.name }}</span>
-                <span class="badge {% if current_category == cat.slug %}bg-emerald-600 text-white{% else %}bg-light text-dark border{% endif %} rounded-pill" {% if current_category == cat.slug %}style="background-color:#059669 !important;"{% endif %}>{{ cat.products.count }}</span>
-              </a>
-            {% endfor %}
-          </div>
-        </div>
-
-        <!-- Prescription Requirement Filter -->
-        <div class="mb-4 pt-3 border-top">
-          <div class="shop-sidebar-title font-monospace">Prescription Requirement</div>
-          <div class="d-flex flex-column gap-2">
-            <a href="{% url 'shop' %}{% if current_category %}?category={{ current_category }}&{% else %}?{% endif %}rx=0" class="btn btn-sm text-start {% if current_rx == '0' %}btn-emerald text-white fw-bold{% else %}btn-outline-light text-dark border{% endif %} rounded-pill py-2" {% if current_rx == '0' %}style="background-color:#059669;"{% endif %}>
-              <i class="fa-solid fa-circle-check text-success me-1"></i> OTC (No Rx Required)
-            </a>
-            <a href="{% url 'shop' %}{% if current_category %}?category={{ current_category }}&{% else %}?{% endif %}rx=1" class="btn btn-sm text-start {% if current_rx == '1' %}btn-danger text-white fw-bold{% else %}btn-outline-light text-dark border{% endif %} rounded-pill py-2">
-              <i class="fa-solid fa-file-prescription me-1"></i> Prescription (Rx Only)
-            </a>
-          </div>
-        </div>
-
-        <!-- Dosage Form Filter -->
-        <div class="mb-4 pt-3 border-top">
-          <div class="shop-sidebar-title font-monospace">Dosage Formulation</div>
-          <div class="d-flex flex-wrap gap-1">
-            <a href="{% url 'shop' %}?dosage_form=TABLET" class="badge {% if current_dosage == 'TABLET' %}bg-emerald-600 text-white{% else %}bg-light text-dark border{% endif %} p-2 text-decoration-none rounded-pill" {% if current_dosage == 'TABLET' %}style="background-color:#059669 !important;"{% endif %}>Tablets</a>
-            <a href="{% url 'shop' %}?dosage_form=CAPSULE" class="badge {% if current_dosage == 'CAPSULE' %}bg-emerald-600 text-white{% else %}bg-light text-dark border{% endif %} p-2 text-decoration-none rounded-pill" {% if current_dosage == 'CAPSULE' %}style="background-color:#059669 !important;"{% endif %}>Capsules</a>
-            <a href="{% url 'shop' %}?dosage_form=SYRUP" class="badge {% if current_dosage == 'SYRUP' %}bg-emerald-600 text-white{% else %}bg-light text-dark border{% endif %} p-2 text-decoration-none rounded-pill" {% if current_dosage == 'SYRUP' %}style="background-color:#059669 !important;"{% endif %}>Syrup</a>
-            <a href="{% url 'shop' %}?dosage_form=CREAM" class="badge {% if current_dosage == 'CREAM' %}bg-emerald-600 text-white{% else %}bg-light text-dark border{% endif %} p-2 text-decoration-none rounded-pill" {% if current_dosage == 'CREAM' %}style="background-color:#059669 !important;"{% endif %}>Creams</a>
-            <a href="{% url 'shop' %}?dosage_form=DEVICE" class="badge {% if current_dosage == 'DEVICE' %}bg-emerald-600 text-white{% else %}bg-light text-dark border{% endif %} p-2 text-decoration-none rounded-pill" {% if current_dosage == 'DEVICE' %}style="background-color:#059669 !important;"{% endif %}>Devices</a>
-          </div>
-        </div>
-
-        <!-- Clinical Hotline Quick Card -->
-        <div class="p-3 bg-emerald-50 rounded-4 border border-emerald-200 text-center mt-3" style="background-color: #f0fdf4; border-color: #bbf7d0 !important;">
-          <div class="text-emerald-900 fw-bold small mb-1" style="color: #064e3b;"><i class="fa-solid fa-user-doctor me-1"></i> 24/7 Pharmacist Triage</div>
-          <p class="text-muted small mb-2" style="font-size: 0.75rem;">Free clinical dosage review and drug interaction check.</p>
-          <a href="tel:+18005842689" class="btn btn-sm btn-emerald text-white rounded-pill w-100 fw-bold" style="background-color:#059669; font-size: 0.75rem;">
-            <i class="fa-solid fa-phone me-1"></i> Call +1 (800) 584-ANTX
+            </span>
+            <span class="nav-cat-pill">{{ total_catalog_count|default:"245" }}</span>
           </a>
+
+          {% for cat in categories %}
+            <a href="{% url 'shop' %}?category={{ cat.slug }}" class="nav-cat-row {% if current_category == cat.slug %}active{% endif %}">
+              <span class="d-flex align-items-center gap-2 text-truncate">
+                <i class="{{ cat.icon_class|default:'fa-solid fa-pills' }}" style="width: 16px; font-size: 0.8rem;"></i>
+                <span class="text-truncate">{{ cat.name }}</span>
+              </span>
+              <span class="nav-cat-pill">{{ cat.products.count }}</span>
+            </a>
+          {% endfor %}
         </div>
 
       </aside>
     </div>
 
-    <!-- Right Products Catalog Grid -->
-    <div class="col-lg-9">
+    <!-- =======================================================================
+         COLUMN 2: PRODUCT CATALOG & TOOLBAR (CENTER)
+         ======================================================================= -->
+    <div class="col-xl-8 col-lg-6 col-md-8">
       
-      <!-- Top Results & Sorting Bar -->
-      <div class="card border rounded-4 p-3 shadow-sm bg-white mb-4">
-        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
-          <div class="small text-muted">
-            Showing <strong class="text-dark">{{ page_obj.start_index }}-{{ page_obj.end_index }}</strong> of <strong class="text-dark">{{ total_count }}</strong> verified medicines
-            {% if search_query %} for <span class="badge bg-emerald-600 text-white font-monospace" style="background-color: #059669 !important;">"{{ search_query }}"</span>{% endif %}
-          </div>
-          
-          <div class="d-flex align-items-center gap-2">
-            <label class="small text-muted text-nowrap font-monospace">SORT BY:</label>
-            <select class="form-select form-select-sm rounded-pill font-monospace" onchange="location = this.value;" style="min-width: 180px;">
-              <option value="{% url 'shop' %}?sort=featured" {% if current_sort == 'featured' %}selected{% endif %}>Featured Clinical</option>
-              <option value="{% url 'shop' %}?sort=price_low" {% if current_sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
-              <option value="{% url 'shop' %}?sort=price_high" {% if current_sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
-              <option value="{% url 'shop' %}?sort=rating" {% if current_sort == 'rating' %}selected{% endif %}>Highest Clinical Rating</option>
-              <option value="{% url 'shop' %}?sort=newest" {% if current_sort == 'newest' %}selected{% endif %}>Newest Formulations</option>
-            </select>
+      <!-- Top Toolbar -->
+      <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-3 px-1">
+        <div class="small text-muted" style="font-size: 0.82rem;">
+          Showing <strong class="text-dark">{{ page_obj.start_index|default:"1" }}–{{ page_obj.end_index|default:"8" }}</strong> of <strong class="text-dark">{{ total_count|default:"245" }}</strong> products
+          {% if search_query %} for <span class="badge bg-success text-white" style="background-color: #009b72 !important;">"{{ search_query }}"</span>{% endif %}
+        </div>
+
+        <div class="d-flex align-items-center gap-2">
+          <label class="small text-muted text-nowrap" style="font-size: 0.78rem;">Sort by:</label>
+          <select class="form-select form-select-sm rounded-3 py-1" onchange="location = this.value;" style="min-width: 155px; font-size: 0.8rem; border-color: #cbd5e1;">
+            <option value="{% url 'shop' %}?sort=featured" {% if current_sort == 'featured' %}selected{% endif %}>Featured Clinical</option>
+            <option value="{% url 'shop' %}?sort=price_low" {% if current_sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
+            <option value="{% url 'shop' %}?sort=price_high" {% if current_sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
+            <option value="{% url 'shop' %}?sort=rating" {% if current_sort == 'rating' %}selected{% endif %}>Highest Rating</option>
+            <option value="{% url 'shop' %}?sort=newest" {% if current_sort == 'newest' %}selected{% endif %}>Newest Formulations</option>
+          </select>
+
+          <!-- View Switchers -->
+          <div class="d-none d-md-flex align-items-center gap-1">
+            <button class="btn btn-sm btn-light border p-1 rounded-2 text-success" title="Grid View" style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background: #e6f9f0; border-color: #a7f3d0 !important; color: #009b72 !important;">
+              <i class="fa-solid fa-grip" style="font-size: 0.8rem;"></i>
+            </button>
+            <button class="btn btn-sm btn-light border p-1 rounded-2 text-muted" title="List View" style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background: #ffffff; border-color: #e2e8f0 !important;">
+              <i class="fa-solid fa-list-ul" style="font-size: 0.8rem;"></i>
+            </button>
           </div>
         </div>
       </div>
 
       <!-- Products Grid -->
       {% if page_obj %}
-        <div class="row g-4 antixor-shop-grid">
+        <div class="row g-3" id="catalog-grid">
           {% for product in page_obj %}
-            <div class="col-xl-4 col-md-6">
-              <div class="antixor-product-card">
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+              <div class="shop-med-card">
                 
-                <!-- Wishlist Trigger -->
-                <button class="antixor-wishlist-circle" onclick="toggleWishlist({{ product.id }}, this)" title="Save to Wishlist">
-                  <i class="fa-regular fa-heart"></i>
-                </button>
+                <!-- Image & Badges Wrap -->
+                <div class="shop-med-img-box">
+                  
+                  <!-- Tag Badge Top Left -->
+                  {% if product.prescription_required %}
+                    <span class="badge-tag-pill badge-rx">Rx</span>
+                  {% elif product.is_best_seller %}
+                    <span class="badge-tag-pill badge-bestseller">Best Seller</span>
+                  {% elif product.is_trending %}
+                    <span class="badge-tag-pill badge-new">New</span>
+                  {% else %}
+                    <span class="badge-tag-pill badge-otc">OTC</span>
+                  {% endif %}
 
-                <!-- Product Image Box -->
-                <div class="antixor-product-img-box">
-                  <!-- Badges Top Left -->
-                  <div class="position-absolute top-0 start-0 m-2 d-flex flex-column gap-1" style="z-index: 2;">
-                    {% if product.prescription_required %}
-                      <span class="badge bg-danger text-white antixor-badge-rx-pill shadow-sm"><i class="fa-solid fa-file-prescription me-1"></i> Rx</span>
-                    {% else %}
-                      <span class="badge bg-emerald-600 text-white antixor-badge-rx-pill shadow-sm" style="background-color: #059669 !important;">OTC</span>
-                    {% endif %}
-                    {% if product.discount_percent > 0 %}
-                      <span class="badge bg-warning text-dark font-monospace fw-bold" style="font-size: 0.65rem; border-radius: 20px;">-{{ product.discount_percent }}% OFF</span>
-                    {% endif %}
-                  </div>
+                  <!-- Wishlist Button Top Right -->
+                  <button class="med-wishlist-circle" onclick="toggleWishlist({{ product.id }}, this)" title="Add to Wishlist">
+                    <i class="fa-regular fa-heart"></i>
+                  </button>
 
+                  <!-- Product Image -->
                   <a href="{% url 'product-detail' product.slug %}" class="d-flex align-items-center justify-content-center w-100 h-100">
-                    <img src="{{ product.get_image }}" alt="{{ product.name }}" class="antixor-product-img" loading="lazy">
+                    <img src="{{ product.get_image }}" alt="{{ product.name }}" class="shop-med-img" loading="lazy">
                   </a>
                 </div>
 
                 <!-- Product Details -->
                 <div class="flex-grow-1 d-flex flex-column justify-content-between">
                   <div>
-                    <div class="text-emerald-700 small fw-bold text-uppercase font-monospace mb-1" style="font-size: 0.7rem; color: #047857;">
-                      {{ product.category.name }}
+                    <div class="shop-med-category">{{ product.category.name }}</div>
+                    <h6 class="shop-med-title">
+                      <a href="{% url 'product-detail' product.slug %}">{{ product.name }}</a>
+                    </h6>
+                    <div class="shop-med-spec">
+                      {{ product.dosage_strength|default:product.get_dosage_form_display }} • {{ product.pack_size }}
                     </div>
-                    <h3 class="h6 fw-bold mb-1 text-dark text-truncate-2" style="min-height: 40px; line-height: 1.3;">
-                      <a href="{% url 'product-detail' product.slug %}" class="text-decoration-none text-dark hover-emerald">
-                        {{ product.name }}
-                      </a>
-                    </h3>
-
-                    <div class="small text-muted mb-2 font-monospace" style="font-size: 0.75rem;">
-                      <i class="fa-solid fa-capsules text-emerald-600 me-1" style="color:#059669;"></i>
-                      <span>{{ product.dosage_strength|default:product.get_dosage_form_display }} • {{ product.pack_size }}</span>
-                    </div>
-
-                    <div class="d-flex align-items-center gap-1 text-warning small mb-3">
-                      <span>★</span>
+                    <div class="shop-med-rating">
+                      <span class="star">★</span>
                       <strong class="text-dark">{{ product.rating }}</strong>
-                      <span class="text-muted">({{ product.total_reviews|default:"45" }} verified)</span>
+                      <span class="text-muted">({{ product.total_reviews|default:"45" }} reviews)</span>
                     </div>
                   </div>
 
                   <div>
-                    <div class="d-flex align-items-baseline gap-2 mb-3">
-                      <span class="h5 fw-bold text-emerald-800 font-monospace mb-0" style="color: #064e3b;">${{ product.price }}</span>
+                    <div class="shop-med-price-row">
+                      <span class="shop-med-price">${{ product.price }}</span>
                       {% if product.mrp_price and product.mrp_price > product.price %}
-                        <span class="text-muted text-decoration-line-through small font-monospace">${{ product.mrp_price }}</span>
+                        <span class="shop-med-mrp">${{ product.mrp_price }}</span>
                       {% endif %}
                     </div>
 
-                    <button class="btn btn-emerald text-white rounded-pill w-100 fw-bold py-2 shadow-sm d-flex align-items-center justify-content-center gap-2" style="background-color: #059669;" onclick="addToCart({{ product.id }}, 1, event)">
-                      <i class="fa-solid fa-cart-plus"></i>
+                    <button class="shop-med-cart-btn" onclick="addToCart({{ product.id }}, 1, event)">
+                      <i class="fa-solid fa-cart-shopping"></i>
                       <span>Add to Cart</span>
                     </button>
                   </div>
@@ -342,16 +740,16 @@
           {% endfor %}
         </div>
 
-        <!-- Pagination -->
+        <!-- Centered Pagination -->
         {% if page_obj.has_other_pages %}
-          <nav class="mt-5 d-flex justify-content-center">
-            <ul class="pagination">
+          <nav class="mt-4 d-flex justify-content-center">
+            <ul class="pagination pagination-sm">
               {% if page_obj.has_previous %}
                 <li class="page-item"><a class="page-link rounded-pill me-1 text-dark" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
               {% endif %}
               {% for num in page_obj.paginator.page_range %}
                 <li class="page-item {% if page_obj.number == num %}active{% endif %}">
-                  <a class="page-link rounded-pill mx-1 {% if page_obj.number == num %}bg-emerald-600 border-0 text-white{% else %}text-dark{% endif %}" {% if page_obj.number == num %}style="background-color:#059669 !important;"{% endif %} href="?page={{ num }}">{{ num }}</a>
+                  <a class="page-link rounded-pill mx-1 {% if page_obj.number == num %}bg-success border-0 text-white{% else %}text-dark{% endif %}" {% if page_obj.number == num %}style="background-color:#009b72 !important;"{% endif %} href="?page={{ num }}">{{ num }}</a>
                 </li>
               {% endfor %}
               {% if page_obj.has_next %}
@@ -362,17 +760,113 @@
         {% endif %}
 
       {% else %}
-        <div class="text-center py-5 bg-white rounded-4 border p-5">
-          <div class="text-muted mb-3"><i class="fa-solid fa-prescription-bottle-medical fa-3x text-emerald-600" style="color:#059669;"></i></div>
-          <h4 class="fw-bold text-dark mb-2">No matching clinical medicines found</h4>
-          <p class="text-muted small mb-4">Try checking your spelling, active ingredient name, or clearing filters.</p>
-          <a href="{% url 'shop' %}" class="btn btn-emerald text-white rounded-pill px-4 fw-bold" style="background-color:#059669;">Clear All Filters</a>
+        <div class="text-center py-5 bg-white rounded-4 border p-4 shadow-sm">
+          <div class="text-muted mb-3"><i class="fa-solid fa-pills fa-3x text-success" style="color:#009b72;"></i></div>
+          <h5 class="fw-bold text-dark mb-1">No medicines found</h5>
+          <p class="text-muted small mb-3">Try adjusting your search terms or clearing selected category filters.</p>
+          <a href="{% url 'shop' %}" class="btn btn-sm btn-success text-white rounded-pill px-3 py-2 fw-bold" style="background-color:#009b72;">Clear All Filters</a>
         </div>
       {% endif %}
 
     </div>
 
+    <!-- =======================================================================
+         COLUMN 3: TODAY'S OFFERS & CLINICAL SERVICES (RIGHT)
+         ======================================================================= -->
+    <div class="col-xl-2 col-lg-3 col-md-12">
+      <aside class="offers-sidebar-wrap">
+        
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-1 border-bottom">
+          <h6 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2" style="font-size: 0.9rem;">
+            <i class="fa-solid fa-certificate text-success" style="color:#009b72;"></i> Today's Offers
+          </h6>
+          <a href="#" class="small text-muted text-decoration-none" style="font-size: 0.75rem;">View All</a>
+        </div>
+
+        <!-- Promotional Box: FLAT 20% OFF -->
+        <div class="promo-box-inner">
+          <div class="promo-flat-text">FLAT</div>
+          <div class="promo-discount-text">20% OFF</div>
+          <div class="promo-target-text">on Vitamins &amp; Supplements</div>
+          
+          <div class="promo-code-box">
+            <span class="text-muted" style="font-size: 0.68rem;">Use Code:</span>
+            <strong class="text-success font-monospace" style="color:#009b72 !important; font-size: 0.72rem;">HEALTH20</strong>
+          </div>
+
+          <!-- Carousel Indicator Dots -->
+          <div class="d-flex justify-content-center align-items-center gap-1 mt-3">
+            <span class="carousel-dot active"></span>
+            <span class="carousel-dot"></span>
+            <span class="carousel-dot"></span>
+          </div>
+        </div>
+
+        <!-- Clinical Benefit Highlights -->
+        <div class="d-flex flex-column gap-2 mb-3">
+          
+          <div class="benefit-row">
+            <div class="benefit-icon-box" style="background-color: #e6f9f0; color: #009b72;">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <div>
+              <div class="benefit-title">100% Genuine Medicines</div>
+              <div class="benefit-subtitle">FDA Approved Products</div>
+            </div>
+          </div>
+
+          <div class="benefit-row">
+            <div class="benefit-icon-box" style="background-color: #e0f2fe; color: #0284c7;">
+              <i class="fa-solid fa-truck-fast"></i>
+            </div>
+            <div>
+              <div class="benefit-title">Express Delivery</div>
+              <div class="benefit-subtitle">24–48 Hours</div>
+            </div>
+          </div>
+
+          <div class="benefit-row">
+            <div class="benefit-icon-box" style="background-color: #e0f7fa; color: #0ea5e9;">
+              <i class="fa-solid fa-snowflake"></i>
+            </div>
+            <div>
+              <div class="benefit-title">Cold-Chain Storage</div>
+              <div class="benefit-subtitle">2°C – 8°C Certified</div>
+            </div>
+          </div>
+
+          <div class="benefit-row">
+            <div class="benefit-icon-box" style="background-color: #ffe4e6; color: #e11d48;">
+              <i class="fa-solid fa-headset"></i>
+            </div>
+            <div>
+              <div class="benefit-title">24/7 Pharmacist Support</div>
+              <div class="benefit-subtitle">Expert Guidance</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Prescription Upload CTA Card -->
+        <div class="upload-rx-box" data-bs-toggle="modal" data-bs-target="#auraPrescriptionModal">
+          <div class="d-flex align-items-center gap-2">
+            <div class="rounded-3 d-flex align-items-center justify-content-center bg-white shadow-sm" style="width: 32px; height: 32px; color: #009b72;">
+              <i class="fa-solid fa-cloud-arrow-up" style="font-size: 0.9rem;"></i>
+            </div>
+            <div>
+              <div class="fw-bold" style="font-size: 0.78rem; color: #065f46; line-height: 1.2;">Upload Prescription</div>
+              <div class="text-muted" style="font-size: 0.68rem;">Get medicines with expert verification</div>
+            </div>
+          </div>
+          <i class="fa-solid fa-chevron-right text-success" style="color: #009b72; font-size: 0.8rem;"></i>
+        </div>
+
+      </aside>
+    </div>
+
   </div>
+
 </div>
 
 <!-- Include Footer -->

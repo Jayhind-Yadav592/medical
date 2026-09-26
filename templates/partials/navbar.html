@@ -1,46 +1,49 @@
-<!-- Top Utility Notification Bar -->
-<div class="bg-navy-950 text-white py-1 px-3 border-bottom border-secondary border-opacity-25 d-none d-md-block" style="background-color: #0b1329; font-size: 0.78rem;">
+{% load static %}
+<!-- Top Service Bar -->
+<div class="text-white py-1 px-3 d-none d-md-block" style="background-color: #062e2c; font-size: 0.76rem; border-bottom: 1px solid rgba(255,255,255,0.08);">
   <div class="container d-flex justify-content-between align-items-center">
     <div class="d-flex align-items-center gap-3">
-      <span><i class="fa-solid fa-truck-fast text-emerald-400 me-1" style="color: #34d399;"></i> <strong>Express 2-Hour Delivery</strong> active in New York</span>
-      <span class="text-slate-500">•</span>
-      <span><i class="fa-solid fa-snowflake text-cyan-400 me-1" style="color: #38bdf8;"></i> Cold-Chain Certified 2°C - 8°C</span>
-      <span class="text-slate-500">•</span>
-      <span><i class="fa-solid fa-certificate text-emerald-400 me-1" style="color: #34d399;"></i> FDA & GMP Licensed Dispensary</span>
+      <span class="d-flex align-items-center"><i class="fa-solid fa-truck-fast text-success me-1" style="color: #00b87c !important;"></i> Express 24-Hour Delivery across India</span>
+      <span class="text-white-50">|</span>
+      <span class="d-flex align-items-center"><i class="fa-solid fa-snowflake text-info me-1" style="color: #38bdf8 !important;"></i> Cold-Chain Certified (2°C - 8°C)</span>
+      <span class="text-white-50">|</span>
+      <span class="d-flex align-items-center"><i class="fa-solid fa-shield-halved text-success me-1" style="color: #00b87c !important;"></i> FDA &amp; GMP Licensed Pharmacy</span>
     </div>
     <div class="d-flex align-items-center gap-3">
-      <a href="{% url 'facilities' %}" class="text-white text-decoration-none hover-emerald"><i class="fa-solid fa-location-crosshairs text-danger me-1"></i> Nearest 24/7 Hospital</a>
-      <span class="text-slate-500">•</span>
-      <a href="tel:+18005842689" class="text-white text-decoration-none"><i class="fa-solid fa-phone text-emerald-400 me-1" style="color: #34d399;"></i> +1 (800) 584-ANTX</a>
+      <a href="{% url 'facilities' %}" class="text-white text-decoration-none d-flex align-items-center"><i class="fa-solid fa-location-dot text-danger me-1" style="color: #f43f5e !important;"></i> Nearest 24/7 Hospital</a>
+      <span class="text-white-50">|</span>
+      <a href="tel:+18005842689" class="text-white text-decoration-none d-flex align-items-center"><i class="fa-solid fa-phone text-success me-1" style="color: #00b87c !important;"></i> 1800-584-ANTX</a>
+      <span class="text-white-50">|</span>
+      <a href="#" class="text-white text-decoration-none d-flex align-items-center"><i class="fa-solid fa-mobile-screen-button text-success me-1" style="color: #00b87c !important;"></i> Download App</a>
     </div>
   </div>
 </div>
 
 <!-- Main Antixor Header Navigation -->
-<header class="bg-white border-bottom sticky-top shadow-sm" style="z-index: 1030;">
+<header class="bg-white border-bottom sticky-top" style="z-index: 1030; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
   <div class="container py-2 py-lg-3">
     <div class="d-flex align-items-center justify-content-between gap-3">
       
       <!-- Brand Logo -->
       <a class="d-flex align-items-center gap-2 text-decoration-none flex-shrink-0" href="{% url 'home' %}">
-        <div class="rounded-3 d-flex align-items-center justify-content-center text-white shadow-sm" style="width: 42px; height: 42px; background: linear-gradient(135deg, #059669 0%, #047857 100%);">
-          <i class="fa-solid fa-staff-snake fs-5"></i>
+        <div class="rounded-3 d-flex align-items-center justify-content-center text-white shadow-sm" style="width: 40px; height: 40px; background: #009b72;">
+          <i class="fa-solid fa-mortar-pestle fs-5"></i>
         </div>
         <div class="lh-1">
-          <div class="fw-bold text-dark fs-4 tracking-tight">Antixor<span style="color: #059669;">.Pharmacy</span></div>
-          <div class="text-muted font-monospace" style="font-size: 0.625rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;">Smart Healthcare Network</div>
+          <div class="fw-bold text-dark fs-4 tracking-tight" style="font-family: 'Plus Jakarta Sans', sans-serif;">Antixor<span style="color: #009b72;">.Pharmacy</span></div>
+          <div class="text-muted font-monospace" style="font-size: 0.58rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase;">SMART HEALTHCARE ANYWHERE</div>
         </div>
       </a>
 
       <!-- Smart Center Search Bar -->
-      <div class="flex-grow-1 mx-2 mx-xl-4 d-none d-lg-block" style="max-width: 520px;">
+      <div class="flex-grow-1 mx-2 mx-xl-4 d-none d-lg-block" style="max-width: 580px;">
         <form action="{% url 'shop' %}" method="GET" class="position-relative">
-          <div class="input-group rounded-pill overflow-hidden border p-1 bg-light shadow-sm" style="border-color: #cbd5e1 !important;">
+          <div class="input-group rounded-pill overflow-hidden border p-1 bg-light" style="border-color: #e2e8f0 !important; background-color: #f8fafc !important;">
             <span class="input-group-text bg-transparent border-0 ps-3 pe-2 text-muted">
-              <i class="fa-solid fa-magnifying-glass"></i>
+              <i class="fa-solid fa-magnifying-glass" style="color: #94a3b8;"></i>
             </span>
-            <input type="text" name="q" class="form-control bg-transparent border-0 py-1 small" placeholder="Search medicines, active ingredients, vitamins..." autocomplete="off">
-            <button type="submit" class="btn btn-emerald text-white rounded-pill px-4 fw-bold shadow-sm" style="background-color: #059669; font-size: 0.85rem;">
+            <input type="text" name="q" value="{{ search_query|default:'' }}" class="form-control bg-transparent border-0 py-1 small" placeholder="Search medicines, active ingredients, vitamins, healthcare products..." autocomplete="off" style="font-size: 0.85rem;">
+            <button type="submit" class="btn text-white rounded-pill px-4 fw-bold shadow-sm" style="background-color: #009b72; font-size: 0.85rem;">
               Search
             </button>
           </div>
@@ -51,97 +54,100 @@
       <div class="d-flex align-items-center gap-2 flex-shrink-0">
         
         <!-- Upload Rx Button -->
-        <button class="btn btn-sm btn-emerald text-white rounded-pill px-3 py-2 d-none d-sm-inline-flex align-items-center gap-2 fw-bold shadow-sm" style="background-color: #059669; font-size: 0.85rem;" data-bs-toggle="modal" data-bs-target="#auraPrescriptionModal">
-          <i class="fa-solid fa-file-arrow-up"></i>
+        <button class="btn btn-sm text-white rounded-pill px-3 py-2 d-none d-sm-inline-flex align-items-center gap-2 fw-bold shadow-sm" style="background-color: #009b72; font-size: 0.85rem;" data-bs-toggle="modal" data-bs-target="#auraPrescriptionModal">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
           <span>Upload Rx</span>
         </button>
 
         <!-- Wishlist -->
-        <a href="{% if user.is_authenticated %}{% url 'dashboard' %}{% else %}#{% endif %}" class="btn btn-light rounded-circle p-2 text-dark position-relative border shadow-sm" {% if not user.is_authenticated %}data-bs-toggle="modal" data-bs-target="#auraAuthModal"{% endif %} title="Wishlist" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
-          <i class="fa-regular fa-heart"></i>
+        <a href="{% if user.is_authenticated %}{% url 'dashboard' %}{% else %}#{% endif %}" class="btn btn-light rounded-circle text-dark position-relative border shadow-sm" {% if not user.is_authenticated %}data-bs-toggle="modal" data-bs-target="#auraAuthModal"{% endif %} title="Wishlist" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; background: #ffffff; border-color: #e2e8f0 !important;">
+          <i class="fa-regular fa-heart" style="color: #475569;"></i>
           <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger aura-wishlist-count-badge" style="display: {% if global_wishlist_count > 0 %}inline-flex{% else %}none{% endif %}; font-size: 0.65rem;">
             {{ global_wishlist_count }}
           </span>
         </a>
 
         <!-- Shopping Cart Drawer Trigger -->
-        <button class="btn btn-light rounded-circle p-2 text-dark position-relative border shadow-sm" onclick="openCartDrawer()" title="Shopping Cart" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
-          <i class="fa-solid fa-bag-shopping"></i>
-          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-emerald-600 aura-cart-count-badge text-white" style="display: {% if global_cart_count > 0 %}inline-flex{% else %}none{% endif %}; font-size: 0.65rem; background-color: #059669 !important;">
-            {{ global_cart_count }}
+        <button class="btn btn-light rounded-circle text-dark position-relative border shadow-sm" onclick="openCartDrawer()" title="Shopping Cart" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; background: #ffffff; border-color: #e2e8f0 !important;">
+          <i class="fa-solid fa-bag-shopping" style="color: #475569;"></i>
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-white aura-cart-count-badge" style="display: inline-flex; font-size: 0.65rem; background-color: #ef4444 !important;">
+            {{ global_cart_count|default:"3" }}
           </span>
         </button>
 
         <!-- User Authentication & Account Menu -->
-        {% if user.is_authenticated %}
-          <div class="dropdown">
-            <button class="btn btn-light rounded-pill px-3 py-1 d-flex align-items-center gap-2 border shadow-sm dropdown-toggle" data-bs-toggle="dropdown">
-              <div class="rounded-circle bg-emerald-600 text-white d-flex align-items-center justify-content-center fw-bold" style="width: 28px; height: 28px; font-size: 0.8rem; background-color: #059669 !important;">
-                {{ user.first_name|default:user.username|make_list|first|upper }}
-              </div>
-              <span class="small fw-bold d-none d-md-inline text-dark">{{ user.first_name|default:user.username }}</span>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 mt-2 p-2" style="min-width: 220px;">
-              <li class="px-3 py-2 border-bottom mb-1">
-                <div class="fw-bold text-dark">{{ user.get_full_name|default:user.username }}</div>
-                <div class="small text-muted font-monospace" style="font-size: 0.7rem;">ID: {{ user.digital_health_id|default:"ANT-P-882910" }}</div>
-              </li>
-              <li><a class="dropdown-item py-2 rounded-3" href="{% url 'dashboard' %}"><i class="fa-solid fa-gauge-high me-2 text-emerald-600" style="color:#059669;"></i> Patient Dashboard</a></li>
-              <li><a class="dropdown-item py-2 rounded-3" href="{% url 'health-card' %}"><i class="fa-solid fa-id-card me-2 text-primary"></i> Digital Health Passport</a></li>
-              <li><a class="dropdown-item py-2 rounded-3" href="{% url 'intake' %}"><i class="fa-solid fa-clipboard-check me-2 text-warning"></i> Clinical Intake & Rx</a></li>
-              <li><a class="dropdown-item py-2 rounded-3" href="{% url 'order-track' %}"><i class="fa-solid fa-boxes-stacked me-2 text-info"></i> Track Orders</a></li>
-              <li><hr class="dropdown-divider my-1"></li>
+        <div class="dropdown">
+          <button class="btn btn-light rounded-pill px-2 py-1 d-flex align-items-center gap-2 border shadow-sm dropdown-toggle" data-bs-toggle="dropdown" style="background: #ffffff; border-color: #e2e8f0 !important;">
+            <div class="rounded-circle text-white d-flex align-items-center justify-content-center fw-bold overflow-hidden" style="width: 30px; height: 30px; background-color: #009b72;">
+              {% if user.is_authenticated %}
+                <img src="{% static 'images/avatar_sarah.jpg' %}" alt="User Avatar" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null; this.parentElement.innerHTML='{{ user.username|first|upper }}';">
+              {% else %}
+                <img src="{% static 'images/avatar_sarah.jpg' %}" alt="Chief Pharmacist" style="width: 100%; height: 100%; object-fit: cover;">
+              {% endif %}
+            </div>
+            <span class="small fw-bold d-none d-md-inline text-dark">Chief Pharmacist</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 mt-2 p-2" style="min-width: 220px;">
+            <li class="px-3 py-2 border-bottom mb-1">
+              <div class="fw-bold text-dark">Chief Pharmacist Alexander</div>
+              <div class="small text-muted font-monospace" style="font-size: 0.7rem;">ID: ANT-P-882910</div>
+            </li>
+            <li><a class="dropdown-item py-2 rounded-3" href="{% url 'dashboard' %}"><i class="fa-solid fa-gauge-high me-2" style="color:#009b72;"></i> Patient Dashboard</a></li>
+            <li><a class="dropdown-item py-2 rounded-3" href="{% url 'health-card' %}"><i class="fa-solid fa-id-card me-2 text-primary"></i> Digital Health Passport</a></li>
+            <li><a class="dropdown-item py-2 rounded-3" href="{% url 'intake' %}"><i class="fa-solid fa-clipboard-check me-2 text-warning"></i> Clinical Intake &amp; Rx</a></li>
+            <li><a class="dropdown-item py-2 rounded-3" href="{% url 'order-track' %}"><i class="fa-solid fa-boxes-stacked me-2 text-info"></i> Track Orders</a></li>
+            <li><hr class="dropdown-divider my-1"></li>
+            {% if user.is_authenticated %}
               <li>
                 <a class="dropdown-item py-2 rounded-3 text-danger fw-semibold" href="{% url 'logout' %}">
                   <i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout
                 </a>
               </li>
-            </ul>
-          </div>
-        {% else %}
-          <a href="{% url 'login' %}" class="btn btn-sm btn-outline-success rounded-pill px-3 py-2 fw-bold d-flex align-items-center gap-1" style="font-size: 0.85rem;">
-            <i class="fa-regular fa-user"></i>
-            <span>Sign In</span>
-          </a>
-        {% endif %}
+            {% else %}
+              <li>
+                <a class="dropdown-item py-2 rounded-3 text-success fw-semibold" href="{% url 'login' %}">
+                  <i class="fa-solid fa-arrow-right-to-bracket me-2"></i> Sign In / Register
+                </a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
 
       </div>
     </div>
   </div>
 
   <!-- Secondary Clean Navigation Strip -->
-  <div class="border-top bg-light bg-opacity-75 py-2">
+  <div class="border-top py-2" style="background-color: #ffffff; border-color: #f1f5f9 !important;">
     <div class="container d-flex align-items-center justify-content-between">
       <div class="d-flex align-items-center gap-1 gap-lg-2 flex-wrap">
-        <a href="{% url 'home' %}" class="btn btn-sm btn-light border-0 fw-semibold text-dark rounded-pill px-3 py-1 {% if request.path == '/' %}bg-white shadow-sm text-emerald-700 fw-bold{% endif %}">
-          <i class="fa-solid fa-house-chimney-medical text-emerald-600 me-1" style="color:#059669;"></i> Home
+        <a href="{% url 'home' %}" class="btn btn-sm border-0 fw-semibold text-dark rounded-pill px-3 py-1-5 {% if request.path == '/' %}bg-emerald-50 text-emerald-700 fw-bold{% else %}btn-light{% endif %}" style="font-size: 0.85rem; {% if request.path == '/' %}background-color: #e6f9f0 !important; color: #009b72 !important;{% endif %}">
+          <i class="fa-solid fa-house text-emerald-600 me-1" style="color:#009b72;"></i> Home
         </a>
-        <a href="{% url 'shop' %}" class="btn btn-sm btn-light border-0 fw-semibold text-dark rounded-pill px-3 py-1 {% if '/shop' in request.path %}bg-white shadow-sm text-emerald-700 fw-bold{% endif %}">
-          <i class="fa-solid fa-pills text-emerald-600 me-1" style="color:#059669;"></i> Pharmacy Store
+        <a href="{% url 'shop' %}" class="btn btn-sm border-0 rounded-pill px-3 py-1-5 {% if '/shop' in request.path %}fw-bold{% else %}btn-light text-dark fw-semibold{% endif %}" style="font-size: 0.85rem; {% if '/shop' in request.path %}background-color: #e6f9f0 !important; color: #009b72 !important; font-weight: 700;{% else %}color: #334155;{% endif %}">
+          <i class="fa-solid fa-store me-1" style="color:#009b72;"></i> Pharmacy Store
         </a>
-        <a href="{% url 'facilities' %}" class="btn btn-sm btn-light border-0 fw-semibold text-dark rounded-pill px-3 py-1 {% if '/facilities' in request.path %}bg-white shadow-sm text-emerald-700 fw-bold{% endif %}">
-          <i class="fa-solid fa-hospital text-danger me-1"></i> Nearest Hospitals
+        <a href="{% url 'facilities' %}" class="btn btn-sm btn-light border-0 fw-semibold text-dark rounded-pill px-3 py-1-5" style="font-size: 0.85rem;">
+          <i class="fa-solid fa-hospital me-1" style="color: #f43f5e;"></i> Nearest Hospitals
         </a>
-        <a href="{% url 'intake' %}" class="btn btn-sm btn-light border-0 fw-semibold text-dark rounded-pill px-3 py-1 {% if '/intake' in request.path %}bg-white shadow-sm text-emerald-700 fw-bold{% endif %}">
-          <i class="fa-solid fa-stethoscope text-primary me-1"></i> Symptom Intake
+        <a href="{% url 'intake' %}" class="btn btn-sm btn-light border-0 fw-semibold text-dark rounded-pill px-3 py-1-5" style="font-size: 0.85rem;">
+          <i class="fa-solid fa-stethoscope me-1" style="color: #3b82f6;"></i> Symptom Intake
         </a>
-        <a href="{% url 'telehealth' %}" class="btn btn-sm btn-light border-0 fw-semibold text-dark rounded-pill px-3 py-1 {% if '/telehealth' in request.path %}bg-white shadow-sm text-emerald-700 fw-bold{% endif %}">
-          <i class="fa-solid fa-user-doctor text-purple-600 me-1" style="color:#9333ea;"></i> Consult Doctors
+        <a href="{% url 'telehealth' %}" class="btn btn-sm btn-light border-0 fw-semibold text-dark rounded-pill px-3 py-1-5" style="font-size: 0.85rem;">
+          <i class="fa-solid fa-user-doctor me-1" style="color: #9333ea;"></i> Consult Doctors
         </a>
-        <a href="{% url 'prescriptions' %}" class="btn btn-sm btn-light border-0 fw-semibold text-dark rounded-pill px-3 py-1 {% if '/prescriptions' in request.path %}bg-white shadow-sm text-emerald-700 fw-bold{% endif %}">
-          <i class="fa-solid fa-receipt text-warning me-1"></i> Prescription Portal
-        </a>
-        <a href="{% url 'articles' %}" class="btn btn-sm btn-light border-0 fw-semibold text-dark rounded-pill px-3 py-1 {% if '/articles' in request.path %}bg-white shadow-sm text-emerald-700 fw-bold{% endif %}">
-          <i class="fa-solid fa-book-medical text-info me-1"></i> Health Journal
-        </a>
-        <a href="{% url 'health-card' %}" class="btn btn-sm btn-light border-0 fw-semibold text-dark rounded-pill px-3 py-1 {% if '/health-card' in request.path %}bg-white shadow-sm text-emerald-700 fw-bold{% endif %}">
-          <i class="fa-solid fa-qrcode text-emerald-600 me-1" style="color:#059669;"></i> Health Passport
+        <a href="{% url 'prescriptions' %}" class="btn btn-sm btn-light border-0 fw-semibold text-dark rounded-pill px-3 py-1-5" style="font-size: 0.85rem;">
+          <i class="fa-solid fa-receipt me-1" style="color: #f59e0b;"></i> Prescription Portal
         </a>
       </div>
 
-      <div class="d-none d-xl-flex align-items-center gap-2 small text-muted font-monospace">
-        <i class="fa-solid fa-location-dot text-danger"></i>
-        <span>Hub: <strong class="text-dark">Antixor Flagship Central NYC</strong></span>
+      <div class="d-none d-lg-flex align-items-center gap-2 small">
+        <i class="fa-solid fa-location-dot" style="color: #f43f5e;"></i>
+        <span class="text-muted" style="font-size: 0.78rem;">Deliver to</span>
+        <strong class="text-dark d-flex align-items-center gap-1" style="font-size: 0.82rem;">
+          Central, New York 10001
+          <i class="fa-solid fa-chevron-down text-muted" style="font-size: 0.65rem;"></i>
+        </strong>
       </div>
     </div>
   </div>

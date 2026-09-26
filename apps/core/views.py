@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.db.models import Q
+from django.db.models import Q, Case, When, Value, IntegerField
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate, get_user_model
@@ -73,11 +73,25 @@ def shop_view(request):
     elif sort == 'newest':
         products = products.order_by('-created_at')
     else:
-        products = products.order_by('-is_featured', '-rating')
+        featured_order = Case(
+            When(id=1, then=Value(1)),
+            When(id=2, then=Value(2)),
+            When(id=3, then=Value(3)),
+            When(id=4, then=Value(4)),
+            When(id=15, then=Value(5)),
+            When(id=7, then=Value(6)),
+            When(id=9, then=Value(7)),
+            When(id=8, then=Value(8)),
+            default=Value(99),
+            output_field=IntegerField(),
+        )
+        products = products.order_by(featured_order, '-rating', 'id')
 
     paginator = Paginator(products, 12)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+
+    total_catalog_count = Product.objects.count()
 
     context = {
         'page_obj': page_obj,
@@ -88,6 +102,7 @@ def shop_view(request):
         'current_dosage': dosage_form,
         'current_sort': sort,
         'total_count': products.count(),
+        'total_catalog_count': total_catalog_count,
     }
     return render(request, 'pages/shop.html', context)
 
