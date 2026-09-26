@@ -3,13 +3,13 @@
     <div class="d-flex align-items-center justify-content-between gap-3 w-100">
       
       <!-- Brand Logo -->
-      <a class="aura-brand" href="{% url 'home' %}">
-        <div class="aura-brand-icon">
-          <i class="fa-solid fa-notes-medical"></i>
+      <a class="aura-brand text-decoration-none" href="{% url 'home' %}">
+        <div class="aura-brand-icon" style="background-color: #059669; color: white;">
+          <i class="fa-solid fa-staff-snake"></i>
         </div>
         <div>
-          <span>Aura</span><span class="text-cyan-500">Health</span>
-          <span class="d-block text-muted" style="font-size: 0.65rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;">Precision Pharmacy</span>
+          <span class="fw-bold text-dark fs-4">Antixor<span style="color: #059669;">.Pharmacy</span></span>
+          <span class="d-block text-muted" style="font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;">Smart Healthcare Network</span>
         </div>
       </a>
 
@@ -18,7 +18,7 @@
         <form action="{% url 'shop' %}" method="GET" class="aura-search-input-group">
           <i class="fa-solid fa-magnifying-glass text-muted"></i>
           <input type="text" name="q" id="aura-global-search-input" class="aura-search-input" placeholder="Search medicines, active ingredients, vitamins..." autocomplete="off">
-          <button type="submit" class="aura-search-btn">
+          <button type="submit" class="aura-search-btn" style="background-color: #059669; color: white;">
             <span>Search</span>
           </button>
         </form>
@@ -30,7 +30,7 @@
       <div class="d-flex align-items-center gap-2">
         
         <!-- Upload Rx Quick Trigger -->
-        <button class="aura-btn-emerald aura-btn-sm d-none d-sm-inline-flex" data-bs-toggle="modal" data-bs-target="#auraPrescriptionModal">
+        <button class="btn btn-sm btn-emerald text-white rounded-pill px-3 d-none d-sm-inline-flex align-items-center gap-2 fw-semibold" style="background-color: #059669;" data-bs-toggle="modal" data-bs-target="#auraPrescriptionModal">
           <i class="fa-solid fa-file-arrow-up"></i>
           <span>Upload Rx</span>
         </button>
@@ -46,7 +46,7 @@
         <!-- Cart Drawer Toggle -->
         <button class="btn btn-light rounded-circle p-2 text-slate-700 position-relative shadow-sm" onclick="openCartDrawer()" title="Shopping Cart">
           <i class="fa-solid fa-bag-shopping"></i>
-          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary aura-cart-count-badge" style="display: {% if global_cart_count > 0 %}inline-flex{% else %}none{% endif %}; font-size: 0.65rem;">
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-emerald-600 aura-cart-count-badge" style="display: {% if global_cart_count > 0 %}inline-flex{% else %}none{% endif %}; font-size: 0.65rem; background-color: #059669 !important;">
             {{ global_cart_count }}
           </span>
         </button>
@@ -54,27 +54,27 @@
         <!-- User Authentication & Account -->
         {% if user.is_authenticated %}
           <div class="dropdown">
-            <button class="btn btn-light rounded-pill px-3 py-1 d-flex align-items-center gap-2 shadow-sm dropdown-toggle" data-bs-toggle="dropdown">
-              <i class="fa-solid fa-circle-user text-primary fs-5"></i>
+            <button class="btn btn-light rounded-pill px-3 py-1 d-flex align-items-center gap-2 shadow-sm dropdown-toggle border" data-bs-toggle="dropdown">
+              <i class="fa-solid fa-circle-user text-emerald-600 fs-5" style="color:#059669;"></i>
               <span class="small fw-bold d-none d-md-inline">{{ user.first_name|default:user.username }}</span>
             </button>
-            <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 mt-2">
-              <li><a class="dropdown-item py-2" href="{% url 'dashboard' %}"><i class="fa-solid fa-user-shield me-2 text-primary"></i> Patient Dashboard</a></li>
-              <li><a class="dropdown-item py-2" href="{% url 'order-track' %}"><i class="fa-solid fa-boxes-stacked me-2 text-cyan-500"></i> My Orders & Rx</a></li>
-              <li><hr class="dropdown-divider"></li>
+            <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 mt-2 p-2">
+              <li><a class="dropdown-item py-2 rounded-3" href="{% url 'dashboard' %}"><i class="fa-solid fa-gauge-high me-2 text-emerald-600" style="color:#059669;"></i> Patient Dashboard</a></li>
+              <li><a class="dropdown-item py-2 rounded-3" href="{% url 'health-card' %}"><i class="fa-solid fa-id-card me-2 text-primary"></i> Digital Health Passport</a></li>
+              <li><a class="dropdown-item py-2 rounded-3" href="{% url 'intake' %}"><i class="fa-solid fa-clipboard-check me-2 text-warning"></i> Clinical Intake & Rx</a></li>
+              <li><a class="dropdown-item py-2 rounded-3" href="{% url 'order-track' %}"><i class="fa-solid fa-boxes-stacked me-2 text-info"></i> Track Orders</a></li>
+              <li><hr class="dropdown-divider my-1"></li>
               <li>
-                <form action="{% url 'api-auth-logout' %}" method="POST" id="nav-logout-form">
-                  {% csrf_token %}
-                  <button type="submit" class="dropdown-item py-2 text-danger"><i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout</button>
-                </form>
+                <a class="dropdown-item py-2 rounded-3 text-danger" href="{% url 'logout' %}">
+                  <i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout
+                </a>
               </li>
             </ul>
           </div>
         {% else %}
-          <button class="aura-btn-primary aura-btn-sm" data-bs-toggle="modal" data-bs-target="#auraAuthModal">
-            <i class="fa-regular fa-user"></i>
-            <span>Sign In</span>
-          </button>
+          <a href="{% url 'login' %}" class="btn btn-sm btn-outline-success rounded-pill px-3 fw-bold">
+            <i class="fa-regular fa-user me-1"></i> Sign In
+          </a>
         {% endif %}
 
       </div>
@@ -85,8 +85,9 @@
       <div class="d-flex align-items-center gap-1">
         <a href="{% url 'home' %}" class="aura-nav-link active"><i class="fa-solid fa-house-chimney-medical"></i> Home</a>
         <a href="{% url 'shop' %}" class="aura-nav-link"><i class="fa-solid fa-pills"></i> Pharmacy Store</a>
-        <a href="{% url 'services' %}" class="aura-nav-link"><i class="fa-solid fa-stethoscope"></i> Clinical Services</a>
-        <a href="{% url 'telehealth' %}" class="aura-nav-link"><i class="fa-solid fa-user-doctor"></i> Consult Doctors</a>
+        <a href="{% url 'facilities' %}" class="aura-nav-link text-emerald-700 fw-bold" style="color: #047857;"><i class="fa-solid fa-hospital text-emerald-600"></i> Nearest Hospitals & Shops</a>
+        <a href="{% url 'intake' %}" class="aura-nav-link"><i class="fa-solid fa-stethoscope"></i> Symptom Intake</a>
+        <a href="{% url 'telehealth' %}" class="aura-nav-link"><i class="fa-solid fa-user-doctor"></i> Doctor Consultations</a>
         <a href="{% url 'prescriptions' %}" class="aura-nav-link"><i class="fa-solid fa-receipt"></i> Prescription Portal</a>
         <a href="{% url 'articles' %}" class="aura-nav-link"><i class="fa-solid fa-book-medical"></i> Health Journal</a>
         <a href="{% url 'about' %}" class="aura-nav-link d-none d-xl-inline-flex">About Us</a>
@@ -94,8 +95,8 @@
       </div>
 
       <div class="d-none d-md-flex align-items-center gap-2 text-muted small">
-        <i class="fa-solid fa-location-dot text-cyan-500"></i>
-        <span>Deliver to: <strong class="text-slate-800">New York, NY (10001)</strong></span>
+        <i class="fa-solid fa-location-dot text-emerald-600" style="color:#059669;"></i>
+        <span>Delivery Hub: <strong class="text-slate-800">Antixor Flagship (NYC)</strong></span>
       </div>
     </div>
   </div>

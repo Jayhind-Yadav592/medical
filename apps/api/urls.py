@@ -6,7 +6,9 @@ from .views import (
     PrescriptionUploadAPIView, ConsultationBookingAPIView,
     CheckoutAPIView, OrderTrackingAPIView, ReviewCreateAPIView,
     NewsletterAPIView, ContactAPIView,
-    AuthRegisterAPIView, AuthLoginAPIView, AuthLogoutAPIView, AuthStatusAPIView
+    AuthRegisterAPIView, AuthLoginAPIView, AuthLogoutAPIView, AuthStatusAPIView,
+    FacilityNearestAPIView, EmergencySOSAPIView, SafetyAllergyCheckAPIView,
+    PatientVitalsAPIView, PillReminderToggleAPIView, PatientIntakeSubmitAPIView
 )
 
 router = DefaultRouter()
@@ -46,4 +48,15 @@ urlpatterns = [
     path('auth/register/', AuthRegisterAPIView.as_view(), name='api-auth-register'),
     path('auth/login/', AuthLoginAPIView.as_view(), name='api-auth-login'),
     path('auth/logout/', AuthLogoutAPIView.as_view(), name='api-auth-logout'),
+    
+    # Geolocation & Facilities Allocation
+    path('facilities/nearest/', FacilityNearestAPIView.as_view(), name='api-facility-nearest'),
+    path('emergency/sos/', EmergencySOSAPIView.as_view(), name='api-emergency-sos'),
+    
+    # Clinical Safety & Patient Records
+    path('safety/check-allergy/', SafetyAllergyCheckAPIView.as_view(), name='api-safety-allergy'),
+    path('patient/vitals/', PatientVitalsAPIView.as_view(), name='api-patient-vitals'),
+    path('patient/pill-reminders/<int:reminder_id>/toggle/', PillReminderToggleAPIView.as_view(), name='api-pill-reminder-toggle'),
+    path('patient/intake/submit/', PatientIntakeSubmitAPIView.as_view(), name='api-patient-intake-submit'),
 ]
+

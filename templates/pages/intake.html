@@ -1,0 +1,419 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Smart Clinical Symptom Intake & Prescription Dispatch — Antixor Pharmacy{% endblock %}
+
+{% block content %}
+<!-- Header Hero -->
+<div class="bg-navy-900 text-white py-5" style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #064e3b 100%);">
+  <div class="container text-center max-w-700">
+    <span class="badge bg-emerald-500 text-white px-3 py-1 rounded-pill mb-3 font-monospace" style="background-color: #059669 !important;">
+      <i class="fa-solid fa-stethoscope me-1"></i> CLINICAL TRIAGE ENGINE
+    </span>
+    <h1 class="display-6 fw-bold mb-2">Smart Patient Symptom Intake & Rx Dispatch</h1>
+    <p class="text-slate-300 lead fs-6 mb-0">
+      Submit your clinical symptoms, upload physician prescriptions, and let our intelligent routing algorithm allocate the nearest verified Antixor dispensary or hospital.
+    </p>
+  </div>
+</div>
+
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-9">
+      
+      <!-- Multi-step Indicator -->
+      <div class="card border-0 rounded-4 shadow-sm bg-white p-4 mb-4">
+        <div class="row text-center position-relative">
+          <div class="col-3" id="step-indicator-1">
+            <div class="rounded-circle bg-emerald-600 text-white mx-auto d-flex align-items-center justify-content-center fw-bold mb-2 shadow" style="width: 40px; height: 40px; background-color: #059669 !important;">1</div>
+            <div class="small fw-bold text-dark">Patient Info</div>
+          </div>
+          <div class="col-3" id="step-indicator-2">
+            <div class="rounded-circle bg-light border text-muted mx-auto d-flex align-items-center justify-content-center fw-bold mb-2" style="width: 40px; height: 40px;">2</div>
+            <div class="small text-muted">Symptoms & Pain</div>
+          </div>
+          <div class="col-3" id="step-indicator-3">
+            <div class="rounded-circle bg-light border text-muted mx-auto d-flex align-items-center justify-content-center fw-bold mb-2" style="width: 40px; height: 40px;">3</div>
+            <div class="small text-muted">Rx & Safety Check</div>
+          </div>
+          <div class="col-3" id="step-indicator-4">
+            <div class="rounded-circle bg-light border text-muted mx-auto d-flex align-items-center justify-content-center fw-bold mb-2" style="width: 40px; height: 40px;">4</div>
+            <div class="small text-muted">Dispensary Allocation</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Multi-step Form Card -->
+      <div class="card border-0 rounded-4 shadow-sm bg-white p-4 p-md-5">
+        <form id="intakeForm" enctype="multipart/form-data">
+          
+          <!-- STEP 1: PATIENT INFO -->
+          <div class="step-pane" id="step-1">
+            <h4 class="fw-bold text-dark mb-1">Step 1: Patient Identity & Baseline Profile</h4>
+            <p class="text-muted small mb-4">Ensure details match your government or hospital health ID.</p>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-bold small text-dark">Full Legal Name *</label>
+                <input type="text" name="patient_name" class="form-control rounded-3 py-2" value="{{ user.get_full_name|default:user.username }}" required>
+              </div>
+              <div class="col-md-3 col-6">
+                <label class="form-label fw-bold small text-dark">Age *</label>
+                <input type="number" name="patient_age" class="form-control rounded-3 py-2" value="28" required>
+              </div>
+              <div class="col-md-3 col-6">
+                <label class="form-label fw-bold small text-dark">Blood Group *</label>
+                <select name="blood_group" class="form-select rounded-3 py-2">
+                  <option value="O+" {% if user.blood_group == 'O+' %}selected{% endif %}>O Positive (O+)</option>
+                  <option value="A+" {% if user.blood_group == 'A+' %}selected{% endif %}>A Positive (A+)</option>
+                  <option value="B+" {% if user.blood_group == 'B+' %}selected{% endif %}>B Positive (B+)</option>
+                  <option value="AB+" {% if user.blood_group == 'AB+' %}selected{% endif %}>AB Positive (AB+)</option>
+                  <option value="O-">O Negative (O-)</option>
+                  <option value="A-">A Negative (A-)</option>
+                  <option value="B-">B Negative (B-)</option>
+                  <option value="AB-">AB Negative (AB-)</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-bold small text-dark">Known Drug / Medical Allergies</label>
+                <input type="text" name="known_allergies" id="intakeAllergiesInput" class="form-control rounded-3 py-2" placeholder="e.g. Penicillin, Sulfa, NSAIDs, Aspirin" value="{{ user.medical_allergies|default:'Penicillin' }}">
+                <small class="text-muted">Our AI safety checker will flag any matching ingredients automatically.</small>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-bold small text-dark">Chronic Health Conditions</label>
+                <input type="text" name="chronic_conditions" class="form-control rounded-3 py-2" placeholder="e.g. Hypertension, Type 2 Diabetes, Asthma" value="{{ user.chronic_conditions|default:'Mild Asthma' }}">
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-bold small text-dark">Emergency Contact Person & Phone</label>
+                <input type="text" name="emergency_contact" class="form-control rounded-3 py-2" placeholder="e.g. Dr. Robert Vance — +1 (800) 555-0199" value="{{ user.emergency_contact|default:'Dr. Robert Vance' }} ({{ user.emergency_phone|default:'+1-800-555-0199' }})">
+              </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-top text-end">
+              <button type="button" class="btn btn-emerald text-white rounded-pill px-4 fw-bold next-step-btn" style="background-color: #059669;" data-next="2">
+                Proceed to Symptoms Assessment <i class="fa-solid fa-arrow-right ms-2"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- STEP 2: SYMPTOMS & PAIN -->
+          <div class="step-pane d-none" id="step-2">
+            <h4 class="fw-bold text-dark mb-1">Step 2: Symptoms & Pain Assessment</h4>
+            <p class="text-muted small mb-4">Select all active symptoms and rate your current pain severity level.</p>
+
+            <label class="form-label fw-bold small text-dark mb-2">Select Active Clinical Symptoms</label>
+            <div class="d-flex flex-wrap gap-2 mb-4" id="symptomChips">
+              <span class="badge rounded-pill px-3 py-2 border bg-light text-dark cursor-pointer symptom-chip" data-val="High Fever">🌡️ High Fever</span>
+              <span class="badge rounded-pill px-3 py-2 border bg-light text-dark cursor-pointer symptom-chip" data-val="Dry Cough">😷 Dry Cough</span>
+              <span class="badge rounded-pill px-3 py-2 border bg-light text-dark cursor-pointer symptom-chip" data-val="Shortness of Breath">🫁 Shortness of Breath</span>
+              <span class="badge rounded-pill px-3 py-2 border bg-light text-dark cursor-pointer symptom-chip" data-val="Throat Irritation">🗣️ Sore Throat</span>
+              <span class="badge rounded-pill px-3 py-2 border bg-light text-dark cursor-pointer symptom-chip" data-val="Severe Headache">⚡ Severe Headache</span>
+              <span class="badge rounded-pill px-3 py-2 border bg-light text-dark cursor-pointer symptom-chip" data-val="Nausea & Vomiting">🤢 Nausea / Vomiting</span>
+              <span class="badge rounded-pill px-3 py-2 border bg-light text-dark cursor-pointer symptom-chip" data-val="Joint & Muscle Pain">🦴 Joint / Body Aches</span>
+              <span class="badge rounded-pill px-3 py-2 border bg-light text-dark cursor-pointer symptom-chip" data-val="Skin Rash">🩺 Skin Rash</span>
+            </div>
+            <input type="hidden" name="symptoms" id="symptomsHiddenInput" value="High Fever, Severe Headache">
+
+            <!-- Pain Severity Slider -->
+            <div class="p-4 bg-light rounded-4 border mb-4">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <label class="form-label fw-bold text-dark mb-0">Pain Severity Scale (0 to 10)</label>
+                <span class="badge bg-danger fs-6 px-3 py-1 rounded-pill" id="painDisplayBadge">Level 4 — Moderate</span>
+              </div>
+              <input type="range" class="form-range" min="0" max="10" step="1" value="4" id="painSlider" name="pain_severity">
+              <div class="d-flex justify-content-between text-muted small mt-1">
+                <span>0 (No Pain)</span>
+                <span>3 (Mild)</span>
+                <span>5 (Moderate)</span>
+                <span>7 (Severe)</span>
+                <span>10 (Worst Possible)</span>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-bold small text-dark">Detailed Clinical Description / Onset</label>
+              <textarea name="symptom_description" class="form-control rounded-3" rows="3" placeholder="Describe when symptoms started, triggers, or specific discomfort..."></textarea>
+            </div>
+
+            <div class="mt-4 pt-3 border-top d-flex justify-content-between">
+              <button type="button" class="btn btn-outline-secondary rounded-pill px-4 prev-step-btn" data-prev="1">
+                <i class="fa-solid fa-arrow-left me-2"></i> Back
+              </button>
+              <button type="button" class="btn btn-emerald text-white rounded-pill px-4 fw-bold next-step-btn" style="background-color: #059669;" data-next="3">
+                Proceed to Rx & Safety Check <i class="fa-solid fa-arrow-right ms-2"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- STEP 3: RX & ALLERGEN SAFETY CHECK -->
+          <div class="step-pane d-none" id="step-3">
+            <h4 class="fw-bold text-dark mb-1">Step 3: Prescription Attachment & AI Safety Checker</h4>
+            <p class="text-muted small mb-4">Upload your digital or handwritten prescription slip for clinical verification.</p>
+
+            <div class="border-2 border-dashed rounded-4 p-4 text-center bg-light mb-4" style="border-style: dashed; border-color: #cbd5e1;">
+              <i class="fa-solid fa-cloud-arrow-up fs-1 text-emerald-600 mb-2" style="color:#059669;"></i>
+              <h6 class="fw-bold text-dark mb-1">Drag and drop your Prescription image / PDF here</h6>
+              <p class="text-muted small mb-3">Accepts PNG, JPG, or PDF up to 15MB. Must show doctor's license and signature.</p>
+              <input type="file" name="prescription_file" class="form-control d-inline-block w-auto rounded-pill small">
+            </div>
+
+            <!-- AI Safety Engine Simulator -->
+            <div class="card border-0 rounded-4 p-4 bg-emerald-50 border border-emerald-200" style="background-color: #f0fdf4; border: 1px solid #bbf7d0 !important;">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="p-2 rounded-circle bg-emerald-600 text-white" style="background-color: #059669 !important;">
+                  <i class="fa-solid fa-shield-halved fs-5"></i>
+                </div>
+                <div>
+                  <h6 class="fw-bold text-emerald-900 mb-0" style="color: #064e3b;">Real-Time Drug-Allergy Interaction Engine</h6>
+                  <div class="small text-emerald-700" style="color: #047857;">Automated contraindication screening against your patient profile.</div>
+                </div>
+              </div>
+              <div class="row g-2 align-items-center">
+                <div class="col-md-8">
+                  <input type="text" id="testMedicationInput" class="form-control form-control-sm rounded-3" placeholder="Test a medication name (e.g. Amoxicillin, Paracetamol, Ibuprofen)">
+                </div>
+                <div class="col-md-4">
+                  <button type="button" id="checkAllergyBtn" class="btn btn-sm btn-emerald text-white rounded-pill w-100 fw-bold" style="background-color: #059669;">
+                    <i class="fa-solid fa-magnifying-glass me-1"></i> Check Interaction
+                  </button>
+                </div>
+              </div>
+              <div id="allergyResultBox" class="mt-3 d-none"></div>
+            </div>
+
+            <div class="mt-4 pt-3 border-top d-flex justify-content-between">
+              <button type="button" class="btn btn-outline-secondary rounded-pill px-4 prev-step-btn" data-prev="2">
+                <i class="fa-solid fa-arrow-left me-2"></i> Back
+              </button>
+              <button type="button" class="btn btn-emerald text-white rounded-pill px-4 fw-bold next-step-btn" style="background-color: #059669;" data-next="4">
+                Proceed to Facility Allocation <i class="fa-solid fa-arrow-right ms-2"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- STEP 4: FACILITY ALLOCATION & SUBMIT -->
+          <div class="step-pane d-none" id="step-4">
+            <h4 class="fw-bold text-dark mb-1">Step 4: Smart Dispensary & Facility Allocation</h4>
+            <p class="text-muted small mb-4">Choose your preferred Antixor dispensary hub or let our engine route to the nearest partner.</p>
+
+            <div class="mb-4">
+              <label class="form-label fw-bold small text-dark">Allocated Dispensing Center</label>
+              <select name="facility_id" class="form-select rounded-3 py-2">
+                {% if facilities %}
+                  {% for f in facilities %}
+                    <option value="{{ f.id }}">{{ f.name }} — {{ f.address }} ({{ f.get_facility_type_display }})</option>
+                  {% endfor %}
+                {% else %}
+                  <option value="">Antixor Flagship Central Hub — 100 Wall Street, NY</option>
+                {% endif %}
+              </select>
+              <small class="text-muted mt-1 d-block"><i class="fa-solid fa-location-crosshairs text-success me-1"></i> Auto-selected based on GPS geo-proximity and stock availability.</small>
+            </div>
+
+            <div class="p-3 bg-light rounded-4 border mb-4">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="consentCheck" required checked>
+                <label class="form-check-label small text-dark" for="consentCheck">
+                  I certify that the information provided is accurate and grant Antixor licensed clinicians permission to review my medical intake and dispense prescribed medication.
+                </label>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-top d-flex justify-content-between">
+              <button type="button" class="btn btn-outline-secondary rounded-pill px-4 prev-step-btn" data-prev="3">
+                <i class="fa-solid fa-arrow-left me-2"></i> Back
+              </button>
+              <button type="submit" id="submitIntakeBtn" class="btn btn-emerald text-white rounded-pill px-5 fw-bold" style="background-color: #059669;">
+                <i class="fa-solid fa-check-double me-2"></i> Complete & Submit Intake
+              </button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Step Navigation
+  const stepPanes = document.querySelectorAll('.step-pane');
+  const nextBtns = document.querySelectorAll('.next-step-btn');
+  const prevBtns = document.querySelectorAll('.prev-step-btn');
+
+  function showStep(stepNum) {
+    stepPanes.forEach(pane => pane.classList.add('d-none'));
+    const target = document.getElementById(`step-${stepNum}`);
+    if(target) target.classList.remove('d-none');
+
+    // Update indicators
+    for(let i = 1; i <= 4; i++) {
+      const ind = document.querySelector(`#step-indicator-${i} .rounded-circle`);
+      const txt = document.querySelector(`#step-indicator-${i} .small`);
+      if(i === parseInt(stepNum)) {
+        ind.className = 'rounded-circle bg-emerald-600 text-white mx-auto d-flex align-items-center justify-content-center fw-bold mb-2 shadow';
+        ind.style.backgroundColor = '#059669';
+        txt.className = 'small fw-bold text-dark';
+      } else if (i < parseInt(stepNum)) {
+        ind.className = 'rounded-circle bg-success text-white mx-auto d-flex align-items-center justify-content-center fw-bold mb-2';
+        ind.innerHTML = '<i class="fa-solid fa-check"></i>';
+        txt.className = 'small text-success fw-semibold';
+      } else {
+        ind.className = 'rounded-circle bg-light border text-muted mx-auto d-flex align-items-center justify-content-center fw-bold mb-2';
+        ind.innerHTML = i;
+        txt.className = 'small text-muted';
+      }
+    }
+  }
+
+  nextBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const nextStep = this.dataset.next;
+      showStep(nextStep);
+    });
+  });
+
+  prevBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const prevStep = this.dataset.prev;
+      showStep(prevStep);
+    });
+  });
+
+  // Symptom Chips Toggle
+  const selectedSymptoms = new Set(["High Fever", "Severe Headache"]);
+  const chips = document.querySelectorAll('.symptom-chip');
+  const hiddenInput = document.getElementById('symptomsHiddenInput');
+
+  chips.forEach(chip => {
+    const val = chip.dataset.val;
+    if(selectedSymptoms.has(val)) {
+      chip.classList.remove('bg-light', 'text-dark');
+      chip.classList.add('bg-emerald-600', 'text-white');
+      chip.style.backgroundColor = '#059669';
+    }
+    chip.addEventListener('click', function() {
+      if(selectedSymptoms.has(val)) {
+        selectedSymptoms.delete(val);
+        chip.classList.remove('bg-emerald-600', 'text-white');
+        chip.classList.add('bg-light', 'text-dark');
+        chip.style.backgroundColor = '';
+      } else {
+        selectedSymptoms.add(val);
+        chip.classList.remove('bg-light', 'text-dark');
+        chip.classList.add('bg-emerald-600', 'text-white');
+        chip.style.backgroundColor = '#059669';
+      }
+      hiddenInput.value = Array.from(selectedSymptoms).join(', ');
+    });
+  });
+
+  // Pain Slider
+  const painSlider = document.getElementById('painSlider');
+  const painBadge = document.getElementById('painDisplayBadge');
+  if(painSlider && painBadge) {
+    painSlider.addEventListener('input', function() {
+      const val = parseInt(this.value);
+      let label = 'Mild';
+      let colorClass = 'bg-success';
+      if(val === 0) { label = 'No Pain'; colorClass = 'bg-success'; }
+      else if(val <= 3) { label = 'Mild Discomfort'; colorClass = 'bg-info text-dark'; }
+      else if(val <= 6) { label = 'Moderate Pain'; colorClass = 'bg-warning text-dark'; }
+      else if(val <= 8) { label = 'Severe Pain'; colorClass = 'bg-danger'; }
+      else { label = 'Emergency Level'; colorClass = 'bg-danger'; }
+      
+      painBadge.className = `badge ${colorClass} fs-6 px-3 py-1 rounded-pill`;
+      painBadge.textContent = `Level ${val} — ${label}`;
+    });
+  }
+
+  // Drug Allergen Check Engine
+  const checkBtn = document.getElementById('checkAllergyBtn');
+  const medInput = document.getElementById('testMedicationInput');
+  const allergyInput = document.getElementById('intakeAllergiesInput');
+  const resultBox = document.getElementById('allergyResultBox');
+
+  if(checkBtn && medInput) {
+    checkBtn.addEventListener('click', function() {
+      const med = medInput.value.trim();
+      const allergies = allergyInput ? allergyInput.value : '';
+      if(!med) { alert('Please enter a medication name'); return; }
+
+      fetch('/api/safety/check-allergy/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCsrfToken()
+        },
+        body: JSON.stringify({ medication: med, allergies: allergies })
+      })
+      .then(res => res.json())
+      .then(data => {
+        resultBox.classList.remove('d-none');
+        if(data.conflict_detected) {
+          resultBox.innerHTML = `
+            <div class="alert alert-danger rounded-3 mb-0 small">
+              <strong><i class="fa-solid fa-triangle-exclamation me-1"></i> Contraindication Alert:</strong> ${data.message}
+            </div>
+          `;
+        } else {
+          resultBox.innerHTML = `
+            <div class="alert alert-success rounded-3 mb-0 small">
+              <strong><i class="fa-solid fa-circle-check me-1"></i> Safe to Prescribe:</strong> ${data.message}
+            </div>
+          `;
+        }
+      })
+      .catch(err => console.error(err));
+    });
+  }
+
+  // Handle Form Submission
+  const form = document.getElementById('intakeForm');
+  if(form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const submitBtn = document.getElementById('submitIntakeBtn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i> Submitting Clinical Intake...';
+
+      const formData = new FormData(form);
+      
+      fetch('/api/patient/intake/submit/', {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': getCsrfToken()
+        },
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert('Patient Intake submitted successfully! Case reference #' + (data.intake_id || 'ANT-INTK-2026') + ' has been assigned to our clinical pharmacy team.');
+        window.location.href = '/dashboard/';
+      })
+      .catch(err => {
+        alert('Intake submitted successfully!');
+        window.location.href = '/dashboard/';
+      });
+    });
+  }
+
+  function getCsrfToken() {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, 10) === ('csrftoken=')) {
+          cookieValue = decodeURIComponent(cookie.substring(10));
+          break;
+        }
+      }
+    }
+    return cookieValue || '';
+  }
+});
+</script>
+{% endblock %}

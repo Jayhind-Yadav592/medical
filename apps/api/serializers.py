@@ -1,5 +1,8 @@
 from rest_framework import serializers
-from apps.core.models import User, Address, NewsletterSubscriber, HealthNotification, ContactInquiry
+from apps.core.models import (
+    User, Address, NewsletterSubscriber, HealthNotification, ContactInquiry,
+    MedicalFacility, PatientVital, PillReminder, PatientIntake
+)
 from apps.pharmacy.models import Category, Brand, Product, Review, WishlistItem
 from apps.orders.models import Prescription, Cart, CartItem, Order, OrderItem, OrderStatusHistory
 from apps.telehealth.models import Doctor, ConsultationRequest
@@ -12,8 +15,61 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'full_name', 
-                  'user_type', 'phone_number', 'blood_group', 'medical_allergies']
+        fields = [
+            'id', 'username', 'email', 'first_name', 'last_name', 'full_name', 
+            'user_type', 'digital_health_id', 'phone_number', 'blood_group', 
+            'medical_allergies', 'chronic_conditions', 'emergency_contact', 'emergency_phone'
+        ]
+
+
+class MedicalFacilitySerializer(serializers.ModelSerializer):
+    facility_type_display = serializers.CharField(source='get_facility_type_display', read_only=True)
+    distance_km = serializers.FloatField(read_only=True, default=1.2)
+
+    class Meta:
+        model = MedicalFacility
+        fields = [
+            'id', 'name', 'facility_type', 'facility_type_display', 'license_number',
+            'address', 'city', 'state', 'postal_code', 'latitude', 'longitude',
+            'phone', 'emergency_hotline', 'email', 'is_24_7', 'ambulance_available',
+            'available_beds', 'rating', 'total_reviews', 'services_offered', 'distance_km'
+        ]
+
+
+class PatientVitalSerializer(serializers.ModelSerializer):
+    recorded_at_formatted = serializers.DateTimeField(source='recorded_at', format='%b %d, %Y %I:%M %p', read_only=True)
+
+    class Meta:
+        model = PatientVital
+        fields = [
+            'id', 'systolic_bp', 'diastolic_bp', 'blood_sugar', 'heart_rate',
+            'spo2', 'weight_kg', 'bmi', 'notes', 'recorded_at', 'recorded_at_formatted'
+        ]
+
+
+class PillReminderSerializer(serializers.ModelSerializer):
+    frequency_display = serializers.CharField(source='get_frequency_display', read_only=True)
+
+    class Meta:
+        model = PillReminder
+        fields = [
+            'id', 'medicine_name', 'dosage', 'frequency', 'frequency_display',
+            'time_slot', 'is_taken', 'streak_days', 'notes', 'updated_at'
+        ]
+
+
+class PatientIntakeSerializer(serializers.ModelSerializer):
+    status_display = serializers.CharField(source='get_status_display', read_only=True)
+    facility_name = serializers.CharField(source='allocated_facility.name', read_only=True)
+
+    class Meta:
+        model = PatientIntake
+        fields = [
+            'id', 'patient_name', 'patient_email', 'patient_phone', 'patient_age',
+            'patient_gender', 'primary_symptom', 'symptoms_list', 'pain_severity',
+            'symptom_duration', 'allocated_facility', 'facility_name', 'status',
+            'status_display', 'pharmacist_notes', 'safety_warning', 'created_at'
+        ]
 
 
 class RegisterSerializer(serializers.ModelSerializer):
@@ -215,3 +271,56 @@ class ArticleSerializer(serializers.ModelSerializer):
             'medical_reviewer', 'read_time_minutes', 'tags', 'views_count',
             'is_featured', 'published_at'
         ]
+
+
+# Advanced Medical Facility & Patient Biometrics Serializers
+from apps.core.models import MedicalFacility, PatientVital, PillReminder, PatientIntake
+
+class MedicalFacilitySerializer(serializers.ModelSerializer):
+    facility_type_display = serializers.CharField(source='get_facility_type_display', read_only=True)
+
+    class Meta:
+        model = MedicalFacility
+        fields = [
+            'id', 'name', 'facility_type', 'facility_type_display', 'license_number',
+            'address', 'city', 'state', 'postal_code', 'latitude', 'longitude',
+            'phone', 'emergency_hotline', 'email', 'is_24_7', 'ambulance_available',
+            'available_beds', 'rating', 'total_reviews', 'services_offered'
+        ]
+
+
+class PatientVitalSerializer(serializers.ModelSerializer):
+    blood_pressure = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = PatientVital
+        fields = [
+            'id', 'systolic_bp', 'diastolic_bp', 'blood_pressure', 'blood_sugar',
+            'heart_rate', 'spo2', 'weight_kg', 'bmi', 'notes', 'recorded_at'
+        ]
+
+
+class PillReminderSerializer(serializers.ModelSerializer):
+    frequency_display = serializers.CharField(source='get_frequency_display', read_only=True)
+
+    class Meta:
+        model = PillReminder
+        fields = [
+            'id', 'medicine_name', 'dosage', 'frequency', 'frequency_display',
+            'time_slot', 'is_taken', 'streak_days', 'notes', 'created_at'
+        ]
+
+
+class PatientIntakeSerializer(serializers.ModelSerializer):
+    status_display = serializers.CharField(source='get_status_display', read_only=True)
+    allocated_facility_name = serializers.CharField(source='allocated_facility.name', read_only=True)
+
+    class Meta:
+        model = PatientIntake
+        fields = [
+            'id', 'patient_name', 'patient_email', 'patient_phone', 'patient_age',
+            'patient_gender', 'primary_symptom', 'symptoms_list', 'pain_severity',
+            'symptom_duration', 'allocated_facility', 'allocated_facility_name',
+            'status', 'status_display', 'pharmacist_notes', 'safety_warning', 'created_at'
+        ]
+

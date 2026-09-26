@@ -1,16 +1,16 @@
-<footer class="aura-footer">
+<footer class="aura-footer" style="background-color: #0b1329;">
   <div class="container">
     
     <!-- Top Footer Banner: Newsletter & Support -->
     <div class="row align-items-center justify-content-between pb-5 mb-5 border-bottom border-secondary border-opacity-25">
       <div class="col-lg-6 mb-4 mb-lg-0">
-        <h3 class="text-white fw-bold mb-2">Subscribe to AuraHealth™ Clinical Digest</h3>
+        <h3 class="text-white fw-bold mb-2">Subscribe to Antixor™ Clinical Healthcare Digest</h3>
         <p class="text-slate-400 mb-0">Get weekly doctor-reviewed wellness guides, medication safety alerts, and exclusive 20% discount vouchers on monthly refills.</p>
       </div>
       <div class="col-lg-5">
         <form id="aura-newsletter-form" class="aura-newsletter-input-group">
           <input type="email" class="aura-newsletter-input" placeholder="Enter your email address..." required>
-          <button type="submit" class="aura-btn-emerald" style="padding: 8px 22px;">
+          <button type="submit" class="aura-btn-emerald" style="padding: 8px 22px; background-color: #059669;">
             <span>Subscribe</span>
             <i class="fa-solid fa-paper-plane"></i>
           </button>
@@ -22,62 +22,62 @@
     <div class="row g-4 pb-5">
       <div class="col-lg-4 col-md-6">
         <div class="d-flex align-items-center gap-2 mb-3">
-          <div class="aura-brand-icon" style="width: 36px; height: 36px;">
-            <i class="fa-solid fa-notes-medical"></i>
+          <div class="rounded-3 bg-emerald-600 text-white d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #059669 !important;">
+            <i class="fa-solid fa-staff-snake"></i>
           </div>
-          <span class="fs-4 fw-bold text-white">Aura<span class="text-cyan-400">Health</span></span>
+          <span class="fs-4 fw-bold text-white">Antixor<span class="text-emerald-400" style="color: #34d399;">.Pharmacy</span></span>
         </div>
         <p class="text-slate-400 small mb-4">
-          AuraHealth is a digital clinical healthcare and precision pharmacy platform providing verified prescription medicines, OTC remedies, cold-chain doorstep delivery, and 24/7 tele-pharmacist consultations.
+          Antixor Pharmacy is an integrated digital healthcare and precision pharmacy network delivering verified prescription medicines, EHR-integrated clinical triage, cold-chain doorstep delivery, and 24/7 tele-pharmacist consultations.
         </p>
         <div class="d-flex align-items-center gap-2 text-slate-300 small mb-2">
-          <i class="fa-solid fa-phone-volume text-cyan-400"></i>
-          <span>Support: +1 (800) 584-AURA (2872)</span>
+          <i class="fa-solid fa-phone-volume text-emerald-400" style="color: #34d399;"></i>
+          <span>Emergency Hotline: +1 (800) 584-ANTX (2689)</span>
         </div>
         <div class="d-flex align-items-center gap-2 text-slate-300 small">
-          <i class="fa-solid fa-envelope text-cyan-400"></i>
-          <span>Email: care@aurahealth.pharmacy</span>
+          <i class="fa-solid fa-envelope text-emerald-400" style="color: #34d399;"></i>
+          <span>Clinical Desk: rx@antixorpharmacy.com</span>
         </div>
       </div>
 
       <div class="col-lg-2 col-md-6 col-6">
-        <h5>Quick Links</h5>
+        <h5 class="text-white">Healthcare Hub</h5>
         <ul class="list-unstyled">
-          <li><a href="{% url 'home' %}" class="aura-footer-link">Home</a></li>
+          <li><a href="{% url 'home' %}" class="aura-footer-link">Home Portal</a></li>
           <li><a href="{% url 'shop' %}" class="aura-footer-link">Online Pharmacy</a></li>
-          <li><a href="{% url 'services' %}" class="aura-footer-link">Clinical Services</a></li>
+          <li><a href="{% url 'facilities' %}" class="aura-footer-link text-emerald-400" style="color: #34d399;">Nearest Hospitals</a></li>
+          <li><a href="{% url 'intake' %}" class="aura-footer-link">Symptom Intake</a></li>
           <li><a href="{% url 'telehealth' %}" class="aura-footer-link">Doctor Directory</a></li>
-          <li><a href="{% url 'prescriptions' %}" class="aura-footer-link">Upload Prescription</a></li>
           <li><a href="{% url 'articles' %}" class="aura-footer-link">Health Articles</a></li>
         </ul>
       </div>
 
       <div class="col-lg-3 col-md-6 col-6">
-        <h5>Patient Support</h5>
+        <h5 class="text-white">Patient Services</h5>
         <ul class="list-unstyled">
-          <li><a href="{% url 'order-track' %}" class="aura-footer-link">Track Your Order</a></li>
+          <li><a href="{% url 'dashboard' %}" class="aura-footer-link">Patient Dashboard</a></li>
+          <li><a href="{% url 'health-card' %}" class="aura-footer-link">Digital Health Passport</a></li>
+          <li><a href="{% url 'order-track' %}" class="aura-footer-link">Live Order Tracking</a></li>
           <li><a href="{% url 'prescriptions' %}" class="aura-footer-link">Prescription Verification</a></li>
-          <li><a href="{% url 'about' %}" class="aura-footer-link">Refill Reminders</a></li>
-          <li><a href="{% url 'contact' %}" class="aura-footer-link">FAQs & Return Policy</a></li>
           <li><a href="{% url 'contact' %}" class="aura-footer-link">Cold-Chain Guarantee</a></li>
           <li><a href="{% url 'contact' %}" class="aura-footer-link">24/7 Pharmacist Triage</a></li>
         </ul>
       </div>
 
       <div class="col-lg-3 col-md-6">
-        <h5>Clinical Certifications</h5>
+        <h5 class="text-white">Clinical Compliance</h5>
         <div class="d-flex flex-column gap-2">
           <div class="d-flex align-items-center gap-2 text-slate-400 small">
-            <i class="fa-solid fa-certificate text-emerald-500 fs-5"></i>
-            <span>FDA & GMP Certified Dispensary</span>
+            <i class="fa-solid fa-certificate text-emerald-500 fs-5" style="color: #10b981;"></i>
+            <span>FDA & NABP Verified Network</span>
           </div>
           <div class="d-flex align-items-center gap-2 text-slate-400 small">
-            <i class="fa-solid fa-lock text-cyan-400 fs-5"></i>
-            <span>HIPAA Compliant Medical Privacy</span>
+            <i class="fa-solid fa-lock text-emerald-400 fs-5" style="color: #34d399;"></i>
+            <span>HIPAA & HL7 Encrypted Records</span>
           </div>
           <div class="d-flex align-items-center gap-2 text-slate-400 small">
             <i class="fa-solid fa-shield-virus text-warning fs-5"></i>
-            <span>100% Genuine Medication Guarantee</span>
+            <span>100% Genuine Clinical Guarantee</span>
           </div>
         </div>
         <div class="mt-4">
@@ -95,7 +95,7 @@
     <!-- Bottom Disclaimer & Copyright -->
     <div class="pt-4 border-top border-secondary border-opacity-25 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 text-slate-500 small">
       <div>
-        © 2026 AuraHealth Pharmaceuticals & Virtual Care Inc. All rights reserved. Licensed Healthcare Provider #NY-PHARM-9842.
+        © 2026 Antixor Healthcare & Digital Dispensaries Inc. All rights reserved. Licensed Medical Provider #NY-PHARM-9842.
       </div>
       <div class="d-flex gap-3">
         <a href="{% url 'about' %}" class="text-slate-500 hover-text-white">Privacy Policy</a>

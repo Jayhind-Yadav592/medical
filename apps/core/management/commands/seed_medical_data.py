@@ -210,11 +210,195 @@ class Command(BaseCommand):
                 'qualification': 'MD (Internal Medicine), Board Certified',
                 'experience_years': 15,
                 'bio': 'Certified clinical consultant ready to provide expert telemedicine evaluations.',
-                'avatar_url': '/static/images/doctor_male.jpg',
+                'avatar_url': '/static/images/hero_doctor.jpg',
                 'consultation_fee': 0.00,
                 'is_available_online': True,
                 'next_available_slot': 'Available Now (24/7)',
             }
         )
 
-        self.stdout.write(self.style.SUCCESS("Antixor Pharmacy database seeded successfully!"))
+        Doctor.objects.get_or_create(
+            full_name='Dr. Elena Vance, PharmD',
+            defaults={
+                'title': 'Lead Clinical Pharmacist & Toxicologist',
+                'specialty': 'CLINICAL_PHARMACIST',
+                'qualification': 'PharmD, BCPS Board Certified',
+                'experience_years': 12,
+                'bio': 'Specialist in prescription safety verification, complex drug-allergy interactions, and chronic disease medication management.',
+                'avatar_url': '/static/images/pharmacist_female.jpg',
+                'consultation_fee': 0.00,
+                'is_available_online': True,
+                'next_available_slot': 'Available Today 3:00 PM',
+            }
+        )
+
+        # 7. Seed Medical Facilities (Hospitals, Pharmacies, Labs, Emergency Centers)
+        from apps.core.models import MedicalFacility, PatientVital, PillReminder, PatientIntake
+
+        # Update Sarah Ahmed patient profile
+        patient.blood_group = 'A+'
+        patient.medical_allergies = 'Penicillin, Amoxicillin'
+        patient.chronic_conditions = 'Mild Seasonal Asthma'
+        patient.emergency_contact = 'Karim Ahmed (Husband)'
+        patient.emergency_phone = '+1 (555) 998-0112'
+        patient.save()
+
+        facilities_data = [
+            {
+                'name': 'Antixor Central Flagship Pharmacy & Dispensing Hub',
+                'facility_type': 'PHARMACY',
+                'license_number': 'LIC-NY-PH-8801',
+                'address': '350 5th Avenue, Suite 100',
+                'city': 'New York',
+                'state': 'NY',
+                'postal_code': '10118',
+                'latitude': 40.7484,
+                'longitude': -73.9857,
+                'phone': '+1 (800) 268-4967',
+                'emergency_hotline': '+1 (800) 268-9999',
+                'email': 'central.store@antixorpharmacy.com',
+                'is_24_7': True,
+                'ambulance_available': False,
+                'rating': 4.9,
+                'total_reviews': 340,
+                'services_offered': '2-Hour Express Delivery, Cold-chain insulin storage, Prescription verification, Blood pressure check'
+            },
+            {
+                'name': 'Mount Sinai Comprehensive Medical Center & Trauma Hospital',
+                'facility_type': 'HOSPITAL',
+                'license_number': 'HOSP-NY-7721',
+                'address': '1 Gustave L. Levy Place',
+                'city': 'New York',
+                'state': 'NY',
+                'postal_code': '10029',
+                'latitude': 40.7903,
+                'longitude': -73.9529,
+                'phone': '+1 (212) 241-6500',
+                'emergency_hotline': '+1 (212) 241-9111',
+                'email': 'er.dispatch@mountsinai.org',
+                'is_24_7': True,
+                'ambulance_available': True,
+                'available_beds': 48,
+                'rating': 4.8,
+                'total_reviews': 1250,
+                'services_offered': 'Level 1 Trauma Emergency, ICU, Cardiac Care, Stroke Unit, In-patient Pharmacy, 24/7 Ambulance'
+            },
+            {
+                'name': 'Antixor Express Pharmacy & Telehealth Clinic (Downtown)',
+                'facility_type': 'PHARMACY',
+                'license_number': 'LIC-NY-PH-8802',
+                'address': '120 Broadway, Financial District',
+                'city': 'New York',
+                'state': 'NY',
+                'postal_code': '10271',
+                'latitude': 40.7081,
+                'longitude': -74.0113,
+                'phone': '+1 (212) 555-0144',
+                'emergency_hotline': '+1 (212) 555-0199',
+                'email': 'downtown@antixorpharmacy.com',
+                'is_24_7': True,
+                'ambulance_available': False,
+                'rating': 4.9,
+                'total_reviews': 185,
+                'services_offered': 'Walk-in prescription pickup, Telehealth kiosk, Clinical dosage review, Vaccination'
+            },
+            {
+                'name': 'Bellevue NYC Emergency Trauma & General Hospital',
+                'facility_type': 'EMERGENCY_CENTER',
+                'license_number': 'HOSP-NY-9914',
+                'address': '462 1st Avenue',
+                'city': 'New York',
+                'state': 'NY',
+                'postal_code': '10016',
+                'latitude': 40.7390,
+                'longitude': -73.9754,
+                'phone': '+1 (212) 562-4141',
+                'emergency_hotline': '+1 (212) 562-9911',
+                'email': 'emergency@bellevuehealth.org',
+                'is_24_7': True,
+                'ambulance_available': True,
+                'available_beds': 32,
+                'rating': 4.7,
+                'total_reviews': 890,
+                'services_offered': '24/7 Trauma Surgery, Pediatric Emergency, Intensive Care, Fast-Track Triage, Emergency Dispatch'
+            },
+            {
+                'name': 'Antixor BioLab & Diagnostic Pathology Center',
+                'facility_type': 'DIAGNOSTIC_LAB',
+                'license_number': 'LAB-NY-3301',
+                'address': '550 1st Avenue, Suite 400',
+                'city': 'New York',
+                'state': 'NY',
+                'postal_code': '10016',
+                'latitude': 40.7420,
+                'longitude': -73.9740,
+                'phone': '+1 (212) 555-0177',
+                'email': 'diagnostics@antixorpharmacy.com',
+                'is_24_7': False,
+                'ambulance_available': False,
+                'rating': 4.9,
+                'total_reviews': 210,
+                'services_offered': 'Complete Blood Panel, Lipid & Thyroid Testing, Urine Pathology, Digital Same-Day PDF Reports'
+            }
+        ]
+
+        created_facilities = []
+        for fac_data in facilities_data:
+            fac, _ = MedicalFacility.objects.get_or_create(name=fac_data['name'], defaults=fac_data)
+            created_facilities.append(fac)
+
+        # 8. Seed Patient Vitals for Sarah
+        PatientVital.objects.get_or_create(
+            user=patient,
+            systolic_bp=118,
+            diastolic_bp=78,
+            blood_sugar=94.5,
+            heart_rate=72,
+            spo2=99,
+            weight_kg=64.0,
+            bmi=21.8,
+            notes='Optimal resting blood pressure & fasting glucose.'
+        )
+
+        # 9. Seed Pill Reminders for Sarah
+        PillReminder.objects.get_or_create(
+            user=patient,
+            medicine_name='Vitamin D3 1000 IU',
+            dosage='1 Softgel Capsule with breakfast',
+            frequency='MORNING',
+            time_slot='08:30 AM',
+            defaults={'is_taken': True, 'streak_days': 7, 'notes': 'Supports bone density and immune defense.'}
+        )
+
+        PillReminder.objects.get_or_create(
+            user=patient,
+            medicine_name='Omega-3 Fish Oil 1200mg',
+            dosage='1 Capsule with dinner',
+            frequency='NIGHT',
+            time_slot='08:30 PM',
+            defaults={'is_taken': False, 'streak_days': 5, 'notes': 'Cardiovascular and cholesterol balance.'}
+        )
+
+        # 10. Seed Patient Intake
+        if created_facilities:
+            PatientIntake.objects.get_or_create(
+                user=patient,
+                patient_name='Sarah Ahmed',
+                patient_phone='+1 (555) 998-0112',
+                primary_symptom='Throat Irritation & Low Fever',
+                defaults={
+                    'patient_email': patient.email,
+                    'patient_age': 29,
+                    'patient_gender': 'Female',
+                    'symptoms_list': 'Sore Throat, Dry Cough, Mild Body Ache',
+                    'pain_severity': 3,
+                    'symptom_duration': '2 Days',
+                    'allocated_facility': created_facilities[0],
+                    'status': 'CLINICAL_REVIEW',
+                    'pharmacist_notes': 'Prescription verified. Suggested OTC Lozenges and hydration. No penicillin compounds assigned.',
+                    'safety_warning': 'Patient has recorded Penicillin allergy. Avoid Amoxicillin / Ampicillin.'
+                }
+            )
+
+        self.stdout.write(self.style.SUCCESS("Antixor Pharmacy database seeded successfully with Facilities, Vitals & Intake!"))
+

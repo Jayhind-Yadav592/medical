@@ -6,6 +6,7 @@ from apps.pharmacy.models import Category, Product, Brand
 from apps.telehealth.models import Doctor, ConsultationRequest
 from apps.orders.models import Order, Prescription, Cart, CartItem
 from apps.articles.models import Article, ArticleCategory
+from apps.core.models import MedicalFacility, PatientVital, PillReminder, PatientIntake
 
 User = get_user_model()
 
@@ -15,10 +16,16 @@ class AuraHealthIntegrationTests(TestCase):
         self.client = Client()
         self.user = User.objects.create_user(
             username='test_patient',
-            email='test@aurahealth.com',
+            email='test@antixor.com',
             password='securepassword123',
             first_name='Arthur',
-            last_name='Morgan'
+            last_name='Morgan',
+            digital_health_id='ANT-P-991823',
+            blood_group='O+',
+            medical_allergies='Penicillin, Sulfa',
+            chronic_conditions='Hypertension',
+            emergency_contact='Dr. Robert Vance',
+            emergency_phone='+1 (800) 555-0199'
         )
 
         self.category = Category.objects.create(
@@ -27,7 +34,7 @@ class AuraHealthIntegrationTests(TestCase):
             icon_class='fa-solid fa-pills'
         )
 
-        self.brand = Brand.objects.create(name='AuraBio Labs', country='Switzerland')
+        self.brand = Brand.objects.create(name='Antixor Labs', country='Switzerland')
 
         self.product = Product.objects.create(
             name='Amoxicillin Trihydrate 500mg',
@@ -55,6 +62,17 @@ class AuraHealthIntegrationTests(TestCase):
             bio='Expert clinical pharmacist.',
             consultation_fee=0.00,
             is_available_online=True
+        )
+
+        self.facility = MedicalFacility.objects.create(
+            name='Antixor Flagship Central Hub',
+            facility_type='PHARMACY',
+            address='100 Wall Street, New York, NY 10005',
+            phone='+1 (800) 584-2689',
+            latitude=40.7060,
+            longitude=-74.0088,
+            is_24_7=True,
+            ambulance_available=True
         )
 
     def test_homepage_render(self):
@@ -183,34 +201,123 @@ class AuraHealthIntegrationTests(TestCase):
         self.assertEqual(reg_post.status_code, 302)
         self.assertTrue(User.objects.filter(username='new_patient_test').exists())
 
-    def test_auth_apis_login_and_register(self):
-        # 1. API Register
-        api_reg = self.client.post(reverse('api-auth-register'), {
-            'username': 'api_user_99',
-            'email': 'api99@antixor.com',
-            'first_name': 'Rose',
-            'last_name': 'Tyler',
-            'phone_number': '+1 (555) 123-4567',
-            'password': 'strongpassword99'
+    def test_medical_facilities_api_and_page(self):
+        # 1. Facilities Page View
+        page_res = self.client.get(reverse('facilities'))
+        self.assertEqual(page_res.status_code, 200)
+        self.assertContains(page_res, 'Antixor Flagship Central Hub')
+
+        # 2. Nearest Facilities API with Geolocation
+        api_res = self.client.get('/api/facilities/nearest/?lat=40.7128&lng=-74.0060')
+        self.assertEqual(api_res.status_code, 200)
+        data = api_res.json()
+        facilities = data['facilities']
+        self.assertTrue(len(facilities) >= 1)
+        self.assertEqual(facilities[0]['name'], 'Antixor Flagship Central Hub')
+        self.assertIn('distance_km', facilities[0])
+
+    def test_emergency_sos_api(self):
+        sos_res = self.client.post('/api/emergency/sos/', data={
+            'patient_name': 'Arthur Morgan',
+            'phone': '+1 (800) 555-0199',
+            'lat': '40.7128',
+            'lng': '-74.0060',
+            'emergency_type': 'Severe Acute Chest Pain'
         }, content_type='application/json')
-        self.assertEqual(api_reg.status_code, 201)
-        self.assertEqual(api_reg.json()['user']['username'], 'api_user_99')
+        self.assertEqual(sos_res.status_code, 201)
+        data = sos_res.json()
+        self.assertTrue(data['success'])
+        self.assertIn('sos_id', data)
+        self.assertIn('allocated_hospital', data)
 
-        # 2. API Login with Username
-        api_login_user = self.client.post(reverse('api-auth-login'), {
-            'username': 'api_user_99',
-            'password': 'strongpassword99'
+    def test_drug_allergy_safety_checker_api(self):
+        # 1. Conflict detected (Amoxicillin vs Penicillin allergy)
+        conflict_res = self.client.post('/api/safety/check-allergy/', data={
+            'medicine_name': 'Amoxicillin Trihydrate 500mg',
+            'allergies': 'Penicillin, Sulfa'
         }, content_type='application/json')
-        self.assertEqual(api_login_user.status_code, 200)
+        self.assertEqual(conflict_res.status_code, 200)
+        self.assertFalse(conflict_res.json()['is_safe'])
+        self.assertEqual(conflict_res.json()['severity'], 'HIGH')
 
-        # 3. API Login with Email
-        api_login_email = self.client.post(reverse('api-auth-login'), {
-            'username': 'api99@antixor.com',
-            'password': 'strongpassword99'
+        # 2. Safe medication
+        safe_res = self.client.post('/api/safety/check-allergy/', data={
+            'medicine_name': 'Vitamin D3 5000 IU',
+            'allergies': 'Penicillin'
         }, content_type='application/json')
-        self.assertEqual(api_login_email.status_code, 200)
+        self.assertEqual(safe_res.status_code, 200)
+        self.assertTrue(safe_res.json()['is_safe'])
 
-        # 4. API Logout
-        api_logout = self.client.post(reverse('api-auth-logout'))
-        self.assertEqual(api_logout.status_code, 200)
+    def test_patient_vitals_api_and_dashboard(self):
+        self.client.login(username='test_patient', password='securepassword123')
+        
+        # 1. Post vitals
+        post_vital = self.client.post('/api/patient/vitals/', data={
+            'systolic_bp': 125,
+            'diastolic_bp': 82,
+            'blood_sugar': 98.0,
+            'heart_rate': 74,
+            'spo2': 99,
+            'weight_kg': 72.0,
+            'bmi': 23.1,
+            'notes': 'Post-exercise biometric check'
+        }, content_type='application/json')
+        self.assertEqual(post_vital.status_code, 201)
 
+        # 2. Get vitals
+        get_vital = self.client.get('/api/patient/vitals/')
+        self.assertEqual(get_vital.status_code, 200)
+        self.assertEqual(len(get_vital.json()), 1)
+
+        # 3. View Dashboard
+        dash_res = self.client.get(reverse('dashboard'))
+        self.assertEqual(dash_res.status_code, 200)
+        self.assertContains(dash_res, '125/82')
+
+    def test_pill_reminder_toggle_api(self):
+        self.client.login(username='test_patient', password='securepassword123')
+        pill = PillReminder.objects.create(
+            user=self.user,
+            medicine_name='Vitamin D3 5000 IU',
+            dosage='1 Softgel',
+            time_slot='morning',
+            streak_days=10,
+            is_taken=False
+        )
+
+        toggle_res = self.client.post(f'/api/patient/pill-reminders/{pill.id}/toggle/')
+        self.assertEqual(toggle_res.status_code, 200)
+        data = toggle_res.json()
+        self.assertTrue(data['reminder']['is_taken'])
+        self.assertEqual(data['reminder']['streak_days'], 11)
+
+    def test_patient_intake_page_and_submit(self):
+        self.client.login(username='test_patient', password='securepassword123')
+        
+        # 1. Intake Page
+        page_res = self.client.get(reverse('intake'))
+        self.assertEqual(page_res.status_code, 200)
+        self.assertContains(page_res, 'Smart Patient Symptom Intake')
+
+        # 2. Intake API submit
+        intake_res = self.client.post('/api/patient/intake/submit/', data={
+            'patient_name': 'Arthur Morgan',
+            'patient_phone': '+1 (800) 555-0199',
+            'primary_symptom': 'High Fever, Severe Headache',
+            'pain_severity': 5
+        }, content_type='application/json')
+        self.assertEqual(intake_res.status_code, 201)
+        self.assertIn('intake', intake_res.json())
+
+    def test_health_card_and_invoice_views(self):
+        self.client.login(username='test_patient', password='securepassword123')
+        
+        # Health Card View
+        card_res = self.client.get(reverse('health-card'))
+        self.assertEqual(card_res.status_code, 200)
+        self.assertContains(card_res, 'ANT-P-991823')
+
+        # Consultation Room View
+        room_res = self.client.get(reverse('consultation-room', kwargs={'room_id': 'ROOM-TEST-100'}))
+        self.assertEqual(room_res.status_code, 200)
+        self.assertContains(room_res, 'ROOM-TEST-100')

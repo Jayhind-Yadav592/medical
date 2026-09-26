@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Tax Invoice & Dispense Certificate #{{ order.order_number }} — Antixor Pharmacy{% endblock %}
+
+{% block extra_css %}
+<style>
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printableInvoice, #printableInvoice * {
+    visibility: visible;
+  }
+  #printableInvoice {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  .no-print {
+    display: none !important;
+  }
+}
+.invoice-card {
+  border: 1px solid #e2e8f0;
+  background-color: #ffffff;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+}
+.seal-stamp {
+  display: inline-block;
+  padding: 8px 16px;
+  border: 2px dashed #059669;
+  color: #059669;
+  border-radius: 8px;
+  font-family: monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  transform: rotate(-3deg);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="bg-light py-4 border-bottom no-print">
+  <div class="container">
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
+      <div>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb small mb-1">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}" class="text-decoration-none text-muted">Dashboard</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Invoice #{{ order.order_number }}</li>
+          </ol>
+        </nav>
+        <h1 class="h4 fw-bold text-dark mb-0">Official Pharmacy Tax Invoice & Dispense Certificate</h1>
+      </div>
+      <div class="d-flex gap-2">
+        <button onclick="window.print()" class="btn btn-emerald text-white rounded-pill px-4 fw-bold" style="background-color: #059669;">
+          <i class="fa-solid fa-print me-2"></i> Print / Save PDF
+        </button>
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary rounded-pill px-3">
+          <i class="fa-solid fa-arrow-left me-1"></i> Back to Dashboard
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container py-5" id="printableInvoice">
+  <div class="row justify-content-center">
+    <div class="col-lg-9">
+      
+      <div class="invoice-card rounded-4 p-4 p-md-5">
+        
+        <!-- Header Banner -->
+        <div class="d-flex justify-content-between align-items-start border-bottom pb-4 mb-4">
+          <div>
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <span class="rounded-3 bg-emerald-600 text-white p-2 d-inline-flex align-items-center justify-content-center" style="width:38px; height:38px; background-color: #059669 !important;">
+                <i class="fa-solid fa-staff-snake fs-5"></i>
+              </span>
+              <span class="fs-4 fw-bold text-dark tracking-tight">ANTIXOR<span class="text-emerald-600" style="color:#059669;">.PHARMACY</span></span>
+            </div>
+            <div class="text-muted small">Antixor Healthcare & Digital Dispensaries Inc.</div>
+            <div class="text-muted small">100 Wall Street, Financial District, New York, NY 10005</div>
+            <div class="text-muted small font-monospace">FDA Reg: #NY-99482 • DEA Lic: #FX-8829104</div>
+          </div>
+          <div class="text-end">
+            <div class="badge bg-emerald-100 text-emerald-800 border border-emerald-300 fs-6 px-3 py-2 font-monospace mb-2" style="background-color: #d1fae5; color: #065f46; border-color: #a7f3d0;">
+              TAX INVOICE / DISPENSE SLIP
+            </div>
+            <div class="h5 fw-bold text-dark mb-0 font-monospace">#{{ order.order_number }}</div>
+            <div class="text-muted small">Date: {{ order.created_at|date:"M d, Y" }}</div>
+            <div class="text-muted small">Time: {{ order.created_at|date:"H:i T" }}</div>
+          </div>
+        </div>
+
+        <!-- Patient & Billing Metadata -->
+        <div class="row g-4 mb-4 pb-4 border-bottom">
+          <div class="col-sm-6">
+            <h6 class="fw-bold text-dark text-uppercase small font-monospace text-muted mb-2">Billed & Dispensed To</h6>
+            <div class="fw-bold text-dark fs-6">{{ order.user.get_full_name|default:order.user.username }}</div>
+            <div class="text-muted small">Digital Health ID: <strong class="font-monospace text-emerald-700">{{ order.user.digital_health_id|default:"ANT-P-882910" }}</strong></div>
+            <div class="text-muted small">Delivery Address: {{ order.shipping_address|default:"100 Wall Street, New York, NY 10005" }}</div>
+            <div class="text-muted small">Contact Phone: {{ order.shipping_phone|default:"+1 (800) 555-0199" }}</div>
+          </div>
+          <div class="col-sm-6 text-sm-end">
+            <h6 class="fw-bold text-dark text-uppercase small font-monospace text-muted mb-2">Order & Payment Status</h6>
+            <div class="mb-1"><span class="badge bg-success font-monospace">PAID — {{ order.payment_method|default:"CARD/STRIPE" }}</span></div>
+            <div class="text-muted small">Dispense Status: <strong class="text-dark">{{ order.get_order_status_display }}</strong></div>
+            <div class="text-muted small">Cold-Chain Packaging: <strong class="text-info">Active Temperature Controlled</strong></div>
+          </div>
+        </div>
+
+        <!-- Items Table -->
+        <div class="table-responsive mb-4">
+          <table class="table table-bordered align-middle">
+            <thead class="table-light small font-monospace">
+              <tr>
+                <th style="width: 5%">#</th>
+                <th style="width: 45%">Medication / Product Description</th>
+                <th style="width: 15%" class="text-center">Batch / Expiry</th>
+                <th style="width: 10%" class="text-center">Qty</th>
+                <th style="width: 12%" class="text-end">Unit Price</th>
+                <th style="width: 13%" class="text-end">Total</th>
+              </tr>
+            </thead>
+            <tbody class="small">
+              {% if order.items.all %}
+                {% for item in order.items.all %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>
+                      <div class="fw-bold text-dark">{{ item.product_name }}</div>
+                      <div class="text-muted small" style="font-size: 0.75rem;">NDC Code: 0093-{{ forloop.counter }}10-01 • Rx Approved</div>
+                    </td>
+                    <td class="text-center font-monospace small">BT-{{ forloop.counter }}092<br><span class="text-muted">Exp: 12/2028</span></td>
+                    <td class="text-center fw-bold">{{ item.quantity }}</td>
+                    <td class="text-end font-monospace">${{ item.unit_price }}</td>
+                    <td class="text-end fw-bold font-monospace">${{ item.total_price }}</td>
+                  </tr>
+                {% endfor %}
+              {% else %}
+                <tr>
+                  <td>1</td>
+                  <td>
+                    <div class="fw-bold text-dark">High-Potency Vitamin D3 5000 IU + K2</div>
+                    <div class="text-muted small" style="font-size: 0.75rem;">NDC Code: 0093-5110-01 • Daily Supplement</div>
+                  </td>
+                  <td class="text-center font-monospace small">BT-88902<br><span class="text-muted">Exp: 10/2028</span></td>
+                  <td class="text-center fw-bold">1</td>
+                  <td class="text-end font-monospace">$24.99</td>
+                  <td class="text-end fw-bold font-monospace">$24.99</td>
+                </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Totals & Calculations -->
+        <div class="row justify-content-end mb-4">
+          <div class="col-md-5">
+            <div class="bg-light rounded-3 p-3 small">
+              <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Subtotal:</span>
+                <span class="fw-bold font-monospace">${{ order.total_amount|default:"24.99" }}</span>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Medical Shipping (Cold-Chain):</span>
+                <span class="fw-bold font-monospace text-success">$0.00 (FREE)</span>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span class="text-muted">Healthcare Tax / GST:</span>
+                <span class="fw-bold font-monospace">${{ order.tax_amount|default:"0.00" }}</span>
+              </div>
+              <hr class="my-2">
+              <div class="d-flex justify-content-between fs-6">
+                <span class="fw-bold text-dark">Final Paid Total:</span>
+                <span class="fw-bold font-monospace text-emerald-700" style="color: #047857;">${{ order.final_amount|default:"24.99" }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pharmacist Verification & Legal Stamp -->
+        <div class="row align-items-center border-top pt-4">
+          <div class="col-sm-4 text-center text-sm-start mb-3 mb-sm-0">
+            <div class="seal-stamp mb-2">
+              <i class="fa-solid fa-certificate me-1"></i> VERIFIED & DISPENSED
+            </div>
+            <div class="small text-muted">Lead Dispensing Pharmacist</div>
+            <div class="fw-bold text-dark small font-monospace">Dr. Eleanor Vance, PharmD #88192</div>
+          </div>
+          
+          <div class="col-sm-4 text-center mb-3 mb-sm-0">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://antixorpharmacy.com/invoice/verify/{{ order.order_number }}" alt="QR Validation" class="img-fluid rounded" style="width:75px; height:75px;">
+            <div class="small text-muted font-monospace mt-1" style="font-size: 0.65rem;">SCAN TO VERIFY AUTHENTICITY</div>
+          </div>
+
+          <div class="col-sm-4 text-center text-sm-end">
+            <div class="font-monospace text-muted small mb-1">DIGITALLY SIGNED</div>
+            <div class="fst-italic text-emerald-800 fw-bold" style="font-family: cursive; font-size: 1.2rem; color: #064e3b;">Eleanor Vance</div>
+            <div class="small text-muted font-monospace" style="font-size: 0.7rem;">Timestamp: {{ order.created_at|date:"Y-m-d H:i:s" }} UTC</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

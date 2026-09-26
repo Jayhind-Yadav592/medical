@@ -166,21 +166,85 @@ def order_tracking_view(request):
     return render(request, 'pages/order_tracking.html', {'order': order, 'searched_number': order_num})
 
 
-@login_required(login_url='/')
+@login_required(login_url='/login/')
 def user_dashboard_view(request):
-    """Patient medical dashboard."""
-    orders = Order.objects.filter(user=request.user)
+    """Advanced Patient Medical Dashboard (EHR, Vitals, Pill Reminders & Order Timeline)."""
+    orders = Order.objects.filter(user=request.user).prefetch_related('items', 'status_history')
     prescriptions = Prescription.objects.filter(user=request.user)
     consultations = ConsultationRequest.objects.filter(user=request.user)
+    
+    from apps.core.models import PatientVital, PillReminder, PatientIntake, MedicalFacility
+    vitals = PatientVital.objects.filter(user=request.user)
+    latest_vital = vitals.first()
+    pill_reminders = PillReminder.objects.filter(user=request.user)
+    intakes = PatientIntake.objects.filter(user=request.user)
+    nearest_facilities = MedicalFacility.objects.filter(is_active=True)[:4]
+
     return render(request, 'pages/dashboard.html', {
         'orders': orders,
         'prescriptions': prescriptions,
         'consultations': consultations,
+        'vitals': vitals,
+        'latest_vital': latest_vital,
+        'pill_reminders': pill_reminders,
+        'intakes': intakes,
+        'nearest_facilities': nearest_facilities,
+    })
+
+
+def facilities_locator_view(request):
+    """Interactive Nearest Hospital & Pharmacy GPS locator with Leaflet map."""
+    from apps.core.models import MedicalFacility
+    facilities = MedicalFacility.objects.filter(is_active=True)
+    facility_type = request.GET.get('type')
+    if facility_type and facility_type != 'ALL':
+        facilities = facilities.filter(facility_type=facility_type)
+    return render(request, 'pages/facilities.html', {
+        'facilities': facilities,
+        'selected_type': facility_type or 'ALL'
+    })
+
+
+def patient_intake_view(request):
+    """Smart multi-step symptom checker & prescription upload page."""
+    from apps.core.models import MedicalFacility
+    facilities = MedicalFacility.objects.filter(is_active=True, facility_type='PHARMACY')
+    return render(request, 'pages/intake.html', {
+        'facilities': facilities
+    })
+
+
+def order_invoice_view(request, order_number):
+    """Printable official pharmacy tax invoice & prescription dispense certificate."""
+    order = get_object_or_404(Order.objects.prefetch_related('items'), order_number__iexact=order_number)
+    return render(request, 'pages/invoice.html', {
+        'order': order
+    })
+
+
+@login_required(login_url='/login/')
+def digital_health_card_view(request):
+    """Printable / Downloadable Digital Patient Health ID Card with QR Stamp."""
+    from apps.core.models import PatientVital
+    latest_vital = PatientVital.objects.filter(user=request.user).first()
+    return render(request, 'pages/health_card.html', {
+        'user': request.user,
+        'latest_vital': latest_vital
+    })
+
+
+def consultation_room_view(request, room_id):
+    """Simulated Telehealth consultation room with video, prescription pad, and chat."""
+    doctor = Doctor.objects.first()
+    return render(request, 'pages/consultation_room.html', {
+        'room_id': room_id,
+        'doctor': doctor
     })
 
 
 def about_view(request):
     return render(request, 'pages/about.html')
+
 
 
 def contact_view(request):

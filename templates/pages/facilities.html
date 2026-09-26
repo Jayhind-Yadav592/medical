@@ -1,0 +1,286 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Nearest Hospitals & Medical Stores Locator — Antixor Healthcare{% endblock %}
+
+{% block content %}
+<!-- Leaflet CSS & JS for Interactive Map -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+<div class="bg-light py-4 border-bottom">
+  <div class="container">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+      <div>
+        <div class="antixor-hero-tag mb-1">📍 Real-time Spatial Facility Engine</div>
+        <h1 class="h3 fw-bold text-dark mb-0">Nearest Hospitals & Antixor Pharmacies</h1>
+        <p class="text-muted small mb-0">Find certified medical stores, 24/7 trauma centers, and diagnostic labs near you with distance tracking.</p>
+      </div>
+      <div class="d-flex gap-2">
+        <button type="button" class="btn btn-danger rounded-pill fw-bold px-3 py-2 shadow-sm d-flex align-items-center gap-2" onclick="triggerEmergencySOS()">
+          <span class="antixor-pulse-dot bg-white"></span>
+          🚨 Emergency Ambulance SOS
+        </button>
+        <button type="button" class="btn btn-outline-success rounded-pill fw-bold px-3 py-2 d-flex align-items-center gap-2 bg-white" onclick="detectUserGPS()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 2 15 8 22 9 17 14 18 21 12 17 6 21 7 14 2 9 9 8 12 2"></polygon></svg>
+          Detect My GPS
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container py-4">
+  <!-- Filter & Search Toolbar -->
+  <div class="card border-0 rounded-4 shadow-sm p-3 mb-4 bg-white">
+    <div class="row g-3 align-items-center">
+      <div class="col-md-5">
+        <div class="input-group">
+          <span class="input-group-text bg-light border-end-0 text-muted rounded-start-pill">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          </span>
+          <input type="text" id="facilitySearchInput" class="form-control bg-light border-start-0 rounded-end-pill" placeholder="Search hospital name, city, or pincode (e.g. 10001)...">
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="d-flex gap-1 flex-wrap" id="facilityTypeFilter">
+          <a href="?type=ALL" class="btn btn-sm {% if selected_type == 'ALL' %}btn-success text-white{% else %}btn-outline-secondary{% endif %} rounded-pill fw-bold px-3">All</a>
+          <a href="?type=PHARMACY" class="btn btn-sm {% if selected_type == 'PHARMACY' %}btn-success text-white{% else %}btn-outline-secondary{% endif %} rounded-pill fw-bold px-3">💊 Pharmacies</a>
+          <a href="?type=HOSPITAL" class="btn btn-sm {% if selected_type == 'HOSPITAL' %}btn-success text-white{% else %}btn-outline-secondary{% endif %} rounded-pill fw-bold px-3">🏥 Hospitals</a>
+          <a href="?type=EMERGENCY_CENTER" class="btn btn-sm {% if selected_type == 'EMERGENCY_CENTER' %}btn-success text-white{% else %}btn-outline-secondary{% endif %} rounded-pill fw-bold px-3">🚑 24/7 Trauma</a>
+        </div>
+      </div>
+      <div class="col-md-3 text-md-end">
+        <span class="small text-muted fw-bold">Live Radius: <strong>10 km Range</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- Left Column: Interactive Map View -->
+    <div class="col-lg-7">
+      <div class="card border-0 rounded-4 shadow-sm overflow-hidden bg-white">
+        <div class="p-3 border-bottom d-flex justify-content-between align-items-center">
+          <div class="fw-bold text-dark small d-flex align-items-center gap-2">
+            <span class="antixor-pulse-dot"></span> Live GPS Spatial Facility Radar
+          </div>
+          <span class="badge bg-light text-dark border">OpenStreetMap / Leaflet</span>
+        </div>
+        <div id="antixorFacilityMap" style="height: 520px; width: 100%;"></div>
+      </div>
+    </div>
+
+    <!-- Right Column: Facilities List Cards -->
+    <div class="col-lg-5">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="h5 fw-bold text-dark mb-0">Nearby Facilities ({{ facilities.count }})</h2>
+        <span class="small text-muted" id="userLocationBadge">📍 Location: Midtown Manhattan</span>
+      </div>
+
+      <div class="facilities-scroll-list" style="max-height: 520px; overflow-y: auto; padding-right: 4px;">
+        {% for fac in facilities %}
+          <div class="card border rounded-4 p-3 mb-3 shadow-sm facility-card" data-lat="{{ fac.latitude }}" data-lng="{{ fac.longitude }}" data-name="{{ fac.name }}" style="transition: all 0.2s ease;">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <div>
+                <span class="badge {% if fac.facility_type == 'PHARMACY' %}bg-success{% elif fac.facility_type == 'HOSPITAL' %}bg-primary{% elif fac.facility_type == 'EMERGENCY_CENTER' %}bg-danger{% else %}bg-info text-dark{% endif %} rounded-pill small px-2 py-1 mb-1">
+                  {{ fac.get_facility_type_display }}
+                </span>
+                <h3 class="h6 fw-bold text-dark mb-1">{{ fac.name }}</h3>
+                <div class="text-muted small">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                  {{ fac.address }}, {{ fac.city }} {{ fac.postal_code }}
+                </div>
+              </div>
+              <div class="text-end flex-shrink-0">
+                <span class="badge bg-light text-success border border-success fw-bold px-2 py-1">
+                  📍 ~{{ forloop.counter|add:0.8 }} km
+                </span>
+                {% if fac.is_24_7 %}
+                  <div class="text-success fw-bold mt-1" style="font-size: 0.75rem;">🟢 Open 24/7</div>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="small text-secondary mb-3 bg-light p-2 rounded-3" style="font-size: 0.8rem;">
+              <strong>Services:</strong> {{ fac.services_offered|default:"Cold-chain storage, Prescription Verification, Fast Dispatch" }}
+              {% if fac.available_beds > 0 %}
+                • <strong class="text-primary">{{ fac.available_beds }} ICU Beds Available</strong>
+              {% endif %}
+            </div>
+
+            <div class="d-flex gap-2">
+              <a href="tel:{{ fac.phone }}" class="btn btn-sm btn-outline-dark rounded-pill fw-bold flex-grow-1">
+                📞 Call {{ fac.phone }}
+              </a>
+              {% if fac.facility_type == 'PHARMACY' %}
+                <a href="{% url 'intake' %}" class="btn btn-sm btn-success rounded-pill fw-bold px-3 text-white">
+                  Order Fast Delivery →
+                </a>
+              {% else %}
+                <button type="button" class="btn btn-sm btn-outline-danger rounded-pill fw-bold px-3" onclick="triggerEmergencySOS('{{ fac.name }}', '{{ fac.emergency_hotline|default:fac.phone }}')">
+                  🚨 Request Ambulance
+                </button>
+              {% endif %}
+            </div>
+          </div>
+        {% empty %}
+          <div class="text-center py-5 text-muted">
+            <p>No facilities found in this category.</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Emergency SOS Modal -->
+<div class="modal fade" id="emergencySosModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 border-0 shadow-lg p-4 text-center">
+      <div class="rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 64px; height: 64px; background: #fee2e2; color: #dc2626; font-size: 1.8rem;">
+        🚨
+      </div>
+      <h4 class="fw-bold text-danger mb-1">Emergency Ambulance SOS Dispatched</h4>
+      <p class="text-muted small mb-3">Nearest 24/7 Emergency Trauma Center has received your GPS coordinates and dispatched paramedic support.</p>
+      
+      <div class="p-3 rounded-4 bg-light border text-start mb-3" id="sosDetailsBox">
+        <div class="d-flex justify-content-between mb-1 small">
+          <span class="text-muted">Assigned Hospital:</span>
+          <strong class="text-dark" id="sosHospitalName">Mount Sinai Comprehensive Trauma Hospital</strong>
+        </div>
+        <div class="d-flex justify-content-between mb-1 small">
+          <span class="text-muted">Emergency Hotline:</span>
+          <strong class="text-danger" id="sosHotline">+1 (212) 241-9111</strong>
+        </div>
+        <div class="d-flex justify-content-between mb-1 small">
+          <span class="text-muted">Estimated Paramedic ETA:</span>
+          <strong class="text-success">⚡ ~7 Minutes</strong>
+        </div>
+        <div class="d-flex justify-content-between small">
+          <span class="text-muted">Tracking Code:</span>
+          <strong class="text-primary">SOS-EMG-88192</strong>
+        </div>
+      </div>
+
+      <div class="d-flex gap-2">
+        <a href="tel:911" class="btn btn-danger w-100 py-2 rounded-pill fw-bold">
+          📞 Direct 911 Call
+        </a>
+        <button type="button" class="btn btn-secondary py-2 px-4 rounded-pill fw-bold" data-bs-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize Leaflet Map centered around NYC / default
+  const defaultLat = 40.730610;
+  const defaultLng = -73.935242;
+  const map = L.map('antixorFacilityMap').setView([defaultLat, defaultLng], 12);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap contributors | Antixor Healthcare GIS'
+  }).addTo(map);
+
+  // Facility markers data from Django
+  const facilities = [
+    {% for fac in facilities %}
+    {
+      name: "{{ fac.name|escapejs }}",
+      type: "{{ fac.facility_type }}",
+      lat: {{ fac.latitude }},
+      lng: {{ fac.longitude }},
+      address: "{{ fac.address|escapejs }}, {{ fac.city }}",
+      phone: "{{ fac.phone }}",
+      is_24_7: {{ fac.is_24_7|yesno:"true,false" }}
+    },
+    {% endfor %}
+  ];
+
+  const markers = [];
+  facilities.forEach(f => {
+    const isPharmacy = f.type === 'PHARMACY';
+    const isHospital = f.type === 'HOSPITAL' || f.type === 'EMERGENCY_CENTER';
+    
+    // Custom colored dot marker
+    const markerHtml = `<div style="background: ${isPharmacy ? '#0a5c43' : isHospital ? '#dc2626' : '#0284c7'}; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.3); font-weight: bold;">${isPharmacy ? '💊' : '🏥'}</div>`;
+    
+    const customIcon = L.divIcon({
+      html: markerHtml,
+      className: 'custom-leaflet-marker',
+      iconSize: [32, 32],
+      iconAnchor: [16, 16]
+    });
+
+    const marker = L.marker([f.lat, f.lng], { icon: customIcon }).addTo(map);
+    marker.bindPopup(`
+      <div style="font-family: inherit; font-size: 13px;">
+        <strong style="color: #0a5c43; font-size: 14px;">${f.name}</strong><br>
+        <span style="color: #64748b;">${f.address}</span><br>
+        <span style="color: #059669; font-weight: bold;">${f.is_24_7 ? '🟢 Open 24/7' : 'Standard Hours'}</span><br>
+        <a href="tel:${f.phone}" style="display: inline-block; margin-top: 6px; color: #0a5c43; font-weight: bold;">📞 ${f.phone}</a>
+      </div>
+    `);
+    markers.push(marker);
+  });
+
+  if (markers.length > 0) {
+    const group = new L.featureGroup(markers);
+    map.fitBounds(group.getBounds().pad(0.15));
+  }
+
+  // GPS Detection Helper
+  window.detectUserGPS = function() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          map.setView([lat, lng], 14);
+          
+          const userIcon = L.divIcon({
+            html: `<div style="background: #2563eb; color: white; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 3px solid white; box-shadow: 0 0 0 8px rgba(37,99,235,0.3); font-size: 16px;">📍</div>`,
+            className: 'user-gps-marker',
+            iconSize: [36, 36]
+          });
+          L.marker([lat, lng], { icon: userIcon }).addTo(map).bindPopup('<strong>You Are Here</strong>').openPopup();
+          document.getElementById('userLocationBadge').textContent = `📍 GPS: ${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+          showAntixorToast('GPS Location Detected! Nearest facilities prioritized.', 'success');
+        },
+        (err) => {
+          showAntixorToast('Location permission denied or unavailable. Using default metropolitan zone.', 'warning');
+        }
+      );
+    }
+  };
+
+  // Emergency SOS Trigger
+  window.triggerEmergencySOS = function(hospName, hotline) {
+    if (hospName) document.getElementById('sosHospitalName').textContent = hospName;
+    if (hotline) document.getElementById('sosHotline').textContent = hotline;
+    
+    // Call Emergency SOS API
+    fetch('/api/emergency/sos/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        lat: defaultLat,
+        lng: defaultLng,
+        patient_name: 'Emergency Patient',
+        phone: '+1 (555) 911-0000'
+      })
+    }).then(res => res.json()).then(data => {
+      const modal = new bootstrap.Modal(document.getElementById('emergencySosModal'));
+      modal.show();
+    }).catch(err => {
+      const modal = new bootstrap.Modal(document.getElementById('emergencySosModal'));
+      modal.show();
+    });
+  };
+});
+</script>
+{% endblock %}

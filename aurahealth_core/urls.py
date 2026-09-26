@@ -7,7 +7,9 @@ from apps.core.views import (
     telehealth_view, prescriptions_portal_view, articles_view,
     article_detail_view, cart_page_view, checkout_page_view,
     order_tracking_view, user_dashboard_view, about_view, contact_view,
-    login_view, register_view, logout_view
+    login_view, register_view, logout_view,
+    facilities_locator_view, patient_intake_view, order_invoice_view,
+    digital_health_card_view, consultation_room_view
 )
 
 urlpatterns = [
@@ -20,6 +22,13 @@ urlpatterns = [
     path('login/', login_view, name='login'),
     path('register/', register_view, name='register'),
     path('logout/', logout_view, name='logout'),
+    
+    # Geolocation & Facilities Locator
+    path('facilities/', facilities_locator_view, name='facilities'),
+    path('intake/', patient_intake_view, name='intake'),
+    path('health-card/', digital_health_card_view, name='health-card'),
+    path('order/invoice/<str:order_number>/', order_invoice_view, name='order-invoice'),
+    path('consultation/room/<str:room_id>/', consultation_room_view, name='consultation-room'),
     
     # Frontend Pages
     path('', home_view, name='home'),
