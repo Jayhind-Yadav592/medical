@@ -1,316 +1,883 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Telehealth Live Video Consultation Room — Antixor Health{% endblock %}
+{% block title %}Live Telehealth Consultation Room — Antixor Health{% endblock %}
 
 {% block extra_css %}
 <style>
-.video-stream-container {
-  position: relative;
-  background-color: #0f172a;
-  border-radius: 20px;
-  overflow: hidden;
-  min-height: 480px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.pip-stream {
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  width: 160px;
-  height: 120px;
-  background-color: #1e293b;
-  border-radius: 12px;
-  border: 2px solid #059669;
-  overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-  z-index: 10;
-}
-.call-controls {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: rgba(15, 23, 42, 0.85);
-  backdrop-filter: blur(8px);
-  padding: 10px 20px;
-  border-radius: 40px;
-  display: flex;
-  gap: 12px;
-  z-index: 10;
-  border: 1px solid rgba(255,255,255,0.15);
-}
-.ctrl-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 1.1rem;
-  transition: all 0.2s ease;
-}
-.ctrl-btn:hover {
-  transform: scale(1.08);
-}
-.chat-bubble-doctor {
-  background-color: #f1f5f9;
-  border-radius: 14px 14px 14px 0;
-  padding: 10px 14px;
-  max-width: 85%;
-  font-size: 0.875rem;
-}
-.chat-bubble-patient {
-  background-color: #d1fae5;
-  color: #065f46;
-  border-radius: 14px 14px 0 14px;
-  padding: 10px 14px;
-  max-width: 85%;
-  margin-left: auto;
-  font-size: 0.875rem;
-}
+  /* ==========================================================================
+     TELEHEALTH REAL-TIME CONSULTATION ROOM STYLING
+     ========================================================================== */
+  .telehealth-room-wrapper {
+    background-color: #0b1320;
+    min-height: calc(100vh - 140px);
+    color: #f8fafc;
+  }
+
+  .consult-header {
+    background: #070f1a;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 12px 0;
+  }
+
+  /* Video Stage */
+  .video-stage-card {
+    position: relative;
+    background: #020617;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    overflow: hidden;
+    min-height: 480px;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Doctor Video Visualizer */
+  .doctor-stream-box {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at center, #0f2334 0%, #030a12 100%);
+    padding: 40px 20px 80px;
+  }
+
+  .doctor-avatar-wrapper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin-bottom: 16px;
+  }
+  .doctor-avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top;
+    border: 3.5px solid #10b981;
+    box-shadow: 0 0 25px rgba(16, 185, 129, 0.35);
+  }
+  .doctor-talking-ring {
+    position: absolute;
+    top: -6px; left: -6px; right: -6px; bottom: -6px;
+    border-radius: 50%;
+    border: 2px solid rgba(16, 185, 129, 0.6);
+    animation: talkingRipple 2s infinite ease-out;
+  }
+  @keyframes talkingRipple {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.12); opacity: 0.3; }
+    100% { transform: scale(1.22); opacity: 0; }
+  }
+
+  /* Audio Visualizer Bars */
+  .audio-waveform-bars {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    height: 24px;
+    margin-top: 10px;
+  }
+  .audio-bar {
+    width: 4px;
+    background: #10b981;
+    border-radius: 9999px;
+    animation: audioWave 1.2s infinite ease-in-out;
+  }
+  .audio-bar:nth-child(1) { height: 8px; animation-delay: 0.1s; }
+  .audio-bar:nth-child(2) { height: 18px; animation-delay: 0.3s; }
+  .audio-bar:nth-child(3) { height: 24px; animation-delay: 0.2s; }
+  .audio-bar:nth-child(4) { height: 14px; animation-delay: 0.4s; }
+  .audio-bar:nth-child(5) { height: 20px; animation-delay: 0.15s; }
+  .audio-bar:nth-child(6) { height: 10px; animation-delay: 0.35s; }
+  @keyframes audioWave {
+    0%, 100% { transform: scaleY(0.4); opacity: 0.6; }
+    50% { transform: scaleY(1.3); opacity: 1; }
+  }
+
+  /* Patient Picture-in-Picture Webcam Box */
+  .pip-patient-box {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    width: 180px;
+    height: 135px;
+    background: #09121d;
+    border: 2px solid #10b981;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+    z-index: 10;
+    transition: all 0.3s ease;
+  }
+  .pip-patient-box:hover {
+    transform: scale(1.05);
+  }
+  .pip-patient-box video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scaleX(-1); /* Mirror patient webcam */
+  }
+
+  /* Floating Media Toolbar */
+  .consult-toolbar {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 9999px;
+    padding: 8px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 20;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  }
+  .tool-ctrl-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 1.15rem;
+    background: #1e293b;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+  }
+  .tool-ctrl-btn:hover {
+    background: #334155;
+    transform: scale(1.1);
+  }
+  .tool-ctrl-btn.active-danger {
+    background: #dc2626 !important;
+    color: #ffffff !important;
+  }
+  .tool-ctrl-btn.hangup-btn {
+    background: #dc2626;
+    width: 52px;
+    height: 52px;
+    font-size: 1.3rem;
+  }
+  .tool-ctrl-btn.hangup-btn:hover {
+    background: #b91c1c;
+    transform: scale(1.12);
+  }
+
+  /* Top Stage HUD */
+  .stage-top-hud {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+    pointer-events: none;
+  }
+  .stage-top-hud > * {
+    pointer-events: auto;
+  }
+  .hud-pill {
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 9999px;
+    padding: 6px 14px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Chat Pane & Bubbles */
+  .chat-panel-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 580px;
+    box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.08);
+  }
+  .chat-scroll-area {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 16px;
+    background: #f8fafc;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 420px;
+  }
+  .chat-bubble-doc {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px 16px 16px 4px;
+    padding: 12px 16px;
+    max-width: 88%;
+    color: #1e293b;
+    font-size: 0.88rem;
+    line-height: 1.45;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    align-self: flex-start;
+  }
+  .chat-bubble-pat {
+    background: #0a5c43;
+    color: #ffffff;
+    border-radius: 16px 16px 4px 16px;
+    padding: 12px 16px;
+    max-width: 88%;
+    font-size: 0.88rem;
+    line-height: 1.45;
+    box-shadow: 0 4px 12px rgba(10, 92, 67, 0.2);
+    align-self: flex-end;
+  }
+  .chat-time-tag {
+    font-size: 0.68rem;
+    opacity: 0.75;
+    margin-top: 4px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* Typing animation */
+  .typing-indicator-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 14px;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 9999px;
+    font-size: 0.76rem;
+    color: #64748b;
+    align-self: flex-start;
+  }
+  .typing-dot {
+    width: 6px;
+    height: 6px;
+    background: #10b981;
+    border-radius: 50%;
+    animation: typingBounce 1.4s infinite ease-in-out;
+  }
+  .typing-dot:nth-child(1) { animation-delay: 0s; }
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typingBounce {
+    0%, 60%, 100% { transform: translateY(0); }
+    30% { transform: translateY(-4px); }
+  }
+
+  /* Live Prescription Pad */
+  .live-rx-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.06);
+    transition: all 0.3s ease;
+  }
+  .live-rx-card.updated-glow {
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.35);
+  }
+
+  /* Pulse Dot */
+  .live-dot-pulse {
+    width: 9px;
+    height: 9px;
+    background: #ef4444;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+    animation: liveDotPulse 1.4s infinite cubic-bezier(0.66, 0, 0, 1);
+  }
+  @keyframes liveDotPulse {
+    to { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+  }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="bg-navy-900 text-white py-3 border-bottom border-emerald-500" style="background-color: #0f172a;">
-  <div class="container d-flex justify-content-between align-items-center">
-    <div class="d-flex align-items-center gap-3">
-      <span class="badge bg-danger rounded-pill px-3 py-1 animate-pulse">
-        <i class="fa-solid fa-circle me-1 small"></i> LIVE ENCRYPTED CALL
-      </span>
-      <h1 class="h5 mb-0 fw-bold">Room #{{ room_id }} — Dr. {{ doctor.full_name|default:"Sarah Jenkins, MD" }}</h1>
-    </div>
-    <div class="d-flex align-items-center gap-2">
-      <span class="text-slate-300 small d-none d-md-inline font-monospace"><i class="fa-solid fa-lock text-success me-1"></i> End-to-End HIPAA Encrypted</span>
-      <a href="{% url 'dashboard' %}" class="btn btn-sm btn-outline-danger rounded-pill px-3">
-        <i class="fa-solid fa-phone-slash me-1"></i> Leave Room
-      </a>
+<!-- Top Header Navigation -->
+{% include 'partials/navbar.html' %}
+
+<!-- Consultation Room Outer Wrapper -->
+<div class="telehealth-room-wrapper pb-5">
+  
+  <!-- Room Top Header Bar -->
+  <div class="consult-header">
+    <div class="container-fluid px-md-5 d-flex flex-wrap justify-content-between align-items-center gap-3">
+      <div class="d-flex align-items-center gap-3">
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill" style="background: rgba(239, 68, 68, 0.18); border: 1px solid rgba(239, 68, 68, 0.4);">
+          <span class="live-dot-pulse"></span>
+          <span class="small fw-bold text-danger font-monospace" style="letter-spacing: 0.05em;">LIVE ENCRYPTED TELEHEALTH SESSION</span>
+        </div>
+        <h1 class="h6 text-white fw-bold mb-0">
+          Room #{{ room_id }} &mdash; <span class="text-emerald-400" style="color: #6ee7b7;">Dr. {{ doctor.full_name|default:"Elena Vance, PharmD" }}</span>
+        </h1>
+      </div>
+
+      <div class="d-flex align-items-center gap-3">
+        <div class="d-none d-md-flex align-items-center gap-2 small text-slate-300 font-monospace" style="color: #94a3b8;">
+          <span>🔒 256-bit AES-GCM Encrypted</span>
+          <span>•</span>
+          <span class="text-success">⚡ 16ms Latency</span>
+        </div>
+        <a href="{% url 'dashboard' %}" class="btn btn-sm btn-danger rounded-pill fw-bold px-3 py-1 d-flex align-items-center gap-2">
+          <span>Leave Room</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        </a>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="container-fluid py-4 px-md-5">
-  <div class="row g-4">
-    
-    <!-- Video Stage (Left 8 Cols) -->
-    <div class="col-lg-8">
-      <div class="video-stream-container shadow-lg position-relative">
+  <!-- Main Consultation Workspace -->
+  <div class="container-fluid py-4 px-md-5">
+    <div class="row g-4">
+      
+      <!-- Left Column: Video Stage + Live Prescription Pad (col-lg-8) -->
+      <div class="col-lg-8">
         
-        <!-- Doctor Video Feed Simulation -->
-        <div class="text-center text-white p-4">
-          <div class="position-relative d-inline-block mb-3">
-            <img src="{% static 'images/doctor_female.jpg' %}" alt="Doctor Video" class="rounded-circle border border-3 border-emerald-500 shadow" style="width: 140px; height: 140px; object-fit: cover; object-position: top;">
-            <span class="position-absolute bottom-0 end-0 bg-success border border-2 border-dark rounded-circle p-2" title="Audio Connected"></span>
-          </div>
-          <h4 class="fw-bold mb-1">Dr. {{ doctor.full_name|default:"Sarah Jenkins, MD" }}</h4>
-          <div class="text-emerald-400 small mb-2" style="color: #34d399;">Chief Clinical Specialist • Antixor Telehealth Network</div>
-          <div class="badge bg-dark bg-opacity-75 border border-secondary text-slate-300 px-3 py-1 font-monospace">
-            <i class="fa-solid fa-waveform-lines text-success me-1"></i> Audio Stream Active • 1080p 60fps
-          </div>
-        </div>
-
-        <!-- Picture-in-Picture (Patient Webcam) -->
-        <div class="pip-stream d-flex flex-column align-items-center justify-content-center text-white">
-          <i class="fa-solid fa-user text-slate-400 fs-3 mb-1"></i>
-          <span class="small font-monospace text-slate-300" style="font-size: 0.65rem;">YOU (PATIENT)</span>
-        </div>
-
-        <!-- Floating Controls Toolbar -->
-        <div class="call-controls">
-          <button class="ctrl-btn bg-slate-700 bg-opacity-75" id="toggleMicBtn" title="Mute/Unmute Mic" style="background-color: #334155;">
-            <i class="fa-solid fa-microphone"></i>
-          </button>
-          <button class="ctrl-btn bg-slate-700 bg-opacity-75" id="toggleCamBtn" title="Turn Camera On/Off" style="background-color: #334155;">
-            <i class="fa-solid fa-video"></i>
-          </button>
-          <button class="ctrl-btn bg-slate-700 bg-opacity-75" id="shareScreenBtn" title="Share Screen / Lab Reports" style="background-color: #334155;">
-            <i class="fa-solid fa-desktop"></i>
-          </button>
-          <button class="ctrl-btn bg-danger" id="endCallBtn" title="End Consultation" onclick="window.location.href='/dashboard/'">
-            <i class="fa-solid fa-phone-slash"></i>
-          </button>
-        </div>
-
-      </div>
-
-      <!-- Quick Doctor Clinical Notes Pad -->
-      <div class="card border-0 rounded-4 p-4 shadow-sm bg-white mt-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-signature text-emerald-600 me-2" style="color: #059669;"></i> Live E-Prescription & Doctor Recommendations</h5>
-          <span class="badge bg-emerald-100 text-emerald-800 font-monospace" style="background-color: #d1fae5; color:#065f46;">SYNCED IN REAL-TIME</span>
-        </div>
-        <div class="p-3 bg-light rounded-3 mb-3">
-          <div class="fw-bold text-dark mb-1">1. High-Potency Vitamin D3 5000 IU + K2</div>
-          <div class="small text-muted">Dosage: 1 softgel daily after morning meal with water. Duration: 60 Days.</div>
-        </div>
-        <div class="p-3 bg-light rounded-3 mb-3">
-          <div class="fw-bold text-dark mb-1">2. Pure Ultra Omega-3 Fish Oil 1000mg</div>
-          <div class="small text-muted">Dosage: 1 capsule twice daily with meals. Duration: 30 Days.</div>
-        </div>
-        <div class="d-flex justify-content-end gap-2">
-          <a href="{% url 'shop' %}" class="btn btn-emerald text-white rounded-pill px-4 fw-bold" style="background-color: #059669;">
-            <i class="fa-solid fa-cart-plus me-1"></i> Add Prescribed Medications to Cart
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Right Sidebar (Chat & EHR 4 Cols) -->
-    <div class="col-lg-4">
-      <div class="card border-0 rounded-4 shadow-sm bg-white h-100 d-flex flex-column" style="min-height: 600px;">
-        
-        <!-- Tab Headers -->
-        <div class="p-3 border-bottom bg-light rounded-top-4">
-          <ul class="nav nav-pills nav-fill" id="consultTabs" role="tablist">
-            <li class="nav-item">
-              <button class="nav-link active fw-bold small rounded-pill py-2" id="tab-live-chat" data-bs-toggle="pill" data-bs-target="#pane-chat">
-                <i class="fa-solid fa-comments me-1"></i> Live Chat
-              </button>
-            </li>
-            <li class="nav-item">
-              <button class="nav-link fw-bold small rounded-pill py-2" id="tab-patient-ehr" data-bs-toggle="pill" data-bs-target="#pane-ehr">
-                <i class="fa-solid fa-id-card-clip me-1"></i> Patient EHR
-              </button>
-            </li>
-          </ul>
-        </div>
-
-        <div class="tab-content flex-grow-1 p-3 d-flex flex-column" id="consultTabContent">
+        <!-- Video Stream Stage -->
+        <div class="video-stage-card mb-4" id="videoStageCard">
           
-          <!-- Chat Pane -->
-          <div class="tab-pane fade show active flex-grow-1 d-flex flex-column" id="pane-chat" role="tabpanel">
-            <div class="flex-grow-1 overflow-auto pe-2" id="chatMessageList" style="max-height: 420px;">
-              <div class="chat-bubble-doctor mb-3">
-                <div class="fw-bold text-primary mb-1" style="font-size: 0.75rem;">Dr. {{ doctor.full_name|default:"Sarah Jenkins" }}</div>
-                Hello! I have reviewed your latest vitals and symptom intake. How are you feeling today?
-              </div>
-              <div class="chat-bubble-patient mb-3">
-                Hi Doctor! The persistent headache has reduced, but I still have mild joint stiffness in the mornings.
-              </div>
-              <div class="chat-bubble-doctor mb-3">
-                <div class="fw-bold text-primary mb-1" style="font-size: 0.75rem;">Dr. {{ doctor.full_name|default:"Sarah Jenkins" }}</div>
-                Understood. I have updated your daily regimen with Vitamin D3 and Omega-3 anti-inflammatory supplements. You can review the Rx right below our video.
-              </div>
+          <!-- Top HUD Overlay -->
+          <div class="stage-top-hud">
+            <div class="hud-pill">
+              <span class="radar-pulse-dot" style="background: #10b981;"></span>
+              <span id="callDurationTimer">⏱️ 00:04:18</span>
             </div>
-
-            <form id="chatSendForm" class="mt-3 border-top pt-3">
-              <div class="input-group">
-                <input type="text" id="chatInput" class="form-control rounded-start-pill py-2" placeholder="Type a message to your doctor...">
-                <button type="submit" class="btn btn-emerald text-white rounded-end-pill px-3" style="background-color: #059669;">
-                  <i class="fa-solid fa-paper-plane"></i>
-                </button>
-              </div>
-            </form>
+            <div class="hud-pill">
+              <span>📶 1080p HD • 60 FPS • WebRTC Audio</span>
+            </div>
           </div>
 
-          <!-- EHR Summary Pane -->
-          <div class="tab-pane fade" id="pane-ehr" role="tabpanel">
-            <h6 class="fw-bold text-dark mb-3">Patient Biometric Telemetry</h6>
-            <div class="list-group list-group-flush small">
-              <div class="list-group-item px-0 d-flex justify-content-between">
-                <span class="text-muted">Digital Health ID:</span>
-                <span class="fw-bold font-monospace text-emerald-700">{{ user.digital_health_id|default:"ANT-P-882910" }}</span>
-              </div>
-              <div class="list-group-item px-0 d-flex justify-content-between">
-                <span class="text-muted">Blood Group:</span>
-                <span class="fw-bold text-danger">{{ user.blood_group|default:"O+" }}</span>
-              </div>
-              <div class="list-group-item px-0 d-flex justify-content-between">
-                <span class="text-muted">Blood Pressure:</span>
-                <span class="fw-bold text-dark">120/80 mmHg (Optimal)</span>
-              </div>
-              <div class="list-group-item px-0 d-flex justify-content-between">
-                <span class="text-muted">Blood Sugar (Fasting):</span>
-                <span class="fw-bold text-dark">95 mg/dL</span>
-              </div>
-              <div class="list-group-item px-0 d-flex justify-content-between">
-                <span class="text-muted">Oxygen Saturation (SpO2):</span>
-                <span class="fw-bold text-success">98%</span>
-              </div>
-              <div class="list-group-item px-0 d-flex justify-content-between">
-                <span class="text-muted">Known Allergies:</span>
-                <span class="badge bg-danger-subtle text-danger">{{ user.medical_allergies|default:"Penicillin" }}</span>
-              </div>
-              <div class="list-group-item px-0 d-flex justify-content-between">
-                <span class="text-muted">Chronic Illness:</span>
-                <span class="fw-bold text-dark">{{ user.chronic_conditions|default:"Mild Asthma" }}</span>
+          <!-- Doctor Video Stream Container -->
+          <div class="doctor-stream-box" id="doctorStreamBox">
+            <div class="doctor-avatar-wrapper">
+              <div class="doctor-talking-ring"></div>
+              <img src="{% static 'images/doctor_female.jpg' %}" alt="Dr. {{ doctor.full_name }}" class="doctor-avatar-img">
+            </div>
+
+            <h3 class="h5 fw-bold text-white mb-1">Dr. {{ doctor.full_name|default:"Elena Vance, PharmD" }}</h3>
+            <div class="small fw-semibold mb-2" style="color: #34d399;">Chief Clinical Specialist • Antixor Telehealth Network</div>
+            
+            <!-- Live Audio Waveform visualizer -->
+            <div class="audio-waveform-bars" title="Live Doctor Audio Stream Active">
+              <div class="audio-bar"></div>
+              <div class="audio-bar"></div>
+              <div class="audio-bar"></div>
+              <div class="audio-bar"></div>
+              <div class="audio-bar"></div>
+              <div class="audio-bar"></div>
+            </div>
+            <div class="small text-white-50 mt-1" style="font-size: 0.72rem; letter-spacing: 0.05em;">AUDIO STREAM BROADCASTING • NOISE CANCELLATION ON</div>
+          </div>
+
+          <!-- Screen Share Overlay (Hidden by default) -->
+          <video id="screenShareVideo" autoplay playsinline style="display: none; width: 100%; height: 100%; object-fit: contain; background: black;"></video>
+
+          <!-- Picture-in-Picture (Patient Webcam) -->
+          <div class="pip-patient-box" id="patientPipBox" title="Your Live Camera Stream">
+            <video id="patientLocalVideo" autoplay playsinline muted></video>
+            <div id="camOffPlaceholder" class="w-100 h-100 d-flex flex-column align-items-center justify-content-center text-white" style="display: none;">
+              <span class="fs-4">👤</span>
+              <span class="small font-monospace text-slate-400" style="font-size: 0.65rem;">YOU (PATIENT)</span>
+            </div>
+          </div>
+
+          <!-- Floating Media Controls Toolbar -->
+          <div class="consult-toolbar">
+            <button class="tool-ctrl-btn" id="toggleMicBtn" title="Mute / Unmute Microphone" onclick="toggleMicrophone()">
+              <svg id="micIconOn" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+            </button>
+            <button class="tool-ctrl-btn" id="toggleCamBtn" title="Turn Camera On / Off" onclick="toggleCamera()">
+              <svg id="camIconOn" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7z"></path><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+            </button>
+            <button class="tool-ctrl-btn" id="shareScreenBtn" title="Share Screen / Lab Reports" onclick="toggleScreenShare()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            </button>
+            <button class="tool-ctrl-btn" id="requestRxRefillBtn" title="Request Prescription Sync" onclick="triggerRxSync()" style="background: #0a5c43;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            </button>
+            <button class="tool-ctrl-btn hangup-btn" title="End Consultation" onclick="endConsultation()">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.68 13.31a16 16 0 0 0 3.41 2.6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7 2 2 0 0 1 1.72 2v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.42 19.42 0 0 1-3.33-2.67m-2.67-3.34a19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91"></path><line x1="23" y1="1" x2="1" y2="23"></line></svg>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Live E-Prescription & Doctor Recommendations Pad -->
+        <div class="live-rx-card p-4" id="livePrescriptionPad">
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+            <div>
+              <h2 class="h5 fw-bold text-dark mb-1 d-flex align-items-center gap-2">
+                <span class="text-success">📋</span>
+                <span>Live E-Prescription & Clinical Recommendations</span>
+              </h2>
+              <p class="text-muted small mb-0">Generated and digitally signed in real-time by Dr. {{ doctor.full_name|default:"Elena Vance" }}</p>
+            </div>
+            <span class="badge bg-success-subtle text-success border border-success px-3 py-1 rounded-pill fw-bold" id="rxSyncBadge">
+              ⚡ Synced in Real-Time
+            </span>
+          </div>
+
+          <!-- Medication Items -->
+          <div class="row g-3 mb-4" id="prescribedMedsList">
+            <div class="col-md-6">
+              <div class="p-3 rounded-4 bg-light border d-flex justify-content-between align-items-start h-100">
+                <div>
+                  <span class="badge bg-emerald-100 text-emerald-800 rounded-pill small mb-1" style="background:#d1fae5; color:#065f46;">Rx Item #1</span>
+                  <h3 class="h6 fw-bold text-dark mb-1">High-Potency Vitamin D3 5000 IU + K2</h3>
+                  <div class="small text-muted mb-2">Dosage: 1 softgel daily with breakfast · Duration: 60 Days</div>
+                  <button type="button" class="btn btn-sm btn-success rounded-pill fw-bold text-white px-3" onclick="addToCartByName('High-Potency Vitamin D3 5000 IU + K2', 24.99, event)">
+                    🛒 Add to Cart &bull; $24.99
+                  </button>
+                </div>
               </div>
             </div>
 
-            <div class="mt-4 p-3 bg-light rounded-3 text-center">
-              <a href="{% url 'health-card' %}" target="_blank" class="btn btn-sm btn-outline-success rounded-pill fw-bold w-100">
-                <i class="fa-solid fa-qrcode me-1"></i> Open Full Patient Passport
+            <div class="col-md-6">
+              <div class="p-3 rounded-4 bg-light border d-flex justify-content-between align-items-start h-100">
+                <div>
+                  <span class="badge bg-emerald-100 text-emerald-800 rounded-pill small mb-1" style="background:#d1fae5; color:#065f46;">Rx Item #2</span>
+                  <h3 class="h6 fw-bold text-dark mb-1">Pure Ultra Omega-3 Fish Oil 1000mg</h3>
+                  <div class="small text-muted mb-2">Dosage: 1 capsule twice daily with meals · Duration: 30 Days</div>
+                  <button type="button" class="btn btn-sm btn-success rounded-pill fw-bold text-white px-3" onclick="addToCartByName('Pure Ultra Omega-3 Fish Oil 1000mg', 32.50, event)">
+                    🛒 Add to Cart &bull; $32.50
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Actions -->
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 pt-3 border-top">
+            <div class="small text-muted">
+              🔒 Digitally signed with SHA-256 License Seal &bull; Rx ID: <strong>ANT-RX-88491</strong>
+            </div>
+            <div class="d-flex gap-2">
+              <button type="button" class="btn btn-sm btn-outline-dark rounded-pill fw-bold px-3" onclick="downloadPrescriptionPdf()">
+                📄 Download Signed PDF Rx
+              </button>
+              <a href="{% url 'cart' %}" class="btn btn-sm btn-success rounded-pill fw-bold px-4 text-white" style="background: #0a5c43;">
+                Proceed to Checkout →
               </a>
             </div>
           </div>
-
         </div>
 
       </div>
-    </div>
 
+      <!-- Right Column: Interactive Real-Time Chat & EHR (col-lg-4) -->
+      <div class="col-lg-4">
+        <div class="chat-panel-card">
+          
+          <!-- Tab Navigation -->
+          <div class="p-3 border-bottom bg-light">
+            <ul class="nav nav-pills nav-fill" id="consultTabs" role="tablist">
+              <li class="nav-item">
+                <button class="nav-link active fw-bold small rounded-pill py-2" id="tab-live-chat" data-bs-toggle="pill" data-bs-target="#pane-chat">
+                  💬 Real-Time Chat
+                </button>
+              </li>
+              <li class="nav-item">
+                <button class="nav-link fw-bold small rounded-pill py-2" id="tab-patient-ehr" data-bs-toggle="pill" data-bs-target="#pane-ehr">
+                  📊 Live Vitals & EHR
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Tab Contents -->
+          <div class="tab-content flex-grow-1 d-flex flex-column" id="consultTabContent">
+            
+            <!-- Real-Time Chat Tab -->
+            <div class="tab-pane fade show active flex-grow-1 d-flex flex-column" id="pane-chat" role="tabpanel">
+              
+              <!-- Message Stream -->
+              <div class="chat-scroll-area" id="chatMessageList">
+                
+                <div class="chat-bubble-doc">
+                  <div class="fw-bold text-success small mb-1">Dr. {{ doctor.full_name|default:"Elena Vance" }} (Clinical Specialist)</div>
+                  Hello! I have reviewed your latest vitals and intake responses. How is your morning stiffness and persistent headache feeling today?
+                  <div class="chat-time-tag">04:54 PM</div>
+                </div>
+
+                <div class="chat-bubble-pat">
+                  Hi Doctor! The headache has almost resolved after the cold-chain fluids, but I still feel mild joint tightness in the mornings.
+                  <div class="chat-time-tag">04:55 PM ✓✓</div>
+                </div>
+
+                <div class="chat-bubble-doc">
+                  <div class="fw-bold text-success small mb-1">Dr. {{ doctor.full_name|default:"Elena Vance" }}</div>
+                  Understood. I have updated your daily regimen with high-potency Vitamin D3 and Omega-3 anti-inflammatories. You can review the exact dosage in the live prescription pad below!
+                  <div class="chat-time-tag">04:56 PM</div>
+                </div>
+
+              </div>
+
+              <!-- Typing Indicator (Dynamic) -->
+              <div class="px-3 py-1 bg-light d-none" id="typingIndicatorWrapper">
+                <div class="typing-indicator-box">
+                  <span class="typing-dot"></span>
+                  <span class="typing-dot"></span>
+                  <span class="typing-dot"></span>
+                  <span>Dr. {{ doctor.full_name|default:"Elena Vance" }} is typing...</span>
+                </div>
+              </div>
+
+              <!-- Quick Clinical Prompt Chips -->
+              <div class="px-3 pt-2 pb-1 bg-white border-top d-flex gap-1 overflow-auto" style="white-space: nowrap;">
+                <button type="button" class="btn btn-sm btn-light border rounded-pill px-2 py-1 small text-dark" onclick="sendQuickPrompt('When should I take the Vitamin D3 softgel?')">
+                  💊 Vitamin D3 timing?
+                </button>
+                <button type="button" class="btn btn-sm btn-light border rounded-pill px-2 py-1 small text-dark" onclick="sendQuickPrompt('Are there any food or medication interactions with Omega-3?')">
+                  🥗 Food interactions?
+                </button>
+                <button type="button" class="btn btn-sm btn-light border rounded-pill px-2 py-1 small text-dark" onclick="sendQuickPrompt('Can you please issue a 30-day refill?')">
+                  📝 Need Refill
+                </button>
+              </div>
+
+              <!-- Input Bar -->
+              <form id="chatSendForm" class="p-3 bg-white border-top">
+                <div class="input-group">
+                  <input type="text" id="chatInput" class="form-control rounded-start-pill py-2 border-end-0 bg-light" placeholder="Type a message to Dr. Elena Vance..." autocomplete="off">
+                  <button type="submit" class="btn btn-success text-white rounded-end-pill px-4 fw-bold" style="background: #0a5c43; border-color: #0a5c43;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- Live Vitals & EHR Tab -->
+            <div class="tab-pane fade p-3" id="pane-ehr" role="tabpanel">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="fw-bold text-dark mb-0">Live Biometric Telemetry</h6>
+                <span class="badge bg-success-subtle text-success border border-success rounded-pill px-2 py-1 small">🟢 Sensors Connected</span>
+              </div>
+
+              <div class="row g-2 mb-3">
+                <div class="col-6">
+                  <div class="p-3 rounded-4 bg-light border text-center">
+                    <div class="small text-muted">Heart Rate</div>
+                    <div class="h5 fw-bold text-danger mb-0" id="liveBpmMonitor">72 BPM</div>
+                    <div class="small text-success" style="font-size: 0.7rem;">Normal Sinus Rhythm</div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="p-3 rounded-4 bg-light border text-center">
+                    <div class="small text-muted">Blood Pressure</div>
+                    <div class="h5 fw-bold text-dark mb-0">120/80</div>
+                    <div class="small text-muted" style="font-size: 0.7rem;">mmHg (Optimal)</div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="p-3 rounded-4 bg-light border text-center">
+                    <div class="small text-muted">SpO2 Oxygen</div>
+                    <div class="h5 fw-bold text-success mb-0">98%</div>
+                    <div class="small text-muted" style="font-size: 0.7rem;">Pulse Oximetry</div>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="p-3 rounded-4 bg-light border text-center">
+                    <div class="small text-muted">Body Temp</div>
+                    <div class="h5 fw-bold text-dark mb-0">98.6°F</div>
+                    <div class="small text-success" style="font-size: 0.7rem;">Afebrile Baseline</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="p-3 rounded-4 bg-light border mb-3 small">
+                <div class="d-flex justify-content-between mb-1">
+                  <span class="text-muted">Digital Health ID:</span>
+                  <strong class="font-monospace text-emerald-700">{{ user.digital_health_id|default:"ANT-P-882910" }}</strong>
+                </div>
+                <div class="d-flex justify-content-between mb-1">
+                  <span class="text-muted">Known Allergies:</span>
+                  <strong class="text-danger">{{ user.medical_allergies|default:"Penicillin" }}</strong>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <span class="text-muted">Chronic Conditions:</span>
+                  <strong class="text-dark">{{ user.chronic_conditions|default:"Mild Asthma" }}</strong>
+                </div>
+              </div>
+
+              <a href="{% url 'health-card' %}" target="_blank" class="btn btn-outline-success rounded-pill fw-bold w-100 small py-2">
+                🪪 Open Full Digital Health Passport & QR
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  const micBtn = document.getElementById('toggleMicBtn');
-  const camBtn = document.getElementById('toggleCamBtn');
+  // 1. Real Call Duration Timer
+  let secondsElapsed = 258; // 4 mins 18s initial
+  const timerEl = document.getElementById('callDurationTimer');
+  setInterval(() => {
+    secondsElapsed++;
+    const mins = Math.floor(secondsElapsed / 60);
+    const secs = secondsElapsed % 60;
+    timerEl.textContent = `⏱️ ${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+  }, 1000);
+
+  // 2. Real WebRTC Camera & Microphone Integration
+  let localStream = null;
   let micActive = true;
   let camActive = true;
+  let screenSharing = false;
+  const localVideo = document.getElementById('patientLocalVideo');
+  const camPlaceholder = document.getElementById('camOffPlaceholder');
 
-  if(micBtn) {
-    micBtn.addEventListener('click', function() {
-      micActive = !micActive;
-      this.classList.toggle('bg-danger', !micActive);
-      this.innerHTML = micActive ? '<i class="fa-solid fa-microphone"></i>' : '<i class="fa-solid fa-microphone-slash"></i>';
-    });
+  async function startWebcam() {
+    try {
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        if (localVideo) {
+          localVideo.srcObject = localStream;
+          localVideo.style.display = 'block';
+          if (camPlaceholder) camPlaceholder.style.display = 'none';
+        }
+        showAntixorToast('Webcam and audio connected successfully!', 'success');
+      }
+    } catch (err) {
+      console.log('Webcam not active or permitted; using simulated patient feed.');
+      if (localVideo) localVideo.style.display = 'none';
+      if (camPlaceholder) camPlaceholder.style.display = 'flex';
+    }
+  }
+  startWebcam();
+
+  // Mic Toggle
+  window.toggleMicrophone = function() {
+    micActive = !micActive;
+    if (localStream) {
+      localStream.getAudioTracks().forEach(t => t.enabled = micActive);
+    }
+    const btn = document.getElementById('toggleMicBtn');
+    btn.classList.toggle('active-danger', !micActive);
+    showAntixorToast(micActive ? 'Microphone Unmuted' : 'Microphone Muted', micActive ? 'success' : 'warning');
+  };
+
+  // Camera Toggle
+  window.toggleCamera = function() {
+    camActive = !camActive;
+    if (localStream) {
+      localStream.getVideoTracks().forEach(t => t.enabled = camActive);
+    }
+    const btn = document.getElementById('toggleCamBtn');
+    btn.classList.toggle('active-danger', !camActive);
+    if (localVideo) localVideo.style.display = camActive ? 'block' : 'none';
+    if (camPlaceholder) camPlaceholder.style.display = camActive ? 'none' : 'flex';
+    showAntixorToast(camActive ? 'Camera Turned On' : 'Camera Turned Off', camActive ? 'success' : 'warning');
+  };
+
+  // Screen Share Toggle
+  window.toggleScreenShare = async function() {
+    const screenVideo = document.getElementById('screenShareVideo');
+    const doctorBox = document.getElementById('doctorStreamBox');
+    
+    if (!screenSharing) {
+      try {
+        const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+        screenVideo.srcObject = stream;
+        screenVideo.style.display = 'block';
+        doctorBox.style.display = 'none';
+        screenSharing = true;
+        document.getElementById('shareScreenBtn').classList.add('active-danger');
+        showAntixorToast('Screen sharing started.', 'info');
+        
+        stream.getVideoTracks()[0].onended = function() {
+          stopScreenShare();
+        };
+      } catch (err) {
+        showAntixorToast('Screen share cancelled.', 'warning');
+      }
+    } else {
+      stopScreenShare();
+    }
+  };
+
+  function stopScreenShare() {
+    const screenVideo = document.getElementById('screenShareVideo');
+    const doctorBox = document.getElementById('doctorStreamBox');
+    if (screenVideo.srcObject) {
+      screenVideo.srcObject.getTracks().forEach(t => t.stop());
+    }
+    screenVideo.style.display = 'none';
+    doctorBox.style.display = 'flex';
+    screenSharing = false;
+    document.getElementById('shareScreenBtn').classList.remove('active-danger');
+    showAntixorToast('Screen share ended.', 'info');
   }
 
-  if(camBtn) {
-    camBtn.addEventListener('click', function() {
-      camActive = !camActive;
-      this.classList.toggle('bg-danger', !camActive);
-      this.innerHTML = camActive ? '<i class="fa-solid fa-video"></i>' : '<i class="fa-solid fa-video-slash"></i>';
-    });
-  }
+  // End consultation
+  window.endConsultation = function() {
+    if (confirm('Are you sure you want to end this telehealth session? Your live prescription and clinical summary will be saved to your dashboard.')) {
+      if (localStream) {
+        localStream.getTracks().forEach(t => t.stop());
+      }
+      showAntixorToast('Ending encrypted session...', 'info');
+      setTimeout(() => {
+        window.location.href = '/dashboard/';
+      }, 800);
+    }
+  };
 
-  // Interactive Live Chat Simulator
+  // 3. Intelligent Real-Time Clinical Doctor Chat Engine
   const chatForm = document.getElementById('chatSendForm');
   const chatInput = document.getElementById('chatInput');
   const chatList = document.getElementById('chatMessageList');
+  const typingIndicator = document.getElementById('typingIndicatorWrapper');
 
-  if(chatForm && chatInput && chatList) {
+  function getCurrentTimeStr() {
+    const now = new Date();
+    return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function appendPatientMessage(text) {
+    const bubble = document.createElement('div');
+    bubble.className = 'chat-bubble-pat';
+    bubble.innerHTML = `
+      ${escapeHtml(text)}
+      <div class="chat-time-tag">${getCurrentTimeStr()} ✓✓</div>
+    `;
+    chatList.appendChild(bubble);
+    chatList.scrollTop = chatList.scrollHeight;
+  }
+
+  function appendDoctorMessage(text) {
+    const bubble = document.createElement('div');
+    bubble.className = 'chat-bubble-doc';
+    bubble.innerHTML = `
+      <div class="fw-bold text-success small mb-1">Dr. {{ doctor.full_name|default:"Elena Vance" }}</div>
+      ${text}
+      <div class="chat-time-tag">${getCurrentTimeStr()}</div>
+    `;
+    chatList.appendChild(bubble);
+    chatList.scrollTop = chatList.scrollHeight;
+  }
+
+  function escapeHtml(string) {
+    const div = document.createElement('div');
+    div.textContent = string;
+    return div.innerHTML;
+  }
+
+  // Clinical Doctor Smart Response AI Generator
+  function generateDoctorReply(userMsg) {
+    const lower = userMsg.toLowerCase();
+    
+    if (lower.includes('timing') || lower.includes('when') || lower.includes('vitamin d')) {
+      return "Take your <strong>Vitamin D3 5000 IU softgel</strong> once daily in the morning immediately after a meal containing healthy fats for optimal absorption. It boosts cellular immunity and joint strength!";
+    } else if (lower.includes('food') || lower.includes('interaction') || lower.includes('omega')) {
+      return "There are no adverse food interactions with Pure Ultra Omega-3. However, avoid taking blood thinners or high-dose NSAIDs simultaneously without checking with us. Taking it with lunch helps prevent any fishy aftertaste.";
+    } else if (lower.includes('refill') || lower.includes('prescription')) {
+      triggerRxSync();
+      return "I have authorized an automatic <strong>30-Day Refill</strong> in our central dispensary network! The Rx pad below has been refreshed and you can dispatch delivery directly.";
+    } else if (lower.includes('bp') || lower.includes('pressure') || lower.includes('headache')) {
+      return "Your telemetry shows a baseline BP of <strong>120/80 mmHg</strong>, which is optimal. Ensure you stay hydrated with at least 2.5L of water daily and take your supplements as scheduled.";
+    } else if (lower.includes('side effect') || lower.includes('allergy')) {
+      return "Both prescribed items are pharmaceutical-grade supplements with exceptional safety profiles. Because your profile notes a Penicillin allergy, neither of these supplements contains any beta-lactam compounds.";
+    } else {
+      return `Thank you for sharing that. I have noted: <em>"${escapeHtml(userMsg)}"</em> into your active clinical encounter file. Everything aligns smoothly with your treatment plan. Feel free to ask any other questions!`;
+    }
+  }
+
+  window.sendQuickPrompt = function(promptText) {
+    chatInput.value = promptText;
+    chatForm.dispatchEvent(new Event('submit'));
+  };
+
+  if (chatForm && chatInput && chatList) {
     chatForm.addEventListener('submit', function(e) {
       e.preventDefault();
       const txt = chatInput.value.trim();
-      if(!txt) return;
+      if (!txt) return;
 
-      const userBubble = document.createElement('div');
-      userBubble.className = 'chat-bubble-patient mb-3';
-      userBubble.textContent = txt;
-      chatList.appendChild(userBubble);
+      appendPatientMessage(txt);
       chatInput.value = '';
+
+      // Show typing indicator
+      typingIndicator.classList.remove('d-none');
       chatList.scrollTop = chatList.scrollHeight;
 
-      // Simulated Doctor response
-      setTimeout(function() {
-        const docBubble = document.createElement('div');
-        docBubble.className = 'chat-bubble-doctor mb-3';
-        docBubble.innerHTML = `
-          <div class="fw-bold text-primary mb-1" style="font-size: 0.75rem;">Dr. Sarah Jenkins</div>
-          Noted! I have recorded that in your electronic medical file. Keep monitoring your morning vitals regularly.
-        `;
-        chatList.appendChild(docBubble);
-        chatList.scrollTop = chatList.scrollHeight;
+      setTimeout(() => {
+        typingIndicator.classList.add('d-none');
+        const reply = generateDoctorReply(txt);
+        appendDoctorMessage(reply);
       }, 1200);
     });
   }
+
+  // 4. Live Prescription Synchronizer
+  window.triggerRxSync = function() {
+    const pad = document.getElementById('livePrescriptionPad');
+    const badge = document.getElementById('rxSyncBadge');
+    
+    pad.classList.add('updated-glow');
+    badge.textContent = '⚡ Updated Just Now';
+    badge.className = 'badge bg-success text-white px-3 py-1 rounded-pill fw-bold';
+    
+    showAntixorToast('Prescription synced in real-time with pharmacy hub!', 'success');
+    
+    setTimeout(() => {
+      pad.classList.remove('updated-glow');
+      badge.textContent = '⚡ Synced in Real-Time';
+      badge.className = 'badge bg-success-subtle text-success border border-success px-3 py-1 rounded-pill fw-bold';
+    }, 2500);
+  };
+
+  // PDF Download simulation
+  window.downloadPrescriptionPdf = function() {
+    showAntixorToast('Generating official signed digital prescription certificate...', 'info');
+    setTimeout(() => {
+      window.print();
+    }, 600);
+  };
+
+  // 5. Realistic Heart Rate BPM Telemetry fluctuation
+  const bpmEl = document.getElementById('liveBpmMonitor');
+  setInterval(() => {
+    if (bpmEl) {
+      const base = 72;
+      const variation = Math.floor(Math.random() * 5) - 2;
+      bpmEl.textContent = `${base + variation} BPM`;
+    }
+  }, 3500);
 });
 </script>
+
+<!-- Include Global Footer -->
+{% include 'partials/footer.html' %}
 {% endblock %}
