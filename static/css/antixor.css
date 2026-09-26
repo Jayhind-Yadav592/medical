@@ -1274,3 +1274,244 @@ a:hover {
   .antixor-float-badge { display: none; }
   .antixor-cta-channels { gap: 16px; }
 }
+
+/* ==========================================================================
+   ANTIXOR MED-OS DASHBOARD STYLES
+   ========================================================================== */
+.dashboard-wrapper {
+  display: flex !important;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.dashboard-sidebar {
+  width: 290px !important;
+  background-color: #0b1329 !important;
+  color: #94a3b8 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex-shrink: 0 !important;
+  position: sticky !important;
+  top: 0 !important;
+  height: 100vh !important;
+  overflow-y: auto !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+  z-index: 1040 !important;
+  transition: all 0.3s ease !important;
+}
+
+.sidebar-brand {
+  padding: 24px 20px !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+.sidebar-nav-group-title {
+  font-size: 0.68rem !important;
+  font-weight: 800 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+  color: #64748b !important;
+  padding: 16px 20px 8px !important;
+}
+
+.sidebar-nav-link {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 11px 20px !important;
+  color: #94a3b8 !important;
+  text-decoration: none !important;
+  font-size: 0.88rem !important;
+  font-weight: 600 !important;
+  border-radius: 12px !important;
+  margin: 2px 12px !important;
+  transition: all 0.2s ease !important;
+  border: 1px solid transparent !important;
+  background: transparent !important;
+  cursor: pointer !important;
+  width: calc(100% - 24px) !important;
+  text-align: left !important;
+}
+
+.sidebar-nav-link i {
+  width: 22px !important;
+  font-size: 1rem !important;
+  transition: transform 0.2s ease !important;
+}
+
+.sidebar-nav-link:hover {
+  color: #f8fafc !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.sidebar-nav-link.active {
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  box-shadow: 0 4px 15px rgba(5, 150, 105, 0.35) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.sidebar-nav-link.active i {
+  color: #ffffff !important;
+}
+
+.sidebar-badge {
+  font-size: 0.7rem !important;
+  padding: 3px 8px !important;
+  border-radius: 20px !important;
+  font-weight: 700 !important;
+}
+
+.dashboard-main {
+  flex-grow: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-width: 0 !important;
+  background-color: #f8fafc !important;
+}
+
+.dashboard-topbar {
+  height: 72px !important;
+  background: #ffffff !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 0 28px !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 1020 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02) !important;
+}
+
+.med-card {
+  background: #ffffff !important;
+  border-radius: 20px !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.02) !important;
+  transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.med-card-hover:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 12px 30px -4px rgba(0, 0, 0, 0.08) !important;
+}
+
+.kpi-card {
+  border-radius: 20px !important;
+  padding: 22px !important;
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  position: relative !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.02) !important;
+}
+
+.kpi-icon-wrap {
+  width: 52px !important;
+  height: 52px !important;
+  border-radius: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1.35rem !important;
+}
+
+.stepper-track {
+  display: flex !important;
+  justify-content: space-between !important;
+  position: relative !important;
+  margin: 20px 0 10px !important;
+}
+
+.stepper-track::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 18px !important;
+  left: 20px !important;
+  right: 20px !important;
+  height: 3px !important;
+  background: #e2e8f0 !important;
+  z-index: 1 !important;
+}
+
+.stepper-track .progress-line {
+  position: absolute !important;
+  top: 18px !important;
+  left: 20px !important;
+  height: 3px !important;
+  background: #059669 !important;
+  z-index: 2 !important;
+  transition: width 0.4s ease !important;
+}
+
+.stepper-node {
+  position: relative !important;
+  z-index: 3 !important;
+  text-align: center !important;
+}
+
+.stepper-dot {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 50% !important;
+  background: #ffffff !important;
+  border: 3px solid #cbd5e1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 auto 6px !important;
+  font-size: 0.9rem !important;
+  font-weight: 700 !important;
+  color: #64748b !important;
+  transition: all 0.3s ease !important;
+}
+
+.stepper-node.active .stepper-dot {
+  background: #059669 !important;
+  border-color: #a7f3d0 !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 0 4px rgba(5, 150, 105, 0.15) !important;
+}
+
+.stepper-node.completed .stepper-dot {
+  background: #059669 !important;
+  border-color: #059669 !important;
+  color: #ffffff !important;
+}
+
+.passport-mini-card {
+  background: linear-gradient(135deg, #064e3b 0%, #0f172a 65%, #1e293b 100%) !important;
+  border-radius: 20px !important;
+  color: #ffffff !important;
+  padding: 24px !important;
+  position: relative !important;
+  overflow: hidden !important;
+  box-shadow: 0 12px 32px rgba(6, 78, 59, 0.3) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+}
+
+.passport-mini-card::after {
+  content: '' !important;
+  position: absolute !important;
+  right: -30px !important;
+  bottom: -30px !important;
+  width: 160px !important;
+  height: 160px !important;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, transparent 70%) !important;
+  border-radius: 50% !important;
+}
+
+@media (max-width: 991px) {
+  .dashboard-sidebar {
+    position: fixed !important;
+    left: -290px !important;
+  }
+  .dashboard-sidebar.show {
+    left: 0 !important;
+  }
+}
+
