@@ -4,6 +4,9 @@
 {% block title %}{{ product.name }} ({{ product.dosage_strength }}) — AuraHealth™ Dispensary{% endblock %}
 
 {% block content %}
+<!-- Include Top Navigation Bar -->
+{% include 'partials/navbar.html' %}
+
 <!-- Breadcrumb -->
 <div class="bg-light py-3 border-bottom">
   <div class="container">
@@ -251,6 +254,9 @@
   {% endif %}
 
 </div>
+
+<!-- Include Footer -->
+{% include 'partials/footer.html' %}
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {

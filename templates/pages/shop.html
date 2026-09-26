@@ -1,26 +1,159 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Pharmacy Store — AuraHealth™ Authentic Medicines & Wellness{% endblock %}
+{% block title %}Online Pharmacy Catalog & Dispensary — Antixor Pharmacy{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Clean Shop Catalog Custom Styles */
+.shop-hero-banner {
+  background: linear-gradient(135deg, #064e3b 0%, #0f172a 70%, #1e293b 100%);
+  color: white;
+  padding: 40px 0;
+  border-bottom: 3px solid #059669;
+}
+
+.shop-filter-card {
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  padding: 24px;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+}
+
+.shop-category-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 12px;
+  color: #475569;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  margin-bottom: 2px;
+}
+
+.shop-category-link:hover {
+  background-color: #f1f5f9;
+  color: #0f172a;
+}
+
+.shop-category-link.active {
+  background: #ecfdf5;
+  color: #047857;
+  font-weight: 700;
+  border-left: 3px solid #059669;
+}
+
+/* Antixor Product Card Grid Specific Enhancements */
+.antixor-shop-grid .antixor-product-card {
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  position: relative;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.antixor-shop-grid .antixor-product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px -4px rgba(0, 0, 0, 0.1);
+  border-color: #cbd5e1;
+}
+
+.antixor-shop-grid .antixor-product-img-box {
+  width: 100%;
+  height: 180px;
+  background-color: #f8fafc;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin-bottom: 14px;
+  position: relative;
+}
+
+.antixor-shop-grid .antixor-product-img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.antixor-shop-grid .antixor-product-card:hover .antixor-product-img {
+  transform: scale(1.06);
+}
+
+.antixor-badge-rx-pill {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 2;
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+
+.antixor-wishlist-circle {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  transition: all 0.2s ease;
+}
+
+.antixor-wishlist-circle:hover {
+  color: #ef4444;
+  background-color: #fef2f2;
+  transform: scale(1.08);
+}
+</style>
+{% endblock %}
 
 {% block content %}
+<!-- Include Top Navigation Bar -->
+{% include 'partials/navbar.html' %}
+
 <!-- Shop Header Banner -->
-<div class="bg-light py-4 border-bottom">
+<div class="shop-hero-banner">
   <div class="container">
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb mb-2 small">
-        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Pharmacy Store</li>
-      </ol>
-    </nav>
-    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
       <div>
-        <h1 class="h3 fw-bold text-navy-800 mb-1">Authentic Online Dispensary</h1>
-        <p class="text-muted small mb-0">Browse {{ total_count }} verified medicines, health devices, and clinical wellness products.</p>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mb-2 small font-monospace">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}" class="text-emerald-300 text-decoration-none" style="color: #6ee7b7;">Home</a></li>
+            <li class="breadcrumb-item active text-white" aria-current="page">Online Pharmacy Catalog</li>
+          </ol>
+        </nav>
+        <h1 class="h2 fw-bold text-white mb-1">Authentic Online Pharmacy & Dispensary</h1>
+        <p class="text-slate-300 small mb-0">Browse {{ total_count }} FDA & GMP certified medicines, supplements, and clinical healthcare essentials.</p>
       </div>
-      <div class="mt-3 mt-md-0">
-        <button class="aura-btn-emerald aura-btn-sm" data-bs-toggle="modal" data-bs-target="#auraPrescriptionModal">
-          <i class="fa-solid fa-file-arrow-up"></i> Upload Rx for Instant Dispense
+
+      <div class="d-flex gap-2 flex-wrap">
+        <a href="{% url 'facilities' %}" class="btn btn-sm btn-outline-light rounded-pill px-3 fw-semibold">
+          <i class="fa-solid fa-hospital me-1 text-danger"></i> Nearest Dispensary
+        </a>
+        <button class="btn btn-sm btn-emerald text-white rounded-pill px-3 fw-bold" style="background-color: #059669;" data-bs-toggle="modal" data-bs-target="#auraPrescriptionModal">
+          <i class="fa-solid fa-file-arrow-up me-1"></i> Upload Rx for Instant Dispense
         </button>
       </div>
     </div>
@@ -30,23 +163,29 @@
 <div class="container py-5">
   <div class="row g-4">
     
-    <!-- Left Sidebar Filters -->
+    <!-- Left Filter Sidebar -->
     <div class="col-lg-3">
-      <div class="card border rounded-4 p-4 shadow-sm mb-4">
+      <div class="shop-filter-card mb-4">
         
-        <h5 class="fw-bold text-navy-800 mb-3 pb-2 border-bottom">Filter Products</h5>
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+          <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-sliders text-emerald-600 me-2" style="color:#059669;"></i> Filters</h5>
+          <a href="{% url 'shop' %}" class="small text-muted text-decoration-none" title="Reset Filters">
+            <i class="fa-solid fa-rotate-left me-1"></i> Clear
+          </a>
+        </div>
 
         <!-- Categories Filter -->
         <div class="mb-4">
-          <label class="form-label fw-bold text-navy-800 small text-uppercase letter-spacing-1">Categories</label>
-          <div class="d-flex flex-column gap-1">
-            <a href="{% url 'shop' %}" class="d-flex justify-content-between align-items-center text-decoration-none py-1 {% if not current_category %}fw-bold text-primary{% else %}text-slate-600{% endif %}">
-              <span>All Categories</span>
+          <label class="form-label fw-bold text-dark small text-uppercase font-monospace mb-2 text-muted">Product Categories</label>
+          <div class="d-flex flex-column">
+            <a href="{% url 'shop' %}" class="shop-category-link {% if not current_category %}active{% endif %}">
+              <span>All Medicines & Health</span>
+              <span class="badge {% if not current_category %}bg-emerald-600 text-white{% else %}bg-light text-dark border{% endif %} rounded-pill" {% if not current_category %}style="background-color:#059669 !important;"{% endif %}>{{ total_count }}</span>
             </a>
             {% for cat in categories %}
-              <a href="{% url 'shop' %}?category={{ cat.slug }}" class="d-flex justify-content-between align-items-center text-decoration-none py-1 {% if current_category == cat.slug %}fw-bold text-primary{% else %}text-slate-600{% endif %}">
+              <a href="{% url 'shop' %}?category={{ cat.slug }}" class="shop-category-link {% if current_category == cat.slug %}active{% endif %}">
                 <span>{{ cat.name }}</span>
-                <span class="badge bg-light text-dark rounded-pill">{{ cat.products.count }}</span>
+                <span class="badge {% if current_category == cat.slug %}bg-emerald-600 text-white{% else %}bg-light text-dark border{% endif %} rounded-pill" {% if current_category == cat.slug %}style="background-color:#059669 !important;"{% endif %}>{{ cat.products.count }}</span>
               </a>
             {% endfor %}
           </div>
@@ -54,58 +193,60 @@
 
         <!-- Prescription Requirement Filter -->
         <div class="mb-4 pt-3 border-top">
-          <label class="form-label fw-bold text-navy-800 small text-uppercase letter-spacing-1">Prescription Status</label>
+          <label class="form-label fw-bold text-dark small text-uppercase font-monospace mb-2 text-muted">Prescription Status</label>
           <div class="d-flex flex-column gap-2">
-            <a href="{% url 'shop' %}{% if current_category %}?category={{ current_category }}&{% else %}?{% endif %}rx=0" class="btn btn-sm text-start {% if current_rx == '0' %}btn-emerald text-white{% else %}btn-outline-light text-dark border{% endif %} rounded-pill">
-              <i class="fa-solid fa-check me-1"></i> OTC (No Rx Required)
+            <a href="{% url 'shop' %}{% if current_category %}?category={{ current_category }}&{% else %}?{% endif %}rx=0" class="btn btn-sm text-start {% if current_rx == '0' %}btn-emerald text-white fw-bold{% else %}btn-outline-light text-dark border{% endif %} rounded-pill" {% if current_rx == '0' %}style="background-color:#059669;"{% endif %}>
+              <i class="fa-solid fa-circle-check text-success me-1"></i> OTC (Over The Counter)
             </a>
-            <a href="{% url 'shop' %}{% if current_category %}?category={{ current_category }}&{% else %}?{% endif %}rx=1" class="btn btn-sm text-start {% if current_rx == '1' %}btn-danger text-white{% else %}btn-outline-light text-dark border{% endif %} rounded-pill">
-              <i class="fa-solid fa-prescription me-1"></i> Prescription (Rx Only)
+            <a href="{% url 'shop' %}{% if current_category %}?category={{ current_category }}&{% else %}?{% endif %}rx=1" class="btn btn-sm text-start {% if current_rx == '1' %}btn-danger text-white fw-bold{% else %}btn-outline-light text-dark border{% endif %} rounded-pill">
+              <i class="fa-solid fa-file-prescription me-1"></i> Prescription (Rx Only)
             </a>
           </div>
         </div>
 
         <!-- Dosage Form Filter -->
         <div class="mb-4 pt-3 border-top">
-          <label class="form-label fw-bold text-navy-800 small text-uppercase letter-spacing-1">Dosage Form</label>
+          <label class="form-label fw-bold text-dark small text-uppercase font-monospace mb-2 text-muted">Dosage Form</label>
           <div class="d-flex flex-wrap gap-1">
-            <a href="{% url 'shop' %}?dosage_form=TABLET" class="badge {% if current_dosage == 'TABLET' %}bg-primary text-white{% else %}bg-light text-dark{% endif %} p-2 text-decoration-none">Tablets</a>
-            <a href="{% url 'shop' %}?dosage_form=CAPSULE" class="badge {% if current_dosage == 'CAPSULE' %}bg-primary text-white{% else %}bg-light text-dark{% endif %} p-2 text-decoration-none">Capsules</a>
-            <a href="{% url 'shop' %}?dosage_form=SYRUP" class="badge {% if current_dosage == 'SYRUP' %}bg-primary text-white{% else %}bg-light text-dark{% endif %} p-2 text-decoration-none">Syrup</a>
-            <a href="{% url 'shop' %}?dosage_form=CREAM" class="badge {% if current_dosage == 'CREAM' %}bg-primary text-white{% else %}bg-light text-dark{% endif %} p-2 text-decoration-none">Creams</a>
-            <a href="{% url 'shop' %}?dosage_form=DEVICE" class="badge {% if current_dosage == 'DEVICE' %}bg-primary text-white{% else %}bg-light text-dark{% endif %} p-2 text-decoration-none">Devices</a>
+            <a href="{% url 'shop' %}?dosage_form=TABLET" class="badge {% if current_dosage == 'TABLET' %}bg-emerald-600 text-white{% else %}bg-light text-dark border{% endif %} p-2 text-decoration-none rounded-pill" {% if current_dosage == 'TABLET' %}style="background-color:#059669 !important;"{% endif %}>Tablets</a>
+            <a href="{% url 'shop' %}?dosage_form=CAPSULE" class="badge {% if current_dosage == 'CAPSULE' %}bg-emerald-600 text-white{% else %}bg-light text-dark border{% endif %} p-2 text-decoration-none rounded-pill" {% if current_dosage == 'CAPSULE' %}style="background-color:#059669 !important;"{% endif %}>Capsules</a>
+            <a href="{% url 'shop' %}?dosage_form=SYRUP" class="badge {% if current_dosage == 'SYRUP' %}bg-emerald-600 text-white{% else %}bg-light text-dark border{% endif %} p-2 text-decoration-none rounded-pill" {% if current_dosage == 'SYRUP' %}style="background-color:#059669 !important;"{% endif %}>Syrup</a>
+            <a href="{% url 'shop' %}?dosage_form=CREAM" class="badge {% if current_dosage == 'CREAM' %}bg-emerald-600 text-white{% else %}bg-light text-dark border{% endif %} p-2 text-decoration-none rounded-pill" {% if current_dosage == 'CREAM' %}style="background-color:#059669 !important;"{% endif %}>Creams</a>
+            <a href="{% url 'shop' %}?dosage_form=DEVICE" class="badge {% if current_dosage == 'DEVICE' %}bg-emerald-600 text-white{% else %}bg-light text-dark border{% endif %} p-2 text-decoration-none rounded-pill" {% if current_dosage == 'DEVICE' %}style="background-color:#059669 !important;"{% endif %}>Devices</a>
           </div>
         </div>
 
-        <!-- Reset Filters -->
-        <div class="pt-2 border-top">
-          <a href="{% url 'shop' %}" class="btn btn-sm btn-outline-secondary w-100 rounded-pill">
-            <i class="fa-solid fa-rotate-left me-1"></i> Reset All Filters
+        <!-- Clinical Safety Hotline -->
+        <div class="p-3 bg-emerald-50 rounded-4 border border-emerald-200 text-center mt-3" style="background-color: #f0fdf4; border-color: #bbf7d0 !important;">
+          <div class="text-emerald-900 fw-bold small mb-1" style="color: #064e3b;"><i class="fa-solid fa-user-doctor me-1"></i> Need Dosage Advice?</div>
+          <p class="text-muted small mb-2" style="font-size: 0.75rem;">Speak with our 24/7 on-duty clinical pharmacist.</p>
+          <a href="tel:+18005842689" class="btn btn-sm btn-emerald text-white rounded-pill w-100 fw-bold" style="background-color:#059669; font-size: 0.75rem;">
+            <i class="fa-solid fa-phone me-1"></i> Call Pharmacist
           </a>
         </div>
 
       </div>
     </div>
 
-    <!-- Right Products Grid & Sorting -->
+    <!-- Right Products Catalog Grid -->
     <div class="col-lg-9">
       
-      <!-- Top Sorting Bar -->
-      <div class="card border rounded-4 p-3 shadow-sm mb-4">
+      <!-- Top Results Bar -->
+      <div class="card border rounded-4 p-3 shadow-sm bg-white mb-4">
         <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
           <div class="small text-muted">
-            Showing <strong class="text-dark">{{ page_obj.start_index }}-{{ page_obj.end_index }}</strong> of <strong class="text-dark">{{ total_count }}</strong> products
-            {% if search_query %} for <span class="badge bg-primary">"{{ search_query }}"</span>{% endif %}
+            Showing <strong class="text-dark">{{ page_obj.start_index }}-{{ page_obj.end_index }}</strong> of <strong class="text-dark">{{ total_count }}</strong> verified medicines
+            {% if search_query %} for <span class="badge bg-emerald-600 text-white font-monospace" style="background-color: #059669 !important;">"{{ search_query }}"</span>{% endif %}
           </div>
           
           <div class="d-flex align-items-center gap-2">
-            <label class="small text-muted text-nowrap">Sort by:</label>
-            <select class="form-select form-select-sm rounded-pill" onchange="location = this.value;" style="min-width: 170px;">
+            <label class="small text-muted text-nowrap font-monospace">SORT BY:</label>
+            <select class="form-select form-select-sm rounded-pill font-monospace" onchange="location = this.value;" style="min-width: 180px;">
               <option value="{% url 'shop' %}?sort=featured" {% if current_sort == 'featured' %}selected{% endif %}>Featured Clinical</option>
               <option value="{% url 'shop' %}?sort=price_low" {% if current_sort == 'price_low' %}selected{% endif %}>Price: Low to High</option>
               <option value="{% url 'shop' %}?sort=price_high" {% if current_sort == 'price_high' %}selected{% endif %}>Price: High to Low</option>
-              <option value="{% url 'shop' %}?sort=rating" {% if current_sort == 'rating' %}selected{% endif %}>Highest Rated</option>
-              <option value="{% url 'shop' %}?sort=newest" {% if current_sort == 'newest' %}selected{% endif %}>Newest Arrival</option>
+              <option value="{% url 'shop' %}?sort=rating" {% if current_sort == 'rating' %}selected{% endif %}>Highest Clinical Rating</option>
+              <option value="{% url 'shop' %}?sort=newest" {% if current_sort == 'newest' %}selected{% endif %}>Newest Formulations</option>
             </select>
           </div>
         </div>
@@ -113,57 +254,73 @@
 
       <!-- Products Grid -->
       {% if page_obj %}
-        <div class="row g-4">
+        <div class="row g-4 antixor-shop-grid">
           {% for product in page_obj %}
             <div class="col-xl-4 col-md-6">
-              <div class="aura-product-card">
+              <div class="antixor-product-card">
                 
-                <div class="aura-product-img-wrap">
-                  <img src="{{ product.get_image }}" alt="{{ product.name }}" class="aura-product-img" loading="lazy">
-                  
-                  <button class="aura-wishlist-btn" onclick="toggleWishlist({{ product.id }}, this)" title="Add to Wishlist">
-                    <i class="fa-regular fa-heart"></i>
-                  </button>
+                <!-- Wishlist Trigger -->
+                <button class="antixor-wishlist-circle" onclick="toggleWishlist({{ product.id }}, this)" title="Save to Wishlist">
+                  <i class="fa-regular fa-heart"></i>
+                </button>
 
-                  <div class="position-absolute top-0 start-0 m-2 d-flex flex-column gap-1">
+                <!-- Product Image Box -->
+                <div class="antixor-product-img-box">
+                  <!-- Badges Top Left -->
+                  <div class="position-absolute top-0 start-0 m-2 d-flex flex-column gap-1" style="z-index: 2;">
                     {% if product.prescription_required %}
-                      <span class="aura-badge aura-badge-rx"><i class="fa-solid fa-file-prescription"></i> Rx</span>
+                      <span class="badge bg-danger text-white antixor-badge-rx-pill shadow-sm"><i class="fa-solid fa-file-prescription me-1"></i> Rx</span>
                     {% else %}
-                      <span class="aura-badge aura-badge-otc">OTC</span>
+                      <span class="badge bg-emerald-600 text-white antixor-badge-rx-pill shadow-sm" style="background-color: #059669 !important;">OTC</span>
                     {% endif %}
                     {% if product.discount_percent > 0 %}
-                      <span class="aura-badge aura-badge-discount">-{{ product.discount_percent }}%</span>
+                      <span class="badge bg-warning text-dark font-monospace fw-bold" style="font-size: 0.65rem; border-radius: 20px;">-{{ product.discount_percent }}% OFF</span>
                     {% endif %}
                   </div>
+
+                  <a href="{% url 'product-detail' product.slug %}" class="d-flex align-items-center justify-content-center w-100 h-100">
+                    <img src="{{ product.get_image }}" alt="{{ product.name }}" class="antixor-product-img" loading="lazy">
+                  </a>
                 </div>
 
-                <div class="aura-product-category">{{ product.category.name }}</div>
-                <h3 class="aura-product-title">
-                  <a href="{% url 'product-detail' product.slug %}" class="text-inherit">{{ product.name }}</a>
-                </h3>
+                <!-- Product Details -->
+                <div class="flex-grow-1 d-flex flex-column justify-content-between">
+                  <div>
+                    <div class="text-emerald-700 small fw-bold text-uppercase font-monospace mb-1" style="font-size: 0.7rem; color: #047857;">
+                      {{ product.category.name }}
+                    </div>
+                    <h3 class="h6 fw-bold mb-1 text-dark text-truncate-2" style="min-height: 40px; line-height: 1.3;">
+                      <a href="{% url 'product-detail' product.slug %}" class="text-decoration-none text-dark hover-emerald">
+                        {{ product.name }}
+                      </a>
+                    </h3>
 
-                <div class="aura-product-dosage">
-                  <i class="fa-solid fa-capsules text-cyan-500 me-1"></i>
-                  <span>{{ product.dosage_strength|default:product.get_dosage_form_display }} • {{ product.pack_size }}</span>
+                    <div class="small text-muted mb-2 font-monospace" style="font-size: 0.75rem;">
+                      <i class="fa-solid fa-capsules text-emerald-600 me-1" style="color:#059669;"></i>
+                      <span>{{ product.dosage_strength|default:product.get_dosage_form_display }} • {{ product.pack_size }}</span>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-1 text-warning small mb-3">
+                      <span>★</span>
+                      <strong class="text-dark">{{ product.rating }}</strong>
+                      <span class="text-muted">({{ product.total_reviews|default:"45" }} verified)</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="d-flex align-items-baseline gap-2 mb-3">
+                      <span class="h5 fw-bold text-emerald-800 font-monospace mb-0" style="color: #064e3b;">${{ product.price }}</span>
+                      {% if product.mrp_price and product.mrp_price > product.price %}
+                        <span class="text-muted text-decoration-line-through small font-monospace">${{ product.mrp_price }}</span>
+                      {% endif %}
+                    </div>
+
+                    <button class="btn btn-emerald text-white rounded-pill w-100 fw-bold py-2 shadow-sm d-flex align-items-center justify-content-center gap-2" style="background-color: #059669;" onclick="addToCart({{ product.id }}, 1, event)">
+                      <i class="fa-solid fa-cart-plus"></i>
+                      <span>Add to Cart</span>
+                    </button>
+                  </div>
                 </div>
-
-                <div class="d-flex align-items-center gap-1 text-warning small mb-2">
-                  <i class="fa-solid fa-star"></i>
-                  <span class="fw-bold text-dark">{{ product.rating }}</span>
-                  <span class="text-muted">({{ product.total_reviews }})</span>
-                </div>
-
-                <div class="aura-product-price-row">
-                  <span class="aura-current-price">${{ product.price }}</span>
-                  {% if product.mrp_price %}
-                    <span class="aura-mrp-price">${{ product.mrp_price }}</span>
-                  {% endif %}
-                </div>
-
-                <button class="aura-add-cart-btn" onclick="addToCart({{ product.id }}, 1, event)">
-                  <i class="fa-solid fa-cart-plus"></i>
-                  <span>Add to Cart</span>
-                </button>
 
               </div>
             </div>
@@ -175,26 +332,26 @@
           <nav class="mt-5 d-flex justify-content-center">
             <ul class="pagination">
               {% if page_obj.has_previous %}
-                <li class="page-item"><a class="page-link rounded-pill me-1" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+                <li class="page-item"><a class="page-link rounded-pill me-1 text-dark" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
               {% endif %}
               {% for num in page_obj.paginator.page_range %}
                 <li class="page-item {% if page_obj.number == num %}active{% endif %}">
-                  <a class="page-link rounded-pill mx-1" href="?page={{ num }}">{{ num }}</a>
+                  <a class="page-link rounded-pill mx-1 {% if page_obj.number == num %}bg-emerald-600 border-0 text-white{% else %}text-dark{% endif %}" {% if page_obj.number == num %}style="background-color:#059669 !important;"{% endif %} href="?page={{ num }}">{{ num }}</a>
                 </li>
               {% endfor %}
               {% if page_obj.has_next %}
-                <li class="page-item"><a class="page-link rounded-pill ms-1" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                <li class="page-item"><a class="page-link rounded-pill ms-1 text-dark" href="?page={{ page_obj.next_page_number }}">Next</a></li>
               {% endif %}
             </ul>
           </nav>
         {% endif %}
 
       {% else %}
-        <div class="text-center py-5 bg-white rounded-4 border">
-          <div class="text-muted mb-3"><i class="fa-solid fa-magnifying-glass fa-3x text-slate-300"></i></div>
-          <h4 class="fw-bold text-navy-800">No matching medicines found</h4>
-          <p class="text-muted small">Try checking your spelling or adjusting active filters.</p>
-          <a href="{% url 'shop' %}" class="btn aura-btn-primary btn-sm">Clear All Filters</a>
+        <div class="text-center py-5 bg-white rounded-4 border p-5">
+          <div class="text-muted mb-3"><i class="fa-solid fa-prescription-bottle-medical fa-3x text-emerald-600" style="color:#059669;"></i></div>
+          <h4 class="fw-bold text-dark mb-2">No matching clinical medicines found</h4>
+          <p class="text-muted small mb-4">Try checking your spelling, active ingredient name, or clearing filters.</p>
+          <a href="{% url 'shop' %}" class="btn btn-emerald text-white rounded-pill px-4 fw-bold" style="background-color:#059669;">Clear All Filters</a>
         </div>
       {% endif %}
 
@@ -202,4 +359,7 @@
 
   </div>
 </div>
+
+<!-- Include Footer -->
+{% include 'partials/footer.html' %}
 {% endblock %}
