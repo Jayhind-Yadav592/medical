@@ -1124,12 +1124,12 @@ a:hover {
 
 .antixor-footer {
   background: var(--antixor-dark-footer);
-  color: #94a3b8;
+  color: #cbd5e1;
   padding: 70px 0 30px;
 }
 
 .antixor-footer-title {
-  color: white;
+  color: #ffffff !important;
   font-size: 1rem;
   font-weight: 700;
   margin-bottom: 20px;
@@ -1148,11 +1148,12 @@ a:hover {
 .antixor-footer-links a {
   color: #94a3b8;
   font-size: 0.9rem;
+  font-weight: 500;
   transition: var(--antixor-transition);
 }
 
 .antixor-footer-links a:hover {
-  color: white;
+  color: #6ee7b7 !important;
   padding-left: 4px;
 }
 
@@ -1164,12 +1165,12 @@ a:hover {
 .antixor-social-btn {
   width: 36px;
   height: 36px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #94a3b8;
+  color: #ffffff;
   transition: var(--antixor-transition);
 }
 

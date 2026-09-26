@@ -1,18 +1,148 @@
-<footer class="aura-footer" style="background-color: #0b1329;">
+<style>
+  /* ==========================================================================
+     ANTIXOR GLOBAL FOOTER HIGH-CONTRAST STYLING
+     ========================================================================== */
+  .antixor-main-footer {
+    background: linear-gradient(180deg, #071924 0%, #041017 100%) !important;
+    color: #cbd5e1 !important;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  
+  .antixor-main-footer h3,
+  .antixor-main-footer h4,
+  .antixor-main-footer h5,
+  .antixor-main-footer h6 {
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  .antixor-main-footer p,
+  .antixor-main-footer .footer-desc {
+    color: #cbd5e1 !important;
+    font-size: 0.9rem;
+  }
+
+  .antixor-footer-nav-link {
+    color: #94a3b8 !important;
+    font-size: 0.88rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    display: inline-block;
+    padding: 3px 0;
+  }
+  .antixor-footer-nav-link:hover {
+    color: #6ee7b7 !important;
+    transform: translateX(4px);
+    text-decoration: none;
+  }
+
+  .antixor-footer-contact-item {
+    color: #e2e8f0 !important;
+    font-size: 0.88rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .antixor-footer-contact-item a {
+    color: #e2e8f0 !important;
+    text-decoration: none;
+  }
+  .antixor-footer-contact-item a:hover {
+    color: #34d399 !important;
+  }
+
+  .footer-newsletter-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    padding: 6px;
+    display: flex;
+    align-items: center;
+  }
+  .footer-newsletter-input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ffffff !important;
+    font-size: 0.9rem;
+    padding: 10px 16px;
+    width: 100%;
+  }
+  .footer-newsletter-input::placeholder {
+    color: #94a3b8 !important;
+  }
+  .footer-newsletter-btn {
+    background: linear-gradient(135deg, #0a5c43, #059669);
+    color: #ffffff !important;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 22px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .footer-newsletter-btn:hover {
+    background: linear-gradient(135deg, #064431, #047857);
+    transform: scale(1.02);
+  }
+
+  .footer-trust-badge {
+    color: #e2e8f0 !important;
+    font-size: 0.85rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .footer-bottom-bar {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: #94a3b8 !important;
+    font-size: 0.82rem;
+  }
+  .footer-bottom-bar a {
+    color: #cbd5e1 !important;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .footer-bottom-bar a:hover {
+    color: #6ee7b7 !important;
+  }
+</style>
+
+<footer class="antixor-main-footer pt-5 pb-4">
   <div class="container">
     
-    <!-- Top Footer Banner: Newsletter & Support -->
-    <div class="row align-items-center justify-content-between pb-5 mb-5 border-bottom border-secondary border-opacity-25">
-      <div class="col-lg-6 mb-4 mb-lg-0">
-        <h3 class="text-white fw-bold mb-2">Subscribe to Antixor™ Clinical Healthcare Digest</h3>
-        <p class="text-slate-400 mb-0">Get weekly doctor-reviewed wellness guides, medication safety alerts, and exclusive 20% discount vouchers on monthly refills.</p>
+    <!-- Top Footer Banner: Newsletter & Clinical Digest -->
+    <div class="row align-items-center justify-content-between pb-5 mb-5 border-bottom border-white border-opacity-10 g-4">
+      <div class="col-lg-6">
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2" style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(52, 211, 153, 0.3);">
+          <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+          <span style="color: #6ee7b7; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.05em;">CLINICAL NEWSLETTER & DRUG ALERTS</span>
+        </div>
+        <h3 class="h4 text-white fw-bold mb-2">Subscribe to Antixor™ Precision Healthcare Digest</h3>
+        <p class="footer-desc mb-0">
+          Get weekly physician-reviewed wellness guides, cold-chain medication updates, and exclusive 20% savings on recurring monthly prescription refills.
+        </p>
       </div>
+      
       <div class="col-lg-5">
-        <form id="aura-newsletter-form" class="aura-newsletter-input-group">
-          <input type="email" class="aura-newsletter-input" placeholder="Enter your email address..." required>
-          <button type="submit" class="aura-btn-emerald" style="padding: 8px 22px; background-color: #059669;">
+        <form id="antixorNewsletterForm" class="footer-newsletter-card" onsubmit="event.preventDefault(); showAntixorToast('Thank you for subscribing! Your 20% refill voucher has been sent to your inbox.', 'success'); this.reset();">
+          <input type="email" class="footer-newsletter-input" placeholder="Enter your email address..." required>
+          <button type="submit" class="footer-newsletter-btn">
             <span>Subscribe</span>
-            <i class="fa-solid fa-paper-plane"></i>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
           </button>
         </form>
       </div>
@@ -20,89 +150,107 @@
 
     <!-- Main Footer Links Grid -->
     <div class="row g-4 pb-5">
+      
+      <!-- Column 1: Brand & Contact Info -->
       <div class="col-lg-4 col-md-6">
         <div class="d-flex align-items-center gap-2 mb-3">
-          <div class="rounded-3 bg-emerald-600 text-white d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; background-color: #059669 !important;">
-            <i class="fa-solid fa-staff-snake"></i>
+          <div class="rounded-3 d-flex align-items-center justify-content-center text-white fw-bold" style="width: 38px; height: 38px; background: #0a5c43; font-size: 1.1rem; border: 1.5px solid rgba(255,255,255,0.2);">
+            💊
           </div>
-          <span class="fs-4 fw-bold text-white">Antixor<span class="text-emerald-400" style="color: #34d399;">.Pharmacy</span></span>
+          <span class="h4 fw-bold text-white mb-0" style="letter-spacing: -0.02em;">Antixor<span style="color: #34d399;">.Pharmacy</span></span>
         </div>
-        <p class="text-slate-400 small mb-4">
-          Antixor Pharmacy is an integrated digital healthcare and precision pharmacy network delivering verified prescription medicines, EHR-integrated clinical triage, cold-chain doorstep delivery, and 24/7 tele-pharmacist consultations.
+        
+        <p class="footer-desc mb-4">
+          Antixor Pharmacy is an integrated digital healthcare and precision dispensary network delivering FDA-verified prescription medicines, EHR clinical triage, 2°C–8°C cold-chain delivery, and 24/7 telehealth consultations.
         </p>
-        <div class="d-flex align-items-center gap-2 text-slate-300 small mb-2">
-          <i class="fa-solid fa-phone-volume text-emerald-400" style="color: #34d399;"></i>
-          <span>Emergency Hotline: +1 (800) 584-ANTX (2689)</span>
+
+        <div class="antixor-footer-contact-item">
+          <span style="color: #34d399; font-size: 1.1rem;">📞</span>
+          <span>Emergency Hotline: <a href="tel:18005842689" class="fw-bold text-white">+1 (800) 584-ANTX (2689)</a></span>
         </div>
-        <div class="d-flex align-items-center gap-2 text-slate-300 small">
-          <i class="fa-solid fa-envelope text-emerald-400" style="color: #34d399;"></i>
-          <span>Clinical Desk: rx@antixorpharmacy.com</span>
+
+        <div class="antixor-footer-contact-item">
+          <span style="color: #34d399; font-size: 1.1rem;">✉️</span>
+          <span>Clinical Desk: <a href="mailto:rx@antixorpharmacy.com" class="fw-bold text-white">rx@antixorpharmacy.com</a></span>
+        </div>
+
+        <div class="antixor-footer-contact-item">
+          <span style="color: #34d399; font-size: 1.1rem;">📍</span>
+          <span class="text-white">Central Dispensing Hub: 750 5th Ave, New York, NY 10019</span>
         </div>
       </div>
 
+      <!-- Column 2: Healthcare Hub Navigation -->
       <div class="col-lg-2 col-md-6 col-6">
-        <h5 class="text-white">Healthcare Hub</h5>
-        <ul class="list-unstyled">
-          <li><a href="{% url 'home' %}" class="aura-footer-link">Home Portal</a></li>
-          <li><a href="{% url 'shop' %}" class="aura-footer-link">Online Pharmacy</a></li>
-          <li><a href="{% url 'facilities' %}" class="aura-footer-link text-emerald-400" style="color: #34d399;">Nearest Hospitals</a></li>
-          <li><a href="{% url 'intake' %}" class="aura-footer-link">Symptom Intake</a></li>
-          <li><a href="{% url 'telehealth' %}" class="aura-footer-link">Doctor Directory</a></li>
-          <li><a href="{% url 'articles' %}" class="aura-footer-link">Health Articles</a></li>
+        <h5 class="h6 text-white text-uppercase fw-bold mb-3" style="letter-spacing: 0.05em;">Healthcare Hub</h5>
+        <ul class="list-unstyled mb-0 d-flex flex-column gap-2">
+          <li><a href="{% url 'home' %}" class="antixor-footer-nav-link">Home Portal</a></li>
+          <li><a href="{% url 'shop' %}" class="antixor-footer-nav-link">Pharmacy Store</a></li>
+          <li><a href="{% url 'facilities' %}" class="antixor-footer-nav-link text-success fw-bold" style="color: #6ee7b7 !important;">Nearest Hospitals & Radar</a></li>
+          <li><a href="{% url 'intake' %}" class="antixor-footer-nav-link">Smart Symptom Intake</a></li>
+          <li><a href="{% url 'telehealth' %}" class="antixor-footer-nav-link">Consult Doctors</a></li>
+          <li><a href="{% url 'articles' %}" class="antixor-footer-nav-link">Health Articles & Guides</a></li>
         </ul>
       </div>
 
+      <!-- Column 3: Patient Services -->
       <div class="col-lg-3 col-md-6 col-6">
-        <h5 class="text-white">Patient Services</h5>
-        <ul class="list-unstyled">
-          <li><a href="{% url 'dashboard' %}" class="aura-footer-link">Patient Dashboard</a></li>
-          <li><a href="{% url 'health-card' %}" class="aura-footer-link">Digital Health Passport</a></li>
-          <li><a href="{% url 'order-track' %}" class="aura-footer-link">Live Order Tracking</a></li>
-          <li><a href="{% url 'prescriptions' %}" class="aura-footer-link">Prescription Verification</a></li>
-          <li><a href="{% url 'contact' %}" class="aura-footer-link">Cold-Chain Guarantee</a></li>
-          <li><a href="{% url 'contact' %}" class="aura-footer-link">24/7 Pharmacist Triage</a></li>
+        <h5 class="h6 text-white text-uppercase fw-bold mb-3" style="letter-spacing: 0.05em;">Patient Services</h5>
+        <ul class="list-unstyled mb-0 d-flex flex-column gap-2">
+          <li><a href="{% url 'dashboard' %}" class="antixor-footer-nav-link">Patient EHR Dashboard</a></li>
+          <li><a href="{% url 'health-card' %}" class="antixor-footer-nav-link">Digital Health Passport & QR</a></li>
+          <li><a href="{% url 'order-track' %}" class="antixor-footer-nav-link">Live GPS Order Tracker</a></li>
+          <li><a href="{% url 'prescriptions' %}" class="antixor-footer-nav-link">Upload & Refill Prescription</a></li>
+          <li><a href="{% url 'cart' %}" class="antixor-footer-nav-link">Medicine Cart & Checkout</a></li>
+          <li><a href="{% url 'contact' %}" class="antixor-footer-nav-link">24/7 Pharmacist Triage Support</a></li>
         </ul>
       </div>
 
+      <!-- Column 4: Compliance & Payment Badges -->
       <div class="col-lg-3 col-md-6">
-        <h5 class="text-white">Clinical Compliance</h5>
-        <div class="d-flex flex-column gap-2">
-          <div class="d-flex align-items-center gap-2 text-slate-400 small">
-            <i class="fa-solid fa-certificate text-emerald-500 fs-5" style="color: #10b981;"></i>
+        <h5 class="h6 text-white text-uppercase fw-bold mb-3" style="letter-spacing: 0.05em;">Clinical Certifications</h5>
+        
+        <div class="d-flex flex-column gap-2 mb-4">
+          <div class="footer-trust-badge">
+            <span style="color: #10b981; font-size: 1.1rem;">🛡️</span>
             <span>FDA & NABP Verified Network</span>
           </div>
-          <div class="d-flex align-items-center gap-2 text-slate-400 small">
-            <i class="fa-solid fa-lock text-emerald-400 fs-5" style="color: #34d399;"></i>
-            <span>HIPAA & HL7 Encrypted Records</span>
+          <div class="footer-trust-badge">
+            <span style="color: #34d399; font-size: 1.1rem;">🔒</span>
+            <span>HIPAA & HL7 256-bit Encrypted</span>
           </div>
-          <div class="d-flex align-items-center gap-2 text-slate-400 small">
-            <i class="fa-solid fa-shield-virus text-warning fs-5"></i>
-            <span>100% Genuine Clinical Guarantee</span>
+          <div class="footer-trust-badge">
+            <span style="color: #f59e0b; font-size: 1.1rem;">❄️</span>
+            <span>2°C–8°C Cold-Chain Certified</span>
+          </div>
+          <div class="footer-trust-badge">
+            <span style="color: #60a5fa; font-size: 1.1rem;">🩺</span>
+            <span>Licensed Medical Provider #NY-9842</span>
           </div>
         </div>
-        <div class="mt-4">
-          <div class="small text-slate-400 mb-2">Accepted Payment Methods:</div>
-          <div class="d-flex gap-2 text-slate-300 fs-4">
-            <i class="fa-brands fa-cc-visa"></i>
-            <i class="fa-brands fa-cc-mastercard"></i>
-            <i class="fa-brands fa-cc-apple-pay"></i>
-            <i class="fa-brands fa-cc-paypal"></i>
-          </div>
+
+        <div class="small fw-bold text-white mb-2">Accepted Payment Methods:</div>
+        <div class="d-flex gap-2 align-items-center text-white opacity-85 fs-5">
+          <span class="badge bg-light text-dark px-2 py-1 fw-bold">VISA</span>
+          <span class="badge bg-light text-dark px-2 py-1 fw-bold">Mastercard</span>
+          <span class="badge bg-light text-dark px-2 py-1 fw-bold">Apple Pay</span>
+          <span class="badge bg-light text-dark px-2 py-1 fw-bold">HSA / FSA</span>
         </div>
       </div>
+
     </div>
 
     <!-- Bottom Disclaimer & Copyright -->
-    <div class="pt-4 border-top border-secondary border-opacity-25 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 text-slate-500 small">
+    <div class="footer-bottom-bar pt-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
       <div>
-        © 2026 Antixor Healthcare & Digital Dispensaries Inc. All rights reserved. Licensed Medical Provider #NY-PHARM-9842.
+        © 2026 Antixor Healthcare & Digital Dispensaries Inc. All rights reserved. Registered Dispensary License #NY-PHARM-9842.
       </div>
-      <div class="d-flex gap-3">
-        <a href="{% url 'about' %}" class="text-slate-500 hover-text-white">Privacy Policy</a>
+      <div class="d-flex flex-wrap gap-3">
+        <a href="{% url 'about' %}">Privacy Policy</a>
         <span>•</span>
-        <a href="{% url 'about' %}" class="text-slate-500 hover-text-white">Terms of Medical Service</a>
+        <a href="{% url 'about' %}">Terms of Clinical Service</a>
         <span>•</span>
-        <a href="{% url 'about' %}" class="text-slate-500 hover-text-white">Drug Safety Disclaimers</a>
+        <a href="{% url 'about' %}">Drug Safety & FDA Disclaimers</a>
       </div>
     </div>
 
