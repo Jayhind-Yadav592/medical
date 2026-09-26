@@ -6,7 +6,8 @@ from apps.core.views import (
     home_view, shop_view, product_detail_view, services_view,
     telehealth_view, prescriptions_portal_view, articles_view,
     article_detail_view, cart_page_view, checkout_page_view,
-    order_tracking_view, user_dashboard_view, about_view, contact_view
+    order_tracking_view, user_dashboard_view, about_view, contact_view,
+    login_view, register_view, logout_view
 )
 
 urlpatterns = [
@@ -14,6 +15,11 @@ urlpatterns = [
     
     # REST API Root
     path('api/', include('apps.api.urls')),
+    
+    # Authentication
+    path('login/', login_view, name='login'),
+    path('register/', register_view, name='register'),
+    path('logout/', logout_view, name='logout'),
     
     # Frontend Pages
     path('', home_view, name='home'),

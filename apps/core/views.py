@@ -2,8 +2,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.core.paginator import Paginator
 from django.contrib import messages
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout, authenticate, get_user_model
 from django.contrib.auth.decorators import login_required
+
+User = get_user_model()
 
 from apps.pharmacy.models import Category, Product, Review, Brand
 from apps.telehealth.models import Doctor, ConsultationRequest
@@ -183,3 +185,92 @@ def about_view(request):
 
 def contact_view(request):
     return render(request, 'pages/contact.html')
+
+
+def login_view(request):
+    """Full-page and POST handler for user login."""
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+
+    next_url = request.GET.get('next') or request.POST.get('next') or 'home'
+    error_message = None
+
+    if request.method == 'POST':
+        username_or_email = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '')
+
+        if not username_or_email or not password:
+            error_message = "Please enter both username/email and password."
+        else:
+            username = username_or_email
+            if '@' in username_or_email:
+                user_obj = User.objects.filter(email__iexact=username_or_email).first()
+                if user_obj:
+                    username = user_obj.username
+
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, f"Welcome back, {user.first_name or user.username}!")
+                return redirect(next_url)
+            else:
+                error_message = "Invalid username/email or password. Please check your credentials."
+
+    return render(request, 'pages/login.html', {
+        'error_message': error_message,
+        'next_url': next_url
+    })
+
+
+def register_view(request):
+    """Full-page and POST handler for new patient registration."""
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+
+    error_message = None
+
+    if request.method == 'POST':
+        username = request.POST.get('username', '').strip()
+        email = request.POST.get('email', '').strip()
+        first_name = request.POST.get('first_name', '').strip()
+        last_name = request.POST.get('last_name', '').strip()
+        phone_number = request.POST.get('phone_number', '').strip()
+        password = request.POST.get('password', '')
+        confirm_password = request.POST.get('confirm_password', '')
+
+        if not username or not password:
+            error_message = "Username and password are required."
+        elif password != confirm_password:
+            error_message = "Passwords do not match."
+        elif len(password) < 6:
+            error_message = "Password must be at least 6 characters long."
+        elif User.objects.filter(username__iexact=username).exists():
+            error_message = f"Username '{username}' is already taken. Please choose another."
+        elif email and User.objects.filter(email__iexact=email).exists():
+            error_message = f"An account with email '{email}' already exists."
+        else:
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=password,
+                first_name=first_name,
+                last_name=last_name,
+                phone_number=phone_number,
+                user_type='PATIENT'
+            )
+            login(request, user)
+            messages.success(request, f"Account created successfully! Welcome to Antixor Pharmacy, {user.first_name or user.username}.")
+            return redirect('home')
+
+    return render(request, 'pages/register.html', {
+        'error_message': error_message
+    })
+
+
+def logout_view(request):
+    """Sign out user and redirect to home."""
+    if request.user.is_authenticated:
+        logout(request)
+        messages.info(request, "You have been logged out successfully.")
+    return redirect('home')
+

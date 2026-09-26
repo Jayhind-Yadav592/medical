@@ -149,3 +149,68 @@ class AuraHealthIntegrationTests(TestCase):
         self.assertEqual(track_res.status_code, 200)
         self.assertEqual(track_res.json()['order_number'], order_num)
         self.assertEqual(track_res.json()['full_name'], 'Arthur Morgan')
+
+    def test_auth_views_and_flow(self):
+        # 1. Login page render
+        login_page_res = self.client.get(reverse('login'))
+        self.assertEqual(login_page_res.status_code, 200)
+        self.assertContains(login_page_res, 'Antixor')
+
+        # 2. Login POST with credentials
+        login_post = self.client.post(reverse('login'), {
+            'username': 'test_patient',
+            'password': 'securepassword123'
+        })
+        self.assertEqual(login_post.status_code, 302)
+
+        # 3. Logout
+        logout_res = self.client.get(reverse('logout'))
+        self.assertEqual(logout_res.status_code, 302)
+
+        # 4. Register page render & POST
+        reg_page_res = self.client.get(reverse('register'))
+        self.assertEqual(reg_page_res.status_code, 200)
+
+        reg_post = self.client.post(reverse('register'), {
+            'username': 'new_patient_test',
+            'email': 'newpatient@antixor.com',
+            'first_name': 'Clara',
+            'last_name': 'Oswald',
+            'phone_number': '+1 (555) 777-8899',
+            'password': 'password12345',
+            'confirm_password': 'password12345'
+        })
+        self.assertEqual(reg_post.status_code, 302)
+        self.assertTrue(User.objects.filter(username='new_patient_test').exists())
+
+    def test_auth_apis_login_and_register(self):
+        # 1. API Register
+        api_reg = self.client.post(reverse('api-auth-register'), {
+            'username': 'api_user_99',
+            'email': 'api99@antixor.com',
+            'first_name': 'Rose',
+            'last_name': 'Tyler',
+            'phone_number': '+1 (555) 123-4567',
+            'password': 'strongpassword99'
+        }, content_type='application/json')
+        self.assertEqual(api_reg.status_code, 201)
+        self.assertEqual(api_reg.json()['user']['username'], 'api_user_99')
+
+        # 2. API Login with Username
+        api_login_user = self.client.post(reverse('api-auth-login'), {
+            'username': 'api_user_99',
+            'password': 'strongpassword99'
+        }, content_type='application/json')
+        self.assertEqual(api_login_user.status_code, 200)
+
+        # 3. API Login with Email
+        api_login_email = self.client.post(reverse('api-auth-login'), {
+            'username': 'api99@antixor.com',
+            'password': 'strongpassword99'
+        }, content_type='application/json')
+        self.assertEqual(api_login_email.status_code, 200)
+
+        # 4. API Logout
+        api_logout = self.client.post(reverse('api-auth-logout'))
+        self.assertEqual(api_logout.status_code, 200)
+

@@ -31,26 +31,54 @@
           <li><a href="#contact" class="antixor-nav-link">Contact</a></li>
         </ul>
 
-        <!-- Right Side Icons & Login Button -->
+        <!-- Right Side Icons & Login / Profile Button -->
         <div class="d-flex align-items-center gap-3">
-          <button class="antixor-icon-btn" title="Search" aria-label="Search">
+          <button class="antixor-icon-btn" title="Search" aria-label="Search" onclick="document.querySelector('.antixor-search-input').focus(); window.scrollTo({top: 100, behavior: 'smooth'});">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
           </button>
           
-          <button class="antixor-icon-btn position-relative" title="Shopping Cart" aria-label="Shopping Cart">
+          <a href="{% url 'cart' %}" class="antixor-icon-btn position-relative" title="Shopping Cart" aria-label="Shopping Cart">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
               <line x1="3" y1="6" x2="21" y2="6"></line>
               <path d="M16 10a4 4 0 0 1-8 0"></path>
             </svg>
-          </button>
-
-          <a href="#" class="antixor-btn-login">
-            <span>Login / Sign Up</span>
           </a>
+
+          {% if user.is_authenticated %}
+            <div class="dropdown">
+              <button class="btn antixor-btn-login d-flex align-items-center gap-2 dropdown-toggle text-white border-0 shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="padding: 8px 18px; background: #0d6e51; border-radius: 9999px;">
+                <span class="rounded-circle bg-white fw-bold d-inline-flex align-items-center justify-content-center" style="width: 24px; height: 24px; font-size: 0.75rem; color: #0d6e51 !important;">
+                  {{ user.first_name|default:user.username|make_list|first|upper }}
+                </span>
+                <span class="fw-bold">{{ user.first_name|default:user.username }}</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end shadow-lg rounded-4 border-0 p-2 mt-2" style="min-width: 220px;">
+                <li>
+                  <div class="px-3 py-2 border-bottom mb-2">
+                    <div class="fw-bold text-dark small">{{ user.full_name|default:user.username }}</div>
+                    <div class="text-muted" style="font-size: 0.75rem;">{{ user.email|default:"Patient Account" }}</div>
+                  </div>
+                </li>
+                <li><a class="dropdown-item rounded-3 py-2 small fw-semibold" href="{% url 'dashboard' %}">📊 Patient Dashboard</a></li>
+                <li><a class="dropdown-item rounded-3 py-2 small fw-semibold" href="{% url 'prescriptions' %}">📋 My Prescriptions</a></li>
+                <li><a class="dropdown-item rounded-3 py-2 small fw-semibold" href="{% url 'order-track' %}">🚚 Track Orders</a></li>
+                {% if user.is_staff or user.is_superuser %}
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item rounded-3 py-2 small fw-semibold text-primary" href="/admin/" target="_blank">🛡️ Admin Portal</a></li>
+                {% endif %}
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item rounded-3 py-2 small fw-bold text-danger" href="{% url 'logout' %}">🚪 Sign Out</a></li>
+              </ul>
+            </div>
+          {% else %}
+            <a href="#" class="antixor-btn-login" data-bs-toggle="modal" data-bs-target="#auraAuthModal">
+              <span>Login / Sign Up</span>
+            </a>
+          {% endif %}
         </div>
 
       </div>

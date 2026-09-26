@@ -498,16 +498,31 @@ class AuthRegisterAPIView(APIView):
             user = serializer.save()
             login(request, user)
             return Response({
-                'message': f'Welcome to AuraHealth, {user.first_name or user.username}!',
+                'message': f'Welcome to Antixor Pharmacy, {user.first_name or user.username}!',
                 'user': UserSerializer(user).data
             }, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        errors = serializer.errors
+        first_error = 'Registration failed.'
+        if errors:
+            first_val = next(iter(errors.values()))
+            first_error = first_val[0] if isinstance(first_val, list) else str(first_val)
+        return Response({'error': str(first_error), 'details': errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class AuthLoginAPIView(APIView):
     def post(self, request):
-        username = request.data.get('username')
-        password = request.data.get('password')
+        username_or_email = request.data.get('username', '').strip()
+        password = request.data.get('password', '')
+
+        if not username_or_email or not password:
+            return Response({'error': 'Please enter both username/email and password.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        username = username_or_email
+        if '@' in username_or_email:
+            user_obj = User.objects.filter(email__iexact=username_or_email).first()
+            if user_obj:
+                username = user_obj.username
+
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
@@ -515,7 +530,7 @@ class AuthLoginAPIView(APIView):
                 'message': f'Welcome back, {user.first_name or user.username}!',
                 'user': UserSerializer(user).data
             })
-        return Response({'error': 'Invalid username or password.'}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response({'error': 'Invalid username/email or password.'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class AuthLogoutAPIView(APIView):

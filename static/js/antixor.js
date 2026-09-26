@@ -222,18 +222,194 @@
   if (consultBtn) {
     consultBtn.addEventListener('click', function (e) {
       e.preventDefault();
-      const modal = new bootstrap.Modal(document.getElementById('auraConsultationModal'));
-      if (modal) modal.show();
+      const consultModalEl = document.getElementById('auraConsultationModal');
+      if (consultModalEl) {
+        const modal = bootstrap.Modal.getOrCreateInstance(consultModalEl);
+        modal.show();
+      }
     });
   }
 
-  // 6. Login / Sign Up Button Handler
-  const loginBtn = document.querySelector('.antixor-btn-login');
-  if (loginBtn) {
-    loginBtn.addEventListener('click', function (e) {
+  // 6. Global Auth Modal Helpers & Autofill
+  window.fillModalAuth = function (username, password) {
+    const userInp = document.getElementById('modalLoginUsername');
+    const passInp = document.getElementById('modalLoginPassword');
+    const signinTab = document.getElementById('signin-tab');
+    if (signinTab) {
+      const tab = bootstrap.Tab.getOrCreateInstance(signinTab);
+      tab.show();
+    }
+    if (userInp) userInp.value = username;
+    if (passInp) passInp.value = password;
+  };
+
+  // 7. Interactive AJAX Sign In Handler
+  const modalLoginForm = document.getElementById('modalLoginForm');
+  const modalAuthAlert = document.getElementById('modalAuthAlert');
+  const modalAuthAlertText = document.getElementById('modalAuthAlertText');
+
+  if (modalLoginForm) {
+    modalLoginForm.addEventListener('submit', async function (e) {
       e.preventDefault();
-      const authModal = new bootstrap.Modal(document.getElementById('auraAuthModal'));
-      if (authModal) authModal.show();
+      if (modalAuthAlert) modalAuthAlert.classList.add('d-none');
+      
+      const username = document.getElementById('modalLoginUsername').value.trim();
+      const password = document.getElementById('modalLoginPassword').value;
+      const submitBtn = document.getElementById('modalLoginBtn');
+
+      if (!username || !password) {
+        if (modalAuthAlert && modalAuthAlertText) {
+          modalAuthAlertText.textContent = 'Please enter both username and password.';
+          modalAuthAlert.classList.remove('d-none');
+        }
+        return;
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Signing in...';
+      }
+
+      try {
+        const res = await fetch('/api/auth/login/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken || getCookie('csrftoken') || '',
+          },
+          body: JSON.stringify({ username: username, password: password })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          showAntixorToast(data.message || 'Signed in successfully!', 'success');
+          const authModalEl = document.getElementById('auraAuthModal');
+          if (authModalEl) {
+            const modal = bootstrap.Modal.getInstance(authModalEl);
+            if (modal) modal.hide();
+          }
+          setTimeout(() => {
+            window.location.reload();
+          }, 600);
+        } else {
+          if (modalAuthAlert && modalAuthAlertText) {
+            modalAuthAlertText.textContent = data.error || 'Invalid credentials. Please check your username and password.';
+            modalAuthAlert.classList.remove('d-none');
+          } else {
+            showAntixorToast(data.error || 'Login failed', 'error');
+          }
+        }
+      } catch (err) {
+        console.error('Login error:', err);
+        if (modalAuthAlert && modalAuthAlertText) {
+          modalAuthAlertText.textContent = 'Network error during login. Submitting standard form...';
+          modalAuthAlert.classList.remove('d-none');
+        }
+        // Fallback to standard form submit
+        modalLoginForm.submit();
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = 'Sign In to Patient Portal';
+        }
+      }
+    });
+  }
+
+  // 8. Interactive AJAX Sign Up / Register Handler
+  const modalRegisterForm = document.getElementById('modalRegisterForm');
+  if (modalRegisterForm) {
+    modalRegisterForm.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      if (modalAuthAlert) modalAuthAlert.classList.add('d-none');
+
+      const firstName = document.getElementById('modalRegFirstName').value.trim();
+      const lastName = document.getElementById('modalRegLastName').value.trim();
+      const username = document.getElementById('modalRegUsername').value.trim();
+      const email = document.getElementById('modalRegEmail').value.trim();
+      const phone = document.getElementById('modalRegPhone').value.trim();
+      const password = document.getElementById('modalRegPassword').value;
+      const confirmPass = document.getElementById('modalRegConfirm').value;
+      const submitBtn = document.getElementById('modalRegisterBtn');
+
+      if (!username || !password) {
+        if (modalAuthAlert && modalAuthAlertText) {
+          modalAuthAlertText.textContent = 'Username and password are required.';
+          modalAuthAlert.classList.remove('d-none');
+        }
+        return;
+      }
+
+      if (password !== confirmPass) {
+        if (modalAuthAlert && modalAuthAlertText) {
+          modalAuthAlertText.textContent = 'Passwords do not match. Please verify.';
+          modalAuthAlert.classList.remove('d-none');
+        }
+        return;
+      }
+
+      if (password.length < 6) {
+        if (modalAuthAlert && modalAuthAlertText) {
+          modalAuthAlertText.textContent = 'Password must be at least 6 characters.';
+          modalAuthAlert.classList.remove('d-none');
+        }
+        return;
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Creating Account...';
+      }
+
+      try {
+        const res = await fetch('/api/auth/register/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken || getCookie('csrftoken') || '',
+          },
+          body: JSON.stringify({
+            username: username,
+            email: email,
+            password: password,
+            first_name: firstName,
+            last_name: lastName,
+            phone_number: phone
+          })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          showAntixorToast(data.message || 'Account created successfully! Welcome to Antixor.', 'success');
+          const authModalEl = document.getElementById('auraAuthModal');
+          if (authModalEl) {
+            const modal = bootstrap.Modal.getInstance(authModalEl);
+            if (modal) modal.hide();
+          }
+          setTimeout(() => {
+            window.location.reload();
+          }, 600);
+        } else {
+          let errText = data.error || 'Registration failed.';
+          if (modalAuthAlert && modalAuthAlertText) {
+            modalAuthAlertText.textContent = errText;
+            modalAuthAlert.classList.remove('d-none');
+          } else {
+            showAntixorToast(errText, 'error');
+          }
+        }
+      } catch (err) {
+        console.error('Registration error:', err);
+        // Fallback to standard form submit
+        modalRegisterForm.submit();
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = 'Create Patient Account';
+        }
+      }
     });
   }
 

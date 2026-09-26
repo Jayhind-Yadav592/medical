@@ -74,47 +74,137 @@
     </div>
   </div>
 
-  <!-- Antixor Authentication Modal -->
+  <!-- Antixor Authentication Modal (Sign In & Sign Up) -->
   <div class="modal fade" id="auraAuthModal" tabindex="-1" aria-labelledby="auraAuthModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content rounded-4 border-0 shadow-lg p-3">
-        <div class="modal-header border-0 pb-0">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 480px;">
+      <div class="modal-content rounded-4 border-0 shadow-lg p-3 p-md-4">
+        
+        <!-- Modal Header -->
+        <div class="modal-header border-0 pb-2">
           <div class="d-flex align-items-center gap-2">
             <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: #e6f7f2; color: #0d6e51;">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M19 10.5h-5.5V5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5H5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h5.5V19c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-5.5H19c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z"/></svg>
             </div>
             <div>
               <h5 class="modal-title fw-bold text-dark mb-0" id="auraAuthModalLabel">Antixor Account</h5>
-              <p class="text-muted small mb-0">Sign in to manage your prescriptions and orders</p>
+              <p class="text-muted small mb-0">Access your healthcare portal and prescriptions</p>
             </div>
           </div>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body pt-3">
-          <form onsubmit="event.preventDefault(); window.showAntixorToast('Welcome back to Antixor Pharmacy!', 'success'); bootstrap.Modal.getInstance(document.getElementById('auraAuthModal')).hide();">
-            <div class="mb-3">
-              <label class="form-label small fw-semibold text-muted">Email or Username</label>
-              <input type="text" class="form-control rounded-3 py-2" value="sarah_ahmed" required>
-            </div>
-            <div class="mb-3">
-              <label class="form-label small fw-semibold text-muted">Password</label>
-              <input type="password" class="form-control rounded-3 py-2" value="password123" required>
-            </div>
-            <div class="d-flex justify-content-between align-items-center mb-4">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="rememberMe" checked>
-                <label class="form-check-label small text-muted" for="rememberMe">Remember me</label>
+
+        <!-- Auth Tabs: Sign In / Sign Up -->
+        <div class="modal-body pt-2">
+          <ul class="nav nav-pills nav-fill bg-light p-1 rounded-4 mb-3" id="authTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active rounded-pill fw-bold small py-2" id="signin-tab" data-bs-toggle="pill" data-bs-target="#signin-pane" type="button" role="tab">Sign In</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link rounded-pill fw-bold small py-2" id="signup-tab" data-bs-toggle="pill" data-bs-target="#signup-pane" type="button" role="tab">Create Account</button>
+            </li>
+          </ul>
+
+          <!-- Dynamic Error Alert Box inside Modal -->
+          <div id="modalAuthAlert" class="alert alert-danger rounded-3 py-2 px-3 small d-none mb-3">
+            <span id="modalAuthAlertText"></span>
+          </div>
+
+          <div class="tab-content" id="authTabContent">
+            
+            <!-- Tab 1: Sign In -->
+            <div class="tab-pane fade show active" id="signin-pane" role="tabpanel">
+              <form id="modalLoginForm" method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                  <label class="form-label small fw-bold text-muted">Username or Email</label>
+                  <input type="text" id="modalLoginUsername" name="username" class="form-control rounded-3 py-2" placeholder="e.g. sarah_ahmed or admin" required>
+                </div>
+                <div class="mb-3">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <label class="form-label small fw-bold text-muted mb-0">Password</label>
+                    <a href="#" class="small text-decoration-none" style="color: #0d6e51; font-weight: 600;" onclick="event.preventDefault(); alert('Demo password: password123 (patient) or admin (admin)');">Forgot?</a>
+                  </div>
+                  <input type="password" id="modalLoginPassword" name="password" class="form-control rounded-3 py-2" placeholder="••••••••" required>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="modalRememberMe" checked>
+                    <label class="form-check-label small text-muted" for="modalRememberMe">Remember me</label>
+                  </div>
+                </div>
+                <button type="submit" id="modalLoginBtn" class="btn w-100 py-2 rounded-pill fw-bold text-white shadow-sm mb-3" style="background: #0d6e51;">
+                  Sign In to Patient Portal
+                </button>
+              </form>
+
+              <!-- Quick Demo Autofill Bar -->
+              <div class="p-2 rounded-3 text-center mb-2" style="background: #f8fafc; border: 1px dashed #cbd5e1;">
+                <div class="small fw-semibold text-muted mb-1" style="font-size: 0.75rem;">⚡ 1-Click Demo Login:</div>
+                <div class="d-flex gap-2 justify-content-center">
+                  <button type="button" class="btn btn-sm btn-outline-success rounded-pill px-2 py-1 fw-bold" style="font-size: 0.75rem;" onclick="fillModalAuth('sarah_ahmed', 'password123')">
+                    👤 Patient (sarah_ahmed)
+                  </button>
+                  <button type="button" class="btn btn-sm btn-outline-dark rounded-pill px-2 py-1 fw-bold" style="font-size: 0.75rem;" onclick="fillModalAuth('admin', 'admin')">
+                    🛡️ Admin (admin)
+                  </button>
+                </div>
               </div>
-              <a href="#" class="small text-decoration-none" style="color: #0d6e51; font-weight: 600;">Forgot Password?</a>
+
+              <div class="text-center small text-muted">
+                New to Antixor? <a href="#" class="fw-bold text-decoration-none" style="color: #0d6e51;" onclick="document.getElementById('signup-tab').click(); return false;">Create an account</a>
+              </div>
             </div>
-            <button type="submit" class="btn w-100 py-3 rounded-pill fw-bold text-white shadow-sm" style="background: #0d6e51;">
-              Sign In to Patient Portal
-            </button>
-            <div class="text-center mt-3 small text-muted">
-              Demo Patient: <code>sarah_ahmed</code> / <code>password123</code> | Admin: <code>admin</code> / <code>admin</code>
+
+            <!-- Tab 2: Create Account / Sign Up -->
+            <div class="tab-pane fade" id="signup-pane" role="tabpanel">
+              <form id="modalRegisterForm" method="POST" action="{% url 'register' %}">
+                {% csrf_token %}
+                <div class="row g-2 mb-2">
+                  <div class="col-6">
+                    <label class="form-label small fw-bold text-muted mb-1">First Name</label>
+                    <input type="text" id="modalRegFirstName" name="first_name" class="form-control rounded-3 py-2" placeholder="John">
+                  </div>
+                  <div class="col-6">
+                    <label class="form-label small fw-bold text-muted mb-1">Last Name</label>
+                    <input type="text" id="modalRegLastName" name="last_name" class="form-control rounded-3 py-2" placeholder="Doe">
+                  </div>
+                </div>
+                <div class="mb-2">
+                  <label class="form-label small fw-bold text-muted mb-1">Username <span class="text-danger">*</span></label>
+                  <input type="text" id="modalRegUsername" name="username" class="form-control rounded-3 py-2" placeholder="johndoe22" required>
+                </div>
+                <div class="row g-2 mb-2">
+                  <div class="col-6">
+                    <label class="form-label small fw-bold text-muted mb-1">Email</label>
+                    <input type="email" id="modalRegEmail" name="email" class="form-control rounded-3 py-2" placeholder="john@example.com">
+                  </div>
+                  <div class="col-6">
+                    <label class="form-label small fw-bold text-muted mb-1">Phone</label>
+                    <input type="tel" id="modalRegPhone" name="phone_number" class="form-control rounded-3 py-2" placeholder="+1-555-0100">
+                  </div>
+                </div>
+                <div class="row g-2 mb-3">
+                  <div class="col-6">
+                    <label class="form-label small fw-bold text-muted mb-1">Password <span class="text-danger">*</span></label>
+                    <input type="password" id="modalRegPassword" name="password" class="form-control rounded-3 py-2" placeholder="Min 6 chars" required minlength="6">
+                  </div>
+                  <div class="col-6">
+                    <label class="form-label small fw-bold text-muted mb-1">Confirm <span class="text-danger">*</span></label>
+                    <input type="password" id="modalRegConfirm" name="confirm_password" class="form-control rounded-3 py-2" placeholder="Repeat" required minlength="6">
+                  </div>
+                </div>
+                <button type="submit" id="modalRegisterBtn" class="btn w-100 py-2 rounded-pill fw-bold text-white shadow-sm mb-3" style="background: #0d6e51;">
+                  Create Patient Account
+                </button>
+              </form>
+              <div class="text-center small text-muted">
+                Already registered? <a href="#" class="fw-bold text-decoration-none" style="color: #0d6e51;" onclick="document.getElementById('signin-tab').click(); return false;">Sign In</a>
+              </div>
             </div>
-          </form>
+
+          </div>
         </div>
+
       </div>
     </div>
   </div>
