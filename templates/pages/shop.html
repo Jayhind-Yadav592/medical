@@ -70,6 +70,7 @@ body {
   gap: 6px;
   transition: all 0.2s ease;
   box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  cursor: pointer;
 }
 
 .hero-cta-pill:hover {
@@ -94,6 +95,12 @@ body {
   font-size: 0.74rem;
   font-weight: 600;
   color: rgba(255,255,255,0.92);
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.hero-feat-item:hover {
+  opacity: 0.85;
 }
 
 .hero-feat-icon {
@@ -121,6 +128,12 @@ body {
   gap: 8px;
   box-shadow: 0 6px 18px rgba(0,0,0,0.1);
   z-index: 5;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.hero-floating-badge:hover {
+  transform: scale(1.04);
 }
 
 .hero-floating-icon {
@@ -401,6 +414,7 @@ body {
   position: relative;
   margin-bottom: 14px;
   overflow: hidden;
+  transition: all 0.3s ease;
 }
 
 .promo-flat-text {
@@ -434,19 +448,28 @@ body {
   border-radius: 20px;
   padding: 2px 8px;
   font-size: 0.68rem;
+  cursor: pointer;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.promo-code-box:hover {
+  background-color: #e6f9f0;
+  transform: scale(1.04);
 }
 
 .carousel-dot {
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
   background: #cbd5e1;
   display: inline-block;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .carousel-dot.active {
   background: #009b72;
-  width: 14px;
+  width: 16px;
   border-radius: 10px;
 }
 
@@ -455,6 +478,14 @@ body {
   align-items: flex-start;
   gap: 8px;
   margin-bottom: 10px;
+  padding: 4px 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.benefit-row:hover {
+  background-color: #f8fafc;
 }
 
 .benefit-icon-box {
@@ -514,7 +545,7 @@ body {
   <div class="antixor-shop-hero-slim">
     
     <!-- Floating "Better Health, Happier Tomorrow" Badge -->
-    <div class="hero-floating-badge d-none d-md-flex">
+    <div class="hero-floating-badge d-none d-md-flex" onclick="showAntixorToast('Antixor Patient Adherence Score: 98% Optimal!', 'success')" title="Click to view Clinical Health Score">
       <div class="hero-floating-icon">
         <i class="fa-solid fa-leaf"></i>
       </div>
@@ -535,21 +566,21 @@ body {
         </p>
 
         <div class="d-flex align-items-center gap-3 flex-wrap">
-          <a href="#catalog-grid" class="hero-cta-pill">
+          <a href="#catalog-grid" class="hero-cta-pill" onclick="document.getElementById('catalog-grid').scrollIntoView({behavior: 'smooth'})">
             <span>Explore Products</span>
             <i class="fa-solid fa-arrow-right"></i>
           </a>
           
           <div class="d-none d-sm-flex align-items-center gap-3">
-            <div class="hero-feat-item">
+            <div class="hero-feat-item" onclick="showAntixorToast('100% Genuine & FDA/GMP Approved Products', 'success')">
               <div class="hero-feat-icon"><i class="fa-solid fa-shield-halved"></i></div>
               <span>Genuine &amp; FDA Approved Products</span>
             </div>
-            <div class="hero-feat-item">
+            <div class="hero-feat-item" onclick="showAntixorToast('Express 24-48h Delivery active across all clinical hubs', 'success')">
               <div class="hero-feat-icon"><i class="fa-solid fa-truck-fast"></i></div>
               <span>Fast &amp; Secure Delivery</span>
             </div>
-            <div class="hero-feat-item d-none d-md-flex">
+            <div class="hero-feat-item d-none d-md-flex" data-bs-toggle="modal" data-bs-target="#auraConsultationModal" title="Book Free Clinical Pharmacist Consultation">
               <div class="hero-feat-icon"><i class="fa-solid fa-headset"></i></div>
               <span>24/7 Pharmacist Support</span>
             </div>
@@ -662,10 +693,10 @@ body {
 
           <!-- View Switchers -->
           <div class="d-none d-md-flex align-items-center gap-1">
-            <button class="btn btn-sm btn-light border p-1 rounded-2 text-success" title="Grid View" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; background: #e6f9f0; border-color: #a7f3d0 !important; color: #009b72 !important;">
+            <button class="btn btn-sm btn-light border p-1 rounded-2 text-success" title="Grid View" onclick="switchCatalogView('grid')" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; background: #e6f9f0; border-color: #a7f3d0 !important; color: #009b72 !important;">
               <i class="fa-solid fa-grip" style="font-size: 0.75rem;"></i>
             </button>
-            <button class="btn btn-sm btn-light border p-1 rounded-2 text-muted" title="List View" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; background: #ffffff; border-color: #e2e8f0 !important;">
+            <button class="btn btn-sm btn-light border p-1 rounded-2 text-muted" title="List View" onclick="switchCatalogView('list')" style="width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; background: #ffffff; border-color: #e2e8f0 !important;">
               <i class="fa-solid fa-list-ul" style="font-size: 0.75rem;"></i>
             </button>
           </div>
@@ -782,32 +813,34 @@ body {
           <h6 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2" style="font-size: 0.84rem;">
             <i class="fa-solid fa-certificate text-success" style="color:#009b72;"></i> Today's Offers
           </h6>
-          <a href="#" class="small text-muted text-decoration-none" style="font-size: 0.72rem;">View All</a>
+          <a href="#" class="small text-muted text-decoration-none" data-bs-toggle="modal" data-bs-target="#allOffersModal" style="font-size: 0.72rem;">View All</a>
         </div>
 
-        <!-- Promotional Box: FLAT 20% OFF -->
-        <div class="promo-box-inner">
-          <div class="promo-flat-text">FLAT</div>
-          <div class="promo-discount-text">20% OFF</div>
-          <div class="promo-target-text">on Vitamins &amp; Supplements</div>
-          
-          <div class="promo-code-box">
-            <span class="text-muted" style="font-size: 0.65rem;">Use Code:</span>
-            <strong class="text-success font-monospace" style="color:#009b72 !important; font-size: 0.68rem;">HEALTH20</strong>
+        <!-- Promotional Box: Dynamic Slides -->
+        <div class="promo-box-inner" id="promoOfferBox">
+          <div id="promoOfferContent">
+            <div class="promo-flat-text" id="promoLabel">FLAT</div>
+            <div class="promo-discount-text" id="promoDiscount">20% OFF</div>
+            <div class="promo-target-text" id="promoSub">on Vitamins &amp; Supplements</div>
+            
+            <div class="promo-code-box" id="promoCodeBox" onclick="copyCouponCode('HEALTH20')" title="Click to copy coupon code">
+              <span class="text-muted" style="font-size: 0.65rem;">Use Code:</span>
+              <strong class="text-success font-monospace" id="promoCodeText" style="color:#009b72 !important; font-size: 0.68rem;">HEALTH20</strong>
+            </div>
           </div>
 
           <!-- Carousel Indicator Dots -->
           <div class="d-flex justify-content-center align-items-center gap-1 mt-2">
-            <span class="carousel-dot active"></span>
-            <span class="carousel-dot"></span>
-            <span class="carousel-dot"></span>
+            <span class="carousel-dot active" onclick="switchOfferSlide(0)" title="Offer 1"></span>
+            <span class="carousel-dot" onclick="switchOfferSlide(1)" title="Offer 2"></span>
+            <span class="carousel-dot" onclick="switchOfferSlide(2)" title="Offer 3"></span>
           </div>
         </div>
 
         <!-- Clinical Benefit Highlights -->
-        <div class="d-flex flex-column gap-2 mb-2">
+        <div class="d-flex flex-column gap-1 mb-2">
           
-          <div class="benefit-row">
+          <div class="benefit-row" onclick="showAntixorToast('100% Genuine Medicines — Verified by Board Certified Pharmacists.', 'success')">
             <div class="benefit-icon-box" style="background-color: #e6f9f0; color: #009b72;">
               <i class="fa-solid fa-shield-halved"></i>
             </div>
@@ -817,7 +850,7 @@ body {
             </div>
           </div>
 
-          <div class="benefit-row">
+          <div class="benefit-row" onclick="showAntixorToast('Express 24-48h Delivery active with continuous temperature monitoring.', 'success')">
             <div class="benefit-icon-box" style="background-color: #e0f2fe; color: #0284c7;">
               <i class="fa-solid fa-truck-fast"></i>
             </div>
@@ -827,7 +860,7 @@ body {
             </div>
           </div>
 
-          <div class="benefit-row">
+          <div class="benefit-row" onclick="showAntixorToast('Cold-Chain (2°C - 8°C) storage certified for insulin, vaccines & biologics.', 'info')">
             <div class="benefit-icon-box" style="background-color: #e0f7fa; color: #0ea5e9;">
               <i class="fa-solid fa-snowflake"></i>
             </div>
@@ -837,7 +870,7 @@ body {
             </div>
           </div>
 
-          <div class="benefit-row">
+          <div class="benefit-row" data-bs-toggle="modal" data-bs-target="#auraConsultationModal">
             <div class="benefit-icon-box" style="background-color: #ffe4e6; color: #e11d48;">
               <i class="fa-solid fa-headset"></i>
             </div>
@@ -869,6 +902,28 @@ body {
   </div>
 
 </div>
+
+<!-- Interactive Offer Slider Script -->
+<script>
+const offerSlides = [
+  { label: 'FLAT', discount: '20% OFF', sub: 'on Vitamins & Supplements', code: 'HEALTH20' },
+  { label: 'EXPRESS', discount: 'FREE DEL', sub: 'on Orders Above $35', code: 'FREEDEL' },
+  { label: 'SPECIAL', discount: '15% OFF', sub: 'on Chronic Care & Diabetes', code: 'CARE15' }
+];
+
+window.switchOfferSlide = function(index) {
+  const dots = document.querySelectorAll('.carousel-dot');
+  dots.forEach((d, i) => d.classList.toggle('active', i === index));
+  const data = offerSlides[index];
+  if(data) {
+    document.getElementById('promoLabel').textContent = data.label;
+    document.getElementById('promoDiscount').textContent = data.discount;
+    document.getElementById('promoSub').textContent = data.sub;
+    document.getElementById('promoCodeText').textContent = data.code;
+    document.getElementById('promoCodeBox').setAttribute('onclick', `copyCouponCode('${data.code}')`);
+  }
+};
+</script>
 
 <!-- Include Footer -->
 {% include 'partials/footer.html' %}

@@ -14,7 +14,7 @@
       <span class="text-white-50">|</span>
       <a href="tel:+18005842689" class="text-white text-decoration-none d-flex align-items-center"><i class="fa-solid fa-phone text-success me-1" style="color: #00b87c !important;"></i> 1800-584-ANTX</a>
       <span class="text-white-50">|</span>
-      <a href="#" class="text-white text-decoration-none d-flex align-items-center"><i class="fa-solid fa-mobile-screen-button text-success me-1" style="color: #00b87c !important;"></i> Download App</a>
+      <a href="#" class="text-white text-decoration-none d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#appDownloadModal"><i class="fa-solid fa-mobile-screen-button text-success me-1" style="color: #00b87c !important;"></i> Download App</a>
     </div>
   </div>
 </div>
@@ -141,10 +141,10 @@
         </a>
       </div>
 
-      <div class="d-none d-lg-flex align-items-center gap-2 small">
+      <div class="d-none d-lg-flex align-items-center gap-2 small" data-bs-toggle="modal" data-bs-target="#deliveryLocationModal" style="cursor: pointer;" title="Change delivery location / pincode">
         <i class="fa-solid fa-location-dot" style="color: #f43f5e;"></i>
         <span class="text-muted" style="font-size: 0.78rem;">Deliver to</span>
-        <strong class="text-dark d-flex align-items-center gap-1" style="font-size: 0.82rem;">
+        <strong class="text-dark d-flex align-items-center gap-1 delivery-loc-display" style="font-size: 0.82rem;">
           Central, New York 10001
           <i class="fa-solid fa-chevron-down text-muted" style="font-size: 0.65rem;"></i>
         </strong>

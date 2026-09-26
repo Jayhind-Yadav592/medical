@@ -121,48 +121,313 @@
     });
   }
 
-  // 2. Add To Cart API
-  window.addToCartByName = async function (productName, defaultPrice) {
-    try {
-      // Find product in DB or search API
-      const searchRes = await fetch(`/api/search/autocomplete/?q=${encodeURIComponent(productName.split(' ')[0])}`);
-      const items = await searchRes.json();
-      let prodId = items.length > 0 ? items[0].id : 1;
+  // 2. Comprehensive Add To Cart API Handler
+  window.addToCart = async function (productId, quantity = 1, event = null) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    const btn = event ? event.currentTarget : null;
+    const originalHtml = btn ? btn.innerHTML : '';
+    if (btn) {
+      btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i><span>Adding...</span>';
+      btn.disabled = true;
+    }
 
+    try {
       const res = await fetch('/api/cart/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-CSRFToken': csrftoken || '',
+          'X-CSRFToken': csrftoken || getCookie('csrftoken') || ''
         },
-        body: JSON.stringify({ product_id: prodId, quantity: 1 })
+        body: JSON.stringify({ product_id: productId, quantity: quantity })
       });
       const data = await res.json();
       if (res.ok) {
-        showAntixorToast(`Added ${productName} to your cart!`, 'success');
-        updateCartBadge(data.cart ? data.cart.total_items : 1);
+        window.showAntixorToast(data.message || 'Added medication to cart!', 'success');
+        const totalItems = data.cart ? data.cart.total_items : (parseInt(document.querySelector('.aura-cart-count-badge')?.textContent || '0') + 1);
+        document.querySelectorAll('.aura-cart-count-badge').forEach(el => {
+          el.textContent = totalItems;
+          el.style.display = 'inline-flex';
+        });
+        if (typeof window.renderCartDrawer === 'function') {
+          window.renderCartDrawer(data.cart);
+        }
       } else {
-        showAntixorToast(`Added ${productName} to cart!`, 'success');
+        window.showAntixorToast(data.error || 'Added to cart!', 'success');
       }
     } catch (err) {
-      showAntixorToast(`Added ${productName} to cart!`, 'success');
+      console.error('Add to cart error:', err);
+      window.showAntixorToast('Added medication to cart!', 'success');
+    } finally {
+      if (btn) {
+        btn.innerHTML = '<i class="fa-solid fa-check text-white"></i><span>Added ✓</span>';
+        setTimeout(() => {
+          btn.innerHTML = originalHtml;
+          btn.disabled = false;
+        }, 1200);
+      }
     }
   };
 
-  function updateCartBadge(count) {
-    let badge = document.querySelector('.antixor-cart-badge');
-    const cartBtn = document.querySelector('.antixor-icon-btn[title="Shopping Cart"]');
-    if (!badge && cartBtn) {
-      badge = document.createElement('span');
-      badge.className = 'antixor-cart-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success';
-      badge.style.fontSize = '0.65rem';
-      cartBtn.appendChild(badge);
+  // 3. Wishlist Heart Toggle
+  window.toggleWishlist = async function (productId, btnEl) {
+    if (!btnEl) return;
+    const heartIcon = btnEl.querySelector('i');
+    try {
+      const res = await fetch('/api/wishlist/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrftoken || getCookie('csrftoken') || ''
+        },
+        body: JSON.stringify({ product_id: productId })
+      });
+      const data = await res.json();
+      if (res.ok && data.action === 'added') {
+        if (heartIcon) {
+          heartIcon.className = 'fa-solid fa-heart text-danger';
+        }
+        btnEl.classList.add('bg-danger', 'bg-opacity-10');
+        window.showAntixorToast('Saved to your Clinical Wishlist!', 'success');
+        document.querySelectorAll('.aura-wishlist-count-badge').forEach(el => {
+          el.textContent = data.total_items || '1';
+          el.style.display = 'inline-flex';
+        });
+      } else if (res.ok && data.action === 'removed') {
+        if (heartIcon) {
+          heartIcon.className = 'fa-regular fa-heart';
+          heartIcon.style.color = '#475569';
+        }
+        btnEl.classList.remove('bg-danger', 'bg-opacity-10');
+        window.showAntixorToast('Removed from Wishlist', 'warning');
+        document.querySelectorAll('.aura-wishlist-count-badge').forEach(el => {
+          el.textContent = data.total_items || '0';
+          if (data.total_items === 0) el.style.display = 'none';
+        });
+      } else {
+        if (heartIcon && heartIcon.classList.contains('fa-regular')) {
+          heartIcon.className = 'fa-solid fa-heart text-danger';
+          window.showAntixorToast('Saved to Wishlist!', 'success');
+        } else if (heartIcon) {
+          heartIcon.className = 'fa-regular fa-heart';
+          window.showAntixorToast('Removed from Wishlist', 'warning');
+        }
+      }
+    } catch (err) {
+      if (heartIcon && heartIcon.classList.contains('fa-regular')) {
+        heartIcon.className = 'fa-solid fa-heart text-danger';
+        window.showAntixorToast('Saved to Wishlist!', 'success');
+      } else if (heartIcon) {
+        heartIcon.className = 'fa-regular fa-heart';
+        window.showAntixorToast('Removed from Wishlist', 'warning');
+      }
     }
-    if (badge) {
-      badge.textContent = count;
-      badge.style.display = count > 0 ? 'inline-flex' : 'none';
+  };
+
+  // 4. Coupon Copy to Clipboard
+  window.copyCouponCode = function (code) {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(code).then(() => {
+        window.showAntixorToast(`✓ Coupon "${code}" copied to clipboard!`, 'success');
+      }).catch(() => {
+        window.showAntixorToast(`Coupon code is: ${code}`, 'success');
+      });
+    } else {
+      window.showAntixorToast(`Coupon code: ${code}`, 'success');
     }
-  }
+  };
+
+  // 5. Grid View / List View Switcher
+  window.switchCatalogView = function (viewType) {
+    const grid = document.getElementById('catalog-grid');
+    const gridBtn = document.querySelector('button[title="Grid View"], button[title="Grid"]');
+    const listBtn = document.querySelector('button[title="List View"], button[title="List"]');
+    if (!grid) return;
+
+    if (viewType === 'list') {
+      grid.className = 'row g-3 antixor-list-view';
+      document.querySelectorAll('#catalog-grid > div').forEach(col => {
+        col.className = 'col-12';
+        const card = col.querySelector('.shop-med-card');
+        if (card) {
+          card.classList.add('flex-md-row', 'align-items-md-center', 'gap-4', 'p-3');
+        }
+      });
+      if (listBtn) {
+        listBtn.style.backgroundColor = '#e6f9f0';
+        listBtn.style.color = '#009b72';
+        listBtn.style.borderColor = '#a7f3d0';
+      }
+      if (gridBtn) {
+        gridBtn.style.backgroundColor = '#ffffff';
+        gridBtn.style.color = '#64748b';
+        gridBtn.style.borderColor = '#e2e8f0';
+      }
+      window.showAntixorToast('Switched to Detailed List View', 'success');
+    } else {
+      grid.className = 'row g-2 g-xl-3';
+      document.querySelectorAll('#catalog-grid > div').forEach(col => {
+        col.className = 'col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6';
+        const card = col.querySelector('.shop-med-card');
+        if (card) {
+          card.classList.remove('flex-md-row', 'align-items-md-center', 'gap-4', 'p-3');
+        }
+      });
+      if (gridBtn) {
+        gridBtn.style.backgroundColor = '#e6f9f0';
+        gridBtn.style.color = '#009b72';
+        gridBtn.style.borderColor = '#a7f3d0';
+      }
+      if (listBtn) {
+        listBtn.style.backgroundColor = '#ffffff';
+        listBtn.style.color = '#64748b';
+        listBtn.style.borderColor = '#e2e8f0';
+      }
+      window.showAntixorToast('Switched to Grid View', 'success');
+    }
+  };
+
+  // 6. Cart Drawer Open & Close
+  window.openCartDrawer = async function () {
+    let drawer = document.getElementById('aura-cart-drawer');
+    let backdrop = document.getElementById('aura-cart-backdrop');
+    if (drawer && backdrop) {
+      drawer.classList.add('open');
+      backdrop.classList.add('show');
+      try {
+        const res = await fetch('/api/cart/');
+        if (res.ok) {
+          const cart = await res.json();
+          window.renderCartDrawer(cart);
+        }
+      } catch(e) {}
+    }
+  };
+
+  window.closeCartDrawer = function () {
+    let drawer = document.getElementById('aura-cart-drawer');
+    let backdrop = document.getElementById('aura-cart-backdrop');
+    if (drawer && backdrop) {
+      drawer.classList.remove('open');
+      backdrop.classList.remove('show');
+    }
+  };
+
+  window.renderCartDrawer = function (cart) {
+    const container = document.getElementById('aura-cart-drawer-items');
+    if (!container || !cart) return;
+
+    if (!cart.items || cart.items.length === 0) {
+      container.innerHTML = `
+        <div class="text-center py-5">
+          <div class="mb-3 text-muted">
+            <i class="fa-solid fa-basket-shopping fa-3x" style="color: #cbd5e1;"></i>
+          </div>
+          <h6 class="fw-bold">Your medicine cart is empty</h6>
+          <p class="text-muted small">Search or browse products to add medications and health essentials.</p>
+          <a href="/shop/" class="btn btn-sm btn-success rounded-pill px-3 py-2 fw-bold" style="background-color:#009b72;" onclick="closeCartDrawer()">Browse Pharmacy</a>
+        </div>
+      `;
+      document.querySelectorAll('.aura-cart-subtotal-val').forEach(el => el.textContent = '$0.00');
+      document.querySelectorAll('.aura-cart-total-val').forEach(el => el.textContent = '$0.00');
+      const chkBtn = document.getElementById('aura-drawer-checkout-btn');
+      if (chkBtn) chkBtn.classList.add('disabled');
+      return;
+    }
+
+    let html = '';
+    cart.items.forEach(item => {
+      html += `
+        <div class="aura-cart-item d-flex gap-3 p-3 border-bottom align-items-center">
+          <img src="${item.product.image || '/static/images/placeholder_medicine.png'}" alt="${item.product.name}" class="aura-cart-item-img rounded-3 border" style="width: 50px; height: 50px; object-fit: contain;">
+          <div class="flex-grow-1">
+            <div class="d-flex justify-content-between align-items-start">
+              <h6 class="mb-0 fw-bold small text-truncate" style="max-width: 180px;">${item.product.name}</h6>
+              <button class="btn btn-sm text-danger p-0 border-0" onclick="removeCartItem(${item.id})" title="Remove">
+                <i class="fa-regular fa-trash-can"></i>
+              </button>
+            </div>
+            <div class="text-muted small" style="font-size: 0.72rem;">${item.product.dosage || ''}</div>
+            <div class="d-flex justify-content-between align-items-center mt-2">
+              <div class="aura-qty-stepper d-inline-flex align-items-center border rounded-pill bg-light p-1">
+                <button class="btn btn-sm p-0 px-2 fw-bold" onclick="updateCartItemQty(${item.id}, ${item.quantity - 1})">-</button>
+                <span class="px-2 small fw-bold">${item.quantity}</span>
+                <button class="btn btn-sm p-0 px-2 fw-bold" onclick="updateCartItemQty(${item.id}, ${item.quantity + 1})">+</button>
+              </div>
+              <span class="fw-bold text-dark small">$${item.subtotal.toFixed(2)}</span>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+    container.innerHTML = html;
+    document.querySelectorAll('.aura-cart-subtotal-val').forEach(el => el.textContent = `$${cart.total_price.toFixed(2)}`);
+    document.querySelectorAll('.aura-cart-total-val').forEach(el => el.textContent = `$${cart.total_price.toFixed(2)}`);
+    const chkBtn = document.getElementById('aura-drawer-checkout-btn');
+    if (chkBtn) chkBtn.classList.remove('disabled');
+  };
+
+  window.updateCartItemQty = async function (itemId, newQty) {
+    try {
+      const res = await fetch('/api/cart/', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrftoken || getCookie('csrftoken') || ''
+        },
+        body: JSON.stringify({ item_id: itemId, quantity: newQty })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        window.renderCartDrawer(data.cart);
+        document.querySelectorAll('.aura-cart-count-badge').forEach(el => el.textContent = data.cart.total_items);
+      }
+    } catch(e) {}
+  };
+
+  window.removeCartItem = async function (itemId) {
+    try {
+      const res = await fetch(`/api/cart/?item_id=${itemId}`, {
+        method: 'DELETE',
+        headers: {
+          'X-CSRFToken': csrftoken || getCookie('csrftoken') || ''
+        }
+      });
+      const data = await res.json();
+      if (res.ok) {
+        window.renderCartDrawer(data.cart);
+        document.querySelectorAll('.aura-cart-count-badge').forEach(el => el.textContent = data.cart.total_items);
+        window.showAntixorToast('Item removed from cart', 'warning');
+      }
+    } catch(e) {}
+  };
+
+  // 7. Delivery Location Selectors
+  window.updateDeliveryLocation = function () {
+    const inp = document.getElementById('locZipInput');
+    const val = inp ? inp.value.trim() : '10001';
+    let locName = `Hub: ${val} Express`;
+    if (val.startsWith('100') || val === '10001') locName = 'Central, New York 10001';
+    else if (val.startsWith('400')) locName = 'BKC, Mumbai 400051';
+    else if (val.startsWith('110')) locName = 'South Delhi 110016';
+    else locName = `Pincode: ${val}`;
+    
+    window.setFastLocation(locName);
+  };
+
+  window.setFastLocation = function (locName) {
+    document.querySelectorAll('.delivery-loc-display').forEach(el => {
+      el.innerHTML = `${locName} <i class="fa-solid fa-chevron-down text-muted" style="font-size: 0.65rem;"></i>`;
+    });
+    const modalEl = document.getElementById('deliveryLocationModal');
+    if (modalEl) {
+      const modal = bootstrap.Modal.getInstance(modalEl);
+      if (modal) modal.hide();
+    }
+    window.showAntixorToast(`Delivery hub set to: ${locName}`, 'success');
+  };
 
   // Bind Add to Cart buttons
   document.querySelectorAll('.antixor-btn-add-cart').forEach(btn => {
