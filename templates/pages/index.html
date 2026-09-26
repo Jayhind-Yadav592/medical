@@ -1,231 +1,132 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block title %}Antixor Pharmacy — Trusted Healthcare & Clinical Dispensary{% endblock %}
+
 {% block content %}
 
+<!-- Global Clean Topbar & Navbar -->
+{% include 'partials/navbar.html' %}
+
 <!-- =========================================================================
-     00 — TOPBAR (URGENT CARE & FAST DELIVERY STRIP)
+     01 — HERO SECTION (FULL-WIDTH EXPANSIVE STUDIO DESIGN)
      ========================================================================= -->
-<div class="antixor-topbar d-none d-md-block">
-  <div class="container">
-    <div class="d-flex align-items-center justify-content-between">
-      <div class="d-flex align-items-center gap-4">
-        <span class="antixor-topbar-item">
-          <span class="antixor-pulse-dot me-1"></span>
-          <strong>Express 2-Hour Delivery</strong> available in your area
-        </span>
-        <span class="antixor-topbar-item">
-          📞 24/7 Clinical Hotline: <a href="tel:18002684967" class="antixor-topbar-link ms-1">+1 (800) ANTIXOR</a>
-        </span>
+<section class="antixor-hero py-4 py-lg-5" style="background: linear-gradient(180deg, #edf9f5 0%, #ffffff 100%);">
+  <div class="container-fluid px-3 px-md-5 max-w-1600">
+    <div class="row align-items-center g-4 g-xl-5">
+      
+      <!-- Left Column: Text & Search Engine -->
+      <div class="col-lg-7">
+        
+        <!-- Live Trust Badge -->
+        <div class="antixor-hero-tag mb-3">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <span>Your Health. Our Priority. Since 2020</span>
+        </div>
+
+        <h1 class="antixor-hero-title mb-3" style="font-size: clamp(2.3rem, 4.2vw, 3.8rem); font-weight: 800; line-height: 1.18;">
+          Trusted Pharmacy for a <span class="highlight" style="color: #0a5c43;">Healthier Tomorrow</span>
+        </h1>
+
+        <p class="antixor-hero-desc mb-4" style="font-size: 1.05rem; color: #475569; max-width: 640px; line-height: 1.6;">
+          Antixor Pharmacy delivers 100% genuine certified medicines, clinical health supplements, and 24/7 tele-pharmacist consultations directly to your doorstep.
+        </p>
+
+        <!-- 3 Value Checkpoints -->
+        <div class="d-flex flex-wrap gap-3 mb-4">
+          <div class="d-flex align-items-center gap-2 small fw-bold text-dark bg-white px-3 py-2 rounded-pill shadow-sm border">
+            <span class="text-success fw-extrabold">✓</span>
+            <span>100% Genuine Medicines</span>
+          </div>
+          <div class="d-flex align-items-center gap-2 small fw-bold text-dark bg-white px-3 py-2 rounded-pill shadow-sm border">
+            <span class="text-success fw-extrabold">✓</span>
+            <span>Cold-Chain Express Delivery</span>
+          </div>
+          <div class="d-flex align-items-center gap-2 small fw-bold text-dark bg-white px-3 py-2 rounded-pill shadow-sm border">
+            <span class="text-success fw-extrabold">✓</span>
+            <span>Licensed Pharmacists</span>
+          </div>
+        </div>
+
+        <!-- Live Medicine Search Bar -->
+        <div class="antixor-search-box mb-3" style="box-shadow: 0 8px 24px -4px rgba(10, 92, 67, 0.12);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" class="me-2 flex-shrink-0">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" class="antixor-search-input" placeholder="Search medicines, vitamins, brands (e.g. Paracetamol, Vitamin D3)..." autocomplete="off" onkeyup="if(event.key === 'Enter') window.location.href='/shop/?q=' + encodeURIComponent(this.value)">
+          <button type="button" class="antixor-search-btn" onclick="const q = document.querySelector('.antixor-search-input').value; window.location.href='/shop/?q=' + encodeURIComponent(q);">
+            Search
+          </button>
+        </div>
+
+        <!-- Popular Search Tags -->
+        <div class="d-flex align-items-center gap-2 flex-wrap small">
+          <span class="text-muted fw-bold">Popular:</span>
+          <a href="{% url 'shop' %}?q=Paracetamol" class="badge bg-white text-dark border rounded-pill px-3 py-2 text-decoration-none fw-semibold shadow-sm">Pain Relief</a>
+          <a href="{% url 'shop' %}?q=Vitamin" class="badge bg-white text-dark border rounded-pill px-3 py-2 text-decoration-none fw-semibold shadow-sm">Vitamins</a>
+          <a href="{% url 'shop' %}?q=Omega" class="badge bg-white text-dark border rounded-pill px-3 py-2 text-decoration-none fw-semibold shadow-sm">Heart Care</a>
+          <a href="{% url 'shop' %}?q=Skin" class="badge bg-white text-dark border rounded-pill px-3 py-2 text-decoration-none fw-semibold shadow-sm">Skin Care</a>
+          <a href="{% url 'shop' %}?q=Amoxicillin" class="badge bg-white text-dark border rounded-pill px-3 py-2 text-decoration-none fw-semibold shadow-sm">Antibiotics</a>
+        </div>
+
       </div>
-      <div class="d-flex align-items-center gap-3">
-        <span class="antixor-topbar-item">🛡️ 100% Genuine Certified</span>
-        <span class="antixor-topbar-item text-white-50">|</span>
-        <a href="{% url 'prescriptions' %}" class="antixor-topbar-link">📄 Quick Prescription Upload</a>
+
+      <!-- Right Column: Studio Doctor Visual & Floating Badges -->
+      <div class="col-lg-5 text-center">
+        <div class="antixor-hero-img-wrap position-relative d-inline-block">
+          
+          <!-- Top Floating Live Status -->
+          <div class="antixor-float-badge antixor-float-badge-top shadow-lg">
+            <span class="antixor-pulse-dot"></span>
+            <div class="text-start">
+              <div class="fw-bold text-dark" style="font-size: 0.85rem; line-height: 1.2;">14 Specialists</div>
+              <div class="text-muted" style="font-size: 0.725rem;">Available Online Now</div>
+            </div>
+          </div>
+
+          <!-- Doctor Studio Visual Card -->
+          <div class="antixor-hero-doctor-card rounded-4 overflow-hidden shadow-2xl border" style="border-color: rgba(255,255,255,0.8);">
+            <img src="{% static 'images/hero_doctor.jpg' %}" alt="Dr. Julian Carter, Lead Physician" class="antixor-hero-img img-fluid">
+          </div>
+
+          <!-- Bottom Floating Trust Badge -->
+          <div class="antixor-float-badge antixor-float-badge-bottom shadow-lg">
+            <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 38px; height: 38px; background: #e6f7f2; color: #0a5c43; font-weight: 800; font-size: 1rem;">
+              ★
+            </div>
+            <div class="text-start">
+              <div class="fw-bold text-dark" style="font-size: 0.85rem; line-height: 1.2;">4.9 / 5 Rating</div>
+              <div class="text-muted" style="font-size: 0.725rem;">18,400+ Verified Patients</div>
+            </div>
+          </div>
+
+        </div>
       </div>
+
     </div>
   </div>
-</div>
+</section>
 
 <!-- =========================================================================
-     01 — NAVBAR & HERO SECTION
+     02 — HEALTHCARE SERVICES SECTION (FULL-WIDTH 6-GRID)
      ========================================================================= -->
-<header>
-  <!-- Main Navbar -->
-  <nav class="antixor-navbar">
-    <div class="container">
-      <div class="d-flex align-items-center justify-content-between">
-        
-        <!-- Antixor Brand Logo -->
-        <a href="{% url 'home' %}" class="antixor-brand">
-          <div class="antixor-logo-cross">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 10.5h-5.5V5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5H5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h5.5V19c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-5.5H19c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z"/>
-            </svg>
-          </div>
-          <span>Antixor <span style="font-weight: 500; font-size: 0.95rem; color: #64748b; display: block; line-height: 1;">Pharmacy</span></span>
-        </a>
-
-        <!-- Desktop Navigation Links -->
-        <ul class="antixor-nav-links d-none d-lg-flex">
-          <li><a href="{% url 'home' %}" class="antixor-nav-link active">Home</a></li>
-          <li><a href="{% url 'shop' %}" class="antixor-nav-link">Medicines &amp; Shop</a></li>
-          <li><a href="{% url 'services' %}" class="antixor-nav-link">Health Services</a></li>
-          <li><a href="{% url 'telehealth' %}" class="antixor-nav-link">Doctors &amp; Telehealth</a></li>
-          <li><a href="{% url 'facilities' %}" class="antixor-nav-link">Nearest Hospitals</a></li>
-          <li><a href="{% url 'articles' %}" class="antixor-nav-link">Health Articles</a></li>
-          <li><a href="{% url 'about' %}" class="antixor-nav-link">About Us</a></li>
-          <li><a href="{% url 'contact' %}" class="antixor-nav-link">Contact</a></li>
-        </ul>
-
-        <!-- Right Side Icons & Login / Profile Button -->
-        <div class="d-flex align-items-center gap-3">
-          <button class="antixor-icon-btn" title="Search Medicines" aria-label="Search Medicines" onclick="document.querySelector('.antixor-search-input').focus(); window.scrollTo({top: 120, behavior: 'smooth'});">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-          </button>
-          
-          <a href="{% url 'cart' %}" class="antixor-icon-btn position-relative" title="Shopping Cart" aria-label="Shopping Cart">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-              <line x1="3" y1="6" x2="21" y2="6"></line>
-              <path d="M16 10a4 4 0 0 1-8 0"></path>
-            </svg>
-            <span class="antixor-cart-badge position-absolute top-0 start-100 translate-middle badge rounded-pill bg-success" style="display: none; font-size: 0.65rem;">0</span>
-          </a>
-
-          {% if user.is_authenticated %}
-            <div class="dropdown">
-              <button class="btn antixor-btn-login d-flex align-items-center gap-2 dropdown-toggle text-white border-0 shadow-sm" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="padding: 8px 18px; background: #0a5c43; border-radius: 9999px;">
-                <span class="rounded-circle bg-white fw-bold d-inline-flex align-items-center justify-content-center" style="width: 24px; height: 24px; font-size: 0.75rem; color: #0a5c43 !important;">
-                  {{ user.first_name|default:user.username|make_list|first|upper }}
-                </span>
-                <span class="fw-bold">{{ user.first_name|default:user.username }}</span>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end shadow-lg rounded-4 border-0 p-2 mt-2" style="min-width: 220px;">
-                <li>
-                  <div class="px-3 py-2 border-bottom mb-2">
-                    <div class="fw-bold text-dark small">{{ user.full_name|default:user.username }}</div>
-                    <div class="text-muted" style="font-size: 0.75rem;">{{ user.email|default:"Patient Account" }}</div>
-                  </div>
-                </li>
-                <li><a class="dropdown-item rounded-3 py-2 small fw-semibold" href="{% url 'dashboard' %}">📊 Patient Dashboard</a></li>
-                <li><a class="dropdown-item rounded-3 py-2 small fw-semibold" href="{% url 'prescriptions' %}">📋 My Prescriptions</a></li>
-                <li><a class="dropdown-item rounded-3 py-2 small fw-semibold" href="{% url 'order-track' %}">🚚 Track Orders</a></li>
-                {% if user.is_staff or user.is_superuser %}
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item rounded-3 py-2 small fw-semibold text-primary" href="/admin/" target="_blank">🛡️ Admin Portal</a></li>
-                {% endif %}
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item rounded-3 py-2 small fw-bold text-danger" href="{% url 'logout' %}">🚪 Sign Out</a></li>
-              </ul>
-            </div>
-          {% else %}
-            <a href="#" class="antixor-btn-login" data-bs-toggle="modal" data-bs-target="#auraAuthModal">
-              <span>Login / Sign Up</span>
-            </a>
-          {% endif %}
-        </div>
-
-      </div>
-    </div>
-  </nav>
-
-  <!-- Hero Content Section -->
-  <section class="antixor-hero">
-    <div class="container">
-      <div class="row align-items-center g-5">
-        
-        <!-- Left: Text & Search Content -->
-        <div class="col-lg-7">
-          
-          <div class="antixor-hero-tag">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            <span>Your Health. Our Priority. Since 2020</span>
-          </div>
-
-          <h1 class="antixor-hero-title">
-            Trusted Pharmacy for a <span class="highlight">Healthier Tomorrow</span>
-          </h1>
-
-          <p class="antixor-hero-desc">
-            Antixor Pharmacy delivers 100% genuine certified medicines, wellness supplements, and 24/7 clinical healthcare consultations right to your doorstep.
-          </p>
-
-          <!-- 3 Value Checkpoints -->
-          <div class="antixor-hero-checks">
-            <div class="antixor-check-item">
-              <span class="antixor-check-icon">✓</span>
-              <span>100% Genuine Medicines</span>
-            </div>
-            <div class="antixor-check-item">
-              <span class="antixor-check-icon">✓</span>
-              <span>Cold-Chain Express Delivery</span>
-            </div>
-            <div class="antixor-check-item">
-              <span class="antixor-check-icon">✓</span>
-              <span>Licensed Pharmacists</span>
-            </div>
-          </div>
-
-          <!-- Live Medicine Search Bar with Autocomplete -->
-          <div class="antixor-search-box">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2" class="me-2 flex-shrink-0">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <input type="text" class="antixor-search-input" placeholder="Search medicines, vitamins, brands (e.g. Paracetamol, Vitamin D3)..." autocomplete="off">
-            <button type="button" class="antixor-search-btn">Search</button>
-          </div>
-
-          <!-- Popular Search Tags -->
-          <div class="antixor-search-tags">
-            <span class="text-muted fw-bold me-1">Popular:</span>
-            <a href="javascript:void(0)" class="antixor-search-tag-pill" onclick="document.querySelector('.antixor-search-input').value='Paracetamol'; document.querySelector('.antixor-search-input').dispatchEvent(new Event('input'));">Pain Relief</a>
-            <a href="javascript:void(0)" class="antixor-search-tag-pill" onclick="document.querySelector('.antixor-search-input').value='Vitamin D3'; document.querySelector('.antixor-search-input').dispatchEvent(new Event('input'));">Vitamins</a>
-            <a href="javascript:void(0)" class="antixor-search-tag-pill" onclick="document.querySelector('.antixor-search-input').value='Omega 3'; document.querySelector('.antixor-search-input').dispatchEvent(new Event('input'));">Heart Care</a>
-            <a href="javascript:void(0)" class="antixor-search-tag-pill" onclick="document.querySelector('.antixor-search-input').value='Skin'; document.querySelector('.antixor-search-input').dispatchEvent(new Event('input'));">Skin Care</a>
-            <a href="javascript:void(0)" class="antixor-search-tag-pill" onclick="document.querySelector('.antixor-search-input').value='Amoxicillin'; document.querySelector('.antixor-search-input').dispatchEvent(new Event('input'));">Antibiotics</a>
-          </div>
-
-        </div>
-
-        <!-- Right: Studio Doctor Visual & Floating Badges -->
-        <div class="col-lg-5">
-          <div class="antixor-hero-img-wrap">
-            
-            <!-- Top Floating Live Status -->
-            <div class="antixor-float-badge antixor-float-badge-top">
-              <span class="antixor-pulse-dot"></span>
-              <div class="text-start">
-                <div class="fw-extrabold text-dark" style="font-size: 0.85rem; line-height: 1.2;">14 Specialists</div>
-                <div class="text-muted" style="font-size: 0.725rem;">Available Online Now</div>
-              </div>
-            </div>
-
-            <!-- Doctor Card Visual -->
-            <div class="antixor-hero-doctor-card">
-              <img src="{% static 'images/hero_doctor.jpg' %}" alt="Dr. Julian Carter, Lead Physician" class="antixor-hero-img">
-            </div>
-
-            <!-- Bottom Floating Trust Badge -->
-            <div class="antixor-float-badge antixor-float-badge-bottom">
-              <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 38px; height: 38px; background: #e6f7f2; color: #0a5c43; font-weight: 800; font-size: 1rem;">
-                ★
-              </div>
-              <div class="text-start">
-                <div class="fw-extrabold text-dark" style="font-size: 0.85rem; line-height: 1.2;">4.9 / 5 Rating</div>
-                <div class="text-muted" style="font-size: 0.725rem;">18,400+ Verified Patients</div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-</header>
-
-
-<!-- =========================================================================
-     02 — SERVICES SECTION
-     ========================================================================= -->
-<section class="antixor-services" id="services">
-  <div class="container">
+<section class="antixor-services py-5" id="services" style="background: #ffffff;">
+  <div class="container-fluid px-3 px-md-5 max-w-1600">
     
     <!-- Section Header -->
-    <div class="antixor-section-header">
+    <div class="d-flex flex-wrap justify-content-between align-items-end mb-4 gap-2">
       <div>
-        <h2 class="antixor-section-title">Our Healthcare Services</h2>
-        <p class="antixor-section-subtitle">More than just a pharmacy — complete healthcare support for your whole family.</p>
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2" style="background: #e6f7f2; color: #0a5c43; font-size: 0.75rem; font-weight: 800;">
+          <span>CLINICAL SOLUTIONS</span>
+        </div>
+        <h2 class="h3 fw-bold text-dark mb-1">Our Healthcare Services</h2>
+        <p class="text-muted mb-0 small">More than just a pharmacy &mdash; complete medical support for your family.</p>
       </div>
-      <a href="{% url 'services' %}" class="antixor-view-all">View All Services →</a>
+      <a href="{% url 'services' %}" class="btn btn-sm btn-outline-success rounded-pill fw-bold px-3 py-1">View All Services →</a>
     </div>
 
-    <!-- 3x2 Grid of 6 Services Cards -->
+    <!-- 6 Services Grid -->
     <div class="row g-4">
       
       <!-- Card 1: Prescription Medicines -->
@@ -233,16 +134,10 @@
         <div class="antixor-service-card" onclick="window.location.href='{% url 'prescriptions' %}'" style="cursor: pointer;">
           <span class="antixor-service-arrow">→</span>
           <div class="antixor-service-icon-box" style="background: #e0f2fe; color: #0284c7;">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-              <polyline points="14 2 14 8 20 8"></polyline>
-              <line x1="16" y1="13" x2="8" y2="13"></line>
-              <line x1="16" y1="17" x2="8" y2="17"></line>
-              <polyline points="10 9 9 9 8 9"></polyline>
-            </svg>
+            📄
           </div>
-          <h3 class="antixor-service-title">Prescription Medicines</h3>
-          <p class="antixor-service-desc">Upload doctor's prescription for instant 5-minute verification & doorstep delivery.</p>
+          <h3 class="antixor-service-title">Prescription Verification</h3>
+          <p class="antixor-service-desc">Upload doctor's prescription for instant 5-minute verification & cold-chain doorstep delivery.</p>
         </div>
       </div>
 
@@ -251,74 +146,58 @@
         <div class="antixor-service-card" onclick="window.location.href='{% url 'shop' %}'" style="cursor: pointer;">
           <span class="antixor-service-arrow">→</span>
           <div class="antixor-service-icon-box" style="background: #f3e8ff; color: #9333ea;">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="6" y="2" width="12" height="20" rx="3"></rect>
-              <line x1="6" y1="7" x2="18" y2="7"></line>
-              <line x1="9" y1="13" x2="15" y2="13"></line>
-              <line x1="12" y1="10" x2="12" y2="16"></line>
-            </svg>
+            💊
           </div>
           <h3 class="antixor-service-title">Over The Counter (OTC)</h3>
-          <p class="antixor-service-desc">Daily wellness essentials, pain relievers, fever medicines, and first-aid kits.</p>
+          <p class="antixor-service-desc">Daily wellness essentials, pain relievers, fever medicines, first-aid kits and chronic care.</p>
         </div>
       </div>
 
       <!-- Card 3: Online Consultation -->
       <div class="col-lg-4 col-md-6">
-        <div class="antixor-service-card" onclick="document.querySelector('.antixor-btn-cta-white').click()" style="cursor: pointer;">
+        <div class="antixor-service-card" onclick="window.location.href='{% url 'telehealth' %}'" style="cursor: pointer;">
           <span class="antixor-service-arrow">→</span>
           <div class="antixor-service-icon-box" style="background: #dcfce7; color: #16a34a;">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-            </svg>
+            🩺
           </div>
-          <h3 class="antixor-service-title">Online Consultation</h3>
+          <h3 class="antixor-service-title">Telehealth Video Consult</h3>
           <p class="antixor-service-desc">Connect with certified doctors and clinical pharmacists for expert medication guidance.</p>
         </div>
       </div>
 
-      <!-- Card 4: Health Checkup -->
+      <!-- Card 4: Nearest Hospitals -->
       <div class="col-lg-4 col-md-6">
-        <div class="antixor-service-card" onclick="window.location.href='{% url 'telehealth' %}'" style="cursor: pointer;">
+        <div class="antixor-service-card" onclick="window.location.href='{% url 'facilities' %}'" style="cursor: pointer;">
           <span class="antixor-service-arrow">→</span>
-          <div class="antixor-service-icon-box" style="background: #ffedd5; color: #ea580c;">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-            </svg>
+          <div class="antixor-service-icon-box" style="background: #fee2e2; color: #dc2626;">
+            🏥
           </div>
-          <h3 class="antixor-service-title">Health Packages & Lab Tests</h3>
-          <p class="antixor-service-desc">Diagnostic test bookings, full-body health checks, and digital reports.</p>
+          <h3 class="antixor-service-title">Nearest Hospitals &amp; Radar</h3>
+          <p class="antixor-service-desc">Real-time GPS locator for 24/7 trauma centers, ICU bed tracking, and paramedic dispatch.</p>
         </div>
       </div>
 
-      <!-- Card 5: Wellness Products -->
+      <!-- Card 5: Symptom Intake -->
       <div class="col-lg-4 col-md-6">
-        <div class="antixor-service-card" onclick="window.location.href='{% url 'shop' %}?category=vitamins-immunity'" style="cursor: pointer;">
+        <div class="antixor-service-card" onclick="window.location.href='{% url 'intake' %}'" style="cursor: pointer;">
           <span class="antixor-service-arrow">→</span>
           <div class="antixor-service-icon-box" style="background: #fce7f3; color: #db2777;">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2a5 5 0 0 0-5 5v14h10V7a5 5 0 0 0-5-5z"></path>
-            </svg>
+            📋
           </div>
-          <h3 class="antixor-service-title">Wellness & Supplements</h3>
-          <p class="antixor-service-desc">Pure organic multivitamins, Omega-3 fatty acids, and immune boosters.</p>
+          <h3 class="antixor-service-title">Smart Symptom Triage</h3>
+          <p class="antixor-service-desc">Automated AI safety contraindication screening and dispensary allocation engine.</p>
         </div>
       </div>
 
-      <!-- Card 6: Home Delivery -->
+      <!-- Card 6: Health ID Card -->
       <div class="col-lg-4 col-md-6">
-        <div class="antixor-service-card" onclick="window.location.href='{% url 'order-track' %}'" style="cursor: pointer;">
+        <div class="antixor-service-card" onclick="window.location.href='{% url 'health-card' %}'" style="cursor: pointer;">
           <span class="antixor-service-arrow">→</span>
           <div class="antixor-service-icon-box" style="background: #ccfbf1; color: #0d9488;">
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="1" y="3" width="15" height="13"></rect>
-              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-              <circle cx="5.5" cy="18.5" r="2.5"></circle>
-              <circle cx="18.5" cy="18.5" r="2.5"></circle>
-            </svg>
+            🪪
           </div>
-          <h3 class="antixor-service-title">Express Cold-Chain Delivery</h3>
-          <p class="antixor-service-desc">Temperature-regulated sealed packaging delivered safely to your home.</p>
+          <h3 class="antixor-service-title">Digital Health Passport</h3>
+          <p class="antixor-service-desc">Printable QR emergency medical card with blood group, allergy records and doctor notes.</p>
         </div>
       </div>
 
@@ -326,20 +205,22 @@
   </div>
 </section>
 
-
 <!-- =========================================================================
-     03 — FEATURED PRODUCTS SECTION (E-COMMERCE SHOWCASE)
+     03 — FEATURED HEALTH PRODUCTS (FULL-WIDTH 4-GRID)
      ========================================================================= -->
-<section class="antixor-products" id="products">
-  <div class="container">
+<section class="antixor-products py-5" id="products" style="background: #f8fafc;">
+  <div class="container-fluid px-3 px-md-5 max-w-1600">
     
     <!-- Section Header -->
-    <div class="antixor-section-header">
+    <div class="d-flex flex-wrap justify-content-between align-items-end mb-4 gap-2">
       <div>
-        <h2 class="antixor-section-title">Featured Health Essentials</h2>
-        <p class="antixor-section-subtitle">Top quality certified medicines & health supplements with doorstep delivery.</p>
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2" style="background: #e6f7f2; color: #0a5c43; font-size: 0.75rem; font-weight: 800;">
+          <span>VERIFIED MEDICATIONS</span>
+        </div>
+        <h2 class="h3 fw-bold text-dark mb-1">Featured Health Essentials</h2>
+        <p class="text-muted mb-0 small">Top quality certified medicines &amp; health supplements with cold-chain delivery.</p>
       </div>
-      <a href="{% url 'shop' %}" class="antixor-view-all">View Full Catalog →</a>
+      <a href="{% url 'shop' %}" class="btn btn-sm btn-outline-success rounded-pill fw-bold px-3 py-1">View Full Catalog →</a>
     </div>
 
     <!-- 4 Products Row with Studio HD Photos -->
@@ -347,290 +228,124 @@
       
       <!-- Product 1: Paracetamol 500mg -->
       <div class="col-lg-3 col-sm-6">
-        <div class="antixor-product-card">
+        <div class="antixor-product-card shadow-sm h-100 d-flex flex-column">
           <span class="antixor-product-badge-discount">-35% OFF</span>
           <button class="antixor-product-wishlist" onclick="toggleWishlist(13, this)" title="Add to Wishlist" aria-label="Add to Wishlist">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-            </svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
           </button>
-          <a href="/product/paracetamol-500mg-500mg-ant-para-500/" class="antixor-product-img-box d-block text-decoration-none">
-            <img src="{% static 'images/product_paracetamol.jpg' %}" alt="Paracetamol 500mg" class="antixor-product-img">
+          <a href="/product/paracetamol-500mg-500mg-ant-para-500/" class="antixor-product-img-box d-block text-decoration-none text-center p-3">
+            <img src="{% static 'images/product_paracetamol.jpg' %}" alt="Paracetamol 500mg" class="antixor-product-img" style="max-height: 180px; object-fit: contain;">
           </a>
-          <h3 class="antixor-product-name">
-            <a href="/product/paracetamol-500mg-500mg-ant-para-500/" class="text-decoration-none text-dark">Paracetamol 500mg</a>
-          </h3>
-          <div class="antixor-product-category">Pain Relief &amp; Fever • OTC</div>
-          <div class="antixor-product-rating">
-            <span>★★★★★</span> <strong class="text-dark">4.9</strong> <span class="text-muted">(142)</span>
+          <div class="p-3 d-flex flex-column flex-grow-1">
+            <h3 class="h6 fw-bold mb-1">
+              <a href="/product/paracetamol-500mg-500mg-ant-para-500/" class="text-decoration-none text-dark">Paracetamol 500mg</a>
+            </h3>
+            <div class="text-muted small mb-2">Pain Relief &amp; Fever • OTC</div>
+            <div class="text-warning small mb-3">
+              <span>★★★★★</span> <strong class="text-dark">4.9</strong> <span class="text-muted">(142)</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
+              <div>
+                <span class="h5 fw-bold text-dark mb-0">$2.50</span>
+                <span class="text-muted text-decoration-line-through small ms-1">$3.99</span>
+              </div>
+              <button type="button" class="btn btn-sm btn-success rounded-pill px-3 fw-bold text-white" style="background: #0a5c43;" onclick="addToCart(13, 1, event)">
+                + Add
+              </button>
+            </div>
           </div>
-          <div class="antixor-product-price-row">
-            <div class="antixor-product-price">$2.50</div>
-            <div class="antixor-product-mrp">$3.99</div>
-          </div>
-          <button type="button" class="antixor-btn-add-cart" onclick="addToCart(13, 1, event)">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-            Add to Cart
-          </button>
         </div>
       </div>
 
       <!-- Product 2: Vitamin D3 1000 IU -->
       <div class="col-lg-3 col-sm-6">
-        <div class="antixor-product-card">
+        <div class="antixor-product-card shadow-sm h-100 d-flex flex-column">
           <span class="antixor-product-badge-discount">-25% OFF</span>
           <button class="antixor-product-wishlist" onclick="toggleWishlist(14, this)" title="Add to Wishlist" aria-label="Add to Wishlist">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-            </svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
           </button>
-          <a href="/product/vitamin-d3-1000-iu-1000-iu-ant-vitd3-1000/" class="antixor-product-img-box d-block text-decoration-none">
-            <img src="{% static 'images/product_vitamind3.jpg' %}" alt="Vitamin D3 1000 IU" class="antixor-product-img">
+          <a href="/product/vitamin-d3-1000-iu-1000-iu-ant-vitd3-1000/" class="antixor-product-img-box d-block text-decoration-none text-center p-3">
+            <img src="{% static 'images/product_vitamind3.jpg' %}" alt="Vitamin D3 1000 IU" class="antixor-product-img" style="max-height: 180px; object-fit: contain;">
           </a>
-          <h3 class="antixor-product-name">
-            <a href="/product/vitamin-d3-1000-iu-1000-iu-ant-vitd3-1000/" class="text-decoration-none text-dark">Vitamin D3 1000 IU</a>
-          </h3>
-          <div class="antixor-product-category">Bone &amp; Immunity Support</div>
-          <div class="antixor-product-rating">
-            <span>★★★★★</span> <strong class="text-dark">4.8</strong> <span class="text-muted">(98)</span>
+          <div class="p-3 d-flex flex-column flex-grow-1">
+            <h3 class="h6 fw-bold mb-1">
+              <a href="/product/vitamin-d3-1000-iu-1000-iu-ant-vitd3-1000/" class="text-decoration-none text-dark">Vitamin D3 1000 IU</a>
+            </h3>
+            <div class="text-muted small mb-2">Bone &amp; Immunity Support</div>
+            <div class="text-warning small mb-3">
+              <span>★★★★★</span> <strong class="text-dark">4.8</strong> <span class="text-muted">(98)</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
+              <div>
+                <span class="h5 fw-bold text-dark mb-0">$8.99</span>
+                <span class="text-muted text-decoration-line-through small ms-1">$12.00</span>
+              </div>
+              <button type="button" class="btn btn-sm btn-success rounded-pill px-3 fw-bold text-white" style="background: #0a5c43;" onclick="addToCart(14, 1, event)">
+                + Add
+              </button>
+            </div>
           </div>
-          <div class="antixor-product-price-row">
-            <div class="antixor-product-price">$8.99</div>
-            <div class="antixor-product-mrp">$12.00</div>
-          </div>
-          <button type="button" class="antixor-btn-add-cart" onclick="addToCart(14, 1, event)">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-            Add to Cart
-          </button>
         </div>
       </div>
 
       <!-- Product 3: Omega 3 Fish Oil -->
       <div class="col-lg-3 col-sm-6">
-        <div class="antixor-product-card">
+        <div class="antixor-product-card shadow-sm h-100 d-flex flex-column">
           <span class="antixor-product-badge-discount">-20% OFF</span>
           <button class="antixor-product-wishlist" onclick="toggleWishlist(15, this)" title="Add to Wishlist" aria-label="Add to Wishlist">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-            </svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
           </button>
-          <a href="/product/omega-3-fish-oil-1000mg/" class="antixor-product-img-box d-block text-decoration-none">
-            <img src="{% static 'images/product_omega3.jpg' %}" alt="Omega 3 Fish Oil" class="antixor-product-img">
+          <a href="/product/omega-3-fish-oil-1000mg/" class="antixor-product-img-box d-block text-decoration-none text-center p-3">
+            <img src="{% static 'images/product_omega3.jpg' %}" alt="Omega 3 Fish Oil" class="antixor-product-img" style="max-height: 180px; object-fit: contain;">
           </a>
-          <h3 class="antixor-product-name">
-            <a href="/product/omega-3-fish-oil-1000mg/" class="text-decoration-none text-dark">Omega 3 Fish Oil</a>
-          </h3>
-          <div class="antixor-product-category">Heart &amp; Cardiovascular Health</div>
-          <div class="antixor-product-rating">
-            <span>★★★★★</span> <strong class="text-dark">5.0</strong> <span class="text-muted">(215)</span>
+          <div class="p-3 d-flex flex-column flex-grow-1">
+            <h3 class="h6 fw-bold mb-1">
+              <a href="/product/omega-3-fish-oil-1000mg/" class="text-decoration-none text-dark">Omega 3 Fish Oil</a>
+            </h3>
+            <div class="text-muted small mb-2">Heart &amp; Cardiovascular Care</div>
+            <div class="text-warning small mb-3">
+              <span>★★★★★</span> <strong class="text-dark">5.0</strong> <span class="text-muted">(215)</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
+              <div>
+                <span class="h5 fw-bold text-dark mb-0">$12.99</span>
+                <span class="text-muted text-decoration-line-through small ms-1">$16.50</span>
+              </div>
+              <button type="button" class="btn btn-sm btn-success rounded-pill px-3 fw-bold text-white" style="background: #0a5c43;" onclick="addToCart(15, 1, event)">
+                + Add
+              </button>
+            </div>
           </div>
-          <div class="antixor-product-price-row">
-            <div class="antixor-product-price">$12.99</div>
-            <div class="antixor-product-mrp">$16.50</div>
-          </div>
-          <button type="button" class="antixor-btn-add-cart" onclick="addToCart(15, 1, event)">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-            Add to Cart
-          </button>
         </div>
       </div>
 
       <!-- Product 4: Skin Care Cream -->
       <div class="col-lg-3 col-sm-6">
-        <div class="antixor-product-card">
+        <div class="antixor-product-card shadow-sm h-100 d-flex flex-column">
           <span class="antixor-product-badge-discount">-15% OFF</span>
           <button class="antixor-product-wishlist" onclick="toggleWishlist(16, this)" title="Add to Wishlist" aria-label="Add to Wishlist">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-            </svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
           </button>
-          <a href="/product/skin-care-cream-50ml-jar-ant-skin-cream/" class="antixor-product-img-box d-block text-decoration-none">
-            <img src="{% static 'images/product_skincare.jpg' %}" alt="Skin Care Cream" class="antixor-product-img">
+          <a href="/product/skin-care-cream-50ml-jar-ant-skin-cream/" class="antixor-product-img-box d-block text-decoration-none text-center p-3">
+            <img src="{% static 'images/product_skincare.jpg' %}" alt="Skin Care Cream" class="antixor-product-img" style="max-height: 180px; object-fit: contain;">
           </a>
-          <h3 class="antixor-product-name">
-            <a href="/product/skin-care-cream-50ml-jar-ant-skin-cream/" class="text-decoration-none text-dark">Skin Care Cream</a>
-          </h3>
-          <div class="antixor-product-category">Hydrating Barrier Repair</div>
-          <div class="antixor-product-rating">
-            <span>★★★★★</span> <strong class="text-dark">4.9</strong> <span class="text-muted">(84)</span>
-          </div>
-          <div class="antixor-product-price-row">
-            <div class="antixor-product-price">$14.50</div>
-            <div class="antixor-product-mrp">$18.00</div>
-          </div>
-          <button type="button" class="antixor-btn-add-cart" onclick="addToCart(16, 1, event)">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-            Add to Cart
-          </button>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- =========================================================================
-     04 — HEALTH TIPS & ARTICLES SECTION (DARK TEAL LUXURY)
-     ========================================================================= -->
-<section class="antixor-articles" id="articles">
-  <div class="container">
-    
-    <!-- Section Header -->
-    <div class="antixor-section-header">
-      <div>
-        <h2 class="antixor-section-title">Health Tips & Articles</h2>
-        <p class="antixor-section-subtitle">Stay informed with clinical health guides reviewed by licensed doctors.</p>
-      </div>
-      <a href="{% url 'articles' %}" class="antixor-view-all">Explore All Articles →</a>
-    </div>
-
-    <!-- 3 Editorial Blog Cards with HD Photography -->
-    <div class="row g-4">
-      
-      <!-- Article 1: 5 Essential Vitamins -->
-      <div class="col-lg-4 col-md-6">
-        <div class="antixor-article-card">
-          <div class="antixor-article-img-wrap">
-            <img src="{% static 'images/article_vitamins.jpg' %}" alt="5 Essential Vitamins for Immunity" class="antixor-article-img">
-            <span class="antixor-article-read-time">5 min read</span>
-          </div>
-          <div class="antixor-article-body">
-            <span class="antixor-article-badge">Nutrition & Immunity</span>
-            <h3 class="antixor-article-title">5 Essential Vitamins for a Stronger Immune System</h3>
-            <div class="antixor-article-author">Reviewed by Dr. Elena Vance, PharmD</div>
-            <div class="antixor-article-meta">
-              <span>Aug 25, 2026</span>
-              <a href="{% url 'article-detail' '5-essential-vitamins-immunity' %}" class="antixor-article-link">Read Full Guide →</a>
+          <div class="p-3 d-flex flex-column flex-grow-1">
+            <h3 class="h6 fw-bold mb-1">
+              <a href="/product/skin-care-cream-50ml-jar-ant-skin-cream/" class="text-decoration-none text-dark">Skin Care Cream</a>
+            </h3>
+            <div class="text-muted small mb-2">Hydrating Barrier Repair</div>
+            <div class="text-warning small mb-3">
+              <span>★★★★★</span> <strong class="text-dark">4.9</strong> <span class="text-muted">(84)</span>
             </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Article 2: How to Manage Stress -->
-      <div class="col-lg-4 col-md-6">
-        <div class="antixor-article-card">
-          <div class="antixor-article-img-wrap">
-            <img src="{% static 'images/article_stress.jpg' %}" alt="How to Manage Stress" class="antixor-article-img">
-            <span class="antixor-article-read-time">7 min read</span>
-          </div>
-          <div class="antixor-article-body">
-            <span class="antixor-article-badge">Mental Wellness</span>
-            <h3 class="antixor-article-title">How to Manage Stress for Better Mental Health & Sleep</h3>
-            <div class="antixor-article-author">Reviewed by Dr. Julian Carter, MD</div>
-            <div class="antixor-article-meta">
-              <span>Aug 20, 2026</span>
-              <a href="{% url 'article-detail' 'managing-daily-stress-sleep' %}" class="antixor-article-link">Read Full Guide →</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Article 3: Simple Daily Habits -->
-      <div class="col-lg-4 col-md-6">
-        <div class="antixor-article-card">
-          <div class="antixor-article-img-wrap">
-            <img src="{% static 'images/article_habits.jpg' %}" alt="Simple Daily Habits" class="antixor-article-img">
-            <span class="antixor-article-read-time">4 min read</span>
-          </div>
-          <div class="antixor-article-body">
-            <span class="antixor-article-badge">Healthy Lifestyle</span>
-            <h3 class="antixor-article-title">Simple Daily Habits for Long-Term Vitality & Energy</h3>
-            <div class="antixor-article-author">Reviewed by Dr. Sarah Jeniben</div>
-            <div class="antixor-article-meta">
-              <span>Aug 19, 2026</span>
-              <a href="{% url 'article-detail' 'simple-daily-health-habits' %}" class="antixor-article-link">Read Full Guide →</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- =========================================================================
-     05 — OUR IMPACT / STATISTICS SECTION
-     ========================================================================= -->
-<section class="antixor-impact">
-  <div class="container">
-    
-    <div class="row align-items-center g-5">
-      
-      <!-- Left: Title & 4 Stat Cards -->
-      <div class="col-lg-8">
-        <div class="antixor-hero-tag mb-3">Certified Healthcare Network</div>
-        <h2 class="antixor-section-title">Our Impact in Numbers</h2>
-        <p class="antixor-section-subtitle mb-4">Over 500,000 patients rely on Antixor Pharmacy for verified medicine delivery and clinical advice.</p>
-
-        <div class="row g-3">
-          
-          <div class="col-sm-6 col-md-3">
-            <div class="antixor-stat-card">
-              <div class="antixor-stat-icon-wrap">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="9" cy="7" r="4"></circle>
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                </svg>
+            <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
+              <div>
+                <span class="h5 fw-bold text-dark mb-0">$14.50</span>
+                <span class="text-muted text-decoration-line-through small ms-1">$18.00</span>
               </div>
-              <div class="antixor-stat-number">500K+</div>
-              <p class="antixor-stat-label">Happy Patients</p>
+              <button type="button" class="btn btn-sm btn-success rounded-pill px-3 fw-bold text-white" style="background: #0a5c43;" onclick="addToCart(16, 1, event)">
+                + Add
+              </button>
             </div>
-          </div>
-
-          <div class="col-sm-6 col-md-3">
-            <div class="antixor-stat-card">
-              <div class="antixor-stat-icon-wrap">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="1" y="3" width="15" height="13"></rect>
-                  <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-                  <circle cx="5.5" cy="18.5" r="2.5"></circle>
-                  <circle cx="18.5" cy="18.5" r="2.5"></circle>
-                </svg>
-              </div>
-              <div class="antixor-stat-number">1.2M+</div>
-              <p class="antixor-stat-label">Prescriptions Filled</p>
-            </div>
-          </div>
-
-          <div class="col-sm-6 col-md-3">
-            <div class="antixor-stat-card">
-              <div class="antixor-stat-icon-wrap">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="8" r="7"></circle>
-                  <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
-                </svg>
-              </div>
-              <div class="antixor-stat-number">120+</div>
-              <p class="antixor-stat-label">Certified Doctors</p>
-            </div>
-          </div>
-
-          <div class="col-sm-6 col-md-3">
-            <div class="antixor-stat-card">
-              <div class="antixor-stat-icon-wrap">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                </svg>
-              </div>
-              <div class="antixor-stat-number">99.8%</div>
-              <p class="antixor-stat-label">Accuracy Rate</p>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- Right: Doctor Consultation Visual -->
-      <div class="col-lg-4 text-center">
-        <div class="rounded-4 overflow-hidden shadow-lg border" style="background: white; padding: 12px;">
-          <img src="{% static 'images/pharmacist_female.jpg' %}" alt="Antixor Impact" class="img-fluid rounded-3" style="max-height: 280px; object-fit: cover; width: 100%;">
-          <div class="mt-3 text-start px-2">
-            <div class="fw-bold text-dark small">Clinical Pharmacy Consultation</div>
-            <div class="text-muted" style="font-size: 0.75rem;">Licensed under State Pharmacy Board Regulations</div>
           </div>
         </div>
       </div>
@@ -639,229 +354,41 @@
   </div>
 </section>
 
-
 <!-- =========================================================================
-     06 — WHY CHOOSE ANTIXOR SECTION
+     04 — PROMOTIONAL OFFER BANNER (FULL-WIDTH EXPANSIVE)
      ========================================================================= -->
-<section class="antixor-why-choose" id="why-choose">
-  <div class="container">
-    <div class="row align-items-center g-5">
-      
-      <!-- Left: Female Pharmacist HD Portrait -->
-      <div class="col-lg-5">
-        <div class="antixor-pharmacist-img-wrap">
-          <img src="{% static 'images/pharmacist_female.jpg' %}" alt="Licensed Pharmacist Dr. Sarah" class="antixor-pharmacist-img">
-        </div>
-      </div>
-
-      <!-- Right: Feature Checkpoints -->
-      <div class="col-lg-7">
-        <div class="antixor-hero-tag mb-2">Quality & Trust First</div>
-        <h2 class="antixor-section-title mb-2">Why Choose Antixor Pharmacy?</h2>
-        <p class="antixor-section-subtitle mb-4">We make prescription fulfillment, medication safety, and healthcare support simple, transparent, and completely reliable.</p>
-
-        <!-- Feature 1 -->
-        <div class="antixor-feature-block">
-          <div class="antixor-feature-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-            </svg>
-          </div>
-          <div>
-            <h3 class="antixor-feature-title">100% Genuine & FDA-Approved Products</h3>
-            <p class="antixor-feature-desc">All medicines sourced directly from certified manufacturers with batch barcode tracking.</p>
-          </div>
-        </div>
-
-        <!-- Feature 2 -->
-        <div class="antixor-feature-block">
-          <div class="antixor-feature-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-              <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-          </div>
-          <div>
-            <h3 class="antixor-feature-title">Licensed Clinical Pharmacists On-Call</h3>
-            <p class="antixor-feature-desc">Every single prescription is reviewed twice for dosage safety, drug interactions, and patient history.</p>
-          </div>
-        </div>
-
-        <!-- Feature 3 -->
-        <div class="antixor-feature-block">
-          <div class="antixor-feature-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
-              <line x1="12" y1="18" x2="12.01" y2="18"></line>
-            </svg>
-          </div>
-          <div>
-            <h3 class="antixor-feature-title">Fast Online Ordering & Refill Reminders</h3>
-            <p class="antixor-feature-desc">Automated refill tracking ensures you never run out of your essential chronic medicines.</p>
-          </div>
-        </div>
-
-        <!-- Feature 4 -->
-        <div class="antixor-feature-block">
-          <div class="antixor-feature-icon">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-            </svg>
-          </div>
-          <div>
-            <h3 class="antixor-feature-title">Secure Encrypted Payments & Insurance</h3>
-            <p class="antixor-feature-desc">256-bit SSL encrypted checkouts with support for Cash on Delivery, Cards, and Health Savings Accounts.</p>
-          </div>
-        </div>
-
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- =========================================================================
-     07 — CUSTOMER REVIEWS SECTION
-     ========================================================================= -->
-<section class="antixor-reviews">
-  <div class="container">
-    
-    <!-- Section Header -->
-    <div class="antixor-section-header text-center d-block mb-5">
-      <div class="antixor-hero-tag mb-2">Verified Testimonials</div>
-      <h2 class="antixor-section-title">What Our Patients Say</h2>
-      <p class="antixor-section-subtitle">Real experiences from patients who trust Antixor Pharmacy for their daily healthcare needs.</p>
-    </div>
-
-    <!-- 3 Testimonial Cards with HD Avatars -->
-    <div class="row g-4">
-      
-      <!-- Review 1: Sarah Ahmed -->
-      <div class="col-lg-4 col-md-6">
-        <div class="antixor-review-card">
-          <img src="{% static 'images/avatar_sarah.jpg' %}" alt="Sarah Ahmed" class="antixor-review-avatar">
-          <h3 class="antixor-review-name">Sarah Ahmed</h3>
-          <div class="antixor-review-badge">✓ Verified Patient</div>
-          <div class="antixor-review-stars">★★★★★</div>
-          <p class="antixor-review-text">"Antixor Pharmacy has completely changed how I manage my family's prescriptions. The medicine verification is super fast, and delivery arrives in under 2 hours!"</p>
-        </div>
-      </div>
-
-      <!-- Review 2: Rafiq Hasan -->
-      <div class="col-lg-4 col-md-6">
-        <div class="antixor-review-card">
-          <img src="{% static 'images/avatar_rafiq.jpg' %}" alt="Rafiq Hasan" class="antixor-review-avatar">
-          <h3 class="antixor-review-name">Rafiq Hasan</h3>
-          <div class="antixor-review-badge">✓ Verified Patient</div>
-          <div class="antixor-review-stars">★★★★★</div>
-          <p class="antixor-review-text">"The online consultation with the clinical pharmacist was genuinely helpful. She explained my drug dosages and potential interactions thoroughly. 10/10 service!"</p>
-        </div>
-      </div>
-
-      <!-- Review 3: Nusrat Jahan -->
-      <div class="col-lg-4 col-md-6">
-        <div class="antixor-review-card">
-          <img src="{% static 'images/avatar_nusrat.jpg' %}" alt="Nusrat Jahan" class="antixor-review-avatar">
-          <h3 class="antixor-review-name">Nusrat Jahan</h3>
-          <div class="antixor-review-badge">✓ Verified Patient</div>
-          <div class="antixor-review-stars">★★★★★</div>
-          <p class="antixor-review-text">"I regularly order Omega-3 supplements and daily diabetes test strips. Authentic brands, genuine packaging, and always delivered on schedule."</p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-<!-- =========================================================================
-     08 — FREE HEALTH CONSULTATION CTA
-     ========================================================================= -->
-<section class="antixor-consultation-section">
-  <div class="container">
-    <div class="antixor-consultation-banner">
-      <div class="row align-items-center g-4">
+<section class="py-5" style="background: #ffffff;">
+  <div class="container-fluid px-3 px-md-5 max-w-1600">
+    <div class="card border-0 rounded-4 overflow-hidden shadow-lg" style="background: linear-gradient(135deg, #072635 0%, #0a5c43 60%, #064431 100%);">
+      <div class="row align-items-center g-4 p-4 p-md-5 text-white">
         
-        <!-- Left: CTA Details -->
         <div class="col-lg-7">
-          <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-3" style="background: rgba(255,255,255,0.18); font-size: 0.825rem; font-weight: 700;">
-            <span class="antixor-pulse-dot"></span> Free 15-Minute Clinical Session
+          <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-3" style="background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(52, 211, 153, 0.35);">
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: #10b981; display: inline-block;"></span>
+            <span style="color: #6ee7b7; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.05em;">SPECIAL FIRST-ORDER OFFER</span>
           </div>
-          <h2 class="antixor-cta-title">Book a Free Healthcare Consultation</h2>
-          <p class="antixor-cta-desc">Speak directly with our certified clinical pharmacists and general physicians for prescription reviews and medical guidance.</p>
-          <button type="button" class="antixor-btn-cta-white" data-bs-toggle="modal" data-bs-target="#auraConsultationModal">
-            Book Consultation Now →
-          </button>
-          
-          <!-- Contact Methods Strip -->
-          <div class="antixor-cta-channels">
-            <div class="antixor-channel-item">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-              </svg>
-              <span>+1 (800) ANTIXOR</span>
-            </div>
+          <h2 class="display-6 fw-bold mb-2 text-white">Save Up to 25% on Your First Order</h2>
+          <p class="text-white-50 mb-4" style="font-size: 1rem; max-width: 580px;">
+            Enjoy genuine licensed medicines, cold-chain thermal packaging, and 2-hour doorstep delivery. Use promotional code at checkout.
+          </p>
 
-            <div class="antixor-channel-item">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-              </svg>
-              <span>Live Video & Chat</span>
-            </div>
-
-            <div class="antixor-channel-item">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                <polyline points="22,6 12,13 2,6"></polyline>
-              </svg>
-              <span>care@antixorpharmacy.com</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right: Doctor Photo -->
-        <div class="col-lg-5 text-center">
-          <img src="{% static 'images/hero_doctor.jpg' %}" alt="Consultation Lead Physician" class="antixor-cta-doctor-img img-fluid">
-        </div>
-
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- =========================================================================
-     09 — PROMOTIONAL BANNER SECTION
-     ========================================================================= -->
-<section class="antixor-promo-section">
-  <div class="container">
-    <div class="antixor-promo-card">
-      <div class="row align-items-center g-4">
-        
-        <!-- Left: Text & Coupon Copy Action -->
-        <div class="col-lg-7">
-          <div class="antixor-hero-tag mb-2">Special Wellness Offer</div>
-          <h2 class="antixor-promo-title">Save Up to 25% on First Order</h2>
-          <div class="antixor-promo-sub">Genuine medicines • 100% Certified Brands • Free 2-Hour Delivery</div>
-          
-          <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
-            <div class="antixor-coupon-box">
-              <span class="small text-muted fw-bold">Use Coupon:</span>
-              <span class="antixor-coupon-code" id="promoCodeText">ANTIXOR25</span>
-              <button type="button" class="btn btn-sm btn-outline-success rounded-pill fw-bold" onclick="navigator.clipboard.writeText('ANTIXOR25'); showAntixorToast('Coupon code ANTIXOR25 copied to clipboard!', 'success');">
-                📋 Copy Code
+          <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
+            <div class="bg-white rounded-pill px-4 py-2 d-flex align-items-center gap-3 shadow">
+              <span class="small text-muted fw-bold">Coupon:</span>
+              <strong class="text-dark font-monospace fs-5">ANTIXOR25</strong>
+              <button type="button" class="btn btn-sm btn-outline-success rounded-pill fw-bold px-3" onclick="navigator.clipboard.writeText('ANTIXOR25'); showAntixorToast('Coupon ANTIXOR25 copied!', 'success');">
+                📋 Copy
               </button>
             </div>
           </div>
 
-          <a href="#products" class="antixor-btn-login">Explore Discounted Products →</a>
+          <a href="{% url 'shop' %}" class="btn btn-light rounded-pill px-4 py-2 fw-bold text-dark shadow">
+            Explore Pharmacy Catalog →
+          </a>
         </div>
 
-        <!-- Right: 3D Studio Health Graphic -->
         <div class="col-lg-5 text-center">
-          <img src="{% static 'images/promo_graphic.jpg' %}" alt="25% OFF Health Promotion" class="antixor-promo-graphic-img img-fluid">
+          <img src="{% static 'images/promo_graphic.jpg' %}" alt="25% OFF Promotion" class="img-fluid rounded-4 shadow" style="max-height: 280px; object-fit: cover;">
         </div>
 
       </div>
@@ -869,102 +396,144 @@
   </div>
 </section>
 
-
 <!-- =========================================================================
-     10 — FOOTER SECTION
+     05 — HEALTH ARTICLES & KNOWLEDGE BASE
      ========================================================================= -->
-<footer class="antixor-footer" id="contact">
-  <div class="container">
+<section class="antixor-articles py-5" id="articles" style="background: #f8fafc;">
+  <div class="container-fluid px-3 px-md-5 max-w-1600">
+    
+    <div class="d-flex flex-wrap justify-content-between align-items-end mb-4 gap-2">
+      <div>
+        <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2" style="background: #e6f7f2; color: #0a5c43; font-size: 0.75rem; font-weight: 800;">
+          <span>CLINICAL KNOWLEDGE BASE</span>
+        </div>
+        <h2 class="h3 fw-bold text-dark mb-1">Health Tips &amp; Articles</h2>
+        <p class="text-muted mb-0 small">Stay informed with wellness guides reviewed by licensed clinicians.</p>
+      </div>
+      <a href="{% url 'articles' %}" class="btn btn-sm btn-outline-success rounded-pill fw-bold px-3 py-1">Explore All Articles →</a>
+    </div>
+
+    <!-- 3 Articles Grid -->
     <div class="row g-4">
       
-      <!-- Brand & Socials -->
+      <!-- Article 1 -->
       <div class="col-lg-4 col-md-6">
-        <div class="d-flex align-items-center gap-2 mb-3">
-          <div class="antixor-logo-cross">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M19 10.5h-5.5V5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5H5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h5.5V19c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-5.5H19c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z"/>
-            </svg>
+        <div class="card border-0 rounded-4 overflow-hidden shadow-sm h-100 bg-white">
+          <div class="position-relative">
+            <img src="{% static 'images/article_vitamins.jpg' %}" alt="5 Essential Vitamins" class="w-100" style="height: 200px; object-fit: cover;">
+            <span class="position-absolute bottom-0 end-0 m-2 badge bg-dark text-white rounded-pill px-2 py-1 small">5 min read</span>
           </div>
-          <span class="fs-4 fw-bold text-white">Antixor <span style="font-weight: 500; font-size: 0.95rem; color: #94a3b8; display: block; line-height: 1;">Pharmacy</span></span>
-        </div>
-        <p class="text-slate-400 small mb-3">Licensed digital pharmacy dedicated to transparent, verified medicine supply and 24/7 patient support.</p>
-        
-        <div class="antixor-social-links">
-          <a href="#" class="antixor-social-btn" title="Facebook" aria-label="Facebook">
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-          </a>
-          <a href="#" class="antixor-social-btn" title="Instagram" aria-label="Instagram">
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-          </a>
-          <a href="#" class="antixor-social-btn" title="LinkedIn" aria-label="LinkedIn">
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-          </a>
+          <div class="p-4 d-flex flex-column flex-grow-1">
+            <span class="badge bg-success-subtle text-success rounded-pill small mb-2 w-auto align-self-start">Nutrition &amp; Immunity</span>
+            <h3 class="h6 fw-bold mb-2">5 Essential Vitamins for a Stronger Immune System</h3>
+            <p class="text-muted small mb-3 flex-grow-1">Discover which vitamins and minerals are clinically proven to boost your natural defenses.</p>
+            <a href="{% url 'articles' %}" class="fw-bold small text-success text-decoration-none mt-auto">Read Full Guide →</a>
+          </div>
         </div>
       </div>
 
-      <!-- Quick Links -->
-      <div class="col-lg-2 col-md-6 col-6">
-        <h4 class="antixor-footer-title">Quick Links</h4>
-        <ul class="antixor-footer-links">
-          <li><a href="{% url 'home' %}">Home</a></li>
-          <li><a href="{% url 'shop' %}">Medicines & Catalog</a></li>
-          <li><a href="{% url 'services' %}">Health Services</a></li>
-          <li><a href="{% url 'articles' %}">Health Knowledge Base</a></li>
-          <li><a href="{% url 'about' %}">About Us</a></li>
-        </ul>
-      </div>
-
-      <!-- Customer Support -->
-      <div class="col-lg-2 col-md-6 col-6">
-        <h4 class="antixor-footer-title">Patient Care</h4>
-        <ul class="antixor-footer-links">
-          <li><a href="{% url 'prescriptions' %}">Upload Prescription</a></li>
-          <li><a href="{% url 'order-track' %}">Track Order</a></li>
-          <li><a href="{% url 'telehealth' %}">Find a Doctor</a></li>
-          <li><a href="{% url 'contact' %}">Contact Support</a></li>
-          <li><a href="#">Privacy & Drug Safety</a></li>
-        </ul>
-      </div>
-
-      <!-- Newsletter -->
+      <!-- Article 2 -->
       <div class="col-lg-4 col-md-6">
-        <h4 class="antixor-footer-title">Subscribe to Health Digest</h4>
-        <p class="text-slate-400 small mb-3">Get certified wellness tips, drug safety bulletins, and special offers.</p>
-        
-        <form class="antixor-newsletter-box" onsubmit="event.preventDefault();">
-          <input type="email" class="antixor-newsletter-input" placeholder="Enter your email address" required>
-          <button type="submit" class="antixor-newsletter-submit" title="Subscribe" aria-label="Subscribe">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </button>
-        </form>
+        <div class="card border-0 rounded-4 overflow-hidden shadow-sm h-100 bg-white">
+          <div class="position-relative">
+            <img src="{% static 'images/article_stress.jpg' %}" alt="Managing Stress" class="w-100" style="height: 200px; object-fit: cover;">
+            <span class="position-absolute bottom-0 end-0 m-2 badge bg-dark text-white rounded-pill px-2 py-1 small">4 min read</span>
+          </div>
+          <div class="p-4 d-flex flex-column flex-grow-1">
+            <span class="badge bg-primary-subtle text-primary rounded-pill small mb-2 w-auto align-self-start">Mental Wellness</span>
+            <h3 class="h6 fw-bold mb-2">How Daily Stress Impacts Your Physical Health</h3>
+            <p class="text-muted small mb-3 flex-grow-1">Understand the neurological connection between chronic stress and inflammatory disorders.</p>
+            <a href="{% url 'articles' %}" class="fw-bold small text-primary text-decoration-none mt-auto">Read Full Guide →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Article 3 -->
+      <div class="col-lg-4 col-md-6">
+        <div class="card border-0 rounded-4 overflow-hidden shadow-sm h-100 bg-white">
+          <div class="position-relative">
+            <img src="{% static 'images/article_habits.jpg' %}" alt="Healthy Habits" class="w-100" style="height: 200px; object-fit: cover;">
+            <span class="position-absolute bottom-0 end-0 m-2 badge bg-dark text-white rounded-pill px-2 py-1 small">6 min read</span>
+          </div>
+          <div class="p-4 d-flex flex-column flex-grow-1">
+            <span class="badge bg-warning-subtle text-dark rounded-pill small mb-2 w-auto align-self-start">Lifestyle</span>
+            <h3 class="h6 fw-bold mb-2">10 Micro-Habits for Long-Term Cardiovascular Longevity</h3>
+            <p class="text-muted small mb-3 flex-grow-1">Small, science-backed lifestyle changes that significantly lower heart disease risk.</p>
+            <a href="{% url 'articles' %}" class="fw-bold small text-warning-emphasis text-decoration-none mt-auto">Read Full Guide →</a>
+          </div>
+        </div>
       </div>
 
     </div>
-
-    <!-- Bottom Regulatory Notice & Payment Badges -->
-    <div class="antixor-footer-bottom">
-      <div>
-        © 2026 Antixor Pharmacy Ltd. All rights reserved. Registered Digital Pharmacy License #PH-99201.
-      </div>
-      <div class="d-flex align-items-center gap-2">
-        <span class="badge bg-light text-dark fw-bold px-2 py-1">VISA</span>
-        <span class="badge bg-light text-dark fw-bold px-2 py-1">Mastercard</span>
-        <span class="badge bg-light text-dark fw-bold px-2 py-1">Apple Pay</span>
-        <span class="badge bg-light text-dark fw-bold px-2 py-1">Google Pay</span>
-        <span class="badge bg-light text-dark fw-bold px-2 py-1">256-Bit SSL</span>
-      </div>
-    </div>
-
   </div>
-</footer>
+</section>
+
+<!-- =========================================================================
+     06 — PATIENT TESTIMONIALS (FULL-WIDTH 3-GRID)
+     ========================================================================= -->
+<section class="py-5" style="background: #ffffff;">
+  <div class="container-fluid px-3 px-md-5 max-w-1600">
+    <div class="text-center mb-5">
+      <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2" style="background: #e6f7f2; color: #0a5c43; font-size: 0.75rem; font-weight: 800;">
+        <span>VERIFIED REVIEWS</span>
+      </div>
+      <h2 class="h3 fw-bold text-dark mb-1">What Our Patients Say</h2>
+      <p class="text-muted mb-0 small">Real clinical experiences from patients who rely on Antixor Pharmacy every day.</p>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6">
+        <div class="p-4 rounded-4 bg-light border h-100 shadow-sm">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <img src="{% static 'images/avatar_sarah.jpg' %}" alt="Sarah Ahmed" class="rounded-circle" style="width: 48px; height: 48px; object-fit: cover;">
+            <div>
+              <h3 class="h6 fw-bold text-dark mb-0">Sarah Ahmed</h3>
+              <span class="badge bg-success-subtle text-success small">✓ Verified Patient</span>
+            </div>
+          </div>
+          <div class="text-warning small mb-2">★★★★★</div>
+          <p class="text-muted small mb-0">"Antixor Pharmacy has completely streamlined my family's prescription refills. The cold-chain delivery arrives within 2 hours in perfect condition!"</p>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6">
+        <div class="p-4 rounded-4 bg-light border h-100 shadow-sm">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <img src="{% static 'images/avatar_rafiq.jpg' %}" alt="Rafiq Hasan" class="rounded-circle" style="width: 48px; height: 48px; object-fit: cover;">
+            <div>
+              <h3 class="h6 fw-bold text-dark mb-0">Rafiq Hasan</h3>
+              <span class="badge bg-success-subtle text-success small">✓ Verified Patient</span>
+            </div>
+          </div>
+          <div class="text-warning small mb-2">★★★★★</div>
+          <p class="text-muted small mb-0">"The telehealth consultation with the clinical pharmacist was genuinely thorough. She explained my medication dosages and interactions with clarity."</p>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6">
+        <div class="p-4 rounded-4 bg-light border h-100 shadow-sm">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <img src="{% static 'images/avatar_nusrat.jpg' %}" alt="Nusrat Jahan" class="rounded-circle" style="width: 48px; height: 48px; object-fit: cover;">
+            <div>
+              <h3 class="h6 fw-bold text-dark mb-0">Nusrat Jahan</h3>
+              <span class="badge bg-success-subtle text-success small">✓ Verified Patient</span>
+            </div>
+          </div>
+          <div class="text-warning small mb-2">★★★★★</div>
+          <p class="text-muted small mb-0">"I regularly order Omega-3 supplements and daily glucose test strips. 100% genuine products, tamper-sealed, and always on time."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- Floating Live Support Widget -->
-<a href="javascript:void(0)" class="antixor-floating-assist" onclick="document.querySelector('.antixor-btn-cta-white').click()">
+<a href="javascript:void(0)" class="antixor-floating-assist" onclick="document.querySelector('.antixor-btn-cta-white') ? document.querySelector('.antixor-btn-cta-white').click() : window.location.href='/telehealth/'">
   <span class="antixor-pulse-dot"></span>
   <span>Pharmacist Online • Need Help?</span>
 </a>
+
+<!-- Global High-Contrast Footer -->
+{% include 'partials/footer.html' %}
 
 {% endblock %}
