@@ -1,26 +1,26 @@
 /* ==========================================================================
-   ANTIXOR PHARMACY — Production Frontend Design System
+   ANTIXOR PHARMACY — Production Frontend Design System (v2.0 Portfolio Edition)
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap');
 
 :root {
-  /* Antixor Brand Green & Mint */
-  --antixor-green-primary: #0d6e51;
-  --antixor-green-hover:   #09533d;
-  --antixor-green-light:   #10b981;
+  /* Brand Emerald Greens */
+  --antixor-green-primary: #0a5c43;
+  --antixor-green-hover:   #064431;
+  --antixor-green-accent:  #10b981;
   --antixor-green-badge:   #d1fae5;
   --antixor-green-badge-txt: #065f46;
   --antixor-mint-bg:       #e6f7f2;
   --antixor-mint-soft:     #edf9f5;
   --antixor-mint-light:    #f4fbf8;
 
-  /* Dark Teal / Midnight Navy for Articles & Footer */
+  /* Dark Teal / Navy */
   --antixor-dark-teal:     #072635;
   --antixor-dark-footer:   #0a2533;
   --antixor-dark-navy:     #051b26;
 
-  /* Neutrals & Text */
+  /* Neutrals & Slate */
   --antixor-heading-dark:  #0e1726;
   --antixor-body-slate:    #334155;
   --antixor-muted-slate:   #64748b;
@@ -31,14 +31,16 @@
   /* Accents */
   --antixor-gold-star:     #f59e0b;
   --antixor-coral-badge:   #f43f5e;
+  --antixor-blue-badge:    #0284c7;
 
   /* Radii & Shadows */
   --antixor-radius-pill:   9999px;
   --antixor-radius-card:   20px;
   --antixor-radius-inner:  14px;
-  --antixor-shadow-card:   0 8px 24px -4px rgba(14, 23, 38, 0.05);
-  --antixor-shadow-hover:  0 14px 32px -4px rgba(13, 110, 81, 0.12);
-  --antixor-transition:    all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  --antixor-shadow-sm:     0 2px 8px rgba(14, 23, 38, 0.04);
+  --antixor-shadow-card:   0 10px 30px -4px rgba(14, 23, 38, 0.06);
+  --antixor-shadow-hover:  0 18px 40px -4px rgba(10, 92, 67, 0.14);
+  --antixor-transition:    all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Base resets & typography */
@@ -58,7 +60,7 @@ body {
 h1, h2, h3, h4, h5, h6 {
   color: var(--antixor-heading-dark);
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.025em;
 }
 
 a {
@@ -72,12 +74,44 @@ a:hover {
 }
 
 /* ==========================================================================
+   00 — TOPBAR (URGENT CARE & FAST DELIVERY STRIP)
+   ========================================================================== */
+
+.antixor-topbar {
+  background: #064431;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.antixor-topbar-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.antixor-topbar-link {
+  color: #6ee7b7;
+  font-weight: 700;
+  text-decoration: none;
+}
+.antixor-topbar-link:hover {
+  color: #a7f3d0;
+  text-decoration: underline;
+}
+
+/* ==========================================================================
    01 — HEADER & NAVBAR
    ========================================================================== */
 
 .antixor-navbar {
-  background: var(--antixor-white);
-  padding: 16px 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 14px 0;
   border-bottom: 1px solid var(--antixor-border-slate);
   position: sticky;
   top: 0;
@@ -87,22 +121,23 @@ a:hover {
 .antixor-brand {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 1.35rem;
+  gap: 12px;
+  font-size: 1.4rem;
   font-weight: 800;
   color: var(--antixor-heading-dark);
 }
 
 .antixor-logo-cross {
-  width: 38px;
-  height: 38px;
-  background: var(--antixor-green-primary);
-  border-radius: 10px;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #0a5c43 0%, #10b981 100%);
+  border-radius: 12px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: white;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(10, 92, 67, 0.25);
 }
 
 .antixor-nav-links {
@@ -118,11 +153,24 @@ a:hover {
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--antixor-body-slate);
+  padding: 6px 0;
+  position: relative;
   transition: var(--antixor-transition);
 }
 
 .antixor-nav-link:hover, .antixor-nav-link.active {
   color: var(--antixor-green-primary);
+}
+
+.antixor-nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2.5px;
+  background: var(--antixor-green-primary);
+  border-radius: 2px;
 }
 
 .antixor-btn-login {
@@ -131,25 +179,28 @@ a:hover {
   border: none;
   border-radius: var(--antixor-radius-pill);
   padding: 10px 24px;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.9rem;
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  box-shadow: 0 4px 14px rgba(10, 92, 67, 0.2);
   transition: var(--antixor-transition);
 }
 
 .antixor-btn-login:hover {
   background: var(--antixor-green-hover);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(10, 92, 67, 0.28);
 }
 
 .antixor-icon-btn {
-  background: none;
-  border: none;
+  background: #f1f5f9;
+  border: 1px solid var(--antixor-border-slate);
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
   color: var(--antixor-heading-dark);
-  font-size: 1.15rem;
-  padding: 6px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -158,55 +209,65 @@ a:hover {
 }
 
 .antixor-icon-btn:hover {
+  background: var(--antixor-mint-bg);
   color: var(--antixor-green-primary);
+  border-color: #a7f3d0;
+  transform: translateY(-2px);
 }
 
 /* ==========================================================================
-   01 — HERO SECTION
+   01B — HERO SECTION
    ========================================================================== */
 
 .antixor-hero {
-  background: linear-gradient(180deg, #e8f7f2 0%, #f7fcfa 60%, #ffffff 100%);
-  padding: 60px 0 80px;
+  background: linear-gradient(180deg, #edf9f5 0%, #ffffff 100%);
+  padding: 60px 0 70px;
   position: relative;
   overflow: hidden;
 }
 
 .antixor-hero-tag {
-  font-size: 0.85rem;
+  background: #d1fae5;
+  color: #065f46;
+  font-size: 0.825rem;
   font-weight: 700;
-  color: var(--antixor-green-primary);
-  margin-bottom: 14px;
-  display: block;
+  padding: 6px 16px;
+  border-radius: var(--antixor-radius-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+  border: 1px solid #a7f3d0;
 }
 
 .antixor-hero-title {
-  font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+  font-size: clamp(2.4rem, 4.5vw, 3.6rem);
   font-weight: 800;
-  line-height: 1.12;
+  line-height: 1.18;
   color: var(--antixor-heading-dark);
-  margin-bottom: 20px;
+  margin-bottom: 18px;
+}
+
+.antixor-hero-title .highlight {
+  color: var(--antixor-green-primary);
+  position: relative;
 }
 
 .antixor-hero-desc {
-  font-size: 1.05rem;
-  color: var(--antixor-muted-slate);
+  font-size: 1.08rem;
+  color: var(--antixor-body-slate);
   margin-bottom: 24px;
-  max-width: 520px;
-  line-height: 1.6;
+  max-width: 620px;
+  line-height: 1.65;
 }
 
 .antixor-trust-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  border: 1px solid rgba(13, 110, 81, 0.35);
-  background: rgba(255, 255, 255, 0.7);
-  padding: 6px 16px;
-  border-radius: var(--antixor-radius-pill);
-  font-size: 0.85rem;
+  font-size: 0.875rem;
   font-weight: 600;
-  color: var(--antixor-green-primary);
+  color: #065f46;
   margin-bottom: 24px;
 }
 
@@ -214,52 +275,57 @@ a:hover {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  margin-bottom: 36px;
+  margin-bottom: 30px;
 }
 
 .antixor-check-item {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: 0.925rem;
+  font-weight: 600;
   color: var(--antixor-heading-dark);
 }
 
 .antixor-check-icon {
-  width: 24px;
-  height: 24px;
-  background: var(--antixor-green-primary);
-  color: white;
+  width: 22px;
+  height: 22px;
+  background: #d1fae5;
+  color: #059669;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   font-size: 0.75rem;
-  flex-shrink: 0;
+  font-weight: 800;
 }
 
-/* Hero Medicine Search Bar */
 .antixor-search-box {
-  background: var(--antixor-white);
-  border: 1.5px solid var(--antixor-border-slate);
+  background: white;
+  border: 2px solid #a7f3d0;
   border-radius: var(--antixor-radius-pill);
-  padding: 6px 8px 6px 22px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  padding: 6px 6px 6px 20px;
   display: flex;
   align-items: center;
-  max-width: 680px;
-  margin-bottom: 18px;
+  box-shadow: 0 10px 28px -4px rgba(10, 92, 67, 0.12);
+  max-width: 620px;
+  margin-bottom: 16px;
+  transition: var(--antixor-transition);
+}
+
+.antixor-search-box:focus-within {
+  border-color: var(--antixor-green-primary);
+  box-shadow: 0 14px 34px -4px rgba(10, 92, 67, 0.2);
 }
 
 .antixor-search-input {
   border: none;
   outline: none;
-  background: transparent;
-  flex-grow: 1;
+  width: 100%;
   font-size: 0.95rem;
-  color: var(--antixor-body-slate);
-  padding: 8px 10px;
+  color: var(--antixor-heading-dark);
+  font-family: inherit;
+  background: transparent;
 }
 
 .antixor-search-btn {
@@ -267,15 +333,17 @@ a:hover {
   color: white;
   border: none;
   border-radius: var(--antixor-radius-pill);
-  padding: 10px 28px;
-  font-size: 0.9rem;
+  padding: 12px 28px;
   font-weight: 700;
+  font-size: 0.9rem;
   cursor: pointer;
+  flex-shrink: 0;
   transition: var(--antixor-transition);
 }
 
 .antixor-search-btn:hover {
   background: var(--antixor-green-hover);
+  transform: scale(1.02);
 }
 
 .antixor-search-tags {
@@ -283,36 +351,82 @@ a:hover {
   flex-wrap: wrap;
   align-items: center;
   gap: 8px;
-  font-size: 0.85rem;
+  font-size: 0.825rem;
 }
 
 .antixor-search-tag-pill {
-  border: 1px solid rgba(13, 110, 81, 0.35);
-  background: var(--antixor-white);
-  color: var(--antixor-body-slate);
-  padding: 4px 14px;
+  background: white;
+  border: 1px solid var(--antixor-border-slate);
+  padding: 4px 12px;
   border-radius: var(--antixor-radius-pill);
-  font-size: 0.825rem;
-  font-weight: 600;
+  color: var(--antixor-body-slate);
+  font-weight: 500;
   transition: var(--antixor-transition);
 }
 
 .antixor-search-tag-pill:hover {
-  background: var(--antixor-green-primary);
-  color: white;
-  border-color: var(--antixor-green-primary);
+  background: var(--antixor-mint-bg);
+  border-color: #a7f3d0;
+  color: var(--antixor-green-primary);
 }
 
+/* Hero Doctor Visual & Floating Badges */
 .antixor-hero-img-wrap {
-  text-align: center;
   position: relative;
+  text-align: center;
+}
+
+.antixor-hero-doctor-card {
+  position: relative;
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px -12px rgba(10, 92, 67, 0.22);
+  background: white;
+  border: 6px solid white;
 }
 
 .antixor-hero-img {
-  max-height: 520px;
-  width: auto;
-  object-fit: contain;
-  filter: drop-shadow(0 20px 30px rgba(13, 110, 81, 0.1));
+  width: 100%;
+  height: 480px;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.5s ease;
+}
+
+.antixor-hero-doctor-card:hover .antixor-hero-img {
+  transform: scale(1.03);
+}
+
+.antixor-float-badge {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 18px;
+  padding: 12px 18px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 5;
+  animation: floatUpDown 4s ease-in-out infinite alternate;
+}
+
+.antixor-float-badge-top {
+  top: 24px;
+  right: -12px;
+}
+
+.antixor-float-badge-bottom {
+  bottom: 24px;
+  left: -12px;
+  animation-delay: 1.5s;
+}
+
+@keyframes floatUpDown {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-8px); }
 }
 
 /* ==========================================================================
@@ -326,38 +440,40 @@ a:hover {
 
 .antixor-section-header {
   display: flex;
-  justify-content: space-between;
   align-items: flex-end;
+  justify-content: space-between;
   margin-bottom: 40px;
 }
 
 .antixor-section-title {
-  font-size: 2rem;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
   font-weight: 800;
-  color: var(--antixor-heading-dark);
   margin-bottom: 6px;
 }
 
 .antixor-section-subtitle {
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: var(--antixor-muted-slate);
   margin: 0;
 }
 
 .antixor-view-all {
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: var(--antixor-green-primary);
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
+}
+.antixor-view-all:hover {
+  gap: 8px;
 }
 
 .antixor-service-card {
   background: var(--antixor-white);
   border: 1px solid var(--antixor-border-slate);
   border-radius: var(--antixor-radius-card);
-  padding: 28px 24px;
+  padding: 32px 24px;
   box-shadow: var(--antixor-shadow-card);
   transition: var(--antixor-transition);
   position: relative;
@@ -367,14 +483,14 @@ a:hover {
 }
 
 .antixor-service-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px);
+  border-color: #a7f3d0;
   box-shadow: var(--antixor-shadow-hover);
-  border-color: rgba(13, 110, 81, 0.3);
 }
 
 .antixor-service-icon-box {
-  width: 56px;
-  height: 56px;
+  width: 60px;
+  height: 60px;
   border-radius: 16px;
   display: inline-flex;
   align-items: center;
@@ -384,38 +500,38 @@ a:hover {
 
 .antixor-service-arrow {
   position: absolute;
-  top: 28px;
+  top: 32px;
   right: 24px;
   color: var(--antixor-muted-slate);
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   transition: var(--antixor-transition);
 }
 
 .antixor-service-card:hover .antixor-service-arrow {
   color: var(--antixor-green-primary);
-  transform: translateX(4px);
+  transform: translateX(6px);
 }
 
 .antixor-service-title {
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   font-weight: 800;
-  color: var(--antixor-heading-dark);
   margin-bottom: 8px;
 }
 
 .antixor-service-desc {
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   color: var(--antixor-muted-slate);
   margin: 0;
+  line-height: 1.5;
 }
 
 /* ==========================================================================
-   03 — FEATURED PRODUCTS SECTION
+   03 — FEATURED PRODUCTS SECTION (E-COMMERCE)
    ========================================================================== */
 
 .antixor-products {
   padding: 80px 0;
-  background: var(--antixor-white);
+  background: var(--antixor-bg-light);
 }
 
 .antixor-product-card {
@@ -432,45 +548,69 @@ a:hover {
 }
 
 .antixor-product-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px);
+  border-color: #a7f3d0;
   box-shadow: var(--antixor-shadow-hover);
+}
+
+.antixor-product-badge-discount {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: #fee2e2;
+  color: #dc2626;
+  font-size: 0.725rem;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: var(--antixor-radius-pill);
+  z-index: 2;
 }
 
 .antixor-product-wishlist {
   position: absolute;
-  top: 18px;
-  right: 18px;
-  background: none;
-  border: none;
+  top: 16px;
+  right: 16px;
+  background: white;
+  border: 1px solid var(--antixor-border-slate);
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: #94a3b8;
   cursor: pointer;
-  font-size: 1.1rem;
   transition: var(--antixor-transition);
   z-index: 2;
 }
 
-.antixor-product-wishlist:hover {
+.antixor-product-wishlist:hover, .antixor-product-wishlist.active {
   color: var(--antixor-coral-badge);
+  border-color: #fecdd3;
+  background: #fff1f2;
 }
 
 .antixor-product-img-box {
-  height: 180px;
+  height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   padding: 10px;
+  border-radius: 14px;
+  background: #f8fafc;
+  overflow: hidden;
 }
 
 .antixor-product-img {
-  max-height: 160px;
+  max-height: 180px;
   max-width: 100%;
   object-fit: contain;
-  transition: var(--antixor-transition);
+  transition: transform 0.4s ease;
 }
 
 .antixor-product-card:hover .antixor-product-img {
-  transform: scale(1.04);
+  transform: scale(1.08);
 }
 
 .antixor-product-name {
@@ -481,17 +621,38 @@ a:hover {
 }
 
 .antixor-product-category {
-  font-size: 0.8125rem;
+  font-size: 0.8rem;
   color: var(--antixor-muted-slate);
+  margin-bottom: 8px;
+}
+
+.antixor-product-rating {
+  font-size: 0.8rem;
+  color: var(--antixor-gold-star);
   margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.antixor-product-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: auto;
+  margin-bottom: 14px;
 }
 
 .antixor-product-price {
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   font-weight: 800;
   color: var(--antixor-heading-dark);
-  margin-bottom: 16px;
-  margin-top: auto;
+}
+
+.antixor-product-mrp {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  text-decoration: line-through;
 }
 
 .antixor-btn-add-cart {
@@ -500,15 +661,22 @@ a:hover {
   color: white;
   border: none;
   border-radius: var(--antixor-radius-pill);
-  padding: 10px;
-  font-size: 0.875rem;
+  padding: 11px;
+  font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(10, 92, 67, 0.16);
   transition: var(--antixor-transition);
 }
 
 .antixor-btn-add-cart:hover {
   background: var(--antixor-green-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(10, 92, 67, 0.25);
 }
 
 /* ==========================================================================
@@ -517,7 +685,7 @@ a:hover {
 
 .antixor-articles {
   background: var(--antixor-dark-teal);
-  padding: 80px 0;
+  padding: 90px 0;
   color: white;
 }
 
@@ -537,7 +705,7 @@ a:hover {
   background: var(--antixor-white);
   border-radius: var(--antixor-radius-card);
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.3);
   transition: var(--antixor-transition);
   height: 100%;
   display: flex;
@@ -545,23 +713,38 @@ a:hover {
 }
 
 .antixor-article-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
 }
 
 .antixor-article-img-wrap {
-  height: 200px;
+  height: 220px;
   overflow: hidden;
+  position: relative;
 }
 
 .antixor-article-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.4s ease;
+  transition: transform 0.5s ease;
 }
 
 .antixor-article-card:hover .antixor-article-img {
-  transform: scale(1.06);
+  transform: scale(1.08);
+}
+
+.antixor-article-read-time {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(14, 23, 38, 0.75);
+  backdrop-filter: blur(6px);
+  color: white;
+  font-size: 0.725rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--antixor-radius-pill);
 }
 
 .antixor-article-body {
@@ -572,8 +755,8 @@ a:hover {
 }
 
 .antixor-article-badge {
-  background: var(--antixor-green-badge);
-  color: var(--antixor-green-badge-txt);
+  background: #d1fae5;
+  color: #065f46;
   font-size: 0.75rem;
   font-weight: 700;
   padding: 4px 12px;
@@ -584,10 +767,16 @@ a:hover {
 }
 
 .antixor-article-title {
-  font-size: 1.15rem;
+  font-size: 1.18rem;
   font-weight: 800;
   color: var(--antixor-heading-dark);
-  line-height: 1.35;
+  line-height: 1.38;
+  margin-bottom: 12px;
+}
+
+.antixor-article-author {
+  font-size: 0.8rem;
+  color: var(--antixor-muted-slate);
   margin-bottom: 14px;
 }
 
@@ -612,7 +801,7 @@ a:hover {
    ========================================================================== */
 
 .antixor-impact {
-  padding: 80px 0;
+  padding: 90px 0;
   background: var(--antixor-white);
 }
 
@@ -620,7 +809,7 @@ a:hover {
   background: var(--antixor-white);
   border: 1px solid var(--antixor-border-slate);
   border-radius: var(--antixor-radius-card);
-  padding: 28px 20px;
+  padding: 30px 20px;
   text-align: center;
   box-shadow: var(--antixor-shadow-card);
   height: 100%;
@@ -628,25 +817,26 @@ a:hover {
 }
 
 .antixor-stat-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-6px);
+  border-color: #a7f3d0;
   box-shadow: var(--antixor-shadow-hover);
 }
 
 .antixor-stat-icon-wrap {
-  width: 54px;
-  height: 54px;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
   background: var(--antixor-mint-bg);
   color: var(--antixor-green-primary);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.35rem;
+  font-size: 1.4rem;
   margin-bottom: 16px;
 }
 
 .antixor-stat-number {
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 800;
   color: var(--antixor-heading-dark);
   line-height: 1;
@@ -656,14 +846,8 @@ a:hover {
 .antixor-stat-label {
   font-size: 0.875rem;
   color: var(--antixor-muted-slate);
-  font-weight: 500;
+  font-weight: 600;
   margin: 0;
-}
-
-.antixor-impact-graphic {
-  max-height: 240px;
-  width: auto;
-  object-fit: contain;
 }
 
 /* ==========================================================================
@@ -671,33 +855,51 @@ a:hover {
    ========================================================================== */
 
 .antixor-why-choose {
-  padding: 80px 0;
-  background: var(--antixor-white);
+  padding: 90px 0;
+  background: var(--antixor-bg-light);
+}
+
+.antixor-pharmacist-img-wrap {
+  position: relative;
+  border-radius: 28px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px -8px rgba(10, 92, 67, 0.2);
 }
 
 .antixor-pharmacist-img {
   width: 100%;
-  border-radius: var(--antixor-radius-card);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  height: 480px;
+  object-fit: cover;
 }
 
 .antixor-feature-block {
   display: flex;
   align-items: flex-start;
-  gap: 16px;
+  gap: 18px;
   margin-bottom: 24px;
+  background: white;
+  padding: 16px 20px;
+  border-radius: 16px;
+  border: 1px solid var(--antixor-border-slate);
+  transition: var(--antixor-transition);
+}
+
+.antixor-feature-block:hover {
+  border-color: #a7f3d0;
+  transform: translateX(4px);
+  box-shadow: var(--antixor-shadow-sm);
 }
 
 .antixor-feature-icon {
   width: 44px;
   height: 44px;
-  background: var(--antixor-green-primary);
-  color: white;
-  border-radius: 50%;
+  background: var(--antixor-mint-bg);
+  color: var(--antixor-green-primary);
+  border-radius: 12px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   flex-shrink: 0;
 }
 
@@ -719,56 +921,65 @@ a:hover {
    ========================================================================== */
 
 .antixor-reviews {
-  padding: 80px 0;
-  background: var(--antixor-bg-light);
+  padding: 90px 0;
+  background: var(--antixor-white);
 }
 
 .antixor-review-card {
   background: var(--antixor-white);
   border: 1px solid var(--antixor-border-slate);
   border-radius: var(--antixor-radius-card);
-  padding: 30px 24px;
+  padding: 32px 24px;
   box-shadow: var(--antixor-shadow-card);
   text-align: center;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: var(--antixor-transition);
+}
+
+.antixor-review-card:hover {
+  transform: translateY(-6px);
+  border-color: #a7f3d0;
+  box-shadow: var(--antixor-shadow-hover);
 }
 
 .antixor-review-avatar {
-  width: 64px;
-  height: 64px;
+  width: 72px;
+  height: 72px;
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 14px;
+  border: 3px solid #d1fae5;
 }
 
 .antixor-review-name {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-weight: 800;
   color: var(--antixor-heading-dark);
   margin-bottom: 2px;
 }
 
-.antixor-review-location {
-  font-size: 0.8125rem;
-  color: var(--antixor-muted-slate);
-  margin-bottom: 12px;
+.antixor-review-badge {
+  font-size: 0.75rem;
+  color: #059669;
+  font-weight: 700;
+  margin-bottom: 10px;
 }
 
 .antixor-review-stars {
   color: var(--antixor-gold-star);
-  font-size: 1rem;
+  font-size: 1.05rem;
   margin-bottom: 14px;
 }
 
 .antixor-review-text {
-  font-size: 0.9rem;
+  font-size: 0.925rem;
   color: var(--antixor-body-slate);
   font-style: italic;
   margin: 0;
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
 /* ==========================================================================
@@ -781,12 +992,13 @@ a:hover {
 }
 
 .antixor-consultation-banner {
-  background: var(--antixor-green-primary);
-  border-radius: var(--antixor-radius-card);
+  background: linear-gradient(135deg, #0a5c43 0%, #064431 100%);
+  border-radius: 28px;
   padding: 48px 48px 24px;
   color: white;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 20px 50px rgba(10, 92, 67, 0.25);
 }
 
 .antixor-cta-title {
@@ -797,10 +1009,10 @@ a:hover {
 }
 
 .antixor-cta-desc {
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.05rem;
+  color: rgba(255, 255, 255, 0.88);
   margin-bottom: 28px;
-  max-width: 500px;
+  max-width: 520px;
 }
 
 .antixor-btn-cta-white {
@@ -808,19 +1020,20 @@ a:hover {
   color: var(--antixor-green-primary) !important;
   border: none;
   border-radius: var(--antixor-radius-pill);
-  padding: 12px 32px;
-  font-weight: 700;
+  padding: 13px 34px;
+  font-weight: 800;
   font-size: 0.95rem;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
   transition: var(--antixor-transition);
 }
 
 .antixor-btn-cta-white:hover {
-  background: #f1f5f9;
+  background: #f8fafc;
   transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
 }
 
 .antixor-cta-channels {
@@ -844,8 +1057,9 @@ a:hover {
 .antixor-cta-doctor-img {
   max-height: 380px;
   width: auto;
-  object-fit: contain;
-  margin-top: -30px;
+  border-radius: 20px;
+  object-fit: cover;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
 }
 
 /* ==========================================================================
@@ -858,30 +1072,48 @@ a:hover {
 }
 
 .antixor-promo-card {
-  background: linear-gradient(90deg, #edf9f5 0%, #ffffff 100%);
-  border: 1px solid var(--antixor-border-slate);
-  border-radius: var(--antixor-radius-card);
-  padding: 40px 48px;
+  background: linear-gradient(135deg, #e6f7f2 0%, #ffffff 100%);
+  border: 2px solid #a7f3d0;
+  border-radius: 28px;
+  padding: 44px 48px;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 14px 34px rgba(10, 92, 67, 0.08);
 }
 
 .antixor-promo-title {
-  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
   font-weight: 800;
   color: var(--antixor-heading-dark);
   margin-bottom: 8px;
 }
 
 .antixor-promo-sub {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: var(--antixor-green-primary);
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 24px;
 }
 
+.antixor-coupon-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: white;
+  border: 1px dashed var(--antixor-green-primary);
+  border-radius: var(--antixor-radius-pill);
+  padding: 8px 18px;
+  margin-bottom: 20px;
+}
+
+.antixor-coupon-code {
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: var(--antixor-green-primary);
+}
+
 .antixor-promo-graphic-img {
-  max-height: 220px;
+  max-height: 240px;
   width: auto;
   object-fit: contain;
 }
@@ -924,6 +1156,29 @@ a:hover {
   padding-left: 4px;
 }
 
+.antixor-social-links {
+  display: flex;
+  gap: 10px;
+}
+
+.antixor-social-btn {
+  width: 36px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  transition: var(--antixor-transition);
+}
+
+.antixor-social-btn:hover {
+  background: var(--antixor-green-primary);
+  color: white;
+  transform: translateY(-2px);
+}
+
 .antixor-newsletter-box {
   display: flex;
   background: white;
@@ -946,9 +1201,8 @@ a:hover {
   color: white;
   border: none;
   border-radius: 10px;
-  width: 42px;
-  height: 42px;
-  display: flex;
+  width: 44px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -959,95 +1213,64 @@ a:hover {
   background: var(--antixor-green-hover);
 }
 
-.antixor-social-links {
-  display: flex;
-  gap: 12px;
-  margin-top: 20px;
-}
-
-.antixor-social-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.95rem;
-  transition: var(--antixor-transition);
-}
-
-.antixor-social-btn:hover {
-  background: var(--antixor-green-primary);
-  color: white;
-}
-
 .antixor-footer-bottom {
-  padding-top: 30px;
-  margin-top: 50px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 24px;
+  margin-top: 50px;
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  gap: 16px;
   font-size: 0.85rem;
 }
 
-/* ==========================================================================
-   RESPONSIVE STYLING (Desktop, Laptop, Tablet, Mobile)
-   ========================================================================== */
-
-@media (max-width: 991.98px) {
-  .antixor-hero {
-    padding: 40px 0 60px;
-    text-align: center;
-  }
-  .antixor-hero-desc {
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .antixor-hero-checks {
-    justify-content: center;
-  }
-  .antixor-search-box {
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .antixor-search-tags {
-    justify-content: center;
-  }
-  .antixor-hero-img {
-    max-height: 380px;
-    margin-top: 30px;
-  }
-  .antixor-cta-doctor-img {
-    max-height: 300px;
-    margin-top: 20px;
-  }
-  .antixor-cta-channels {
-    justify-content: center;
-  }
-  .antixor-promo-card {
-    text-align: center;
-    padding: 30px;
-  }
-  .antixor-promo-graphic-img {
-    margin-top: 20px;
-  }
+/* Floating Quick Assistance Pill */
+.antixor-floating-assist {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #0a5c43;
+  color: white;
+  border-radius: var(--antixor-radius-pill);
+  padding: 10px 20px;
+  box-shadow: 0 10px 25px rgba(10, 92, 67, 0.35);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 0.875rem;
+  z-index: 1020;
+  text-decoration: none;
+  transition: var(--antixor-transition);
 }
 
-@media (max-width: 767.98px) {
-  .antixor-section-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-  .antixor-consultation-banner {
-    padding: 30px 20px;
-  }
-  .antixor-footer-bottom {
-    flex-direction: column;
-    gap: 16px;
-    text-align: center;
-  }
+.antixor-floating-assist:hover {
+  background: #064431;
+  color: white;
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(10, 92, 67, 0.45);
+}
+
+.antixor-pulse-dot {
+  width: 10px;
+  height: 10px;
+  background: #34d399;
+  border-radius: 50%;
+  display: inline-block;
+  box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7);
+  animation: pulseGreen 1.8s infinite;
+}
+
+@keyframes pulseGreen {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(52, 211, 153, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+}
+
+@media (max-width: 991px) {
+  .antixor-hero { padding: 40px 0; }
+  .antixor-hero-img { height: 360px; }
+  .antixor-float-badge { display: none; }
+  .antixor-cta-channels { gap: 16px; }
 }
