@@ -1,84 +1,90 @@
-<!-- Cart Backdrop -->
-<div id="aura-cart-backdrop" class="aura-cart-backdrop"></div>
-
-<!-- Slide-Over Cart Drawer -->
-<div id="aura-cart-drawer" class="aura-cart-drawer">
+<!-- Bootstrap 5 Native Offcanvas Slide-Over Cart Drawer -->
+<div class="offcanvas offcanvas-end border-0 shadow-lg" tabindex="-1" id="aura-cart-drawer" aria-labelledby="auraCartDrawerLabel" style="width: 380px; z-index: 1065;">
   
-  <!-- Header -->
-  <div class="aura-cart-header">
+  <!-- Offcanvas Header -->
+  <div class="offcanvas-header bg-light border-bottom py-3 px-4">
     <div class="d-flex align-items-center gap-2">
-      <i class="fa-solid fa-bag-shopping text-primary fs-5"></i>
-      <h5 class="mb-0 fw-bold">Prescription & Medicine Cart</h5>
-      <span class="badge bg-primary rounded-pill aura-cart-count-badge">{{ global_cart_count }}</span>
+      <div class="rounded-circle d-flex align-items-center justify-content-center text-white shadow-sm" style="width: 32px; height: 32px; background-color: #009b72;">
+        <i class="fa-solid fa-bag-shopping" style="font-size: 0.85rem;"></i>
+      </div>
+      <div>
+        <h6 class="offcanvas-title fw-bold text-dark mb-0" id="auraCartDrawerLabel">Prescription &amp; Medicine Cart</h6>
+        <span class="badge rounded-pill text-white aura-cart-count-badge" style="background-color: #009b72; font-size: 0.65rem;">{{ global_cart_count|default:"0" }} items</span>
+      </div>
     </div>
-    <button type="button" class="btn-close" onclick="closeCartDrawer()"></button>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
 
-  <!-- Items Body -->
-  <div class="aura-cart-body" id="aura-cart-drawer-items">
-    {% if global_cart_items %}
-      {% for item in global_cart_items %}
-        <div class="aura-cart-item">
-          <img src="{{ item.product.get_image }}" alt="{{ item.product.name }}" class="aura-cart-item-img">
-          <div class="flex-grow-1">
-            <div class="d-flex justify-content-between align-items-start">
-              <h6 class="mb-0 fw-bold fs-6" style="max-width: 200px;">{{ item.product.name }}</h6>
-              <button class="btn btn-sm text-danger p-0 border-0" onclick="removeCartItem({{ item.id }})" title="Remove">
-                <i class="fa-regular fa-trash-can"></i>
-              </button>
-            </div>
-            <div class="text-muted small">{{ item.product.dosage_strength|default:item.product.get_dosage_form_display }}</div>
-            <div class="d-flex justify-content-between align-items-center mt-2">
-              <div class="aura-qty-stepper">
-                <button class="aura-qty-btn" onclick="updateCartItemQty({{ item.id }}, {{ item.quantity|add:'-1' }})">-</button>
-                <span class="px-2 small fw-bold">{{ item.quantity }}</span>
-                <button class="aura-qty-btn" onclick="updateCartItemQty({{ item.id }}, {{ item.quantity|add:'1' }})">+</button>
+  <!-- Offcanvas Body -->
+  <div class="offcanvas-body p-0 d-flex flex-column justify-content-between">
+    
+    <!-- Items List Container -->
+    <div class="flex-grow-1 overflow-y-auto p-3" id="aura-cart-drawer-items">
+      {% if global_cart_items %}
+        {% for item in global_cart_items %}
+          <div class="d-flex gap-3 p-2 border-bottom align-items-center mb-2 bg-white rounded-3">
+            <img src="{{ item.product.get_image }}" alt="{{ item.product.name }}" class="rounded-3 border" style="width: 48px; height: 48px; object-fit: contain;">
+            <div class="flex-grow-1">
+              <div class="d-flex justify-content-between align-items-start">
+                <h6 class="mb-0 fw-bold small text-truncate" style="max-width: 170px;">{{ item.product.name }}</h6>
+                <button class="btn btn-sm text-danger p-0 border-0" onclick="removeCartItem({{ item.id }})" title="Remove">
+                  <i class="fa-regular fa-trash-can"></i>
+                </button>
               </div>
-              <span class="fw-bold text-navy-800">${{ item.subtotal }}</span>
+              <div class="text-muted small" style="font-size: 0.7rem;">{{ item.product.dosage_strength|default:item.product.get_dosage_form_display }}</div>
+              <div class="d-flex justify-content-between align-items-center mt-2">
+                <div class="d-inline-flex align-items-center border rounded-pill bg-light p-0">
+                  <button class="btn btn-sm p-0 px-2 fw-bold" onclick="updateCartItemQty({{ item.id }}, {{ item.quantity|add:'-1' }})">-</button>
+                  <span class="px-1 small fw-bold">{{ item.quantity }}</span>
+                  <button class="btn btn-sm p-0 px-2 fw-bold" onclick="updateCartItemQty({{ item.id }}, {{ item.quantity|add:'1' }})">+</button>
+                </div>
+                <span class="fw-bold text-dark small">${{ item.subtotal }}</span>
+              </div>
             </div>
           </div>
+        {% endfor %}
+      {% else %}
+        <div class="text-center py-5">
+          <div class="mb-3 text-muted">
+            <i class="fa-solid fa-basket-shopping fa-3x" style="color: #cbd5e1;"></i>
+          </div>
+          <h6 class="fw-bold text-dark mb-1">Your medicine cart is empty</h6>
+          <p class="text-muted small mb-3">Search or browse products to add medications and clinical essentials.</p>
+          <a href="{% url 'shop' %}" class="btn btn-sm btn-success rounded-pill px-3 py-2 fw-bold" style="background-color:#009b72;" data-bs-dismiss="offcanvas">Browse Pharmacy</a>
         </div>
-      {% endfor %}
-    {% else %}
-      <div class="text-center py-5">
-        <div class="mb-3 text-muted">
-          <i class="fa-solid fa-basket-shopping fa-3x" style="color: #cbd5e1;"></i>
-        </div>
-        <h6 class="fw-bold">Your medicine cart is empty</h6>
-        <p class="text-muted small">Search or browse products to add medications and health essentials.</p>
-        <a href="{% url 'shop' %}" class="btn aura-btn-primary btn-sm mt-2" onclick="closeCartDrawer()">Browse Pharmacy</a>
+      {% endif %}
+    </div>
+
+    <!-- Offcanvas Footer & Actions -->
+    <div class="p-3 bg-light border-top">
+      <div class="d-flex justify-content-between text-muted small mb-1">
+        <span>Subtotal</span>
+        <span class="fw-bold text-dark aura-cart-subtotal-val">${{ global_cart_total|default:"0.00"|floatformat:2 }}</span>
       </div>
-    {% endif %}
-  </div>
+      <div class="d-flex justify-content-between text-muted small mb-2">
+        <span>Cold-Chain Delivery</span>
+        <span class="text-success fw-bold aura-cart-shipping-val">FREE (Orders $35+)</span>
+      </div>
+      <div class="d-flex justify-content-between fs-6 fw-bold text-dark mb-3 pt-2 border-top">
+        <span>Estimated Total</span>
+        <span class="text-success aura-cart-total-val" style="color:#009b72 !important;">${{ global_cart_total|default:"0.00"|floatformat:2 }}</span>
+      </div>
 
-  <!-- Footer & Checkout Actions -->
-  <div class="aura-cart-footer">
-    <div class="d-flex justify-content-between text-muted small mb-2">
-      <span>Subtotal</span>
-      <span class="fw-bold text-slate-800 aura-cart-subtotal-val">${{ global_cart_total|floatformat:2 }}</span>
-    </div>
-    <div class="d-flex justify-content-between text-muted small mb-3">
-      <span>Cold-Chain Express Delivery</span>
-      <span class="aura-cart-shipping-val text-success fw-bold">FREE (Orders $35+)</span>
-    </div>
-    <div class="d-flex justify-content-between fs-5 fw-bold text-navy-800 mb-3 pt-2 border-top">
-      <span>Estimated Total</span>
-      <span class="text-primary aura-cart-total-val">${{ global_cart_total|floatformat:2 }}</span>
-    </div>
+      <div class="d-grid gap-2">
+        <a href="{% url 'checkout' %}" id="aura-drawer-checkout-btn" class="btn text-white rounded-pill py-2 fw-bold d-flex align-items-center justify-content-center gap-2 {% if not global_cart_items %}disabled{% endif %}" style="background-color: #009b72; font-size: 0.85rem;">
+          <i class="fa-solid fa-lock"></i>
+          <span>Proceed to Secure Checkout</span>
+        </a>
+        <a href="{% url 'cart' %}" class="btn btn-outline-secondary rounded-pill py-1-5 fw-bold btn-sm text-center" data-bs-dismiss="offcanvas">
+          <span>View Full Cart &amp; Details</span>
+        </a>
+      </div>
 
-    <div class="d-grid gap-2">
-      <a href="{% url 'checkout' %}" id="aura-drawer-checkout-btn" class="aura-btn-emerald text-center justify-content-center {% if not global_cart_items %}disabled{% endif %}">
-        <i class="fa-solid fa-lock"></i>
-        <span>Proceed to Secure Checkout</span>
-      </a>
-      <a href="{% url 'cart' %}" class="aura-btn-outline text-center justify-content-center btn-sm" onclick="closeCartDrawer()">
-        <span>View Full Cart & Details</span>
-      </a>
+      <div class="text-center mt-2 text-muted" style="font-size: 0.7rem;">
+        <i class="fa-solid fa-shield-halved text-success me-1" style="color:#009b72 !important;"></i> Verified by Licensed Pharmacists • Free Returns
+      </div>
     </div>
 
-    <div class="text-center mt-3 text-muted" style="font-size: 0.75rem;">
-      <i class="fa-solid fa-shield-halved text-emerald-500 me-1"></i> Verified by Licensed Pharmacists • Free Returns
-    </div>
   </div>
 
 </div>

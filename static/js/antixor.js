@@ -289,13 +289,17 @@
     }
   };
 
-  // 6. Cart Drawer Open & Close
+  // 6. Cart Drawer Open & Close (Bootstrap 5 Offcanvas)
   window.openCartDrawer = async function () {
     let drawer = document.getElementById('aura-cart-drawer');
-    let backdrop = document.getElementById('aura-cart-backdrop');
-    if (drawer && backdrop) {
-      drawer.classList.add('open');
-      backdrop.classList.add('show');
+    if (drawer) {
+      if (typeof bootstrap !== 'undefined' && bootstrap.Offcanvas) {
+        const bsOffcanvas = bootstrap.Offcanvas.getOrCreateInstance(drawer);
+        bsOffcanvas.show();
+      } else {
+        drawer.classList.add('show');
+        drawer.style.visibility = 'visible';
+      }
       try {
         const res = await fetch('/api/cart/');
         if (res.ok) {
@@ -308,10 +312,14 @@
 
   window.closeCartDrawer = function () {
     let drawer = document.getElementById('aura-cart-drawer');
-    let backdrop = document.getElementById('aura-cart-backdrop');
-    if (drawer && backdrop) {
-      drawer.classList.remove('open');
-      backdrop.classList.remove('show');
+    if (drawer) {
+      if (typeof bootstrap !== 'undefined' && bootstrap.Offcanvas) {
+        const bsOffcanvas = bootstrap.Offcanvas.getOrCreateInstance(drawer);
+        bsOffcanvas.hide();
+      } else {
+        drawer.classList.remove('show');
+        drawer.style.visibility = 'hidden';
+      }
     }
   };
 
