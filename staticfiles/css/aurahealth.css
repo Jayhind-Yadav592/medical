@@ -1,0 +1,1011 @@
+/* ==========================================================================
+   AuraHealth™ — Modern Digital Pharmacy & Telehealth Design System
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  /* Brand Primary Palette */
+  --aura-navy-900: #07162c;
+  --aura-navy-800: #0b2545;
+  --aura-navy-700: #134074;
+  --aura-blue-600: #1d4ed8;
+  --aura-cyan-500: #0ea5e9;
+  --aura-cyan-400: #38bdf8;
+  --aura-cyan-100: #e0f2fe;
+  --aura-cyan-50:  #f0f9ff;
+
+  /* Healthcare Emerald & Jade */
+  --aura-emerald-700: #047857;
+  --aura-emerald-600: #059669;
+  --aura-emerald-500: #10b981;
+  --aura-emerald-100: #d1fae5;
+  --aura-emerald-50:  #ecfdf5;
+
+  /* Accent & Warnings */
+  --aura-coral-500: #f43f5e;
+  --aura-coral-100: #ffe4e6;
+  --aura-amber-500: #f59e0b;
+  --aura-amber-100: #fef3c7;
+
+  /* Neutrals & Surfaces */
+  --aura-slate-900: #0f172a;
+  --aura-slate-800: #1e293b;
+  --aura-slate-700: #334155;
+  --aura-slate-600: #475569;
+  --aura-slate-500: #64748b;
+  --aura-slate-400: #94a3b8;
+  --aura-slate-300: #cbd5e1;
+  --aura-slate-200: #e2e8f0;
+  --aura-slate-100: #f1f5f9;
+  --aura-slate-50:  #f8fafc;
+  --aura-white:     #ffffff;
+
+  /* Glassmorphism & Elevations */
+  --aura-glass-bg: rgba(255, 255, 255, 0.88);
+  --aura-glass-border: rgba(226, 232, 240, 0.9);
+  --aura-shadow-xs: 0 1px 3px rgba(15, 23, 42, 0.05);
+  --aura-shadow-sm: 0 4px 12px -2px rgba(15, 23, 42, 0.06);
+  --aura-shadow-md: 0 12px 28px -6px rgba(11, 37, 69, 0.09);
+  --aura-shadow-lg: 0 20px 45px -10px rgba(11, 37, 69, 0.15);
+  --aura-shadow-glow: 0 0 25px rgba(14, 165, 233, 0.28);
+  --aura-radius-sm: 8px;
+  --aura-radius-md: 14px;
+  --aura-radius-lg: 20px;
+  --aura-radius-xl: 28px;
+  --aura-radius-pill: 9999px;
+
+  /* Transitions */
+  --aura-transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Base resets & typography */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  color: var(--aura-slate-800);
+  background-color: var(--aura-slate-50);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  color: var(--aura-navy-800);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+a {
+  color: var(--aura-navy-700);
+  text-decoration: none;
+  transition: var(--aura-transition);
+}
+
+a:hover {
+  color: var(--aura-cyan-500);
+}
+
+/* ==========================================================================
+   Header & Navigation
+   ========================================================================== */
+
+.aura-topbar {
+  background: var(--aura-navy-900);
+  color: #94a3b8;
+  font-size: 0.8125rem;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.aura-topbar a {
+  color: #cbd5e1;
+}
+
+.aura-topbar a:hover {
+  color: var(--aura-cyan-400);
+}
+
+.aura-navbar {
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--aura-slate-200);
+  padding: 12px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1040;
+  transition: var(--aura-transition);
+}
+
+.aura-navbar.scrolled {
+  box-shadow: var(--aura-shadow-md);
+  padding: 8px 0;
+}
+
+.aura-brand {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--aura-navy-800);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: -0.03em;
+}
+
+.aura-brand-icon {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, var(--aura-navy-700) 0%, var(--aura-cyan-500) 100%);
+  color: white;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+}
+
+.aura-nav-link {
+  font-weight: 600;
+  font-size: 0.925rem;
+  color: var(--aura-slate-700);
+  padding: 8px 14px;
+  border-radius: var(--aura-radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.aura-nav-link:hover, .aura-nav-link.active {
+  color: var(--aura-navy-700);
+  background: var(--aura-cyan-50);
+}
+
+/* Smart Search Box */
+.aura-search-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.aura-search-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--aura-slate-100);
+  border: 1.5px solid var(--aura-slate-200);
+  border-radius: var(--aura-radius-pill);
+  padding: 4px 6px 4px 18px;
+  transition: var(--aura-transition);
+}
+
+.aura-search-input-group:focus-within {
+  background: var(--aura-white);
+  border-color: var(--aura-cyan-500);
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.15);
+}
+
+.aura-search-input {
+  border: none;
+  background: transparent;
+  width: 100%;
+  font-size: 0.9rem;
+  padding: 8px 10px;
+  outline: none;
+  color: var(--aura-slate-800);
+  font-weight: 500;
+}
+
+.aura-search-btn {
+  background: var(--aura-navy-800);
+  color: white;
+  border: none;
+  border-radius: var(--aura-radius-pill);
+  padding: 8px 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--aura-transition);
+}
+
+.aura-search-btn:hover {
+  background: var(--aura-navy-700);
+  transform: translateY(-1px);
+}
+
+.aura-search-autocomplete {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: var(--aura-white);
+  border-radius: var(--aura-radius-lg);
+  box-shadow: var(--aura-shadow-lg);
+  border: 1px solid var(--aura-slate-200);
+  z-index: 1050;
+  display: none;
+  max-height: 420px;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+
+.aura-search-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--aura-slate-100);
+  transition: var(--aura-transition);
+  cursor: pointer;
+}
+
+.aura-search-item:last-child {
+  border-bottom: none;
+}
+
+.aura-search-item:hover {
+  background: var(--aura-cyan-50);
+}
+
+.aura-search-thumb {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: 8px;
+  background: var(--aura-slate-100);
+}
+
+/* ==========================================================================
+   Buttons & Badges
+   ========================================================================== */
+
+.aura-btn-primary {
+  background: linear-gradient(135deg, var(--aura-navy-800) 0%, var(--aura-navy-700) 100%);
+  color: white !important;
+  border: none;
+  border-radius: var(--aura-radius-pill);
+  padding: 10px 22px;
+  font-weight: 600;
+  font-size: 0.925rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(11, 37, 69, 0.18);
+  transition: var(--aura-transition);
+}
+
+.aura-btn-primary:hover {
+  background: linear-gradient(135deg, var(--aura-navy-700) 0%, var(--aura-blue-600) 100%);
+  box-shadow: 0 6px 20px rgba(11, 37, 69, 0.28);
+  transform: translateY(-2px);
+}
+
+.aura-btn-emerald {
+  background: linear-gradient(135deg, var(--aura-emerald-600) 0%, var(--aura-emerald-500) 100%);
+  color: white !important;
+  border: none;
+  border-radius: var(--aura-radius-pill);
+  padding: 10px 22px;
+  font-weight: 600;
+  font-size: 0.925rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25);
+  transition: var(--aura-transition);
+}
+
+.aura-btn-emerald:hover {
+  background: linear-gradient(135deg, var(--aura-emerald-700) 0%, var(--aura-emerald-600) 100%);
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+  transform: translateY(-2px);
+}
+
+.aura-btn-outline {
+  background: transparent;
+  color: var(--aura-navy-800);
+  border: 1.5px solid var(--aura-slate-300);
+  border-radius: var(--aura-radius-pill);
+  padding: 9px 20px;
+  font-weight: 600;
+  font-size: 0.925rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--aura-transition);
+}
+
+.aura-btn-outline:hover {
+  background: var(--aura-slate-100);
+  border-color: var(--aura-slate-400);
+  color: var(--aura-navy-900);
+}
+
+.aura-btn-sm {
+  padding: 6px 14px;
+  font-size: 0.8125rem;
+}
+
+.aura-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--aura-radius-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  letter-spacing: 0.02em;
+}
+
+.aura-badge-rx {
+  background: var(--aura-coral-100);
+  color: var(--aura-coral-500);
+  border: 1px solid rgba(244, 63, 94, 0.2);
+}
+
+.aura-badge-otc {
+  background: var(--aura-emerald-100);
+  color: var(--aura-emerald-700);
+  border: 1px solid rgba(5, 150, 105, 0.2);
+}
+
+.aura-badge-discount {
+  background: var(--aura-amber-100);
+  color: #b45309;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.aura-badge-pulse {
+  position: relative;
+  padding-left: 18px;
+}
+
+.aura-badge-pulse::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 7px;
+  height: 7px;
+  background: var(--aura-emerald-500);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+  animation: pulse-ring 1.8s infinite;
+}
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+  70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+/* ==========================================================================
+   Hero Section & Interactive Prescription Dropzone
+   ========================================================================== */
+
+.aura-hero-section {
+  position: relative;
+  background: linear-gradient(180deg, #f0f7ff 0%, #ffffff 100%);
+  padding: 60px 0 70px;
+  border-bottom: 1px solid var(--aura-slate-200);
+  overflow: hidden;
+}
+
+.aura-hero-badge-tag {
+  background: var(--aura-cyan-100);
+  color: var(--aura-navy-700);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  padding: 6px 14px;
+  border-radius: var(--aura-radius-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.aura-hero-title {
+  font-size: clamp(2.3rem, 4vw, 3.4rem);
+  line-height: 1.15;
+  font-weight: 800;
+  color: var(--aura-navy-800);
+  margin-bottom: 20px;
+}
+
+.aura-hero-title .gradient-text {
+  background: linear-gradient(135deg, var(--aura-navy-700) 0%, var(--aura-cyan-500) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.aura-hero-lead {
+  font-size: 1.1rem;
+  color: var(--aura-slate-600);
+  margin-bottom: 28px;
+  max-width: 520px;
+}
+
+.aura-hero-guarantees {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 25px;
+}
+
+.aura-guarantee-pill {
+  background: var(--aura-white);
+  border: 1px solid var(--aura-slate-200);
+  padding: 8px 14px;
+  border-radius: var(--aura-radius-pill);
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: var(--aura-slate-700);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  box-shadow: var(--aura-shadow-xs);
+}
+
+.aura-guarantee-pill i {
+  color: var(--aura-emerald-500);
+}
+
+/* Prescription Quick Upload Dropzone inside Hero */
+.aura-hero-dropzone-card {
+  background: var(--aura-white);
+  border-radius: var(--aura-radius-xl);
+  padding: 24px;
+  box-shadow: var(--aura-shadow-lg);
+  border: 1px solid var(--aura-slate-200);
+  position: relative;
+  transition: var(--aura-transition);
+}
+
+.aura-dropzone-box {
+  border: 2px dashed var(--aura-cyan-400);
+  background: var(--aura-cyan-50);
+  border-radius: var(--aura-radius-lg);
+  padding: 24px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--aura-transition);
+}
+
+.aura-dropzone-box:hover, .aura-dropzone-box.dragover {
+  border-color: var(--aura-navy-700);
+  background: #e0f2fe;
+}
+
+.aura-dropzone-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--aura-white);
+  color: var(--aura-cyan-500);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  box-shadow: var(--aura-shadow-sm);
+  margin-bottom: 12px;
+}
+
+/* On-Duty Doctor Mini Card */
+.aura-doctor-badge-card {
+  background: var(--aura-white);
+  border-radius: var(--aura-radius-lg);
+  padding: 16px;
+  border: 1px solid var(--aura-slate-200);
+  box-shadow: var(--aura-shadow-md);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.aura-doctor-badge-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--aura-emerald-500);
+}
+
+/* ==========================================================================
+   Symptom Diagnostic Quick Selector
+   ========================================================================== */
+
+.aura-symptom-strip {
+  background: var(--aura-white);
+  border-radius: var(--aura-radius-lg);
+  padding: 20px;
+  box-shadow: var(--aura-shadow-sm);
+  border: 1px solid var(--aura-slate-200);
+  margin-top: -35px;
+  position: relative;
+  z-index: 20;
+}
+
+.aura-symptom-chip {
+  background: var(--aura-slate-100);
+  border: 1px solid var(--aura-slate-200);
+  color: var(--aura-slate-700);
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 8px 16px;
+  border-radius: var(--aura-radius-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: var(--aura-transition);
+  cursor: pointer;
+}
+
+.aura-symptom-chip:hover, .aura-symptom-chip.active {
+  background: var(--aura-navy-800);
+  color: white;
+  border-color: var(--aura-navy-800);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   Healthcare Services Cards
+   ========================================================================== */
+
+.aura-service-card {
+  background: var(--aura-white);
+  border-radius: var(--aura-radius-lg);
+  padding: 28px 24px;
+  border: 1px solid var(--aura-slate-200);
+  box-shadow: var(--aura-shadow-sm);
+  transition: var(--aura-transition);
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.aura-service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--aura-shadow-lg);
+  border-color: var(--aura-cyan-400);
+}
+
+.aura-service-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  background: var(--aura-cyan-50);
+  color: var(--aura-cyan-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+  transition: var(--aura-transition);
+}
+
+.aura-service-card:hover .aura-service-icon {
+  background: linear-gradient(135deg, var(--aura-navy-700) 0%, var(--aura-cyan-500) 100%);
+  color: white;
+  transform: scale(1.05);
+}
+
+/* ==========================================================================
+   Product Cards & Showcase
+   ========================================================================== */
+
+.aura-product-card {
+  background: var(--aura-white);
+  border-radius: var(--aura-radius-lg);
+  border: 1px solid var(--aura-slate-200);
+  padding: 16px;
+  transition: var(--aura-transition);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.aura-product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--aura-shadow-md);
+  border-color: var(--aura-slate-300);
+}
+
+.aura-product-img-wrap {
+  position: relative;
+  width: 100%;
+  padding-top: 80%;
+  background: var(--aura-slate-50);
+  border-radius: var(--aura-radius-md);
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+
+.aura-product-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.aura-product-card:hover .aura-product-img {
+  transform: scale(1.06);
+}
+
+.aura-wishlist-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid var(--aura-slate-200);
+  color: var(--aura-slate-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: var(--aura-transition);
+  z-index: 5;
+}
+
+.aura-wishlist-btn:hover, .aura-wishlist-btn.active {
+  background: var(--aura-coral-500);
+  color: white;
+  border-color: var(--aura-coral-500);
+}
+
+.aura-product-category {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--aura-cyan-500);
+  letter-spacing: 0.04em;
+  margin-bottom: 4px;
+}
+
+.aura-product-title {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 6px;
+  color: var(--aura-navy-800);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  height: 2.7em;
+}
+
+.aura-product-dosage {
+  font-size: 0.8125rem;
+  color: var(--aura-slate-500);
+  margin-bottom: 10px;
+}
+
+.aura-product-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: auto;
+  margin-bottom: 12px;
+}
+
+.aura-current-price {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--aura-navy-800);
+}
+
+.aura-mrp-price {
+  font-size: 0.875rem;
+  color: var(--aura-slate-400);
+  text-decoration: line-through;
+}
+
+.aura-add-cart-btn {
+  width: 100%;
+  background: var(--aura-slate-100);
+  color: var(--aura-navy-800);
+  border: 1px solid var(--aura-slate-200);
+  border-radius: var(--aura-radius-pill);
+  padding: 8px 14px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: var(--aura-transition);
+}
+
+.aura-add-cart-btn:hover {
+  background: var(--aura-navy-800);
+  color: white;
+  border-color: var(--aura-navy-800);
+}
+
+/* ==========================================================================
+   Telehealth Doctors Cards
+   ========================================================================== */
+
+.aura-doctor-card {
+  background: var(--aura-white);
+  border-radius: var(--aura-radius-lg);
+  border: 1px solid var(--aura-slate-200);
+  padding: 24px;
+  box-shadow: var(--aura-shadow-sm);
+  transition: var(--aura-transition);
+}
+
+.aura-doctor-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--aura-shadow-lg);
+}
+
+.aura-doctor-avatar-wrap {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid var(--aura-cyan-400);
+  margin-bottom: 16px;
+}
+
+.aura-doctor-avatar {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ==========================================================================
+   Slide-Over Cart Drawer
+   ========================================================================== */
+
+.aura-cart-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 1060;
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--aura-transition);
+}
+
+.aura-cart-backdrop.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.aura-cart-drawer {
+  position: fixed;
+  top: 0;
+  right: -460px;
+  width: 440px;
+  max-width: 90vw;
+  height: 100%;
+  background: var(--aura-white);
+  z-index: 1070;
+  box-shadow: -10px 0 30px rgba(11, 37, 69, 0.2);
+  display: flex;
+  flex-direction: column;
+  transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.aura-cart-drawer.open {
+  right: 0;
+}
+
+.aura-cart-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--aura-slate-200);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.aura-cart-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px;
+}
+
+.aura-cart-footer {
+  padding: 20px 24px;
+  border-top: 1px solid var(--aura-slate-200);
+  background: var(--aura-slate-50);
+}
+
+.aura-cart-item {
+  display: flex;
+  gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--aura-slate-100);
+  align-items: center;
+}
+
+.aura-cart-item-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--aura-slate-100);
+}
+
+.aura-qty-stepper {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--aura-slate-300);
+  border-radius: var(--aura-radius-pill);
+  background: var(--aura-white);
+  padding: 2px 6px;
+}
+
+.aura-qty-btn {
+  background: none;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  color: var(--aura-slate-700);
+  cursor: pointer;
+}
+
+.aura-qty-btn:hover {
+  background: var(--aura-slate-100);
+}
+
+/* ==========================================================================
+   Order Tracking Timeline
+   ========================================================================== */
+
+.aura-timeline-track {
+  position: relative;
+  padding: 30px 0;
+}
+
+.aura-track-step {
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  padding-bottom: 30px;
+}
+
+.aura-track-step::before {
+  content: '';
+  position: absolute;
+  top: 36px;
+  left: 19px;
+  width: 2px;
+  height: calc(100% - 36px);
+  background: var(--aura-slate-200);
+}
+
+.aura-track-step.completed::before {
+  background: var(--aura-emerald-500);
+}
+
+.aura-track-step:last-child::before {
+  display: none;
+}
+
+.aura-track-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--aura-slate-200);
+  color: var(--aura-slate-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  margin-right: 18px;
+  flex-shrink: 0;
+  z-index: 2;
+}
+
+.aura-track-step.completed .aura-track-icon {
+  background: var(--aura-emerald-500);
+  color: white;
+  box-shadow: 0 0 0 4px var(--aura-emerald-100);
+}
+
+.aura-track-step.active .aura-track-icon {
+  background: var(--aura-cyan-500);
+  color: white;
+  box-shadow: 0 0 0 4px var(--aura-cyan-100);
+  animation: pulse-ring 1.8s infinite;
+}
+
+/* ==========================================================================
+   Footer & Dark Obsidian Theme
+   ========================================================================== */
+
+.aura-footer {
+  background: linear-gradient(180deg, var(--aura-navy-900) 0%, #030a14 100%);
+  color: #94a3b8;
+  padding: 70px 0 30px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.aura-footer h5 {
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  letter-spacing: -0.01em;
+}
+
+.aura-footer-link {
+  color: #94a3b8;
+  display: block;
+  padding: 6px 0;
+  font-size: 0.9rem;
+  transition: var(--aura-transition);
+}
+
+.aura-footer-link:hover {
+  color: var(--aura-cyan-400);
+  transform: translateX(4px);
+}
+
+.aura-newsletter-input-group {
+  display: flex;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--aura-radius-pill);
+  padding: 4px;
+}
+
+.aura-newsletter-input {
+  background: transparent;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  width: 100%;
+  outline: none;
+  font-size: 0.875rem;
+}
+
+.aura-newsletter-input::placeholder {
+  color: #64748b;
+}
+
+/* Modal Styling */
+.modal-content {
+  border-radius: var(--aura-radius-xl);
+  border: 1px solid var(--aura-slate-200);
+  box-shadow: var(--aura-shadow-lg);
+}
+
+/* Responsive tweaks */
+@media (max-width: 991.98px) {
+  .aura-hero-section {
+    padding: 40px 0 50px;
+  }
+  .aura-cart-drawer {
+    width: 100vw;
+  }
+}
