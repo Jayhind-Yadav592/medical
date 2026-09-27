@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.utils import timezone
 from rest_framework import viewsets, status, permissions
@@ -815,4 +816,31 @@ class PatientIntakeSubmitAPIView(APIView):
             'allocated_facility_name': allocated_fac.name if allocated_fac else 'Antixor Central Hub',
             'allocated_facility_phone': allocated_fac.phone if allocated_fac else '+1 (800) 268-4967'
         }, status=status.HTTP_201_CREATED)
+
+
+@extend_schema(tags=['Orders & Tracking'])
+class OrderInvoicePDFAPIView(APIView):
+    """Generate and stream official clinical tax invoice PDF for an order."""
+    def get(self, request, order_number):
+        from django.http import HttpResponse
+        from apps.orders.pdf_generator import generate_order_invoice_pdf
+        order = get_object_or_404(Order.objects.prefetch_related('items'), order_number__iexact=order_number)
+        pdf_buffer = generate_order_invoice_pdf(order)
+        response = HttpResponse(pdf_buffer.getvalue(), content_type='application/pdf')
+        response['Content-Disposition'] = f'inline; filename="Antixor_Invoice_{order.order_number}.pdf"'
+        return response
+
+
+@extend_schema(tags=['Prescriptions & Safety'])
+class PrescriptionPDFAPIView(APIView):
+    """Generate and stream digitally-signed medical e-prescription (Rx) PDF."""
+    def get(self, request, prescription_id):
+        from django.http import HttpResponse
+        from apps.orders.pdf_generator import generate_prescription_pdf
+        prescription = get_object_or_404(Prescription, id=prescription_id)
+        pdf_buffer = generate_prescription_pdf(prescription)
+        response = HttpResponse(pdf_buffer.getvalue(), content_type='application/pdf')
+        response['Content-Disposition'] = f'inline; filename="Antixor_Rx_{prescription.id:06d}.pdf"'
+        return response
+
 

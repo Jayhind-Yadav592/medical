@@ -9,7 +9,8 @@ from apps.core.views import (
     order_tracking_view, user_dashboard_view, about_view, contact_view,
     login_view, register_view, logout_view,
     facilities_locator_view, patient_intake_view, order_invoice_view,
-    digital_health_card_view, consultation_room_view
+    digital_health_card_view, consultation_room_view,
+    order_invoice_pdf_download_view, prescription_pdf_download_view
 )
 
 from drf_spectacular.views import (
@@ -40,6 +41,8 @@ urlpatterns = [
     path('intake/', patient_intake_view, name='intake'),
     path('health-card/', digital_health_card_view, name='health-card'),
     path('order/invoice/<str:order_number>/', order_invoice_view, name='order-invoice'),
+    path('order/invoice/<str:order_number>/pdf/', order_invoice_pdf_download_view, name='order-invoice-pdf'),
+    path('prescription/<int:prescription_id>/pdf/', prescription_pdf_download_view, name='prescription-pdf'),
     path('consultation/room/<str:room_id>/', consultation_room_view, name='consultation-room'),
     
     # Frontend Pages

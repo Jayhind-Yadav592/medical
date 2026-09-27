@@ -353,3 +353,30 @@ def logout_view(request):
         messages.info(request, "You have been logged out successfully.")
     return redirect('home')
 
+
+def order_invoice_pdf_download_view(request, order_number):
+    """Generate and download an official ReportLab PDF tax invoice for an order."""
+    from django.http import HttpResponse
+    from apps.orders.pdf_generator import generate_order_invoice_pdf
+    
+    order = get_object_or_404(Order.objects.prefetch_related('items'), order_number__iexact=order_number)
+    pdf_buffer = generate_order_invoice_pdf(order)
+    
+    response = HttpResponse(pdf_buffer.getvalue(), content_type='application/pdf')
+    response['Content-Disposition'] = f'inline; filename="Antixor_Invoice_{order.order_number}.pdf"'
+    return response
+
+
+def prescription_pdf_download_view(request, prescription_id):
+    """Generate and download a digitally-signed medical e-prescription (Rx) PDF."""
+    from django.http import HttpResponse
+    from apps.orders.pdf_generator import generate_prescription_pdf
+    
+    prescription = get_object_or_404(Prescription, id=prescription_id)
+    pdf_buffer = generate_prescription_pdf(prescription)
+    
+    response = HttpResponse(pdf_buffer.getvalue(), content_type='application/pdf')
+    response['Content-Disposition'] = f'inline; filename="Antixor_Rx_{prescription.id:06d}.pdf"'
+    return response
+
+

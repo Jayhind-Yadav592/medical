@@ -973,58 +973,63 @@ body {
 
             <!-- Order Items List -->
             <div class="d-flex flex-column gap-3">
-              
-              <!-- Order 1: Diabetes Care Kit -->
-              <div class="d-flex align-items-center justify-content-between p-2 rounded-3 bg-light bg-opacity-50">
-                <div class="d-flex align-items-center gap-2">
-                  <img src="{% static 'images/product_paracetamol.jpg' %}" alt="Product" class="rounded-3 border" style="width: 36px; height: 36px; object-fit: cover;">
-                  <div>
-                    <div class="fw-bold text-dark small">Diabetes Care Kit</div>
-                    <div class="text-muted font-monospace" style="font-size: 0.7rem;">Order #AX7823</div>
+              {% for ord in orders|slice:":3" %}
+                <div class="d-flex align-items-center justify-content-between p-2 rounded-3 bg-light bg-opacity-50">
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="rounded-3 border d-flex align-items-center justify-content-center bg-white text-emerald-600" style="width: 36px; height: 36px;">
+                      <i class="fa-solid fa-box-archive"></i>
+                    </div>
+                    <div>
+                      <div class="fw-bold text-dark small">{{ ord.full_name|truncatechars:18 }}</div>
+                      <div class="text-muted font-monospace" style="font-size: 0.7rem;">#{{ ord.order_number }} • ${{ ord.final_amount }}</div>
+                    </div>
+                  </div>
+                  <div class="text-end d-flex align-items-center gap-2">
+                    <div>
+                      <span class="badge bg-emerald-100 text-emerald-800 font-monospace rounded-pill px-2 py-1" style="background-color: #d1fae5; color: #065f46; font-size: 0.65rem;">
+                        {{ ord.get_order_status_display }}
+                      </span>
+                      <div class="text-muted font-monospace" style="font-size: 0.65rem;">{{ ord.created_at|date:"M d, Y" }}</div>
+                    </div>
+                    <a href="{% url 'order-invoice-pdf' ord.order_number %}" target="_blank" class="btn btn-sm btn-light border rounded-circle p-1 text-danger" title="Download PDF Invoice">
+                      <i class="fa-solid fa-file-pdf"></i>
+                    </a>
                   </div>
                 </div>
-                <div class="text-end">
-                  <span class="badge bg-emerald-100 text-emerald-800 font-monospace rounded-pill px-2 py-1" style="background-color: #d1fae5; color: #065f46; font-size: 0.65rem;">
-                    ✓ Delivered
-                  </span>
-                  <div class="text-muted font-monospace" style="font-size: 0.65rem;">Sep 24, 2024</div>
-                </div>
-              </div>
-
-              <!-- Order 2: BP Monitor -->
-              <div class="d-flex align-items-center justify-content-between p-2 rounded-3 bg-light bg-opacity-50">
-                <div class="d-flex align-items-center gap-2">
-                  <img src="{% static 'images/product_vitamind3.jpg' %}" alt="Product" class="rounded-3 border" style="width: 36px; height: 36px; object-fit: cover;">
-                  <div>
-                    <div class="fw-bold text-dark small">Blood Pressure Monitor</div>
-                    <div class="text-muted font-monospace" style="font-size: 0.7rem;">Order #AX7819</div>
+              {% empty %}
+                <!-- Fallback Mock Display -->
+                <div class="d-flex align-items-center justify-content-between p-2 rounded-3 bg-light bg-opacity-50">
+                  <div class="d-flex align-items-center gap-2">
+                    <img src="{% static 'images/product_paracetamol.jpg' %}" alt="Product" class="rounded-3 border" style="width: 36px; height: 36px; object-fit: cover;">
+                    <div>
+                      <div class="fw-bold text-dark small">Diabetes Care Kit</div>
+                      <div class="text-muted font-monospace" style="font-size: 0.7rem;">Order #AX7823</div>
+                    </div>
+                  </div>
+                  <div class="text-end">
+                    <span class="badge bg-emerald-100 text-emerald-800 font-monospace rounded-pill px-2 py-1" style="background-color: #d1fae5; color: #065f46; font-size: 0.65rem;">
+                      ✓ Delivered
+                    </span>
+                    <div class="text-muted font-monospace" style="font-size: 0.65rem;">Sep 24, 2024</div>
                   </div>
                 </div>
-                <div class="text-end">
-                  <span class="badge bg-primary-subtle text-primary font-monospace rounded-pill px-2 py-1" style="font-size: 0.65rem;">
-                    🚚 In Transit
-                  </span>
-                  <div class="text-muted font-monospace" style="font-size: 0.65rem;">Sep 26, 2024</div>
-                </div>
-              </div>
 
-              <!-- Order 3: Vitamin D3 -->
-              <div class="d-flex align-items-center justify-content-between p-2 rounded-3 bg-light bg-opacity-50">
-                <div class="d-flex align-items-center gap-2">
-                  <img src="{% static 'images/product_omega3.jpg' %}" alt="Product" class="rounded-3 border" style="width: 36px; height: 36px; object-fit: cover;">
-                  <div>
-                    <div class="fw-bold text-dark small">Vitamin D3 Tablets</div>
-                    <div class="text-muted font-monospace" style="font-size: 0.7rem;">Order #AX7812</div>
+                <div class="d-flex align-items-center justify-content-between p-2 rounded-3 bg-light bg-opacity-50">
+                  <div class="d-flex align-items-center gap-2">
+                    <img src="{% static 'images/product_vitamind3.jpg' %}" alt="Product" class="rounded-3 border" style="width: 36px; height: 36px; object-fit: cover;">
+                    <div>
+                      <div class="fw-bold text-dark small">Blood Pressure Monitor</div>
+                      <div class="text-muted font-monospace" style="font-size: 0.7rem;">Order #AX7819</div>
+                    </div>
+                  </div>
+                  <div class="text-end">
+                    <span class="badge bg-primary-subtle text-primary font-monospace rounded-pill px-2 py-1" style="font-size: 0.65rem;">
+                      🚚 In Transit
+                    </span>
+                    <div class="text-muted font-monospace" style="font-size: 0.65rem;">Sep 26, 2024</div>
                   </div>
                 </div>
-                <div class="text-end">
-                  <span class="badge bg-emerald-100 text-emerald-800 font-monospace rounded-pill px-2 py-1" style="background-color: #d1fae5; color: #065f46; font-size: 0.65rem;">
-                    ✓ Delivered
-                  </span>
-                  <div class="text-muted font-monospace" style="font-size: 0.65rem;">Sep 20, 2024</div>
-                </div>
-              </div>
-
+              {% endfor %}
             </div>
           </div>
         </div>

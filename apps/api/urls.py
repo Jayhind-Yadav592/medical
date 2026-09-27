@@ -8,7 +8,8 @@ from .views import (
     NewsletterAPIView, ContactAPIView,
     AuthRegisterAPIView, AuthLoginAPIView, AuthLogoutAPIView, AuthStatusAPIView,
     FacilityNearestAPIView, EmergencySOSAPIView, SafetyAllergyCheckAPIView,
-    PatientVitalsAPIView, PillReminderToggleAPIView, PatientIntakeSubmitAPIView
+    PatientVitalsAPIView, PillReminderToggleAPIView, PatientIntakeSubmitAPIView,
+    OrderInvoicePDFAPIView, PrescriptionPDFAPIView
 )
 
 router = DefaultRouter()
@@ -30,11 +31,13 @@ urlpatterns = [
     
     # Prescriptions & Telehealth
     path('prescriptions/upload/', PrescriptionUploadAPIView.as_view(), name='api-prescription-upload'),
+    path('prescriptions/<int:prescription_id>/pdf/', PrescriptionPDFAPIView.as_view(), name='api-prescription-pdf'),
     path('consultations/book/', ConsultationBookingAPIView.as_view(), name='api-consultation-book'),
     
     # Orders & Tracking
     path('orders/checkout/', CheckoutAPIView.as_view(), name='api-checkout'),
     path('orders/track/<str:order_number>/', OrderTrackingAPIView.as_view(), name='api-order-track'),
+    path('orders/<str:order_number>/invoice/pdf/', OrderInvoicePDFAPIView.as_view(), name='api-order-invoice-pdf'),
     
     # Reviews & Interactive Feedbacks
     path('products/<slug:product_slug>/reviews/', ReviewCreateAPIView.as_view(), name='api-product-review'),

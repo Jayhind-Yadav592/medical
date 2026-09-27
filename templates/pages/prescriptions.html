@@ -130,14 +130,19 @@
         <div class="card border rounded-4 p-4 shadow-sm bg-white">
           <h6 class="fw-bold text-dark mb-3 pb-2 border-bottom">Your Prescription History</h6>
           {% for rx in user_prescriptions %}
-            <div class="border-bottom pb-2 mb-2 d-flex justify-content-between align-items-center">
+            <div class="border-bottom pb-2 mb-2 d-flex justify-content-between align-items-center flex-wrap gap-2">
               <div>
                 <strong class="text-dark">Rx #{{ rx.id }}</strong> - {{ rx.patient_name }}
                 <div class="text-muted small">{{ rx.uploaded_at|date:"M d, Y H:i" }}</div>
               </div>
-              <span class="badge {% if rx.status == 'VERIFIED' %}bg-success{% elif rx.status == 'PENDING' %}bg-warning text-dark{% else %}bg-secondary{% endif %} rounded-pill px-3 py-1">
-                {{ rx.get_status_display }}
-              </span>
+              <div class="d-flex align-items-center gap-2">
+                <span class="badge {% if rx.status == 'VERIFIED' %}bg-success{% elif rx.status == 'PENDING' %}bg-warning text-dark{% else %}bg-secondary{% endif %} rounded-pill px-3 py-1">
+                  {{ rx.get_status_display }}
+                </span>
+                <a href="{% url 'prescription-pdf' rx.id %}" target="_blank" class="btn btn-sm btn-outline-success rounded-pill px-2 py-1" style="font-size: 0.75rem;" title="Download Official e-Prescription PDF">
+                  <i class="fa-solid fa-file-pdf me-1"></i> Rx PDF
+                </a>
+              </div>
             </div>
           {% endfor %}
         </div>

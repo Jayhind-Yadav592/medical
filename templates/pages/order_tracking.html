@@ -66,9 +66,14 @@
             <div class="text-md-end d-flex flex-column align-items-md-end gap-1">
               <span class="badge bg-success fs-6 px-3 py-2 rounded-pill shadow-sm" style="background-color: #009b72 !important;">{{ order.get_order_status_display }}</span>
               <div class="text-muted small">Est. Delivery: <strong>{{ order.estimated_delivery|default:"2-4 Hours (Express)" }}</strong></div>
-              <a href="{% url 'order-invoice' order.order_number %}" class="btn btn-sm btn-outline-dark rounded-pill px-3 py-1 fw-bold mt-1">
-                <i class="fa-solid fa-file-invoice me-1"></i> View Tax Invoice
-              </a>
+              <div class="d-flex gap-1 mt-1">
+                <a href="{% url 'order-invoice' order.order_number %}" class="btn btn-sm btn-outline-dark rounded-pill px-3 py-1 fw-bold">
+                  <i class="fa-solid fa-file-invoice me-1"></i> Invoice
+                </a>
+                <a href="{% url 'order-invoice-pdf' order.order_number %}" target="_blank" class="btn btn-sm btn-success text-white rounded-pill px-3 py-1 fw-bold" style="background-color: #009b72;">
+                  <i class="fa-solid fa-file-pdf me-1"></i> Download PDF
+                </a>
+              </div>
             </div>
           </div>
 
