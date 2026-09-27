@@ -1,0 +1,14 @@
+# Antixor MedOS - Production Python Dependencies
+Django==5.0.6
+djangorestframework==3.14.0
+drf-spectacular==0.30.0
+reportlab==5.0.1
+pillow==12.3.0
+gunicorn==25.0.2
+psycopg2-binary==2.9.11
+whitenoise==6.11.0
+django-cors-headers==4.9.0
+django-filter==26.1
+django-environ==0.11.2
+redis==8.1.0
+channels_redis==4.3.0

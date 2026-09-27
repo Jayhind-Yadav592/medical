@@ -1,0 +1,97 @@
+# ==============================================================================
+# Antixor MedOS - Production Docker Compose Orchestration
+# Web (Django + Gunicorn) + PostgreSQL 16 + Redis 7 + Nginx SSL Reverse Proxy
+# ==============================================================================
+
+version: '3.8'
+
+services:
+  # PostgreSQL Database Service
+  db:
+    image: postgres:16-alpine
+    container_name: antixor_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-antixor_medos}
+      POSTGRES_USER: ${POSTGRES_USER:-antixor_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-AntixorSecureDbPassword2026!}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-antixor_admin} -d ${POSTGRES_DB:-antixor_medos}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - antixor_internal_network
+
+  # Redis Cache & Message Broker
+  redis:
+    image: redis:7-alpine
+    container_name: antixor_redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-AntixorRedisSecret2026!}
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD:-AntixorRedisSecret2026!}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - antixor_internal_network
+
+  # Antixor MedOS Django / WSGI Web Application
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: antixor_web
+    restart: unless-stopped
+    environment:
+      DEBUG: ${DEBUG:-0}
+      SECRET_KEY: ${SECRET_KEY:-django-insecure-antixor-medos-production-key-2026}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,web}
+      DATABASE_URL: postgres://${POSTGRES_USER:-antixor_admin}:${POSTGRES_PASSWORD:-AntixorSecureDbPassword2026!}@db:5432/${POSTGRES_DB:-antixor_medos}
+      REDIS_URL: redis://:${REDIS_PASSWORD:-AntixorRedisSecret2026!}@redis:6379/0
+      STRIPE_PUBLIC_KEY: ${STRIPE_PUBLIC_KEY:-pk_test_51AntixorMedOSLiveSandboxKey9842}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-sk_test_51AntixorMedOSLiveSandboxSecret9842}
+      RAZORPAY_KEY_ID: ${RAZORPAY_KEY_ID:-rzp_test_AntixorMedOS9842}
+      RAZORPAY_KEY_SECRET: ${RAZORPAY_KEY_SECRET:-secret_AntixorMedOS9842}
+    volumes:
+      - static_volume:/app/staticfiles
+      - media_volume:/app/media
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - antixor_internal_network
+
+  # Nginx Reverse Proxy with Gzip & SSL Termination
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: antixor_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - static_volume:/app/staticfiles:ro
+      - media_volume:/app/media:ro
+    depends_on:
+      - web
+    networks:
+      - antixor_internal_network
+
+volumes:
+  postgres_data:
+  redis_data:
+  static_volume:
+  media_volume:
+
+networks:
+  antixor_internal_network:
+    driver: bridge
