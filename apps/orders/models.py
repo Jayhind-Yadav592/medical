@@ -51,10 +51,10 @@ class Cart(models.Model):
         
     @property
     def shipping_fee(self):
-        # Free delivery over $35
-        if self.subtotal >= 35 or self.subtotal == 0:
+        # Free delivery over ₹499
+        if self.subtotal >= 499 or self.subtotal == 0:
             return 0.0
-        return 4.99
+        return 49.0
         
     @property
     def grand_total(self):

@@ -264,8 +264,8 @@ def generate_order_invoice_pdf(order):
             Paragraph(f"<b>{item.product_name}</b>", styles['TableCell']),
             Paragraph(dosage_str, styles['TableCell']),
             Paragraph(str(item.quantity), styles['TableCell']),
-            Paragraph(f"${item.unit_price:.2f}", styles['TableCellRight']),
-            Paragraph(f"<b>${item.subtotal:.2f}</b>", styles['TableCellRightBold']),
+            Paragraph(f"Rs. {item.unit_price:.2f}", styles['TableCellRight']),
+            Paragraph(f"<b>Rs. {item.subtotal:.2f}</b>", styles['TableCellRightBold']),
         ])
         index += 1
         
@@ -275,8 +275,8 @@ def generate_order_invoice_pdf(order):
             Paragraph("<b>Clinical Prescription Order Fulfillment</b>", styles['TableCell']),
             Paragraph("Standard Prescribed Regimen", styles['TableCell']),
             Paragraph("1", styles['TableCell']),
-            Paragraph(f"${order.total_amount:.2f}", styles['TableCellRight']),
-            Paragraph(f"<b>${order.total_amount:.2f}</b>", styles['TableCellRightBold']),
+            Paragraph(f"Rs. {order.total_amount:.2f}", styles['TableCellRight']),
+            Paragraph(f"<b>Rs. {order.total_amount:.2f}</b>", styles['TableCellRightBold']),
         ])
         
     items_table = Table(items_data, colWidths=[25, 205, 130, 40, 70, 70])
@@ -305,10 +305,10 @@ def generate_order_invoice_pdf(order):
                 styles['LegalNotice']
             ),
             Table([
-                [Paragraph("Medication Subtotal:", styles['TableCell']), Paragraph(f"${order.total_amount:.2f}", styles['TableCellRightBold'])],
-                [Paragraph("Cold-Chain Express Shipping:", styles['TableCell']), Paragraph(f"${order.shipping_fee:.2f}" if order.shipping_fee > 0 else "<font color='#166534'><b>FREE ($0.00)</b></font>", styles['TableCellRight'])],
-                [Paragraph("Clinical Savings / Coupon:", styles['TableCell']), Paragraph(f"-${order.discount_amount:.2f}" if order.discount_amount > 0 else "$0.00", styles['TableCellRight'])],
-                [Paragraph("<b>TOTAL BILLED:</b>", styles['BodyBold']), Paragraph(f"<font size='11' color='#0a5c43'><b>${order.final_amount:.2f}</b></font>", styles['TableCellRightBold'])],
+                [Paragraph("Medication Subtotal:", styles['TableCell']), Paragraph(f"Rs. {order.total_amount:.2f}", styles['TableCellRightBold'])],
+                [Paragraph("Cold-Chain Express Shipping:", styles['TableCell']), Paragraph(f"Rs. {order.shipping_fee:.2f}" if order.shipping_fee > 0 else "<font color='#166534'><b>FREE (Rs. 0.00)</b></font>", styles['TableCellRight'])],
+                [Paragraph("Clinical Savings / Coupon:", styles['TableCell']), Paragraph(f"-Rs. {order.discount_amount:.2f}" if order.discount_amount > 0 else "Rs. 0.00", styles['TableCellRight'])],
+                [Paragraph("<b>TOTAL BILLED:</b>", styles['BodyBold']), Paragraph(f"<font size='11' color='#0a5c43'><b>Rs. {order.final_amount:.2f}</b></font>", styles['TableCellRightBold'])],
             ], colWidths=[150, 90])
         ]
     ]

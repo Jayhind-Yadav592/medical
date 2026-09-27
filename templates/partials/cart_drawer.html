@@ -38,7 +38,7 @@
                   <span class="px-1 small fw-bold">{{ item.quantity }}</span>
                   <button class="btn btn-sm p-0 px-2 fw-bold" onclick="updateCartItemQty({{ item.id }}, {{ item.quantity|add:'1' }})">+</button>
                 </div>
-                <span class="fw-bold text-dark small">${{ item.subtotal }}</span>
+                <span class="fw-bold text-dark small">₹{{ item.subtotal }}</span>
               </div>
             </div>
           </div>
@@ -59,15 +59,15 @@
     <div class="p-3 bg-light border-top">
       <div class="d-flex justify-content-between text-muted small mb-1">
         <span>Subtotal</span>
-        <span class="fw-bold text-dark aura-cart-subtotal-val">${{ global_cart_total|default:"0.00"|floatformat:2 }}</span>
+        <span class="fw-bold text-dark aura-cart-subtotal-val">₹{{ global_cart_total|default:"0.00"|floatformat:2 }}</span>
       </div>
       <div class="d-flex justify-content-between text-muted small mb-2">
         <span>Cold-Chain Delivery</span>
-        <span class="text-success fw-bold aura-cart-shipping-val">FREE (Orders $35+)</span>
+        <span class="text-success fw-bold aura-cart-shipping-val">FREE (Orders ₹499+)</span>
       </div>
       <div class="d-flex justify-content-between fs-6 fw-bold text-dark mb-3 pt-2 border-top">
         <span>Estimated Total</span>
-        <span class="text-success aura-cart-total-val" style="color:#009b72 !important;">${{ global_cart_total|default:"0.00"|floatformat:2 }}</span>
+        <span class="text-success aura-cart-total-val" style="color:#009b72 !important;">₹{{ global_cart_total|default:"0.00"|floatformat:2 }}</span>
       </div>
 
       <div class="d-grid gap-2">

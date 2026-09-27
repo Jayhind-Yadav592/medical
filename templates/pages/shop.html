@@ -707,7 +707,7 @@ body {
       {% if page_obj %}
         <div class="row g-2 g-xl-3" id="catalog-grid">
           {% for product in page_obj %}
-            <div class="col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6">
+            <div class="col-xxl-3 col-xl-3 col-lg-6 col-md-6 col-sm-6 col-6">
               <div class="shop-med-card">
                 
                 <!-- Image & Badges Wrap -->
@@ -754,9 +754,9 @@ body {
 
                   <div>
                     <div class="shop-med-price-row">
-                      <span class="shop-med-price">${{ product.price }}</span>
+                      <span class="shop-med-price">₹{{ product.price }}</span>
                       {% if product.mrp_price and product.mrp_price > product.price %}
-                        <span class="shop-med-mrp">${{ product.mrp_price }}</span>
+                        <span class="shop-med-mrp">₹{{ product.mrp_price }}</span>
                       {% endif %}
                     </div>
 
@@ -907,7 +907,7 @@ body {
 <script>
 const offerSlides = [
   { label: 'FLAT', discount: '20% OFF', sub: 'on Vitamins & Supplements', code: 'HEALTH20' },
-  { label: 'EXPRESS', discount: 'FREE DEL', sub: 'on Orders Above $35', code: 'FREEDEL' },
+  { label: 'EXPRESS', discount: 'FREE DEL', sub: 'on Orders Above ₹499', code: 'FREEDEL' },
   { label: 'SPECIAL', discount: '15% OFF', sub: 'on Chronic Care & Diabetes', code: 'CARE15' }
 ];
 

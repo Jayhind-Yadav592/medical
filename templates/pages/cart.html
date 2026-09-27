@@ -72,7 +72,7 @@
                   </div>
 
                   <div class="text-end" style="min-width: 90px;">
-                    <div class="fw-bold text-dark fs-6">${{ item.subtotal }}</div>
+                    <div class="fw-bold text-dark fs-6">₹{{ item.subtotal }}</div>
                     <button class="btn btn-sm text-danger p-0 border-0 small" onclick="removeCartItem({{ item.id }})" title="Remove item">
                       <i class="fa-regular fa-trash-can me-1"></i> Remove
                     </button>
@@ -129,17 +129,17 @@
         
         <div class="d-flex justify-content-between text-muted mb-2">
           <span>Items Subtotal</span>
-          <span class="fw-bold text-dark aura-cart-subtotal-val">${{ global_cart_total|default:"0.00"|floatformat:2 }}</span>
+          <span class="fw-bold text-dark aura-cart-subtotal-val">₹{{ global_cart_total|default:"0.00"|floatformat:2 }}</span>
         </div>
 
         <div class="d-flex justify-content-between text-muted mb-2">
           <span>Cold-Chain Delivery</span>
-          <span class="aura-cart-shipping-val text-success fw-bold">FREE ($35+)</span>
+          <span class="aura-cart-shipping-val text-success fw-bold">FREE (₹499+)</span>
         </div>
 
         <div class="d-flex justify-content-between text-muted mb-3">
           <span>Estimated Tax &amp; GST</span>
-          <span class="text-dark fw-semibold">$0.00</span>
+          <span class="text-dark fw-semibold">₹0.00</span>
         </div>
 
         <!-- Coupon Code Box -->
@@ -150,7 +150,7 @@
 
         <div class="d-flex justify-content-between fs-5 fw-bold text-dark pt-3 border-top mb-4">
           <span>Estimated Total</span>
-          <span class="text-success aura-cart-total-val" style="color: #009b72 !important;">${{ global_cart_total|default:"0.00"|floatformat:2 }}</span>
+          <span class="text-success aura-cart-total-val" style="color: #009b72 !important;">₹{{ global_cart_total|default:"0.00"|floatformat:2 }}</span>
         </div>
 
         <a href="{% url 'checkout' %}" class="btn w-100 py-3 rounded-pill fw-bold text-white shadow-sm d-flex align-items-center justify-content-center gap-2 {% if not global_cart_items %}disabled{% endif %}" style="background-color: #009b72; font-size: 0.95rem;">

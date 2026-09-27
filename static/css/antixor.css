@@ -1520,5 +1520,164 @@ a:hover {
   .dashboard-sidebar.show {
     left: 0 !important;
   }
+  body {
+    padding-bottom: 70px !important;
+  }
 }
+
+/* Scrollbar Utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+}
+.no-scrollbar {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+/* Mobile Responsiveness & Polish (Screens < 768px) */
+@media (max-width: 767.98px) {
+  .antixor-hero {
+    padding: 24px 0 32px !important;
+  }
+  
+  .antixor-hero-title {
+    font-size: 1.85rem !important;
+    line-height: 1.2 !important;
+  }
+  
+  .antixor-hero-desc {
+    font-size: 0.92rem !important;
+    margin-bottom: 18px !important;
+  }
+  
+  .antixor-hero-img {
+    height: 260px !important;
+    object-fit: cover !important;
+  }
+  
+  .antixor-hero-doctor-card {
+    border-radius: 20px !important;
+    border-width: 3px !important;
+  }
+  
+  .antixor-float-badge {
+    padding: 8px 12px !important;
+    border-radius: 12px !important;
+  }
+  
+  .antixor-float-badge-top {
+    top: 10px !important;
+    right: 0px !important;
+  }
+  
+  .antixor-float-badge-bottom {
+    bottom: 10px !important;
+    left: 0px !important;
+  }
+  
+  .antixor-search-box {
+    padding: 4px 4px 4px 14px !important;
+  }
+  
+  .antixor-search-input {
+    font-size: 0.85rem !important;
+  }
+  
+  .antixor-search-btn {
+    padding: 8px 16px !important;
+    font-size: 0.8rem !important;
+  }
+  
+  .antixor-service-card {
+    padding: 20px 16px !important;
+    border-radius: 16px !important;
+  }
+  
+  .antixor-service-icon-box {
+    width: 48px !important;
+    height: 48px !important;
+    font-size: 1.25rem !important;
+    border-radius: 12px !important;
+    margin-bottom: 14px !important;
+  }
+  
+  .antixor-service-title {
+    font-size: 1.05rem !important;
+  }
+  
+  .antixor-service-desc {
+    font-size: 0.82rem !important;
+  }
+  
+  .antixor-section-title {
+    font-size: 1.45rem !important;
+  }
+  
+  .antixor-section-subtitle {
+    font-size: 0.85rem !important;
+  }
+}
+
+/* Mobile Product Grid & Small Device Polish (< 576px) */
+@media (max-width: 575.98px) {
+  .antixor-product-card {
+    padding: 12px !important;
+    border-radius: 14px !important;
+  }
+  
+  .antixor-product-img-box {
+    height: 125px !important;
+    border-radius: 10px !important;
+    margin-bottom: 10px !important;
+    padding: 6px !important;
+  }
+  
+  .antixor-product-img {
+    max-height: 105px !important;
+  }
+  
+  .antixor-product-name {
+    font-size: 0.88rem !important;
+    line-height: 1.25 !important;
+    margin-bottom: 2px !important;
+  }
+  
+  .antixor-product-category {
+    font-size: 0.72rem !important;
+    margin-bottom: 4px !important;
+  }
+  
+  .antixor-product-price {
+    font-size: 1.1rem !important;
+  }
+  
+  .antixor-product-mrp {
+    font-size: 0.75rem !important;
+  }
+  
+  .antixor-btn-add-cart {
+    padding: 8px 10px !important;
+    font-size: 0.78rem !important;
+  }
+  
+  .antixor-product-badge-discount {
+    font-size: 0.65rem !important;
+    padding: 2px 6px !important;
+    top: 10px !important;
+    left: 10px !important;
+  }
+  
+  .antixor-product-wishlist {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 0.75rem !important;
+    top: 10px !important;
+    right: 10px !important;
+  }
+
+  .modal-dialog {
+    margin: 0.5rem !important;
+  }
+}
+
 

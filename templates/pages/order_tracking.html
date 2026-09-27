@@ -132,9 +132,9 @@
                 <div class="d-flex justify-content-between align-items-center py-2 border-bottom">
                   <div>
                     <div class="fw-bold text-dark small">{{ item.product_name }}</div>
-                    <div class="text-muted" style="font-size: 0.75rem;">Qty: {{ item.quantity }} × ${{ item.unit_price }}</div>
+                    <div class="text-muted" style="font-size: 0.75rem;">Qty: {{ item.quantity }} × ₹{{ item.unit_price }}</div>
                   </div>
-                  <strong class="text-dark">${{ item.subtotal }}</strong>
+                  <strong class="text-dark">₹{{ item.subtotal }}</strong>
                 </div>
               {% empty %}
                 <div class="text-muted small py-2">Clinical package details attached with order.</div>
@@ -142,7 +142,7 @@
               
               <div class="d-flex justify-content-between fs-5 fw-bold text-dark pt-3 mt-auto">
                 <span>Final Total (Paid):</span>
-                <span class="text-success" style="color: #009b72 !important;">${{ order.final_amount }}</span>
+                <span class="text-success" style="color: #009b72 !important;">₹{{ order.final_amount }}</span>
               </div>
             </div>
           </div>

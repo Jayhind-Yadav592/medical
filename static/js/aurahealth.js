@@ -98,18 +98,18 @@
 
     const subtotalEls = document.querySelectorAll('.aura-cart-subtotal-val');
     subtotalEls.forEach(el => {
-      el.textContent = `$${parseFloat(cart.subtotal || 0).toFixed(2)}`;
+      el.textContent = `₹${parseFloat(cart.subtotal || 0).toFixed(2)}`;
     });
 
     const totalEls = document.querySelectorAll('.aura-cart-total-val');
     totalEls.forEach(el => {
-      el.textContent = `$${parseFloat(cart.grand_total || 0).toFixed(2)}`;
+      el.textContent = `₹${parseFloat(cart.grand_total || 0).toFixed(2)}`;
     });
 
     const shippingEls = document.querySelectorAll('.aura-cart-shipping-val');
     shippingEls.forEach(el => {
       const ship = parseFloat(cart.shipping_fee || 0);
-      el.textContent = ship === 0 ? 'FREE' : `$${ship.toFixed(2)}`;
+      el.textContent = ship === 0 ? 'FREE' : `₹${ship.toFixed(2)}`;
       el.className = `aura-cart-shipping-val ${ship === 0 ? 'text-success fw-bold' : ''}`;
     });
 
@@ -152,7 +152,7 @@
                     <span class="px-2 small fw-bold">${item.quantity}</span>
                     <button class="aura-qty-btn" onclick="updateCartItemQty(${item.id}, ${item.quantity + 1})">+</button>
                   </div>
-                  <span class="fw-bold text-navy-800">$${parseFloat(item.subtotal).toFixed(2)}</span>
+                  <span class="fw-bold text-navy-800">₹${parseFloat(item.subtotal).toFixed(2)}</span>
                 </div>
               </div>
             </div>
@@ -300,7 +300,7 @@
                     </div>
                   </div>
                   <div class="text-end">
-                    <div class="fw-bold text-navy-800">$${item.price.toFixed(2)}</div>
+                    <div class="fw-bold text-navy-800">₹${item.price.toFixed(2)}</div>
                     ${item.rx ? '<span class="aura-badge aura-badge-rx mt-1">Rx</span>' : '<span class="aura-badge aura-badge-otc mt-1">OTC</span>'}
                   </div>
                 </div>
@@ -435,7 +435,7 @@
       document.getElementById('aura-modal-doc-id').value = doctorId;
       document.getElementById('aura-modal-doc-name').textContent = doctorName;
       document.getElementById('aura-modal-doc-specialty').textContent = specialty;
-      document.getElementById('aura-modal-doc-fee').textContent = fee > 0 ? `$${parseFloat(fee).toFixed(2)}` : 'FREE Triage';
+      document.getElementById('aura-modal-doc-fee').textContent = fee > 0 ? `₹${parseFloat(fee).toFixed(2)}` : 'FREE Triage';
       const bsModal = new bootstrap.Modal(modalEl);
       bsModal.show();
     }

@@ -71,12 +71,12 @@
 
       <!-- Pricing Box -->
       <div class="p-3 bg-light rounded-4 mb-4 d-flex align-items-baseline gap-3">
-        <span class="fs-2 fw-800 text-navy-800">${{ product.price }}</span>
+        <span class="fs-2 fw-800 text-navy-800">₹{{ product.price }}</span>
         {% if product.mrp_price %}
-          <span class="fs-5 text-muted text-decoration-line-through">${{ product.mrp_price }}</span>
+          <span class="fs-5 text-muted text-decoration-line-through">₹{{ product.mrp_price }}</span>
           <span class="badge bg-warning text-dark">Save {{ product.discount_percent }}%</span>
         {% endif %}
-        <span class="ms-auto text-muted small"><i class="fa-solid fa-truck-fast text-cyan-600 me-1"></i> Free delivery on $35+</span>
+        <span class="ms-auto text-muted small"><i class="fa-solid fa-truck-fast text-cyan-600 me-1"></i> Free delivery on ₹499+</span>
       </div>
 
       <!-- Short Description -->
@@ -243,7 +243,7 @@
               <h4 class="aura-product-title"><a href="{% url 'product-detail' rp.slug %}">{{ rp.name }}</a></h4>
               <div class="aura-product-dosage">{{ rp.dosage_strength }}</div>
               <div class="aura-product-price-row">
-                <span class="aura-current-price">${{ rp.price }}</span>
+                <span class="aura-current-price">₹{{ rp.price }}</span>
               </div>
               <button class="aura-add-cart-btn" onclick="addToCart({{ rp.id }}, 1, event)">Add to Cart</button>
             </div>

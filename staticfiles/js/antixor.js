@@ -99,7 +99,7 @@
                       <div class="text-muted" style="font-size: 0.75rem;">${item.category} • ${item.dosage}</div>
                     </div>
                   </div>
-                  <div class="fw-bold text-success">$${item.price.toFixed(2)}</div>
+                  <div class="fw-bold text-success">₹${item.price.toFixed(2)}</div>
                 </div>
               `;
             });
@@ -218,7 +218,7 @@
     if (docNameEl) docNameEl.textContent = doctorName || 'Dr. Elena Vance, PharmD';
     if (docSpecEl) docSpecEl.textContent = specialty || 'Lead Clinical Pharmacist';
     if (docFeeEl) {
-      docFeeEl.textContent = (!fee || fee === 0) ? 'FREE Triage' : `$${fee}`;
+      docFeeEl.textContent = (!fee || fee === 0) ? 'FREE Triage' : `₹${fee}`;
     }
 
     const consultModalEl = document.getElementById('auraConsultationModal');
@@ -395,8 +395,8 @@
           <a href="/shop/" class="btn btn-sm btn-success rounded-pill px-3 py-2 fw-bold" style="background-color:#009b72;" onclick="closeCartDrawer()">Browse Pharmacy</a>
         </div>
       `;
-      document.querySelectorAll('.aura-cart-subtotal-val').forEach(el => el.textContent = '$0.00');
-      document.querySelectorAll('.aura-cart-total-val').forEach(el => el.textContent = '$0.00');
+      document.querySelectorAll('.aura-cart-subtotal-val').forEach(el => el.textContent = '₹0.00');
+      document.querySelectorAll('.aura-cart-total-val').forEach(el => el.textContent = '₹0.00');
       const chkBtn = document.getElementById('aura-drawer-checkout-btn');
       if (chkBtn) chkBtn.classList.add('disabled');
       return;
@@ -421,15 +421,15 @@
                 <span class="px-2 small fw-bold">${item.quantity}</span>
                 <button class="btn btn-sm p-0 px-2 fw-bold" onclick="updateCartItemQty(${item.id}, ${item.quantity + 1})">+</button>
               </div>
-              <span class="fw-bold text-dark small">$${item.subtotal.toFixed(2)}</span>
+              <span class="fw-bold text-dark small">₹${item.subtotal.toFixed(2)}</span>
             </div>
           </div>
         </div>
       `;
     });
     container.innerHTML = html;
-    document.querySelectorAll('.aura-cart-subtotal-val').forEach(el => el.textContent = `$${cart.total_price.toFixed(2)}`);
-    document.querySelectorAll('.aura-cart-total-val').forEach(el => el.textContent = `$${cart.total_price.toFixed(2)}`);
+    document.querySelectorAll('.aura-cart-subtotal-val').forEach(el => el.textContent = `₹${cart.total_price.toFixed(2)}`);
+    document.querySelectorAll('.aura-cart-total-val').forEach(el => el.textContent = `₹${cart.total_price.toFixed(2)}`);
     const chkBtn = document.getElementById('aura-drawer-checkout-btn');
     if (chkBtn) chkBtn.classList.remove('disabled');
   };

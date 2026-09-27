@@ -35,7 +35,7 @@
         </div>
       </a>
 
-      <!-- Smart Center Search Bar -->
+      <!-- Smart Center Search Bar (Desktop) -->
       <div class="flex-grow-1 mx-2 mx-xl-4 d-none d-lg-block" style="max-width: 640px;">
         <form action="{% url 'shop' %}" method="GET" class="position-relative">
           <div class="input-group rounded-pill overflow-hidden border p-1 bg-light" style="border-color: #e2e8f0 !important; background-color: #f8fafc !important;">
@@ -53,7 +53,7 @@
       <!-- Right Action Items -->
       <div class="d-flex align-items-center gap-2 flex-shrink-0">
         
-        <!-- Upload Rx Button -->
+        <!-- Upload Rx Button (Desktop & Tablet) -->
         <button class="btn btn-sm text-white rounded-pill px-3 py-2 d-none d-sm-inline-flex align-items-center gap-2 fw-bold shadow-sm" style="background-color: #009b72; font-size: 0.85rem;" data-bs-toggle="modal" data-bs-target="#auraPrescriptionModal">
           <i class="fa-solid fa-cloud-arrow-up"></i>
           <span>Upload Rx</span>
@@ -85,11 +85,11 @@
                 <img src="{% static 'images/avatar_sarah.jpg' %}" alt="Chief Pharmacist" style="width: 100%; height: 100%; object-fit: cover;">
               {% endif %}
             </div>
-            <span class="small fw-bold d-none d-md-inline text-dark">Chief Pharmacist</span>
+            <span class="small fw-bold d-none d-md-inline text-dark">Account</span>
           </button>
           <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 mt-2 p-2" style="min-width: 220px;">
             <li class="px-3 py-2 border-bottom mb-1">
-              <div class="fw-bold text-dark">Chief Pharmacist Alexander</div>
+              <div class="fw-bold text-dark">{% if user.is_authenticated %}{{ user.first_name|default:user.username }}{% else %}Chief Pharmacist{% endif %}</div>
               <div class="small text-muted font-monospace" style="font-size: 0.7rem;">ID: ANT-P-882910</div>
             </li>
             <li><a class="dropdown-item py-2 rounded-3" href="{% url 'dashboard' %}"><i class="fa-solid fa-gauge-high me-2" style="color:#009b72;"></i> Patient Dashboard</a></li>
@@ -115,37 +115,53 @@
 
       </div>
     </div>
+
+    <!-- Mobile-Only Dedicated Search Bar -->
+    <div class="d-block d-lg-none mt-2">
+      <form action="{% url 'shop' %}" method="GET" class="position-relative">
+        <div class="input-group rounded-pill overflow-hidden border p-1 bg-light shadow-sm" style="border-color: #e2e8f0 !important; background-color: #f8fafc !important;">
+          <span class="input-group-text bg-transparent border-0 ps-3 pe-2 text-muted">
+            <i class="fa-solid fa-magnifying-glass" style="color: #009b72;"></i>
+          </span>
+          <input type="text" name="q" value="{{ search_query|default:'' }}" class="form-control bg-transparent border-0 py-1" placeholder="Search medicines, Paracetamol, Vitamin D3..." autocomplete="off" style="font-size: 0.85rem;">
+          <button type="submit" class="btn text-white rounded-pill px-3 fw-bold" style="background-color: #009b72; font-size: 0.8rem;">
+            Search
+          </button>
+        </div>
+      </form>
+    </div>
+
   </div>
 
-  <!-- Secondary Clean Navigation Strip -->
-  <div class="border-top py-2" style="background-color: #ffffff; border-color: #f1f5f9 !important;">
-    <div class="container-fluid px-3 px-xl-4 d-flex align-items-center justify-content-between">
-      <div class="d-flex align-items-center gap-1 gap-lg-2 flex-wrap">
-        <a href="{% url 'home' %}" class="btn btn-sm border-0 fw-semibold text-dark rounded-pill px-3 py-1-5 {% if request.path == '/' %}bg-emerald-50 text-emerald-700 fw-bold{% else %}btn-light{% endif %}" style="font-size: 0.85rem; {% if request.path == '/' %}background-color: #e6f9f0 !important; color: #009b72 !important;{% endif %}">
+  <!-- Secondary Clean Navigation Strip (Horizontally Scrollable on Mobile) -->
+  <div class="border-top py-1-5 py-md-2" style="background-color: #ffffff; border-color: #f1f5f9 !important;">
+    <div class="container-fluid px-2 px-md-4 d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center gap-1 gap-md-2 overflow-x-auto no-scrollbar py-1 flex-nowrap w-100 w-lg-auto" style="-webkit-overflow-scrolling: touch;">
+        <a href="{% url 'home' %}" class="btn btn-sm border-0 fw-semibold text-nowrap rounded-pill px-3 py-1-5 {% if request.path == '/' %}bg-emerald-50 text-emerald-700 fw-bold{% else %}btn-light text-dark{% endif %}" style="font-size: 0.82rem; {% if request.path == '/' %}background-color: #e6f9f0 !important; color: #009b72 !important;{% endif %}">
           <i class="fa-solid fa-house text-emerald-600 me-1" style="color:#009b72;"></i> Home
         </a>
-        <a href="{% url 'shop' %}" class="btn btn-sm border-0 rounded-pill px-3 py-1-5 {% if '/shop' in request.path %}fw-bold{% else %}btn-light text-dark fw-semibold{% endif %}" style="font-size: 0.85rem; {% if '/shop' in request.path %}background-color: #e6f9f0 !important; color: #009b72 !important; font-weight: 700;{% else %}color: #334155;{% endif %}">
+        <a href="{% url 'shop' %}" class="btn btn-sm border-0 rounded-pill text-nowrap px-3 py-1-5 {% if '/shop' in request.path %}fw-bold{% else %}btn-light text-dark fw-semibold{% endif %}" style="font-size: 0.82rem; {% if '/shop' in request.path %}background-color: #e6f9f0 !important; color: #009b72 !important; font-weight: 700;{% else %}color: #334155;{% endif %}">
           <i class="fa-solid fa-store me-1" style="color:#009b72;"></i> Pharmacy Store
         </a>
-        <a href="{% url 'facilities' %}" class="btn btn-sm btn-light border-0 fw-semibold text-dark rounded-pill px-3 py-1-5" style="font-size: 0.85rem;">
+        <a href="{% url 'facilities' %}" class="btn btn-sm btn-light border-0 fw-semibold text-dark text-nowrap rounded-pill px-3 py-1-5" style="font-size: 0.82rem;">
           <i class="fa-solid fa-hospital me-1" style="color: #f43f5e;"></i> Nearest Hospitals
         </a>
-        <a href="{% url 'intake' %}" class="btn btn-sm btn-light border-0 fw-semibold text-dark rounded-pill px-3 py-1-5" style="font-size: 0.85rem;">
+        <a href="{% url 'intake' %}" class="btn btn-sm btn-light border-0 fw-semibold text-dark text-nowrap rounded-pill px-3 py-1-5" style="font-size: 0.82rem;">
           <i class="fa-solid fa-stethoscope me-1" style="color: #3b82f6;"></i> Symptom Intake
         </a>
-        <a href="{% url 'telehealth' %}" class="btn btn-sm btn-light border-0 fw-semibold text-dark rounded-pill px-3 py-1-5" style="font-size: 0.85rem;">
+        <a href="{% url 'telehealth' %}" class="btn btn-sm btn-light border-0 fw-semibold text-dark text-nowrap rounded-pill px-3 py-1-5" style="font-size: 0.82rem;">
           <i class="fa-solid fa-user-doctor me-1" style="color: #9333ea;"></i> Consult Doctors
         </a>
-        <a href="{% url 'prescriptions' %}" class="btn btn-sm btn-light border-0 fw-semibold text-dark rounded-pill px-3 py-1-5" style="font-size: 0.85rem;">
+        <a href="{% url 'prescriptions' %}" class="btn btn-sm btn-light border-0 fw-semibold text-dark text-nowrap rounded-pill px-3 py-1-5" style="font-size: 0.82rem;">
           <i class="fa-solid fa-receipt me-1" style="color: #f59e0b;"></i> Prescription Portal
         </a>
       </div>
 
-      <div class="d-none d-lg-flex align-items-center gap-2 small" data-bs-toggle="modal" data-bs-target="#deliveryLocationModal" style="cursor: pointer;" title="Change delivery location / pincode">
+      <div class="d-none d-lg-flex align-items-center gap-2 small flex-shrink-0" data-bs-toggle="modal" data-bs-target="#deliveryLocationModal" style="cursor: pointer;" title="Change delivery location / pincode">
         <i class="fa-solid fa-location-dot" style="color: #f43f5e;"></i>
         <span class="text-muted" style="font-size: 0.78rem;">Deliver to</span>
         <strong class="text-dark d-flex align-items-center gap-1 delivery-loc-display" style="font-size: 0.82rem;">
-          Central, New York 10001
+          India (24/7 Express)
           <i class="fa-solid fa-chevron-down text-muted" style="font-size: 0.65rem;"></i>
         </strong>
       </div>

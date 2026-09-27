@@ -70,8 +70,8 @@ class Command(BaseCommand):
                 'dosage_form': 'TABLET',
                 'dosage_strength': '500mg',
                 'pack_size': '30 Tablets / Box',
-                'price': 2.50,
-                'mrp_price': 3.50,
+                'price': 35.00,
+                'mrp_price': 50.00,
                 'stock': 500,
                 'prescription_required': False,
                 'is_featured': True,
@@ -89,8 +89,8 @@ class Command(BaseCommand):
                 'dosage_form': 'CAPSULE',
                 'dosage_strength': '1000 IU',
                 'pack_size': '60 Softgels Bottle',
-                'price': 8.99,
-                'mrp_price': 12.00,
+                'price': 249.00,
+                'mrp_price': 350.00,
                 'stock': 350,
                 'prescription_required': False,
                 'is_featured': True,
@@ -108,8 +108,8 @@ class Command(BaseCommand):
                 'dosage_form': 'CAPSULE',
                 'dosage_strength': '1000mg',
                 'pack_size': '90 Softgels Bottle',
-                'price': 12.99,
-                'mrp_price': 16.50,
+                'price': 499.00,
+                'mrp_price': 699.00,
                 'stock': 280,
                 'prescription_required': False,
                 'is_featured': True,
@@ -127,8 +127,8 @@ class Command(BaseCommand):
                 'dosage_form': 'CREAM',
                 'dosage_strength': '50ml Jar',
                 'pack_size': '50ml Cream Jar',
-                'price': 14.50,
-                'mrp_price': 19.00,
+                'price': 399.00,
+                'mrp_price': 550.00,
                 'stock': 190,
                 'prescription_required': False,
                 'is_featured': True,
@@ -162,6 +162,9 @@ class Command(BaseCommand):
                     'image_url': pdata['image_url'],
                 }
             )
+            p.price = pdata['price']
+            p.mrp_price = pdata['mrp_price']
+            p.save()
 
         # 5. Articles
         art_cat_nutrition, _ = ArticleCategory.objects.get_or_create(name='Nutrition')
@@ -402,14 +405,14 @@ class Command(BaseCommand):
                 'user': patient,
                 'full_name': 'Sarah Ahmed',
                 'email': 'sarah.ahmed@example.com',
-                'phone': '+1 (555) 998-0112',
-                'shipping_address': '450 Lexington Ave, Suite 1200',
-                'city': 'New York, NY',
-                'postal_code': '10017',
-                'total_amount': 38.50,
+                'phone': '+91 98765 43210',
+                'shipping_address': 'Flat 402, Green Glen Heights, Outer Ring Road',
+                'city': 'Bengaluru, Karnataka',
+                'postal_code': '560103',
+                'total_amount': 568.00,
                 'shipping_fee': 0.00,
-                'discount_amount': 5.00,
-                'final_amount': 33.50,
+                'discount_amount': 50.00,
+                'final_amount': 518.00,
                 'payment_method': 'CARD',
                 'payment_status': 'PAID',
                 'order_status': 'PROCESSING',
@@ -418,8 +421,13 @@ class Command(BaseCommand):
                 'prescription': sample_rx
             }
         )
+        sample_order.total_amount = 568.00
+        sample_order.discount_amount = 50.00
+        sample_order.final_amount = 518.00
+        sample_order.save()
         
-        if prod_para and not OrderItem.objects.filter(order=sample_order, product_name=prod_para.name).exists():
+        OrderItem.objects.filter(order=sample_order).delete()
+        if prod_para:
             OrderItem.objects.create(
                 order=sample_order,
                 product=prod_para,
@@ -429,14 +437,14 @@ class Command(BaseCommand):
                 subtotal=prod_para.price * 2
             )
 
-        if prod_d3 and not OrderItem.objects.filter(order=sample_order, product_name=prod_d3.name).exists():
+        if prod_d3:
             OrderItem.objects.create(
                 order=sample_order,
                 product=prod_d3,
                 product_name=prod_d3.name,
                 unit_price=prod_d3.price,
-                quantity=1,
-                subtotal=prod_d3.price
+                quantity=2,
+                subtotal=prod_d3.price * 2
             )
 
         self.stdout.write(self.style.SUCCESS("Antixor Pharmacy database seeded successfully with Facilities, Vitals, Intake & Sample Orders!"))

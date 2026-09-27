@@ -1,0 +1,42 @@
+{% load static %}
+<!-- Native App-Style Mobile Bottom Navigation Bar (Visible only on Mobile & Tablets) -->
+<nav class="antixor-mobile-bottom-nav d-flex d-lg-none position-fixed bottom-0 start-0 end-0 bg-white border-top justify-content-around align-items-center py-2 px-1 shadow-lg" style="z-index: 1040; border-color: #e2e8f0 !important; backdrop-filter: blur(12px); background: rgba(255, 255, 255, 0.96) !important;">
+  
+  <!-- 1. Home -->
+  <a href="{% url 'home' %}" class="d-flex flex-column align-items-center text-decoration-none text-center px-2 py-1 {% if request.path == '/' %}text-success fw-bold{% else %}text-muted{% endif %}" style="{% if request.path == '/' %}color: #009b72 !important;{% endif %} font-size: 0.72rem;">
+    <i class="fa-solid fa-house fs-5 mb-1"></i>
+    <span>Home</span>
+  </a>
+
+  <!-- 2. Pharmacy Store -->
+  <a href="{% url 'shop' %}" class="d-flex flex-column align-items-center text-decoration-none text-center px-2 py-1 {% if '/shop' in request.path %}text-success fw-bold{% else %}text-muted{% endif %}" style="{% if '/shop' in request.path %}color: #009b72 !important;{% endif %} font-size: 0.72rem;">
+    <i class="fa-solid fa-mortar-pestle fs-5 mb-1"></i>
+    <span>Store</span>
+  </a>
+
+  <!-- 3. AI OCR Scan Rx (Hero Floating Action Button) -->
+  <a href="{% url 'prescriptions' %}" class="d-flex flex-column align-items-center text-decoration-none position-relative px-2" style="margin-top: -24px;">
+    <div class="rounded-circle d-flex align-items-center justify-content-center text-white shadow-lg" style="width: 52px; height: 52px; background: linear-gradient(135deg, #009b72 0%, #059669 100%); border: 3px solid #ffffff;">
+      <i class="fa-solid fa-camera fs-5"></i>
+    </div>
+    <span class="fw-bold mt-1 text-dark" style="font-size: 0.68rem; letter-spacing: -0.01em;">Scan Rx</span>
+  </a>
+
+  <!-- 4. Medicine Cart Drawer Trigger -->
+  <a href="javascript:void(0)" onclick="openCartDrawer()" class="d-flex flex-column align-items-center text-decoration-none text-center position-relative text-muted px-2 py-1" style="font-size: 0.72rem;">
+    <div class="position-relative">
+      <i class="fa-solid fa-bag-shopping fs-5 mb-1"></i>
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger aura-cart-count-badge" style="font-size: 0.55rem; padding: 0.25em 0.4em;">
+        {{ global_cart_count|default:"0" }}
+      </span>
+    </div>
+    <span>Cart</span>
+  </a>
+
+  <!-- 5. Account / Dashboard -->
+  <a href="{% if user.is_authenticated %}{% url 'dashboard' %}{% else %}{% url 'login' %}{% endif %}" class="d-flex flex-column align-items-center text-decoration-none text-center px-2 py-1 {% if '/dashboard' in request.path or '/login' in request.path %}text-success fw-bold{% else %}text-muted{% endif %}" style="{% if '/dashboard' in request.path or '/login' in request.path %}color: #009b72 !important;{% endif %} font-size: 0.72rem;">
+    <i class="fa-solid fa-user fs-5 mb-1"></i>
+    <span>{% if user.is_authenticated %}Account{% else %}Sign In{% endif %}</span>
+  </a>
+
+</nav>
