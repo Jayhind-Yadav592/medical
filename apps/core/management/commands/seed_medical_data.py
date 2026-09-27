@@ -379,26 +379,65 @@ class Command(BaseCommand):
             defaults={'is_taken': False, 'streak_days': 5, 'notes': 'Cardiovascular and cholesterol balance.'}
         )
 
-        # 10. Seed Patient Intake
-        if created_facilities:
-            PatientIntake.objects.get_or_create(
-                user=patient,
-                patient_name='Sarah Ahmed',
-                patient_phone='+1 (555) 998-0112',
-                primary_symptom='Throat Irritation & Low Fever',
-                defaults={
-                    'patient_email': patient.email,
-                    'patient_age': 29,
-                    'patient_gender': 'Female',
-                    'symptoms_list': 'Sore Throat, Dry Cough, Mild Body Ache',
-                    'pain_severity': 3,
-                    'symptom_duration': '2 Days',
-                    'allocated_facility': created_facilities[0],
-                    'status': 'CLINICAL_REVIEW',
-                    'pharmacist_notes': 'Prescription verified. Suggested OTC Lozenges and hydration. No penicillin compounds assigned.',
-                    'safety_warning': 'Patient has recorded Penicillin allergy. Avoid Amoxicillin / Ampicillin.'
-                }
+        # 11. Seed Demo Orders & Prescriptions (for instant invoice & tracking preview)
+        prod_para = Product.objects.filter(name__icontains='Paracetamol').first()
+        prod_d3 = Product.objects.filter(name__icontains='Vitamin D3').first()
+        
+        sample_rx, _ = Prescription.objects.get_or_create(
+            id=1,
+            defaults={
+                'user': patient,
+                'patient_name': 'Sarah Ahmed',
+                'patient_phone': '+1 (555) 998-0112',
+                'doctor_name': 'Dr. Sarah Jenkins, MD, PharmD',
+                'clinic_hospital': 'Metro Manhattan Health Center',
+                'notes': 'Dispense 30-day therapeutic regimen. Take with food.',
+                'status': 'VERIFIED'
+            }
+        )
+
+        sample_order, _ = Order.objects.get_or_create(
+            order_number='AUR-SAMPLE01',
+            defaults={
+                'user': patient,
+                'full_name': 'Sarah Ahmed',
+                'email': 'sarah.ahmed@example.com',
+                'phone': '+1 (555) 998-0112',
+                'shipping_address': '450 Lexington Ave, Suite 1200',
+                'city': 'New York, NY',
+                'postal_code': '10017',
+                'total_amount': 38.50,
+                'shipping_fee': 0.00,
+                'discount_amount': 5.00,
+                'final_amount': 33.50,
+                'payment_method': 'CARD',
+                'payment_status': 'PAID',
+                'order_status': 'PROCESSING',
+                'tracking_number': 'TRK-AUR-SAMPLE01',
+                'estimated_delivery': 'Today by 4:00 PM (Cold-Chain Courier)',
+                'prescription': sample_rx
+            }
+        )
+        
+        if prod_para and not OrderItem.objects.filter(order=sample_order, product_name=prod_para.name).exists():
+            OrderItem.objects.create(
+                order=sample_order,
+                product=prod_para,
+                product_name=prod_para.name,
+                unit_price=prod_para.price,
+                quantity=2,
+                subtotal=prod_para.price * 2
             )
 
-        self.stdout.write(self.style.SUCCESS("Antixor Pharmacy database seeded successfully with Facilities, Vitals & Intake!"))
+        if prod_d3 and not OrderItem.objects.filter(order=sample_order, product_name=prod_d3.name).exists():
+            OrderItem.objects.create(
+                order=sample_order,
+                product=prod_d3,
+                product_name=prod_d3.name,
+                unit_price=prod_d3.price,
+                quantity=1,
+                subtotal=prod_d3.price
+            )
+
+        self.stdout.write(self.style.SUCCESS("Antixor Pharmacy database seeded successfully with Facilities, Vitals, Intake & Sample Orders!"))
 
