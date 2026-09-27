@@ -120,6 +120,7 @@ class ProductSerializer(serializers.ModelSerializer):
     brand_name = serializers.CharField(source='brand.name', read_only=True, default="AuraBio Labs")
     image_display = serializers.CharField(source='get_image', read_only=True)
     dosage_form_display = serializers.CharField(source='get_dosage_form_display', read_only=True)
+    in_stock = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Product
@@ -139,6 +140,7 @@ class ProductDetailSerializer(serializers.ModelSerializer):
     reviews = ReviewSerializer(many=True, read_only=True)
     image_display = serializers.CharField(source='get_image', read_only=True)
     dosage_form_display = serializers.CharField(source='get_dosage_form_display', read_only=True)
+    in_stock = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Product
