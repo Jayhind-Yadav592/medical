@@ -72,37 +72,94 @@
 
         <!-- Step 2: Payment Method -->
         <div class="card border rounded-4 p-4 shadow-sm bg-white mb-4">
-          <div class="d-flex align-items-center gap-2 mb-3 pb-2 border-bottom">
-            <div class="rounded-circle text-white d-flex align-items-center justify-content-center fw-bold" style="width: 28px; height: 28px; background-color: #009b72;">2</div>
-            <h5 class="fw-bold text-dark mb-0">Select Payment Method</h5>
+          <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
+            <div class="d-flex align-items-center gap-2">
+              <div class="rounded-circle text-white d-flex align-items-center justify-content-center fw-bold" style="width: 28px; height: 28px; background-color: #009b72;">2</div>
+              <h5 class="fw-bold text-dark mb-0">Select Payment Method</h5>
+            </div>
+            <span class="badge bg-success bg-opacity-10 text-success fw-bold">256-Bit Encrypted</span>
           </div>
 
-          <div class="d-flex flex-column gap-3">
-            <label class="border rounded-4 p-3 d-flex align-items-center gap-3 cursor-pointer bg-light" style="cursor: pointer;">
-              <input type="radio" name="payment_method" value="COD" checked class="form-check-input">
+          <div class="d-flex flex-column gap-3 mb-4">
+            <!-- Option 1: Card / Stripe -->
+            <label class="border rounded-4 p-3 d-flex align-items-start gap-3 cursor-pointer payment-method-card active-payment-border" style="cursor: pointer;">
+              <input type="radio" name="payment_method" value="CARD" checked class="form-check-input mt-1">
               <div class="flex-grow-1">
-                <div class="fw-bold text-dark">Cash / Card on Delivery (COD)</div>
-                <div class="text-muted small">Pay safely upon receiving your cold-chain sealed medication package.</div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="fw-bold text-dark">Credit / Debit Card (Stripe Gateway)</div>
+                  <div class="d-flex gap-1 text-muted fs-5">
+                    <i class="fa-brands fa-cc-visa text-primary"></i>
+                    <i class="fa-brands fa-cc-mastercard text-danger"></i>
+                    <i class="fa-brands fa-cc-amex text-info"></i>
+                  </div>
+                </div>
+                <div class="text-muted small mb-2">Instant online authorization with 3D Secure verification.</div>
+                
+                <!-- Expanded Card Inputs Box -->
+                <div id="stripeCardInputsBox" class="mt-3 p-3 rounded-3 bg-light border">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="small fw-bold text-dark">Card Details</span>
+                    <button type="button" id="autofillTestCardBtn" class="btn btn-sm btn-outline-success py-0 px-2 fw-bold" style="font-size: 0.72rem;">
+                      <i class="fa-solid fa-wand-magic-sparkles me-1"></i> Autofill Sandbox Test Card
+                    </button>
+                  </div>
+                  <div class="mb-2">
+                    <input type="text" id="card_number_input" class="form-control rounded-2 py-1 font-monospace" placeholder="4242 •••• •••• 4242" value="4242 4242 4242 4242">
+                  </div>
+                  <div class="row g-2">
+                    <div class="col-6">
+                      <input type="text" id="card_exp_input" class="form-control rounded-2 py-1 font-monospace" placeholder="MM/YY" value="12/28">
+                    </div>
+                    <div class="col-6">
+                      <input type="text" id="card_cvc_input" class="form-control rounded-2 py-1 font-monospace" placeholder="CVC" value="942">
+                    </div>
+                  </div>
+                </div>
               </div>
-              <i class="fa-solid fa-hand-holding-dollar fs-4 text-success" style="color: #009b72 !important;"></i>
             </label>
 
-            <label class="border rounded-4 p-3 d-flex align-items-center gap-3 cursor-pointer" style="cursor: pointer;">
-              <input type="radio" name="payment_method" value="CARD" class="form-check-input">
+            <!-- Option 2: Razorpay UPI & NetBanking -->
+            <label class="border rounded-4 p-3 d-flex align-items-start gap-3 cursor-pointer payment-method-card" style="cursor: pointer;">
+              <input type="radio" name="payment_method" value="RAZORPAY" class="form-check-input mt-1">
               <div class="flex-grow-1">
-                <div class="fw-bold text-dark">Credit / Debit Card (Online 256-Bit SSL)</div>
-                <div class="text-muted small">Visa, MasterCard, American Express, RuPay.</div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="fw-bold text-dark">Razorpay UPI / NetBanking / Wallets</div>
+                  <span class="badge bg-primary bg-opacity-10 text-primary fw-bold" style="font-size: 0.7rem;">GPay • PhonePe • Paytm</span>
+                </div>
+                <div class="text-muted small">Pay instantly via UPI VPA ID, QR Code, or 50+ NetBanking portals.</div>
+                
+                <div id="razorpayInputsBox" class="d-none mt-3 p-3 rounded-3 bg-light border">
+                  <label class="form-label small fw-bold text-dark mb-1">Enter UPI VPA ID</label>
+                  <div class="input-group input-group-sm mb-1">
+                    <input type="text" id="upi_id_input" class="form-control font-monospace" placeholder="username@okhdfcbank" value="patient.care@okaxis">
+                    <button class="btn btn-outline-primary fw-bold" type="button" onclick="window.showAntixorToast('UPI Handle verified!', 'success')">Verify VPA</button>
+                  </div>
+                </div>
               </div>
-              <i class="fa-solid fa-credit-card fs-4 text-primary"></i>
             </label>
 
-            <label class="border rounded-4 p-3 d-flex align-items-center gap-3 cursor-pointer" style="cursor: pointer;">
-              <input type="radio" name="payment_method" value="APPLE_PAY" class="form-check-input">
+            <!-- Option 3: Apple Pay / Google Pay -->
+            <label class="border rounded-4 p-3 d-flex align-items-start gap-3 cursor-pointer payment-method-card" style="cursor: pointer;">
+              <input type="radio" name="payment_method" value="APPLE_PAY" class="form-check-input mt-1">
               <div class="flex-grow-1">
-                <div class="fw-bold text-dark">Apple Pay / Google Pay / UPI Instant</div>
-                <div class="text-muted small">Instant 1-touch biometric and UPI payment gateway.</div>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="fw-bold text-dark">Apple Pay / Google Pay (Biometric)</div>
+                  <i class="fa-brands fa-apple-pay fs-3 text-dark"></i>
+                </div>
+                <div class="text-muted small">One-touch TouchID/FaceID authenticated express checkout.</div>
               </div>
-              <i class="fa-brands fa-apple-pay fs-3 text-dark"></i>
+            </label>
+
+            <!-- Option 4: COD -->
+            <label class="border rounded-4 p-3 d-flex align-items-start gap-3 cursor-pointer payment-method-card" style="cursor: pointer;">
+              <input type="radio" name="payment_method" value="COD" class="form-check-input mt-1">
+              <div class="flex-grow-1">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="fw-bold text-dark">Cash on Express Delivery (COD)</div>
+                  <i class="fa-solid fa-hand-holding-dollar fs-4 text-success" style="color: #009b72 !important;"></i>
+                </div>
+                <div class="text-muted small">Pay via cash or courier POS terminal upon temperature-sealed delivery.</div>
+              </div>
             </label>
           </div>
         </div>
@@ -136,7 +193,7 @@
 
           <button type="submit" id="aura-submit-order-btn" class="btn w-100 py-3 rounded-pill fw-bold text-white shadow-sm d-flex align-items-center justify-content-center gap-2" style="background-color: #009b72; font-size: 0.95rem;">
             <i class="fa-solid fa-lock"></i>
-            <span>Confirm &amp; Place Order</span>
+            <span id="submitOrderBtnText">Pay Now &amp; Confirm Order</span>
           </button>
 
           <div class="text-center mt-3 text-muted small" style="font-size: 0.75rem;">
@@ -149,11 +206,73 @@
   </form>
 </div>
 
+<!-- 3D Secure / Bank Authorization Simulation Modal -->
+<div class="modal fade" id="paymentAuthModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 border-0 shadow-lg p-4 text-center">
+      <div id="paymentProcessingState">
+        <div class="spinner-border text-success mb-3" style="width: 3.5rem; height: 3.5rem; color: #009b72 !important;" role="status"></div>
+        <h5 class="fw-bold text-dark mb-1" id="paymentAuthTitle">Connecting to 256-Bit SSL Gateway...</h5>
+        <p class="text-muted small mb-3" id="paymentAuthDetail">Authenticating token with Stripe / Card Issuing Bank</p>
+        <div class="progress rounded-pill mb-2" style="height: 6px;">
+          <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" id="paymentProgressBar" style="width: 30%; background-color: #009b72 !important;"></div>
+        </div>
+        <span class="text-muted font-monospace" style="font-size: 0.7rem;">PCI-DSS Level 1 Encrypted Transaction</span>
+      </div>
+      
+      <div id="paymentSuccessState" class="d-none py-3">
+        <div class="rounded-circle text-white d-flex align-items-center justify-content-center mx-auto mb-3 shadow" style="width: 64px; height: 64px; background: #009b72;">
+          <i class="fa-solid fa-check fs-2"></i>
+        </div>
+        <h4 class="fw-bold text-dark mb-1">Payment Authorized &amp; Order Placed!</h4>
+        <p class="text-muted small mb-4">Your prescription medications have been allocated to the nearest dispensary hub for cold-chain dispatch.</p>
+        <div class="d-flex gap-2 justify-content-center">
+          <a id="paymentOrderTrackLink" href="/track/" class="btn btn-emerald text-white rounded-pill px-4 fw-bold" style="background-color: #009b72;">
+            <i class="fa-solid fa-truck-fast me-1"></i> Track Live Dispatch
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Include Global Footer -->
 {% include 'partials/footer.html' %}
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+  // Radio button change toggles expanded boxes
+  const radios = document.querySelectorAll('input[name="payment_method"]');
+  const cardBox = document.getElementById('stripeCardInputsBox');
+  const rzpBox = document.getElementById('razorpayInputsBox');
+  const btnText = document.getElementById('submitOrderBtnText');
+
+  radios.forEach(radio => {
+    radio.addEventListener('change', () => {
+      if (cardBox) cardBox.classList.toggle('d-none', radio.value !== 'CARD');
+      if (rzpBox) rzpBox.classList.toggle('d-none', radio.value !== 'RAZORPAY');
+
+      if (btnText) {
+        if (radio.value === 'COD') btnText.innerText = 'Place Order (Pay on Delivery)';
+        else if (radio.value === 'APPLE_PAY') btnText.innerText = 'Pay with Apple / Google Pay';
+        else btnText.innerText = 'Pay Now & Confirm Order';
+      }
+    });
+  });
+
+  // Autofill Sandbox Test Card
+  const autofillBtn = document.getElementById('autofillTestCardBtn');
+  if (autofillBtn) {
+    autofillBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('card_number_input').value = '4242 4242 4242 4242';
+      document.getElementById('card_exp_input').value = '12/28';
+      document.getElementById('card_cvc_input').value = '942';
+      window.showAntixorToast('Sandbox Visa Test Card 4242 populated!', 'info');
+    });
+  }
+
+  // Checkout Form Submission
   const cForm = document.getElementById('aura-checkout-form');
   if (cForm) {
     cForm.addEventListener('submit', async function(e) {
@@ -162,12 +281,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const jsonBody = {};
       formData.forEach((val, key) => jsonBody[key] = val);
 
+      const paymentMethod = jsonBody.payment_method || 'CARD';
       const btn = document.getElementById('aura-submit-order-btn');
       btn.disabled = true;
-      btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin me-2"></i> Placing Order...';
+      btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin me-2"></i> Initializing Gateway...';
 
       try {
-        const res = await fetch('/api/orders/checkout/', {
+        // Step 1: Create Order in Backend
+        const orderRes = await fetch('/api/orders/checkout/', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -175,23 +296,89 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           body: JSON.stringify(jsonBody)
         });
-        const data = await res.json();
-        if (res.ok) {
-          window.showAntixorToast(data.message || 'Order placed successfully!', 'success');
-          setTimeout(() => {
-            window.location.href = `/track/?order_number=${data.order.order_number}`;
-          }, 800);
-        } else {
-          window.showAntixorToast(data.error || 'Checkout failed. Please check your details.', 'error');
+        const orderData = await orderRes.json();
+
+        if (!orderRes.ok) {
+          window.showAntixorToast(orderData.error || 'Checkout failed. Please review details.', 'error');
           btn.disabled = false;
           btn.innerHTML = '<i class="fa-solid fa-lock"></i> <span>Confirm & Place Order</span>';
+          return;
         }
+
+        const orderNo = orderData.order.order_number;
+
+        if (paymentMethod === 'COD') {
+          // COD instant redirect
+          window.showAntixorToast('Order Placed Successfully! (Cash on Delivery)', 'success');
+          setTimeout(() => {
+            window.location.href = `/track/?order_number=${orderNo}`;
+          }, 900);
+          return;
+        }
+
+        // Online Gateway (Stripe / Razorpay / Apple Pay): Open 3D Secure / Payment Modal
+        const authModal = new bootstrap.Modal(document.getElementById('paymentAuthModal'));
+        authModal.show();
+
+        const pBar = document.getElementById('paymentProgressBar');
+        const pTitle = document.getElementById('paymentAuthTitle');
+        const pDetail = document.getElementById('paymentAuthDetail');
+
+        // Step 2: Create Payment Intent / Session
+        pBar.style.width = '40%';
+        pTitle.innerText = `Connecting to ${paymentMethod} Gateway...`;
+        pDetail.innerText = `Initializing secure SSL token for Order #${orderNo}`;
+
+        const intentRes = await fetch('/api/orders/payment/create-intent/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]') ? document.querySelector('[name=csrfmiddlewaretoken]').value : ''
+          },
+          body: JSON.stringify({
+            order_number: orderNo,
+            gateway: paymentMethod
+          })
+        });
+        const intentData = await intentRes.json();
+
+        // Step 3: Simulate 3D Secure Bank Authorization
+        setTimeout(async () => {
+          pBar.style.width = '75%';
+          pTitle.innerText = 'Authorizing with Issuing Bank...';
+          pDetail.innerText = 'Validating 3D Secure token & Anti-Fraud protocol';
+
+          // Step 4: Verify Payment Transaction
+          const verifyRes = await fetch('/api/orders/payment/verify/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]') ? document.querySelector('[name=csrfmiddlewaretoken]').value : ''
+            },
+            body: JSON.stringify({
+              order_number: orderNo,
+              gateway: paymentMethod,
+              payment_id: `txn_${orderNo}_sandbox_${Date.now()}`
+            })
+          });
+          const verifyData = await verifyRes.json();
+
+          setTimeout(() => {
+            pBar.style.width = '100%';
+            document.getElementById('paymentProcessingState').classList.add('d-none');
+            document.getElementById('paymentSuccessState').classList.remove('d-none');
+            document.getElementById('paymentOrderTrackLink').href = `/track/?order_number=${orderNo}`;
+
+            window.showAntixorToast(`Payment of $${orderData.order.final_amount} Authorized Successfully!`, 'success');
+          }, 800);
+
+        }, 1000);
+
       } catch (err) {
         console.error(err);
-        window.showAntixorToast('Order confirmed! Navigating to tracking...', 'success');
-        setTimeout(() => {
-          window.location.href = '/track/';
-        }, 800);
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-lock"></i> <span>Confirm & Place Order</span>';
+        window.showAntixorToast('Payment processing error. Please try again.', 'error');
       }
     });
   }

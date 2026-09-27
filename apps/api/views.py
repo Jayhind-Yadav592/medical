@@ -864,4 +864,99 @@ class PrescriptionAIOCRAPIView(APIView):
         return Response(result, status=status.HTTP_200_OK)
 
 
+@extend_schema(tags=['Orders & Tracking'])
+class PaymentCreateIntentAPIView(APIView):
+    """
+    Create Payment Session Intent for Stripe / Razorpay / Apple Pay Sandbox checkout.
+    """
+    def post(self, request):
+        from apps.orders.payment_gateways import create_payment_session
+        order_number = request.data.get('order_number')
+        gateway = request.data.get('gateway', 'STRIPE')
+        
+        if not order_number:
+            return Response({'error': 'order_number is required'}, status=status.HTTP_400_BAD_REQUEST)
+            
+        order = get_object_or_404(Order, order_number__iexact=order_number)
+        session_data = create_payment_session(order, gateway=gateway)
+        return Response(session_data, status=status.HTTP_200_OK)
+
+
+@extend_schema(tags=['Orders & Tracking'])
+class PaymentVerifyAPIView(APIView):
+    """
+    Verify payment transaction signature and update order status to PAID.
+    """
+    def post(self, request):
+        from apps.orders.payment_gateways import verify_payment_transaction, verify_razorpay_signature
+        order_number = request.data.get('order_number')
+        gateway = request.data.get('gateway', 'STRIPE')
+        payment_id = request.data.get('payment_id') or request.data.get('razorpay_payment_id')
+        signature = request.data.get('signature') or request.data.get('razorpay_signature')
+        
+        if not order_number:
+            return Response({'error': 'order_number is required'}, status=status.HTTP_400_BAD_REQUEST)
+            
+        order = get_object_or_404(Order, order_number__iexact=order_number)
+        
+        if gateway.upper() == 'RAZORPAY':
+            rzp_order_id = request.data.get('razorpay_order_id', '')
+            if not verify_razorpay_signature(rzp_order_id, payment_id, signature):
+                return Response({'error': 'Invalid Razorpay payment signature.'}, status=status.HTTP_400_BAD_REQUEST)
+                
+        result = verify_payment_transaction(order, gateway=gateway, payment_id=payment_id, signature=signature)
+        return Response(result, status=status.HTTP_200_OK)
+
+
+@extend_schema(tags=['Orders & Tracking'])
+class StripeWebhookAPIView(APIView):
+    """
+    Stripe Webhook reconciliation handler (CSRF exempt).
+    """
+    authentication_classes = []
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        from apps.orders.payment_gateways import verify_payment_transaction
+        payload = request.data
+        event_type = payload.get('type', 'checkout.session.completed')
+        
+        # Extract metadata
+        data_obj = payload.get('data', {}).get('object', {})
+        order_number = data_obj.get('metadata', {}).get('order_number') or data_obj.get('client_reference_id')
+        
+        if order_number:
+            order = Order.objects.filter(order_number__iexact=order_number).first()
+            if order:
+                verify_payment_transaction(order, gateway='STRIPE', payment_id=data_obj.get('id'))
+                
+        return Response({'received': True, 'status': 'processed'}, status=status.HTTP_200_OK)
+
+
+@extend_schema(tags=['Orders & Tracking'])
+class RazorpayWebhookAPIView(APIView):
+    """
+    Razorpay Webhook reconciliation handler (CSRF exempt).
+    """
+    authentication_classes = []
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        from apps.orders.payment_gateways import verify_payment_transaction
+        payload = request.data
+        event_type = payload.get('event', 'payment.captured')
+        
+        payment_entity = payload.get('payload', {}).get('payment', {}).get('entity', {})
+        notes = payment_entity.get('notes', {})
+        order_number = notes.get('order_number')
+        
+        if order_number:
+            order = Order.objects.filter(order_number__iexact=order_number).first()
+            if order:
+                verify_payment_transaction(order, gateway='RAZORPAY', payment_id=payment_entity.get('id'))
+                
+        return Response({'received': True, 'status': 'processed'}, status=status.HTTP_200_OK)
+
+
+
 

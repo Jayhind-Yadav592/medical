@@ -9,7 +9,9 @@ from .views import (
     AuthRegisterAPIView, AuthLoginAPIView, AuthLogoutAPIView, AuthStatusAPIView,
     FacilityNearestAPIView, EmergencySOSAPIView, SafetyAllergyCheckAPIView,
     PatientVitalsAPIView, PillReminderToggleAPIView, PatientIntakeSubmitAPIView,
-    OrderInvoicePDFAPIView, PrescriptionPDFAPIView, PrescriptionAIOCRAPIView
+    OrderInvoicePDFAPIView, PrescriptionPDFAPIView, PrescriptionAIOCRAPIView,
+    PaymentCreateIntentAPIView, PaymentVerifyAPIView,
+    StripeWebhookAPIView, RazorpayWebhookAPIView
 )
 
 router = DefaultRouter()
@@ -39,6 +41,12 @@ urlpatterns = [
     path('orders/checkout/', CheckoutAPIView.as_view(), name='api-checkout'),
     path('orders/track/<str:order_number>/', OrderTrackingAPIView.as_view(), name='api-order-track'),
     path('orders/<str:order_number>/invoice/pdf/', OrderInvoicePDFAPIView.as_view(), name='api-order-invoice-pdf'),
+    path('orders/payment/create-intent/', PaymentCreateIntentAPIView.as_view(), name='api-payment-create-intent'),
+    path('orders/payment/verify/', PaymentVerifyAPIView.as_view(), name='api-payment-verify'),
+    
+    # Payment Webhooks
+    path('webhooks/stripe/', StripeWebhookAPIView.as_view(), name='api-webhook-stripe'),
+    path('webhooks/razorpay/', RazorpayWebhookAPIView.as_view(), name='api-webhook-razorpay'),
     
     # Reviews & Interactive Feedbacks
     path('products/<slug:product_slug>/reviews/', ReviewCreateAPIView.as_view(), name='api-product-review'),
