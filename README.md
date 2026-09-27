@@ -3,24 +3,22 @@
 [![CI/CD Pipeline](https://github.com/Jayhind-Yadav592/medical/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/Jayhind-Yadav592/medical/actions/workflows/ci-cd.yml)
 [![Python Version](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)](https://python.org)
 [![Django Framework](https://img.shields.io/badge/Django-5.0.6-092E20?logo=django&logoColor=white)](https://djangoproject.com)
-[![OpenAPI 3.0 Swagger](https://img.shields.io/badge/OpenAPI-3.0_Swagger-85EA2D?logo=swagger&logoColor=black)](http://127.0.0.1:8000/api/docs/)
+[![REST API Ready](https://img.shields.io/badge/REST_API-DRF_3.14-FF5722?logo=django&logoColor=white)](https://github.com/Jayhind-Yadav592/medical)
 [![Docker Containerized](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](https://docker.com)
 [![Tests Passing](https://img.shields.io/badge/Unit_Tests-31%2F31_Passing-10B981?logo=pytest&logoColor=white)](https://github.com/Jayhind-Yadav592/medical)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 > **Antixor MedOS** is an enterprise-grade, integrated digital healthcare operating platform and precision dispensary network built with **Python 3.11**, **Django 5.0**, **Django REST Framework**, **ReportLab 5**, **Pillow**, **PostgreSQL**, and **Docker**.
 >
-> Built for clinical safety, cold-chain medication compliance, and seamless patient triage, featuring **OpenAPI 3.0 Interactive Swagger Docs**, **ReportLab PDF Invoicing & Digitally-Signed e-Prescriptions**, **AI Vision Prescription OCR**, **Stripe & Razorpay Multi-Payment Gateways with Webhooks**, and **24/7 Telehealth Consultations**.
+> Built for clinical safety, cold-chain medication compliance, and seamless patient triage, featuring **Enterprise REST API Architecture**, **ReportLab PDF Invoicing & Digitally-Signed e-Prescriptions**, **AI Vision Prescription OCR**, **Stripe & Razorpay Multi-Payment Gateways with Webhooks**, and **24/7 Telehealth Consultations**.
 
 ---
 
 ## 🔬 Key Architectural Highlights & Resume Features
 
-### 1. ⚡ OpenAPI 3.0 & Interactive Swagger Documentation (`/api/docs/` & `/api/redoc/`)
-- Powered by `drf-spectacular` with full type schema resolution and deep linking.
-- Categorized across 9 clinical API domains:
+### 1. ⚡ Comprehensive Clinical REST API Architecture (`/api/`)
+- Built with **Django REST Framework** across 9 clinical API domains:
   - `Pharmacy & Catalog`, `Cart & Wishlist`, `Prescriptions & Safety`, `Telehealth & Consultations`, `Orders & Tracking`, `Facilities & Emergency SOS`, `Patient EHR & Intake`, `Authentication & User`, `Articles & Communications`.
-- Real-time schema generator accessible via `/api/schema/`.
 
 ### 2. 📄 Clinical ReportLab PDF Generator Engine (`apps/orders/pdf_generator.py`)
 - **Official Pharmacy Tax Invoices (`/order/invoice/<no>/pdf/`)**:
@@ -111,9 +109,6 @@ docker compose up --build -d
 
 | Category | Endpoint | Method | Description |
 |---|---|---|---|
-| **Docs** | `/api/docs/` | `GET` | Interactive Swagger UI (OpenAPI 3.0) |
-| **Docs** | `/api/redoc/` | `GET` | Redoc Technical Documentation |
-| **Docs** | `/api/schema/` | `GET` | OpenAPI 3.0 YAML/JSON Schema |
 | **Catalog** | `/api/products/` | `GET` | Filter medicines by Category, Rx requirement, Price, Stock |
 | **Search** | `/api/search/autocomplete/?q=<term>` | `GET` | Real-time search suggestions with thumbnail and active salt |
 | **Cart** | `/api/cart/` | `GET`, `POST`, `DELETE` | Shopping cart operations & cold-chain fee calculations |
