@@ -1,14 +1,22 @@
 import os
 from pathlib import Path
+import dj_database_url
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Initialize environment variables
+env = environ.Env()
+env_file = BASE_DIR / '.env'
+if env_file.exists():
+    environ.Env.read_env(env_file)
+
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-aurahealth-precision-pharmacy-core-secret-key-2026')
+SECRET_KEY = env('DJANGO_SECRET_KEY', default='django-insecure-aurahealth-precision-pharmacy-core-secret-key-2026')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DJANGO_DEBUG', 'True') == 'True'
+DEBUG = env.bool('DJANGO_DEBUG', default=True)
 
 ALLOWED_HOSTS = ['*']
 
@@ -69,35 +77,18 @@ TEMPLATES = [
 WSGI_APPLICATION = 'aurahealth_core.wsgi.application'
 
 # Database Configuration:
-# Supports PostgreSQL with environment variables or DATABASE_URL, with automatic local fallback
-DB_ENGINE = os.environ.get('DB_ENGINE', 'sqlite')
-DB_NAME = os.environ.get('DB_NAME', 'aurahealth_db')
-DB_USER = os.environ.get('DB_USER', 'postgres')
-DB_PASSWORD = os.environ.get('DB_PASSWORD', 'postgres')
-DB_HOST = os.environ.get('DB_HOST', 'localhost')
-DB_PORT = os.environ.get('DB_PORT', '5432')
+# Neon PostgreSQL / Cloud Database with automatic connection pooling
+DATABASE_URL = env('DATABASE_URL', default=os.environ.get('DATABASE_URL', ''))
 
-if DB_ENGINE == 'postgres' or os.environ.get('DATABASE_URL'):
-    import dj_database_url
-    if os.environ.get('DATABASE_URL'):
-        DATABASES = {
-            'default': dj_database_url.config(
-                default=os.environ.get('DATABASE_URL'),
-                conn_max_age=600,
-                conn_health_checks=True,
-            )
-        }
-    else:
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.postgresql',
-                'NAME': DB_NAME,
-                'USER': DB_USER,
-                'PASSWORD': DB_PASSWORD,
-                'HOST': DB_HOST,
-                'PORT': DB_PORT,
-            }
-        }
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            conn_health_checks=True,
+            ssl_require=True
+        )
+    }
 else:
     DATABASES = {
         'default': {
