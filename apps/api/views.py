@@ -844,3 +844,24 @@ class PrescriptionPDFAPIView(APIView):
         return response
 
 
+@extend_schema(tags=['Prescriptions & Safety'])
+class PrescriptionAIOCRAPIView(APIView):
+    """
+    AI Vision Prescription Scanner:
+    Processes uploaded prescription image, extracts text, recognizes medicines,
+    matches against current inventory catalog, and performs allergy contraindication checks.
+    """
+    def post(self, request):
+        from apps.orders.ai_ocr import parse_prescription_image
+        image_file = request.FILES.get('image') or request.FILES.get('prescription_file')
+        
+        allergies = ''
+        if request.user.is_authenticated:
+            allergies = getattr(request.user, 'medical_allergies', '') or ''
+        allergies = request.data.get('allergies', allergies)
+        
+        result = parse_prescription_image(image_file, patient_allergy_profile=allergies)
+        return Response(result, status=status.HTTP_200_OK)
+
+
+

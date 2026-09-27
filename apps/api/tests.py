@@ -24,3 +24,35 @@ class APIDocumentationTests(TestCase):
         response = self.client.get('/api/redoc/')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'redoc')
+
+
+class PrescriptionAIOCRTests(TestCase):
+    """Test suite for Clinical AI Vision and Prescription OCR parser."""
+
+    def setUp(self):
+        self.client = Client()
+
+    def test_ai_ocr_scan_api_endpoint(self):
+        """Verify POST /api/prescriptions/ai-ocr/ parses medications successfully."""
+        response = self.client.post('/api/prescriptions/ai-ocr/', {}, format='multipart')
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertTrue(data.get('success'))
+        self.assertIn('detected_medications', data)
+        self.assertGreater(len(data['detected_medications']), 0)
+        self.assertIn('doctor_info', data)
+        self.assertIn('patient_info', data)
+
+    def test_ai_ocr_allergy_safety_alert(self):
+        """Verify allergy profile triggers clinical safety contraindication alert."""
+        response = self.client.post('/api/prescriptions/ai-ocr/', {'allergies': 'Penicillin, Amoxicillin'})
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        
+        # Check if amoxicillin is flagged with safety conflict
+        meds = data['detected_medications']
+        amox_med = next((m for m in meds if 'amox' in m['extracted_name'].lower()), None)
+        self.assertIsNotNone(amox_med)
+        self.assertFalse(amox_med['safety_check']['is_safe'])
+        self.assertIn('Penicillin', amox_med['safety_check']['alert'])
+

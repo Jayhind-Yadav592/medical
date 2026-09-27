@@ -9,7 +9,7 @@ from .views import (
     AuthRegisterAPIView, AuthLoginAPIView, AuthLogoutAPIView, AuthStatusAPIView,
     FacilityNearestAPIView, EmergencySOSAPIView, SafetyAllergyCheckAPIView,
     PatientVitalsAPIView, PillReminderToggleAPIView, PatientIntakeSubmitAPIView,
-    OrderInvoicePDFAPIView, PrescriptionPDFAPIView
+    OrderInvoicePDFAPIView, PrescriptionPDFAPIView, PrescriptionAIOCRAPIView
 )
 
 router = DefaultRouter()
@@ -31,6 +31,7 @@ urlpatterns = [
     
     # Prescriptions & Telehealth
     path('prescriptions/upload/', PrescriptionUploadAPIView.as_view(), name='api-prescription-upload'),
+    path('prescriptions/ai-ocr/', PrescriptionAIOCRAPIView.as_view(), name='api-prescription-ai-ocr'),
     path('prescriptions/<int:prescription_id>/pdf/', PrescriptionPDFAPIView.as_view(), name='api-prescription-pdf'),
     path('consultations/book/', ConsultationBookingAPIView.as_view(), name='api-consultation-book'),
     
