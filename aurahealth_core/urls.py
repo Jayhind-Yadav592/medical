@@ -12,8 +12,20 @@ from apps.core.views import (
     digital_health_card_view, consultation_room_view
 )
 
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView
+)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    
+    # OpenAPI 3.0 & Swagger Interactive Documentation
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+    path('docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='docs-alias'),
     
     # REST API Root
     path('api/', include('apps.api.urls')),

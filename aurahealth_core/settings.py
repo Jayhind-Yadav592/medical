@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     
     # Third party packages
     'rest_framework',
+    'drf_spectacular',
     'corsheaders',
     
     # Custom Local Apps
@@ -151,6 +152,22 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 12,
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+# drf-spectacular OpenAPI 3.0 Documentation Configuration
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Antixor MedOS Clinical Healthcare & Precision Pharmacy API',
+    'DESCRIPTION': 'Production-grade OpenAPI 3.0 REST API suite powering Antixor MedOS — Clinical Triage, Spatial Radar, WebRTC Telehealth, Cold-Chain Orders, and Prescription Verification.',
+    'VERSION': '3.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SCHEMA_PATH_PREFIX': '/api',
+    'SWAGGER_UI_SETTINGS': {
+        'deepLinking': True,
+        'persistAuthorization': True,
+        'displayOperationId': True,
+    },
 }
 
 # CORS Settings

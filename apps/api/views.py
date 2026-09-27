@@ -5,6 +5,7 @@ from rest_framework import viewsets, status, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import action
+from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter, OpenApiTypes
 
 from apps.core.models import (
     User, Address, NewsletterSubscriber, ContactInquiry,
@@ -35,7 +36,9 @@ def get_or_create_cart(request):
     return cart
 
 
+@extend_schema(tags=['Pharmacy & Catalog'])
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
+    """Search and browse verified pharmaceutical products with dosage and active ingredient filters."""
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     lookup_field = 'slug'
@@ -93,12 +96,15 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
         return qs
 
 
+@extend_schema(tags=['Pharmacy & Catalog'])
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
+    """Retrieve certified therapeutic and product categories."""
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     lookup_field = 'slug'
 
 
+@extend_schema(tags=['Pharmacy & Catalog'])
 class AutocompleteAPIView(APIView):
     """Real-time instant search suggestions for the global search bar."""
     def get(self, request):
@@ -128,6 +134,7 @@ class AutocompleteAPIView(APIView):
         return Response(results)
 
 
+@extend_schema(tags=['Cart & Wishlist'])
 class CartAPIView(APIView):
     """Full API for viewing and manipulating the interactive cart drawer."""
     def get(self, request):
@@ -220,6 +227,7 @@ class CartAPIView(APIView):
         return Response({'message': 'Cart updated', 'cart': serializer.data})
 
 
+@extend_schema(tags=['Cart & Wishlist'])
 class WishlistAPIView(APIView):
     """Toggle product in user's wishlist."""
     def get(self, request):
@@ -258,6 +266,7 @@ class WishlistAPIView(APIView):
         })
 
 
+@extend_schema(tags=['Prescriptions & Safety'])
 class PrescriptionUploadAPIView(APIView):
     """Upload prescription image or PDF for clinical verification."""
     def post(self, request):
@@ -291,6 +300,7 @@ class PrescriptionUploadAPIView(APIView):
         }, status=status.HTTP_201_CREATED)
 
 
+@extend_schema(tags=['Telehealth & Consultations'])
 class ConsultationBookingAPIView(APIView):
     """Book a telehealth / virtual consultation appointment."""
     def post(self, request):
@@ -334,8 +344,9 @@ class ConsultationBookingAPIView(APIView):
         }, status=status.HTTP_201_CREATED)
 
 
+@extend_schema(tags=['Orders & Tracking'])
 class CheckoutAPIView(APIView):
-    """Place complete order from active cart."""
+    """Place complete cold-chain medication order from active cart."""
     def post(self, request):
         cart = get_or_create_cart(request)
         if cart.items.count() == 0:
@@ -410,8 +421,9 @@ class CheckoutAPIView(APIView):
         }, status=status.HTTP_201_CREATED)
 
 
+@extend_schema(tags=['Orders & Tracking'])
 class OrderTrackingAPIView(APIView):
-    """Retrieve tracking details by order number."""
+    """Retrieve real-time tracking and delivery timeline by order number."""
     def get(self, request, order_number):
         try:
             order = Order.objects.prefetch_related('items', 'status_history').get(order_number__iexact=order_number)
@@ -422,7 +434,9 @@ class OrderTrackingAPIView(APIView):
         return Response(serializer.data)
 
 
+@extend_schema(tags=['Telehealth & Consultations'])
 class DoctorViewSet(viewsets.ReadOnlyModelViewSet):
+    """List certified clinical physicians, pharmacologists, and specialists."""
     queryset = Doctor.objects.filter(is_featured=True)
     serializer_class = DoctorSerializer
 
@@ -434,7 +448,9 @@ class DoctorViewSet(viewsets.ReadOnlyModelViewSet):
         return qs
 
 
+@extend_schema(tags=['Articles & Communications'])
 class ArticleViewSet(viewsets.ReadOnlyModelViewSet):
+    """Retrieve evidence-based clinical articles and patient wellness guides."""
     queryset = Article.objects.filter(is_published=True)
     serializer_class = ArticleSerializer
     lookup_field = 'slug'
@@ -450,8 +466,9 @@ class ArticleViewSet(viewsets.ReadOnlyModelViewSet):
         return qs
 
 
+@extend_schema(tags=['Pharmacy & Catalog'])
 class ReviewCreateAPIView(APIView):
-    """Submit a verified patient review."""
+    """Submit a verified patient review for a pharmaceutical product."""
     def post(self, request, product_slug):
         if not request.user.is_authenticated:
             return Response({'error': 'You must be logged in to leave a review.'}, status=status.HTTP_401_UNAUTHORIZED)
@@ -484,8 +501,9 @@ class ReviewCreateAPIView(APIView):
         }, status=status.HTTP_201_CREATED)
 
 
+@extend_schema(tags=['Articles & Communications'])
 class NewsletterAPIView(APIView):
-    """Subscribe to health tips newsletter."""
+    """Subscribe to health tips and medication safety bulletin newsletter."""
     def post(self, request):
         email = request.data.get('email', '').strip()
         if not email or '@' not in email:
@@ -497,8 +515,9 @@ class NewsletterAPIView(APIView):
         }, status=status.HTTP_200_OK)
 
 
+@extend_schema(tags=['Articles & Communications'])
 class ContactAPIView(APIView):
-    """Submit general inquiry or customer support ticket."""
+    """Submit general inquiry or 24/7 customer support ticket."""
     def post(self, request):
         name = request.data.get('name', '').strip()
         email = request.data.get('email', '').strip()
@@ -517,7 +536,9 @@ class ContactAPIView(APIView):
         }, status=status.HTTP_201_CREATED)
 
 
+@extend_schema(tags=['Authentication & User'])
 class AuthRegisterAPIView(APIView):
+    """Register new patient account and auto-generate unique Digital Health ID."""
     def post(self, request):
         serializer = RegisterSerializer(data=request.data)
         if serializer.is_valid():
@@ -535,7 +556,9 @@ class AuthRegisterAPIView(APIView):
         return Response({'error': str(first_error), 'details': errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
+@extend_schema(tags=['Authentication & User'])
 class AuthLoginAPIView(APIView):
+    """Authenticate patient or clinician credentials and establish session."""
     def post(self, request):
         username_or_email = request.data.get('username', '').strip()
         password = request.data.get('password', '')
@@ -559,13 +582,17 @@ class AuthLoginAPIView(APIView):
         return Response({'error': 'Invalid username/email or password.'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
+@extend_schema(tags=['Authentication & User'])
 class AuthLogoutAPIView(APIView):
+    """Terminate current user session."""
     def post(self, request):
         logout(request)
         return Response({'message': 'Logged out successfully.'})
 
 
+@extend_schema(tags=['Authentication & User'])
 class AuthStatusAPIView(APIView):
+    """Check current authentication status and active patient profile."""
     def get(self, request):
         if request.user.is_authenticated:
             return Response({
@@ -579,8 +606,9 @@ class AuthStatusAPIView(APIView):
 # ADVANCED HEALTHCARE & GEOLOCATION APIS (RESUME HIGHLIGHTS)
 # =========================================================================
 
+@extend_schema(tags=['Facilities & Emergency SOS'])
 class FacilityNearestAPIView(APIView):
-    """Calculate and return nearest partner hospitals, pharmacies, and emergency centers using GPS Haversine distance."""
+    """Calculate nearest hospitals, pharmacies, and 24/7 trauma centers via GPS Haversine distance."""
     def get(self, request):
         user_lat = request.query_params.get('lat', '40.7128')
         user_lng = request.query_params.get('lng', '-74.0060')
@@ -611,8 +639,9 @@ class FacilityNearestAPIView(APIView):
         })
 
 
+@extend_schema(tags=['Facilities & Emergency SOS'])
 class EmergencySOSAPIView(APIView):
-    """Instant Emergency SOS & Ambulance Dispatcher."""
+    """Instant Emergency SOS & 911 Paramedic Dispatcher."""
     def post(self, request):
         user_lat = request.data.get('lat', '40.7128')
         user_lng = request.data.get('lng', '-74.0060')
@@ -652,6 +681,7 @@ class EmergencySOSAPIView(APIView):
         }, status=status.HTTP_201_CREATED)
 
 
+@extend_schema(tags=['Prescriptions & Safety'])
 class SafetyAllergyCheckAPIView(APIView):
     """Clinical safety check: checks medicine active ingredients against patient allergy profile."""
     def post(self, request):
@@ -688,6 +718,7 @@ class SafetyAllergyCheckAPIView(APIView):
         })
 
 
+@extend_schema(tags=['Patient EHR & Intake'])
 class PatientVitalsAPIView(APIView):
     """Manage patient health vitals and historical charts."""
     def get(self, request):
@@ -717,6 +748,7 @@ class PatientVitalsAPIView(APIView):
         }, status=status.HTTP_201_CREATED)
 
 
+@extend_schema(tags=['Patient EHR & Intake'])
 class PillReminderToggleAPIView(APIView):
     """Toggle medication taken status and increment streak."""
     def post(self, request, reminder_id):
@@ -736,6 +768,7 @@ class PillReminderToggleAPIView(APIView):
             return Response({'error': 'Reminder not found'}, status=status.HTTP_404_NOT_FOUND)
 
 
+@extend_schema(tags=['Patient EHR & Intake'])
 class PatientIntakeSubmitAPIView(APIView):
     """Submit multi-step symptom intake with auto pharmacy assignment."""
     def post(self, request):
