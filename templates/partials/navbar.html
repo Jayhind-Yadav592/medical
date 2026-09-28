@@ -87,12 +87,30 @@
             </div>
             <span class="small fw-bold d-none d-md-inline text-dark">Account</span>
           </button>
-          <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 mt-2 p-2" style="min-width: 220px;">
+          <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 mt-2 p-2" style="min-width: 240px;">
             <li class="px-3 py-2 border-bottom mb-1">
-              <div class="fw-bold text-dark">{% if user.is_authenticated %}{{ user.first_name|default:user.username }}{% else %}Chief Pharmacist{% endif %}</div>
-              <div class="small text-muted font-monospace" style="font-size: 0.7rem;">ID: ANT-P-882910</div>
+              <div class="fw-bold text-dark d-flex align-items-center justify-content-between">
+                <span>{% if user.is_authenticated %}{{ user.get_full_name|default:user.username }}{% else %}Guest User{% endif %}</span>
+                {% if user.is_authenticated and user.is_staff or user.is_superuser or user.user_type == 'ADMIN' or user.user_type == 'PHARMACIST' or user.user_type == 'DOCTOR' %}
+                  <span class="badge bg-emerald-100 text-emerald-800 font-monospace" style="background-color:#d1fae5; color:#065f46; font-size:0.6rem;">STAFF ERP</span>
+                {% elif user.is_authenticated %}
+                  <span class="badge bg-primary-subtle text-primary font-monospace" style="font-size:0.6rem;">PATIENT</span>
+                {% endif %}
+              </div>
+              <div class="small text-muted font-monospace" style="font-size: 0.7rem;">ID: {{ user.digital_health_id|default:"ANT-P-882910" }}</div>
             </li>
-            <li><a class="dropdown-item py-2 rounded-3" href="{% url 'dashboard' %}"><i class="fa-solid fa-gauge-high me-2" style="color:#009b72;"></i> Patient Dashboard</a></li>
+
+            {% if user.is_authenticated and user.is_staff or user.is_superuser or user.user_type == 'ADMIN' or user.user_type == 'PHARMACIST' or user.user_type == 'DOCTOR' %}
+              <!-- Admin & Clinical Staff Options -->
+              <li><a class="dropdown-item py-2 rounded-3 fw-bold text-success" href="{% url 'admin-dashboard' %}"><i class="fa-solid fa-hospital-user me-2" style="color:#009b72;"></i> Enterprise ERP Admin</a></li>
+              <li><a class="dropdown-item py-2 rounded-3" href="{% url 'dashboard' %}?view=patient"><i class="fa-solid fa-user-injured me-2 text-primary"></i> Patient EHR View</a></li>
+              <li><a class="dropdown-item py-2 rounded-3" href="/admin/" target="_blank"><i class="fa-solid fa-screwdriver-wrench me-2 text-dark"></i> Django Admin Panel</a></li>
+              <li><hr class="dropdown-divider my-1"></li>
+            {% else %}
+              <!-- Regular Patient Options -->
+              <li><a class="dropdown-item py-2 rounded-3 fw-semibold" href="{% url 'dashboard' %}"><i class="fa-solid fa-gauge-high me-2" style="color:#009b72;"></i> Patient Dashboard</a></li>
+            {% endif %}
+
             <li><a class="dropdown-item py-2 rounded-3" href="{% url 'health-card' %}"><i class="fa-solid fa-id-card me-2 text-primary"></i> Digital Health Passport</a></li>
             <li><a class="dropdown-item py-2 rounded-3" href="{% url 'intake' %}"><i class="fa-solid fa-clipboard-check me-2 text-warning"></i> Clinical Intake &amp; Rx</a></li>
             <li><a class="dropdown-item py-2 rounded-3" href="{% url 'order-track' %}"><i class="fa-solid fa-boxes-stacked me-2 text-info"></i> Track Orders</a></li>

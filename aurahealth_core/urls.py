@@ -6,7 +6,7 @@ from apps.core.views import (
     home_view, shop_view, product_detail_view, services_view,
     telehealth_view, prescriptions_portal_view, articles_view,
     article_detail_view, cart_page_view, checkout_page_view,
-    order_tracking_view, user_dashboard_view, about_view, contact_view,
+    order_tracking_view, user_dashboard_view, admin_dashboard_view, about_view, contact_view,
     login_view, register_view, logout_view,
     facilities_locator_view, patient_intake_view, order_invoice_view,
     digital_health_card_view, consultation_room_view,
@@ -28,10 +28,23 @@ urlpatterns = [
     path('facilities/', facilities_locator_view, name='facilities'),
     path('intake/', patient_intake_view, name='intake'),
     path('health-card/', digital_health_card_view, name='health-card'),
+    # Invoices & Dispense Slips (Canonical & Aliases)
     path('order/invoice/<str:order_number>/', order_invoice_view, name='order-invoice'),
+    path('orders/<str:order_number>/invoice/', order_invoice_view, name='order-invoice-alt1'),
+    path('orders/invoice/<str:order_number>/', order_invoice_view, name='order-invoice-alt2'),
+    path('order/<str:order_number>/invoice/', order_invoice_view, name='order-invoice-alt3'),
+
+    # PDF Downloads (Canonical & Aliases)
     path('order/invoice/<str:order_number>/pdf/', order_invoice_pdf_download_view, name='order-invoice-pdf'),
+    path('orders/<str:order_number>/invoice/pdf/', order_invoice_pdf_download_view, name='order-invoice-pdf-alt1'),
+    path('orders/invoice/<str:order_number>/pdf/', order_invoice_pdf_download_view, name='order-invoice-pdf-alt2'),
+    path('order/<str:order_number>/invoice/pdf/', order_invoice_pdf_download_view, name='order-invoice-pdf-alt3'),
+
+    # Digital Prescriptions & Consultation Rooms
     path('prescription/<int:prescription_id>/pdf/', prescription_pdf_download_view, name='prescription-pdf'),
+    path('prescriptions/<int:prescription_id>/pdf/', prescription_pdf_download_view, name='prescription-pdf-alt1'),
     path('consultation/room/<str:room_id>/', consultation_room_view, name='consultation-room'),
+    path('telehealth/room/<str:room_id>/', consultation_room_view, name='consultation-room-alt1'),
     
     # Frontend Pages
     path('', home_view, name='home'),
@@ -45,7 +58,11 @@ urlpatterns = [
     path('cart/', cart_page_view, name='cart'),
     path('checkout/', checkout_page_view, name='checkout'),
     path('track/', order_tracking_view, name='order-track'),
+    path('order-track/', order_tracking_view, name='order-track-alt1'),
+    path('orders/track/', order_tracking_view, name='order-track-alt2'),
+    path('order/track/', order_tracking_view, name='order-track-alt3'),
     path('dashboard/', user_dashboard_view, name='dashboard'),
+    path('admin-dashboard/', admin_dashboard_view, name='admin-dashboard'),
     path('about/', about_view, name='about'),
     path('contact/', contact_view, name='contact'),
 ]

@@ -8,10 +8,11 @@ from .views import (
     NewsletterAPIView, ContactAPIView,
     AuthRegisterAPIView, AuthLoginAPIView, AuthLogoutAPIView, AuthStatusAPIView,
     FacilityNearestAPIView, EmergencySOSAPIView, SafetyAllergyCheckAPIView,
-    PatientVitalsAPIView, PillReminderToggleAPIView, PatientIntakeSubmitAPIView,
+    PatientVitalsAPIView, PillReminderToggleAPIView, PillReminderCreateAPIView, PatientIntakeSubmitAPIView,
     OrderInvoicePDFAPIView, PrescriptionPDFAPIView, PrescriptionAIOCRAPIView,
     PaymentCreateIntentAPIView, PaymentVerifyAPIView,
-    StripeWebhookAPIView, RazorpayWebhookAPIView
+    StripeWebhookAPIView, RazorpayWebhookAPIView,
+    AdminPrescriptionReviewAPIView, AdminOrderStatusUpdateAPIView, AdminInventoryStockUpdateAPIView
 )
 
 router = DefaultRouter()
@@ -68,7 +69,13 @@ urlpatterns = [
     # Clinical Safety & Patient Records
     path('safety/check-allergy/', SafetyAllergyCheckAPIView.as_view(), name='api-safety-allergy'),
     path('patient/vitals/', PatientVitalsAPIView.as_view(), name='api-patient-vitals'),
+    path('patient/pill-reminders/create/', PillReminderCreateAPIView.as_view(), name='api-pill-reminder-create'),
     path('patient/pill-reminders/<int:reminder_id>/toggle/', PillReminderToggleAPIView.as_view(), name='api-pill-reminder-toggle'),
     path('patient/intake/submit/', PatientIntakeSubmitAPIView.as_view(), name='api-patient-intake-submit'),
+    
+    # Clinical Enterprise ERP Admin & Operations (RBAC Protected)
+    path('admin/prescriptions/<int:prescription_id>/action/', AdminPrescriptionReviewAPIView.as_view(), name='api-admin-prescription-action'),
+    path('admin/orders/<str:order_number>/status/', AdminOrderStatusUpdateAPIView.as_view(), name='api-admin-order-status'),
+    path('admin/inventory/<int:product_id>/stock/', AdminInventoryStockUpdateAPIView.as_view(), name='api-admin-inventory-stock'),
 ]
 

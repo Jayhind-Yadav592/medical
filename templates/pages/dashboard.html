@@ -159,6 +159,12 @@ body {
 .medos-nav-link.active i {
   color: #ffffff !important;
 }
+.medos-nav-link.active span {
+  color: #ffffff !important;
+}
+.medos-nav-link.active .medos-pill-badge {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
 
 .medos-pill-badge {
   font-size: 0.68rem;
@@ -446,17 +452,92 @@ body {
   margin-bottom: 8px;
 }
 
-/* Mobile Responsiveness */
+/* ==========================================================================
+   MOBILE & TABLET RESPONSIVENESS OVERHAUL (MedOS Mobile Protocol)
+   ========================================================================== */
+.medos-sidebar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1039;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+.medos-sidebar-backdrop.show {
+  opacity: 1;
+  visibility: visible;
+}
+
 @media (max-width: 991px) {
   .medos-sidebar {
     position: fixed;
-    left: -270px;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 280px;
+    max-width: 85vw;
+    transform: translateX(-100%);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .medos-sidebar.open {
-    left: 0;
+    transform: translateX(0);
   }
   .medos-topbar {
-    padding: 12px 16px;
+    padding: 10px 14px;
+    gap: 8px;
+  }
+  .medos-search-input-wrap {
+    display: none;
+  }
+  .medos-hero-card {
+    padding: 22px 18px;
+    border-radius: 20px;
+  }
+  .medos-hero-title {
+    font-size: 1.45rem;
+    line-height: 1.25;
+  }
+  .medos-hero-subtitle {
+    font-size: 0.88rem;
+    margin-bottom: 18px;
+  }
+}
+
+@media (max-width: 575px) {
+  .medos-hero-card {
+    padding: 18px 14px;
+  }
+  .medos-hero-title {
+    font-size: 1.25rem;
+  }
+  .medos-hero-card .d-flex.flex-wrap {
+    flex-direction: column;
+    width: 100%;
+    gap: 8px !important;
+  }
+  .medos-btn-primary, .medos-btn-white {
+    width: 100%;
+    justify-content: center;
+    padding: 10px 12px;
+    font-size: 0.82rem;
+  }
+  .medos-hero-float-badge {
+    position: static;
+    margin-top: 16px;
+    width: 100%;
+  }
+  .medos-stat-card {
+    padding: 16px;
+  }
+  .medos-stat-value {
+    font-size: 1.35rem;
   }
 }
 </style>
@@ -465,20 +546,26 @@ body {
 {% block content %}
 <div class="medos-shell">
   
+  <!-- Mobile Sidebar Backdrop Overlay -->
+  <div class="medos-sidebar-backdrop d-lg-none" id="medosSidebarBackdrop" onclick="closeMobileSidebar()"></div>
+
   <!-- =========================================================================
        1. LEFT SIDEBAR (EXACT MATCH WITH REFERENCE IMAGE)
        ========================================================================= -->
   <aside class="medos-sidebar" id="medosSidebar">
     
-    <!-- Top Branding -->
-    <div class="medos-brand-wrap">
-      <div class="medos-brand-icon">
-        <i class="fa-solid fa-square-plus"></i>
+    <!-- Top Branding with Mobile Close Button -->
+    <div class="medos-brand-wrap justify-content-between">
+      <div class="d-flex align-items-center gap-2">
+        <div class="medos-brand-icon">
+          <i class="fa-solid fa-square-plus"></i>
+        </div>
+        <div>
+          <div class="medos-brand-title">Antixor MedOS</div>
+          <div class="medos-brand-sub">CLINICAL ERP v3.0</div>
+        </div>
       </div>
-      <div>
-        <div class="medos-brand-title">Antixor MedOS</div>
-        <div class="medos-brand-sub">CLINICAL ERP v3.0</div>
-      </div>
+      <button type="button" class="btn-close btn-close-white d-lg-none" onclick="closeMobileSidebar()" aria-label="Close Sidebar"></button>
     </div>
 
     <!-- Navigation List -->
@@ -487,36 +574,41 @@ body {
       <!-- Group 1: Main / Clinical Overview -->
       <div class="medos-nav-section-title">Main / Clinical Overview</div>
       
-      <button class="medos-nav-link active tab-btn" data-target="dashboard-main-view">
+      <!-- 1. Dashboard -->
+      <a href="javascript:void(0)" onclick="switchDashboardTab('dashboard')" class="medos-nav-link active" id="nav-dashboard">
         <span class="d-flex align-items-center gap-2">
           <i class="fa-solid fa-house"></i>
           <span>Dashboard</span>
         </span>
-      </button>
+      </a>
 
-      <button class="medos-nav-link tab-btn" data-target="dashboard-main-view" onclick="document.getElementById('healthVitalsCard').scrollIntoView({behavior:'smooth'});">
+      <!-- 2. Vitals & Biometrics -->
+      <a href="javascript:void(0)" onclick="openVitalsModal()" class="medos-nav-link" id="nav-vitals">
         <span class="d-flex align-items-center gap-2">
           <i class="fa-solid fa-heart-pulse"></i>
-          <span>Vitals & Biometrics</span>
+          <span>Vitals &amp; Biometrics</span>
         </span>
         <span class="medos-pill-badge bg-danger text-white">3</span>
-      </button>
+      </a>
 
-      <button class="medos-nav-link tab-btn" data-target="dashboard-main-view" onclick="document.getElementById('todayScheduleCard').scrollIntoView({behavior:'smooth'});">
+      <!-- 3. Daily Pill Schedule -->
+      <a href="javascript:void(0)" onclick="openPillScheduleModal()" class="medos-nav-link" id="nav-pills">
         <span class="d-flex align-items-center gap-2">
           <i class="fa-solid fa-pills"></i>
           <span>Daily Pill Schedule</span>
         </span>
-      </button>
+      </a>
 
-      <a href="{% url 'health-card' %}" class="medos-nav-link text-decoration-none">
+      <!-- 4. Clinical Records -->
+      <a href="{% url 'health-card' %}" class="medos-nav-link" id="nav-health-card">
         <span class="d-flex align-items-center gap-2">
           <i class="fa-solid fa-id-card-clip"></i>
           <span>Clinical Records</span>
         </span>
       </a>
 
-      <a href="{% url 'prescriptions' %}" class="medos-nav-link text-decoration-none">
+      <!-- 5. Prescriptions -->
+      <a href="{% url 'prescriptions' %}" class="medos-nav-link" id="nav-prescriptions">
         <span class="d-flex align-items-center gap-2">
           <i class="fa-solid fa-file-prescription"></i>
           <span>Prescriptions</span>
@@ -524,21 +616,24 @@ body {
         <span class="medos-pill-badge bg-primary text-white">2</span>
       </a>
 
-      <button class="medos-nav-link tab-btn" data-target="dashboard-main-view" onclick="document.getElementById('recentOrdersCard').scrollIntoView({behavior:'smooth'});">
+      <!-- 6. Orders & Delivery -->
+      <a href="javascript:void(0)" onclick="openOrdersModal()" class="medos-nav-link" id="nav-orders">
         <span class="d-flex align-items-center gap-2">
           <i class="fa-solid fa-truck-fast"></i>
-          <span>Orders & Delivery</span>
+          <span>Orders &amp; Delivery</span>
         </span>
-      </button>
+      </a>
 
-      <a href="{% url 'intake' %}" class="medos-nav-link text-decoration-none">
+      <!-- 7. Symptom Intake -->
+      <a href="{% url 'intake' %}" class="medos-nav-link" id="nav-intake">
         <span class="d-flex align-items-center gap-2">
           <i class="fa-solid fa-stethoscope"></i>
           <span>Symptom Intake</span>
         </span>
       </a>
 
-      <a href="{% url 'telehealth' %}" class="medos-nav-link text-decoration-none">
+      <!-- 8. Telehealth -->
+      <a href="{% url 'telehealth' %}" class="medos-nav-link" id="nav-telehealth">
         <span class="d-flex align-items-center gap-2">
           <i class="fa-solid fa-video" style="color: #c084fc;"></i>
           <span>Telehealth</span>
@@ -546,21 +641,24 @@ body {
         <span class="medos-pill-badge bg-success text-white" style="font-size: 0.6rem;">HD</span>
       </a>
 
-      <a href="{% url 'articles' %}" class="medos-nav-link text-decoration-none">
+      <!-- 9. Lab Reports -->
+      <a href="javascript:void(0)" onclick="openLabReportsModal()" class="medos-nav-link" id="nav-lab-reports">
         <span class="d-flex align-items-center gap-2">
           <i class="fa-solid fa-flask-vial"></i>
           <span>Lab Reports</span>
         </span>
       </a>
 
-      <a href="{% url 'telehealth' %}" class="medos-nav-link text-decoration-none">
+      <!-- 10. Appointments -->
+      <a href="javascript:void(0)" onclick="openAppointmentsModal()" class="medos-nav-link" id="nav-appointments">
         <span class="d-flex align-items-center gap-2">
           <i class="fa-solid fa-calendar-check"></i>
           <span>Appointments</span>
         </span>
       </a>
 
-      <a href="{% url 'contact' %}" class="medos-nav-link text-decoration-none">
+      <!-- 11. Messages -->
+      <a href="javascript:void(0)" onclick="openMessagesModal()" class="medos-nav-link" id="nav-messages">
         <span class="d-flex align-items-center gap-2">
           <i class="fa-solid fa-comments"></i>
           <span>Messages</span>
@@ -569,30 +667,34 @@ body {
       </a>
 
       <!-- Group 2: Care & Tools -->
-      <div class="medos-nav-section-title">Care & Tools</div>
+      <div class="medos-nav-section-title">Care &amp; Tools</div>
 
-      <button class="medos-nav-link" data-bs-toggle="modal" data-bs-target="#addPillModal">
+      <!-- 12. Medication Reminders -->
+      <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#addPillModal" class="medos-nav-link" id="nav-reminders">
         <span class="d-flex align-items-center gap-2">
           <i class="fa-solid fa-bell"></i>
           <span>Medication Reminders</span>
         </span>
-      </button>
+      </a>
 
-      <a href="{% url 'articles' %}" class="medos-nav-link text-decoration-none">
+      <!-- 13. Health Library -->
+      <a href="{% url 'articles' %}" class="medos-nav-link" id="nav-articles">
         <span class="d-flex align-items-center gap-2">
           <i class="fa-solid fa-book-medical"></i>
           <span>Health Library</span>
         </span>
       </a>
 
-      <a href="{% url 'contact' %}" class="medos-nav-link text-decoration-none">
+      <!-- 14. Support -->
+      <a href="javascript:void(0)" onclick="openSupportModal()" class="medos-nav-link" id="nav-support">
         <span class="d-flex align-items-center gap-2">
           <i class="fa-solid fa-headset"></i>
           <span>Support</span>
         </span>
       </a>
 
-      <a href="{% url 'health-card' %}" class="medos-nav-link text-decoration-none">
+      <!-- 15. Settings -->
+      <a href="javascript:void(0)" onclick="openSettingsModal()" class="medos-nav-link" id="nav-settings">
         <span class="d-flex align-items-center gap-2">
           <i class="fa-solid fa-gear"></i>
           <span>Settings</span>
@@ -610,9 +712,9 @@ body {
           <div class="text-slate-400" style="font-size: 0.72rem;">Chat with our care team</div>
         </div>
       </div>
-      <a href="{% url 'contact' %}" class="btn btn-emerald text-white rounded-pill w-100 fw-bold py-1 small" style="background-color: #00b87c; font-size: 0.78rem;">
+      <button type="button" onclick="openMessagesModal()" class="btn btn-emerald text-white rounded-pill w-100 fw-bold py-1 small" style="background-color: #00b87c; font-size: 0.78rem; border:none;">
         Start Chat
-      </a>
+      </button>
     </div>
 
   </aside>
@@ -639,28 +741,40 @@ body {
       </div>
 
       <!-- User Profile & Notifications Right -->
-      <div class="d-flex align-items-center gap-3">
+      <div class="d-flex align-items-center gap-2 gap-md-3">
+        {% if is_admin_or_staff %}
+        <!-- Switch back to Admin ERP -->
+        <a href="{% url 'admin-dashboard' %}" class="btn btn-sm text-white rounded-pill fw-bold px-3 d-inline-flex align-items-center gap-1 shadow-sm" style="background-color:#0f172a; border: 1px solid #334155; font-size:0.8rem;">
+          <i class="fa-solid fa-hospital-user text-success me-1" style="color:#00b87c;"></i> Admin ERP
+        </a>
+        {% endif %}
+
         <!-- Notification Bell -->
-        <a href="javascript:void(0)" class="btn btn-light rounded-circle p-2 position-relative border" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;">
+        <button type="button" onclick="openNotificationsModal()" class="btn btn-light rounded-circle p-2 position-relative border" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;" title="View Notifications">
           <i class="fa-regular fa-bell text-slate-600"></i>
           <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
-        </a>
+        </button>
 
         <!-- Messages Chat -->
-        <a href="{% url 'contact' %}" class="btn btn-light rounded-circle p-2 position-relative border" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;">
+        <button type="button" onclick="openMessagesModal()" class="btn btn-light rounded-circle p-2 position-relative border" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;" title="Open Care Team Chat">
           <i class="fa-regular fa-comment-dots text-slate-600"></i>
-        </a>
+        </button>
 
         <!-- User Profile Dropdown -->
         <div class="dropdown">
           <button class="btn p-0 d-flex align-items-center gap-2 border-0 bg-transparent dropdown-toggle" data-bs-toggle="dropdown">
             <img src="{% static 'images/hero_doctor.jpg' %}" alt="Avatar" class="rounded-circle border border-2 border-emerald-500 shadow-sm" style="width: 40px; height: 40px; object-fit: cover;">
             <div class="text-start d-none d-md-block">
-              <div class="fw-bold text-dark lh-1" style="font-size: 0.9rem;">{{ user.first_name|default:"Alexander" }}</div>
+              <div class="fw-bold text-dark lh-1" style="font-size: 0.9rem;">{{ user.first_name|default:"Sarah" }}</div>
               <div class="text-muted font-monospace" style="font-size: 0.7rem;">Patient ID: {{ user.digital_health_id|default:"AX45892" }}</div>
             </div>
           </button>
           <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 mt-2 p-2" style="min-width: 220px;">
+            {% if is_admin_or_staff %}
+            <li><a class="dropdown-item py-2 rounded-3 text-success fw-bold" href="{% url 'admin-dashboard' %}"><i class="fa-solid fa-hospital-user me-2"></i> Clinical ERP Admin</a></li>
+            <li><a class="dropdown-item py-2 rounded-3" href="/admin/" target="_blank"><i class="fa-solid fa-screwdriver-wrench me-2 text-dark"></i> Django Admin Panel</a></li>
+            <li><hr class="dropdown-divider my-1"></li>
+            {% endif %}
             <li><a class="dropdown-item py-2 rounded-3" href="{% url 'health-card' %}"><i class="fa-solid fa-id-card me-2 text-primary"></i> Health Passport</a></li>
             <li><a class="dropdown-item py-2 rounded-3" href="{% url 'intake' %}"><i class="fa-solid fa-clipboard-check me-2 text-warning"></i> Clinical Intake</a></li>
             <li><a class="dropdown-item py-2 rounded-3" href="{% url 'facilities' %}"><i class="fa-solid fa-hospital me-2 text-danger"></i> Nearest Hospital</a></li>
@@ -681,7 +795,9 @@ body {
         <div class="row align-items-center position-relative" style="z-index: 2;">
           <div class="col-lg-8 col-xl-7">
             <div class="text-slate-600 fw-semibold mb-1" style="font-size: 1.05rem;">Good Morning,</div>
-            <h1 class="medos-hero-title">Chief Pharmacist {{ user.first_name|default:"Alexander" }}!</h1>
+            <h1 class="medos-hero-title">
+              {% if user.user_type == 'DOCTOR' %}Dr. {{ user.first_name|default:"Doctor" }}!{% elif user.user_type == 'PHARMACIST' %}Pharmacist {{ user.first_name|default:"Sarah" }}!{% else %}Patient {{ user.first_name|default:"Sarah" }}!{% endif %}
+            </h1>
             <p class="medos-hero-subtitle">
               Your health, our priority. Here's your health summary for today.
             </p>
@@ -820,7 +936,7 @@ body {
                 <i class="fa-solid fa-calendar-days text-primary"></i>
                 <span>Today's Schedule</span>
               </h3>
-              <button class="medos-link-action border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#addPillModal">View All</button>
+              <button type="button" class="medos-link-action border-0 bg-transparent" onclick="openPillScheduleModal()">View All</button>
             </div>
 
             <!-- Schedule Items Timeline -->
@@ -839,9 +955,9 @@ body {
                     <div class="text-muted" style="font-size: 0.7rem;">1 tablet after breakfast</div>
                   </div>
                 </div>
-                <span class="badge bg-emerald-100 text-emerald-800 font-monospace rounded-pill px-2 py-1" style="background-color: #d1fae5; color: #065f46; font-size: 0.7rem;">
+                <button type="button" class="pill-toggle-badge badge bg-emerald-100 text-emerald-800 font-monospace rounded-pill px-2 py-1 border-0" style="background-color: #d1fae5; color: #065f46; font-size: 0.7rem; cursor:pointer;" onclick="togglePillBadge(this, 1)" title="Click to toggle Taken/Pending">
                   Taken ✓
-                </span>
+                </button>
               </div>
 
               <!-- Item 2: Vitamin D3 (Pending) -->
@@ -857,9 +973,9 @@ body {
                     <div class="text-muted" style="font-size: 0.7rem;">1 tablet</div>
                   </div>
                 </div>
-                <span class="badge bg-warning-subtle text-warning-emphasis font-monospace rounded-pill px-2 py-1" style="font-size: 0.7rem;">
+                <button type="button" class="pill-toggle-badge badge bg-warning-subtle text-warning-emphasis font-monospace rounded-pill px-2 py-1 border-0" style="font-size: 0.7rem; cursor:pointer;" onclick="togglePillBadge(this, 2)" title="Click to toggle Taken/Pending">
                   Pending
-                </span>
+                </button>
               </div>
 
               <!-- Item 3: Atorvastatin (Pending) -->
@@ -875,9 +991,9 @@ body {
                     <div class="text-muted" style="font-size: 0.7rem;">1 tablet after dinner</div>
                   </div>
                 </div>
-                <span class="badge bg-warning-subtle text-warning-emphasis font-monospace rounded-pill px-2 py-1" style="font-size: 0.7rem;">
+                <button type="button" class="pill-toggle-badge badge bg-warning-subtle text-warning-emphasis font-monospace rounded-pill px-2 py-1 border-0" style="font-size: 0.7rem; cursor:pointer;" onclick="togglePillBadge(this, 3)" title="Click to toggle Taken/Pending">
                   Pending
-                </span>
+                </button>
               </div>
 
             </div>
@@ -1095,7 +1211,7 @@ body {
 
               <!-- 2: Book Appointment -->
               <div class="col-4">
-                <a href="{% url 'telehealth' %}" class="medos-quick-action-tile">
+                <a href="javascript:void(0)" onclick="openAppointmentsModal()" class="medos-quick-action-tile">
                   <div class="medos-action-icon-circle" style="background:#e0f2fe; color:#0284c7;">
                     <i class="fa-solid fa-calendar-plus"></i>
                   </div>
@@ -1125,7 +1241,7 @@ body {
 
               <!-- 5: View Lab Reports -->
               <div class="col-4">
-                <a href="{% url 'health-card' %}" class="medos-quick-action-tile">
+                <a href="javascript:void(0)" onclick="openLabReportsModal()" class="medos-quick-action-tile">
                   <div class="medos-action-icon-circle" style="background:#e0e7ff; color:#4f46e5;">
                     <i class="fa-solid fa-flask"></i>
                   </div>
@@ -1212,7 +1328,7 @@ body {
 </div>
 
 <!-- =========================================================================
-     MODAL: LOG NEW HEALTH VITALS
+     1. MODAL: LOG NEW HEALTH VITALS
      ========================================================================= -->
 <div class="modal fade" id="addVitalModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -1221,7 +1337,7 @@ body {
         <h5 class="modal-title fw-bold text-dark"><i class="fa-solid fa-heart-pulse text-danger me-2"></i> Log Health Biometrics</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form id="vitalsForm">
+      <form id="vitalsForm" onsubmit="handleVitalsSubmit(event)">
         {% csrf_token %}
         <div class="modal-body p-4">
           <div class="row g-3">
@@ -1265,7 +1381,7 @@ body {
 </div>
 
 <!-- =========================================================================
-     MODAL: ADD MEDICATION REMINDER
+     2. MODAL: ADD MEDICATION REMINDER
      ========================================================================= -->
 <div class="modal fade" id="addPillModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -1274,7 +1390,7 @@ body {
         <h5 class="modal-title fw-bold text-dark"><i class="fa-solid fa-pills text-success me-2" style="color:#00b87c;"></i> Add Medication Reminder</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form id="pillForm">
+      <form id="pillForm" onsubmit="handlePillSubmit(event)">
         {% csrf_token %}
         <div class="modal-body p-4">
           <div class="row g-3">
@@ -1293,17 +1409,18 @@ body {
                 <option value="AFTERNOON">Afternoon (12:00 PM)</option>
                 <option value="NIGHT">Evening (06:00 PM)</option>
                 <option value="TWICE_DAILY">Twice Daily</option>
+                <option value="THRICE_DAILY">Thrice Daily</option>
               </select>
             </div>
             <div class="col-12">
-              <label class="form-label small fw-bold">Instructions</label>
+              <label class="form-label small fw-bold">Instructions / Notes</label>
               <input type="text" name="notes" class="form-control rounded-3" placeholder="e.g. Take after breakfast with water">
             </div>
           </div>
         </div>
         <div class="modal-footer bg-light border-top">
           <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-emerald text-white rounded-pill px-4 fw-bold" style="background-color:#00b87c;" onclick="alert('Medication added to schedule!'); window.location.reload();">Save Medication</button>
+          <button type="submit" class="btn btn-emerald text-white rounded-pill px-4 fw-bold" style="background-color:#00b87c;">Save Medication</button>
         </div>
       </form>
     </div>
@@ -1311,21 +1428,944 @@ body {
 </div>
 
 <!-- =========================================================================
-     JAVASCRIPT: SIDEBAR TOGGLE, AJAX VITALS, & CHART.JS ANALYTICS
+     3. MODAL: VITALS & BIOMETRICS TELEMETRY LOG
+     ========================================================================= -->
+<div class="modal fade" id="vitalsHistoryModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4 border-0 shadow-lg">
+      <div class="modal-header bg-light border-bottom">
+        <div class="d-flex align-items-center gap-2">
+          <div class="rounded-circle d-flex align-items-center justify-content-center text-danger" style="width:36px; height:36px; background:#ffe4e6;">
+            <i class="fa-solid fa-heart-pulse"></i>
+          </div>
+          <div>
+            <h5 class="modal-title fw-bold text-dark mb-0">Health Vitals &amp; Biometrics History</h5>
+            <div class="text-muted small">Continuous EHR Telemetry &amp; Clinical Vitals Log</div>
+          </div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+        <!-- 4 Quick Stats -->
+        <div class="row g-2 mb-4">
+          <div class="col-sm-3 col-6">
+            <div class="p-3 rounded-3 bg-light text-center border">
+              <div class="text-muted small fw-bold">Blood Pressure</div>
+              <div class="h5 fw-bold text-dark mb-0">{{ latest_vital.blood_pressure|default:"118/78" }}</div>
+              <span class="badge bg-success bg-opacity-10 text-success" style="font-size:0.65rem;">Optimal</span>
+            </div>
+          </div>
+          <div class="col-sm-3 col-6">
+            <div class="p-3 rounded-3 bg-light text-center border">
+              <div class="text-muted small fw-bold">Heart Rate</div>
+              <div class="h5 fw-bold text-dark mb-0">{{ latest_vital.heart_rate|default:"72" }} <small class="text-muted" style="font-size:0.7rem;">bpm</small></div>
+              <span class="badge bg-success bg-opacity-10 text-success" style="font-size:0.65rem;">Normal</span>
+            </div>
+          </div>
+          <div class="col-sm-3 col-6">
+            <div class="p-3 rounded-3 bg-light text-center border">
+              <div class="text-muted small fw-bold">Blood Oxygen</div>
+              <div class="h5 fw-bold text-dark mb-0">{{ latest_vital.spo2|default:"99" }}%</div>
+              <span class="badge bg-info bg-opacity-10 text-info" style="font-size:0.65rem;">SpO₂ High</span>
+            </div>
+          </div>
+          <div class="col-sm-3 col-6">
+            <div class="p-3 rounded-3 bg-light text-center border">
+              <div class="text-muted small fw-bold">Fasting Glucose</div>
+              <div class="h5 fw-bold text-dark mb-0">{{ latest_vital.blood_sugar|default:"94.5" }} <small class="text-muted" style="font-size:0.7rem;">mg/dL</small></div>
+              <span class="badge bg-success bg-opacity-10 text-success" style="font-size:0.65rem;">Normoglycemic</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- History Table -->
+        <h6 class="fw-bold text-dark mb-2">Recent Clinical Readings:</h6>
+        <div class="table-responsive rounded-3 border">
+          <table class="table table-hover align-middle mb-0" style="font-size:0.85rem;">
+            <thead class="table-light">
+              <tr>
+                <th>Date &amp; Time</th>
+                <th>BP (mmHg)</th>
+                <th>Heart Rate</th>
+                <th>SpO2</th>
+                <th>Glucose</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="fw-semibold">Today, 08:30 AM</td>
+                <td><strong class="text-dark">118/78</strong></td>
+                <td>72 bpm</td>
+                <td>99%</td>
+                <td>94.5 mg/dL</td>
+                <td><span class="badge bg-success bg-opacity-10 text-success fw-bold">Normal</span></td>
+              </tr>
+              <tr>
+                <td class="fw-semibold">Yesterday, 08:00 AM</td>
+                <td><strong class="text-dark">120/80</strong></td>
+                <td>74 bpm</td>
+                <td>98%</td>
+                <td>96.0 mg/dL</td>
+                <td><span class="badge bg-success bg-opacity-10 text-success fw-bold">Normal</span></td>
+              </tr>
+              <tr>
+                <td class="fw-semibold">Sep 26, 2024</td>
+                <td><strong class="text-dark">122/82</strong></td>
+                <td>71 bpm</td>
+                <td>98%</td>
+                <td>95.2 mg/dL</td>
+                <td><span class="badge bg-success bg-opacity-10 text-success fw-bold">Normal</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer bg-light border-top justify-content-between">
+        <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-emerald text-white rounded-pill px-4 fw-bold" style="background-color:#00b87c;" onclick="bootstrap.Modal.getInstance(document.getElementById('vitalsHistoryModal')).hide(); setTimeout(() => new bootstrap.Modal(document.getElementById('addVitalModal')).show(), 200);">
+          <i class="fa-solid fa-plus me-1"></i> Log New Biometrics
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================================
+     4. MODAL: DAILY PILL SCHEDULE & ACTIVE REMINDERS
+     ========================================================================= -->
+<div class="modal fade" id="pillScheduleModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4 border-0 shadow-lg">
+      <div class="modal-header bg-light border-bottom">
+        <div class="d-flex align-items-center gap-2">
+          <div class="rounded-circle d-flex align-items-center justify-content-center text-success" style="width:36px; height:36px; background:#d1fae5; color:#059669;">
+            <i class="fa-solid fa-pills"></i>
+          </div>
+          <div>
+            <h5 class="modal-title fw-bold text-dark mb-0">Daily Medication Regimen &amp; Reminders</h5>
+            <div class="text-muted small">14-Day Adherence Streak • 100% On Schedule</div>
+          </div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+        <div class="d-flex flex-column gap-3">
+          
+          <!-- Pill 1 -->
+          <div class="d-flex align-items-center justify-content-between p-3 rounded-4 border bg-white shadow-sm">
+            <div class="d-flex align-items-center gap-3">
+              <div class="rounded-circle d-flex align-items-center justify-content-center text-emerald-600 bg-emerald-100" style="width:42px; height:42px; background-color: #d1fae5; color: #059669;">
+                <i class="fa-solid fa-pills fs-5"></i>
+              </div>
+              <div>
+                <h6 class="fw-bold text-dark mb-0">Metformin 500mg</h6>
+                <div class="text-muted small">1 tablet after breakfast • Slot: 08:00 AM</div>
+                <div class="small text-success font-monospace mt-1"><i class="fa-solid fa-fire me-1"></i> 14 days streak</div>
+              </div>
+            </div>
+            <button type="button" class="pill-toggle-badge badge bg-emerald-100 text-emerald-800 font-monospace rounded-pill px-3 py-2 border-0" style="background-color: #d1fae5; color: #065f46; font-size: 0.8rem; cursor:pointer;" onclick="togglePillBadge(this, 1)">
+              Taken ✓
+            </button>
+          </div>
+
+          <!-- Pill 2 -->
+          <div class="d-flex align-items-center justify-content-between p-3 rounded-4 border bg-white shadow-sm">
+            <div class="d-flex align-items-center gap-3">
+              <div class="rounded-circle d-flex align-items-center justify-content-center text-primary bg-primary-subtle" style="width:42px; height:42px;">
+                <i class="fa-solid fa-capsules fs-5"></i>
+              </div>
+              <div>
+                <h6 class="fw-bold text-dark mb-0">Vitamin D3 1000 IU</h6>
+                <div class="text-muted small">1 softgel capsule with meal • Slot: 12:00 PM</div>
+                <div class="small text-primary font-monospace mt-1"><i class="fa-solid fa-fire me-1"></i> 7 days streak</div>
+              </div>
+            </div>
+            <button type="button" class="pill-toggle-badge badge bg-warning-subtle text-warning-emphasis font-monospace rounded-pill px-3 py-2 border-0" style="font-size: 0.8rem; cursor:pointer;" onclick="togglePillBadge(this, 2)">
+              Pending
+            </button>
+          </div>
+
+          <!-- Pill 3 -->
+          <div class="d-flex align-items-center justify-content-between p-3 rounded-4 border bg-white shadow-sm">
+            <div class="d-flex align-items-center gap-3">
+              <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:42px; height:42px; background-color: #ede9fe; color: #7c3aed;">
+                <i class="fa-solid fa-tablets fs-5"></i>
+              </div>
+              <div>
+                <h6 class="fw-bold text-dark mb-0">Atorvastatin 10mg</h6>
+                <div class="text-muted small">1 tablet after dinner • Slot: 06:00 PM</div>
+                <div class="small text-purple-600 font-monospace mt-1" style="color:#7c3aed;"><i class="fa-solid fa-fire me-1"></i> 5 days streak</div>
+              </div>
+            </div>
+            <button type="button" class="pill-toggle-badge badge bg-warning-subtle text-warning-emphasis font-monospace rounded-pill px-3 py-2 border-0" style="font-size: 0.8rem; cursor:pointer;" onclick="togglePillBadge(this, 3)">
+              Pending
+            </button>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer bg-light border-top justify-content-between">
+        <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-emerald text-white rounded-pill px-4 fw-bold" style="background-color:#00b87c;" onclick="bootstrap.Modal.getInstance(document.getElementById('pillScheduleModal')).hide(); setTimeout(() => new bootstrap.Modal(document.getElementById('addPillModal')).show(), 200);">
+          <i class="fa-solid fa-plus me-1"></i> Add Medication Reminder
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================================
+     5. MODAL: ORDERS & DELIVERY TRACKING
+     ========================================================================= -->
+<div class="modal fade" id="ordersHistoryModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4 border-0 shadow-lg">
+      <div class="modal-header bg-light border-bottom">
+        <div class="d-flex align-items-center gap-2">
+          <div class="rounded-circle d-flex align-items-center justify-content-center text-primary" style="width:36px; height:36px; background:#e0f2fe; color:#0284c7;">
+            <i class="fa-solid fa-truck-fast"></i>
+          </div>
+          <div>
+            <h5 class="modal-title fw-bold text-dark mb-0">Prescription Orders &amp; Cold-Chain Tracking</h5>
+            <div class="text-muted small">Real-time status updates &amp; GST Tax Invoices</div>
+          </div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+        <div class="d-flex flex-column gap-3">
+          
+          <!-- Sample Order Card -->
+          <div class="p-3 rounded-4 border bg-white shadow-sm">
+            <div class="d-flex justify-content-between align-items-start mb-2 border-bottom pb-2">
+              <div>
+                <span class="badge bg-emerald-100 text-emerald-800 font-monospace rounded-pill px-2 py-1" style="background-color: #d1fae5; color: #065f46;">
+                  Pharmacist Dispensing &amp; Quality Check
+                </span>
+                <h6 class="fw-bold text-dark mt-2 mb-0">Order #AUR-SAMPLE01</h6>
+                <div class="text-muted small font-monospace">Tracking: TRK-AUR-SAMPLE01 • Sep 27, 2026</div>
+              </div>
+              <div class="text-end">
+                <div class="h5 fw-bold text-dark mb-0">₹518.00</div>
+                <span class="badge bg-success" style="background-color:#00b87c !important;">PAID</span>
+              </div>
+            </div>
+
+            <div class="small text-muted mb-3">
+              <strong>Items:</strong> Paracetamol 500mg (2x), Vitamin D3 1000 IU (1x) • Destination: Bengaluru, Karnataka (PIN: 560103)
+            </div>
+
+            <!-- Stepper Progress Bar -->
+            <div class="d-flex justify-content-between text-center small position-relative mb-3 pt-2">
+              <div class="d-flex flex-column align-items-center">
+                <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center" style="width:26px; height:26px; background-color:#00b87c !important; font-size:0.7rem;">✓</div>
+                <span class="fw-bold mt-1 text-dark" style="font-size:0.75rem;">Placed</span>
+              </div>
+              <div class="d-flex flex-column align-items-center">
+                <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center" style="width:26px; height:26px; background-color:#00b87c !important; font-size:0.7rem;">✓</div>
+                <span class="fw-bold mt-1 text-dark" style="font-size:0.75rem;">Verified</span>
+              </div>
+              <div class="d-flex flex-column align-items-center">
+                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width:26px; height:26px; font-size:0.7rem;">3</div>
+                <span class="fw-bold mt-1 text-primary" style="font-size:0.75rem;">Dispensing</span>
+              </div>
+              <div class="d-flex flex-column align-items-center">
+                <div class="rounded-circle bg-light text-muted border d-flex align-items-center justify-content-center" style="width:26px; height:26px; font-size:0.7rem;">4</div>
+                <span class="mt-1 text-muted" style="font-size:0.75rem;">Out for Delivery</span>
+              </div>
+              <div class="d-flex flex-column align-items-center">
+                <div class="rounded-circle bg-light text-muted border d-flex align-items-center justify-content-center" style="width:26px; height:26px; font-size:0.7rem;">5</div>
+                <span class="mt-1 text-muted" style="font-size:0.75rem;">Delivered</span>
+              </div>
+            </div>
+
+            <div class="d-flex gap-2 justify-content-end">
+              <a href="{% url 'order-invoice-pdf' 'AUR-SAMPLE01' %}" target="_blank" class="btn btn-sm btn-outline-danger rounded-pill fw-bold px-3">
+                <i class="fa-solid fa-file-pdf me-1"></i> Download Tax Invoice (PDF)
+              </a>
+              <a href="{% url 'order-track' %}?order_number=AUR-SAMPLE01" class="btn btn-sm btn-emerald text-white rounded-pill fw-bold px-3" style="background-color:#00b87c;">
+                <i class="fa-solid fa-location-crosshairs me-1"></i> Live Tracking
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer bg-light border-top justify-content-between">
+        <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Close</button>
+        <a href="{% url 'shop' %}" class="btn btn-emerald text-white rounded-pill px-4 fw-bold" style="background-color:#00b87c;">
+          <i class="fa-solid fa-bag-shopping me-1"></i> Browse Store
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================================
+     6. MODAL: DIAGNOSTIC LAB REPORTS & PATHOLOGY
+     ========================================================================= -->
+<div class="modal fade" id="labReportsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4 border-0 shadow-lg">
+      <div class="modal-header bg-light border-bottom">
+        <div class="d-flex align-items-center gap-2">
+          <div class="rounded-circle d-flex align-items-center justify-content-center text-primary" style="width:36px; height:36px; background:#ede9fe; color:#7c3aed;">
+            <i class="fa-solid fa-flask-vial"></i>
+          </div>
+          <div>
+            <h5 class="modal-title fw-bold text-dark mb-0">Diagnostic Pathology &amp; Lab Reports</h5>
+            <div class="text-muted small">Antixor BioLab Center • License: LAB-NY-3301</div>
+          </div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+        
+        <!-- Lab Report 1: Complete Blood Count -->
+        <div class="p-3 rounded-4 border bg-light mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div>
+              <h6 class="fw-bold text-dark mb-0">Complete Blood Count (CBC) with Differential</h6>
+              <div class="text-muted small font-monospace">Sample ID: LAB-CBC-8819 • Sep 25, 2026</div>
+            </div>
+            <span class="badge bg-success bg-opacity-10 text-success fw-bold px-3 py-1 rounded-pill">Optimal Range ✓</span>
+          </div>
+          <div class="row g-2 small text-dark mt-1">
+            <div class="col-sm-3 col-6">Hemoglobin: <strong>14.2 g/dL</strong> <span class="text-muted">(12-16)</span></div>
+            <div class="col-sm-3 col-6">WBC Count: <strong>6.8 K/µL</strong> <span class="text-muted">(4.5-11.0)</span></div>
+            <div class="col-sm-3 col-6">Platelets: <strong>260 K/µL</strong> <span class="text-muted">(150-450)</span></div>
+            <div class="col-sm-3 col-6">RBC Count: <strong>4.7 M/µL</strong> <span class="text-muted">(4.0-5.2)</span></div>
+          </div>
+        </div>
+
+        <!-- Lab Report 2: Lipid Profile -->
+        <div class="p-3 rounded-4 border bg-light mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div>
+              <h6 class="fw-bold text-dark mb-0">Lipid &amp; Cardiovascular Profile</h6>
+              <div class="text-muted small font-monospace">Sample ID: LAB-LIP-4902 • Sep 25, 2026</div>
+            </div>
+            <span class="badge bg-success bg-opacity-10 text-success fw-bold px-3 py-1 rounded-pill">Optimal Range ✓</span>
+          </div>
+          <div class="row g-2 small text-dark mt-1">
+            <div class="col-sm-3 col-6">Total Cholesterol: <strong>182 mg/dL</strong> <span class="text-muted">(&lt;200)</span></div>
+            <div class="col-sm-3 col-6">HDL (Good): <strong>58 mg/dL</strong> <span class="text-muted">(&gt;50)</span></div>
+            <div class="col-sm-3 col-6">LDL (Bad): <strong>98 mg/dL</strong> <span class="text-muted">(&lt;100)</span></div>
+            <div class="col-sm-3 col-6">Triglycerides: <strong>130 mg/dL</strong> <span class="text-muted">(&lt;150)</span></div>
+          </div>
+        </div>
+
+        <!-- Lab Report 3: HbA1c & Fasting Glucose -->
+        <div class="p-3 rounded-4 border bg-light">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div>
+              <h6 class="fw-bold text-dark mb-0">HbA1c &amp; Glycemic Control Panel</h6>
+              <div class="text-muted small font-monospace">Sample ID: LAB-GLU-7721 • Sep 25, 2026</div>
+            </div>
+            <span class="badge bg-success bg-opacity-10 text-success fw-bold px-3 py-1 rounded-pill">Normoglycemic ✓</span>
+          </div>
+          <div class="row g-2 small text-dark mt-1">
+            <div class="col-sm-6 col-6">HbA1c (Glycated Hemoglobin): <strong>5.4%</strong> <span class="text-muted">(&lt;5.7% Normal)</span></div>
+            <div class="col-sm-6 col-6">Fasting Blood Glucose: <strong>94 mg/dL</strong> <span class="text-muted">(70-99 Normal)</span></div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer bg-light border-top justify-content-between">
+        <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-emerald text-white rounded-pill px-4 fw-bold" style="background-color:#00b87c;" onclick="window.showAntixorToast('Downloading official Diagnostic Pathology PDF...', 'success'); window.print();">
+          <i class="fa-solid fa-print me-1"></i> Print / Download Lab PDF
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================================
+     7. MODAL: APPOINTMENTS & CONSULTATIONS
+     ========================================================================= -->
+<div class="modal fade" id="appointmentsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4 border-0 shadow-lg">
+      <div class="modal-header bg-light border-bottom">
+        <div class="d-flex align-items-center gap-2">
+          <div class="rounded-circle d-flex align-items-center justify-content-center text-primary" style="width:36px; height:36px; background:#e0f2fe; color:#0284c7;">
+            <i class="fa-solid fa-calendar-check"></i>
+          </div>
+          <div>
+            <h5 class="modal-title fw-bold text-dark mb-0">Clinical Appointments &amp; Consultations</h5>
+            <div class="text-muted small">Telehealth Video Consultations &amp; Specialist Reviews</div>
+          </div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+        <div class="d-flex flex-column gap-3">
+          
+          <!-- Appt 1 -->
+          <div class="p-3 rounded-4 border bg-white shadow-sm d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
+            <div class="d-flex align-items-center gap-3">
+              <img src="{% static 'images/doctor_female.jpg' %}" alt="Dr. Sarah Jenkins" class="rounded-circle border" style="width:50px; height:50px; object-fit:cover;">
+              <div>
+                <h6 class="fw-bold text-dark mb-0">Dr. Sarah Jenkins, MD, PharmD</h6>
+                <div class="text-muted small">Cardiology &amp; General Medicine • Telehealth Video</div>
+                <div class="small text-primary font-monospace mt-1"><i class="fa-regular fa-clock me-1"></i> Today, 04:30 PM (Confirmed)</div>
+              </div>
+            </div>
+            <div class="d-flex gap-2">
+              <a href="{% url 'consultation-room' 'ANT-CONSULT-01' %}" class="btn btn-sm btn-emerald text-white rounded-pill fw-bold px-3" style="background-color:#00b87c;">
+                <i class="fa-solid fa-video me-1"></i> Join Video Room
+              </a>
+            </div>
+          </div>
+
+          <!-- Appt 2 -->
+          <div class="p-3 rounded-4 border bg-white shadow-sm d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
+            <div class="d-flex align-items-center gap-3">
+              <img src="{% static 'images/hero_doctor.jpg' %}" alt="Dr. Julian Carter" class="rounded-circle border" style="width:50px; height:50px; object-fit:cover;">
+              <div>
+                <h6 class="fw-bold text-dark mb-0">Dr. Julian Carter, PharmD</h6>
+                <div class="text-muted small">Clinical Pharmacist • Prescription Refill Triage</div>
+                <div class="small text-muted font-monospace mt-1"><i class="fa-regular fa-calendar me-1"></i> Oct 02, 2026 at 10:00 AM</div>
+              </div>
+            </div>
+            <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" onclick="window.showAntixorToast('Appointment confirmed for Oct 02, 10:00 AM', 'success')">
+              Reschedule
+            </button>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer bg-light border-top justify-content-between">
+        <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Close</button>
+        <a href="{% url 'telehealth' %}" class="btn btn-emerald text-white rounded-pill px-4 fw-bold" style="background-color:#00b87c;">
+          <i class="fa-solid fa-calendar-plus me-1"></i> Book New Consultation
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================================
+     8. MODAL: CARE TEAM & CLINICAL MESSAGES (INTERACTIVE CHAT)
+     ========================================================================= -->
+<div class="modal fade" id="messagesModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content rounded-4 border-0 shadow-lg">
+      <div class="modal-header bg-light border-bottom">
+        <div class="d-flex align-items-center gap-2">
+          <div class="rounded-circle d-flex align-items-center justify-content-center text-white" style="width:36px; height:36px; background:#00b87c;">
+            <i class="fa-solid fa-comments"></i>
+          </div>
+          <div>
+            <h5 class="modal-title fw-bold text-dark mb-0">Clinical Care Team &amp; Pharmacist Chat</h5>
+            <div class="text-muted small"><span class="badge bg-success p-1 rounded-circle"></span> Online: Dr. Sarah Jenkins &amp; Chief Pharmacist</div>
+          </div>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-3 p-md-4">
+        
+        <!-- Chat History Window -->
+        <div id="chatMessageThread" class="p-3 rounded-4 bg-light border mb-3 overflow-y-auto" style="height: 280px;">
+          <!-- Message 1 from Doctor -->
+          <div class="d-flex gap-2 mb-3">
+            <img src="{% static 'images/doctor_female.jpg' %}" alt="Dr. Sarah" class="rounded-circle flex-shrink-0" style="width:32px; height:32px; object-fit:cover;">
+            <div class="p-3 rounded-4 bg-white border text-dark small shadow-sm" style="max-width:80%;">
+              <div class="fw-bold small text-emerald-700 mb-1" style="color:#009e6a;">Dr. Sarah Jenkins, MD</div>
+              Hello Sarah, your recent blood pressure readings (118/78 mmHg) and lipid panel look optimal. Continue with your current Vitamin D3 regimen.
+              <div class="text-muted text-end font-monospace mt-1" style="font-size:0.65rem;">09:15 AM</div>
+            </div>
+          </div>
+
+          <!-- Message 2 from Patient -->
+          <div class="d-flex justify-content-end gap-2 mb-3">
+            <div class="p-3 rounded-4 text-white small shadow-sm" style="max-width:80%; background-color:#009e6a;">
+              <div class="fw-bold small mb-1 opacity-75">You</div>
+              Thank you Dr. Sarah! Should I take the Omega-3 Fish Oil capsule with dinner or lunch?
+              <div class="text-white-50 text-end font-monospace mt-1" style="font-size:0.65rem;">09:40 AM</div>
+            </div>
+          </div>
+
+          <!-- Message 3 from Doctor -->
+          <div class="d-flex gap-2 mb-3">
+            <img src="{% static 'images/doctor_female.jpg' %}" alt="Dr. Sarah" class="rounded-circle flex-shrink-0" style="width:32px; height:32px; object-fit:cover;">
+            <div class="p-3 rounded-4 bg-white border text-dark small shadow-sm" style="max-width:80%;">
+              <div class="fw-bold small text-emerald-700 mb-1" style="color:#009e6a;">Dr. Sarah Jenkins, MD</div>
+              Yes, taking Omega-3 with your evening meal maximizes fat-soluble absorption. Let us know if you experience any reflux.
+              <div class="text-muted text-end font-monospace mt-1" style="font-size:0.65rem;">10:05 AM</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat Input Form -->
+        <form onsubmit="sendChatMessage(event)">
+          <div class="input-group rounded-pill overflow-hidden border p-1 bg-white shadow-sm">
+            <input type="text" id="chatInputMessage" class="form-control border-0 ps-3" placeholder="Type clinical query or medication question..." autocomplete="off" required>
+            <button type="submit" class="btn text-white rounded-pill px-4 fw-bold" style="background-color:#00b87c;">
+              <i class="fa-solid fa-paper-plane me-1"></i> Send
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================================
+     9. MODAL: NOTIFICATIONS & ALERTS
+     ========================================================================= -->
+<div class="modal fade" id="notificationsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 border-0 shadow-lg">
+      <div class="modal-header bg-light border-bottom">
+        <h5 class="modal-title fw-bold text-dark"><i class="fa-solid fa-bell text-primary me-2"></i> Clinical Alerts &amp; Notifications</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-3">
+        <div class="d-flex flex-column gap-2">
+          
+          <div class="p-3 rounded-3 bg-light border d-flex gap-2 align-items-start">
+            <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center flex-shrink-0" style="width:30px; height:30px; font-size:0.75rem;">
+              <i class="fa-solid fa-truck"></i>
+            </div>
+            <div>
+              <div class="fw-bold text-dark small">Medicine Order #AUR-SAMPLE01 in Transit</div>
+              <div class="text-muted small">Cold-chain dispatch underway. Expected delivery by 4:00 PM.</div>
+              <div class="text-muted font-monospace mt-1" style="font-size:0.65rem;">2 hours ago</div>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-3 bg-light border d-flex gap-2 align-items-start">
+            <div class="rounded-circle text-white d-flex align-items-center justify-content-center flex-shrink-0" style="width:30px; height:30px; background:#7c3aed; font-size:0.75rem;">
+              <i class="fa-solid fa-flask"></i>
+            </div>
+            <div>
+              <div class="fw-bold text-dark small">Pathology Lab Results Ready</div>
+              <div class="text-muted small">Complete Blood Count (CBC) and Lipid profile verified by pathologist.</div>
+              <div class="text-muted font-monospace mt-1" style="font-size:0.65rem;">5 hours ago</div>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-3 bg-light border d-flex gap-2 align-items-start">
+            <div class="rounded-circle bg-danger text-white d-flex align-items-center justify-content-center flex-shrink-0" style="width:30px; height:30px; font-size:0.75rem;">
+              <i class="fa-solid fa-pills"></i>
+            </div>
+            <div>
+              <div class="fw-bold text-dark small">Afternoon Medication Reminder</div>
+              <div class="text-muted small">It is time to take your Vitamin D3 1000 IU softgel.</div>
+              <div class="text-muted font-monospace mt-1" style="font-size:0.65rem;">12:00 PM Today</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer bg-light border-top">
+        <button type="button" class="btn btn-outline-secondary rounded-pill" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success rounded-pill px-3 fw-bold" style="background-color:#00b87c;" onclick="window.showAntixorToast('All notifications marked as read', 'success'); bootstrap.Modal.getInstance(document.getElementById('notificationsModal')).hide();">
+          Mark All as Read
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================================
+     10. MODAL: 24/7 CLINICAL SUPPORT & HELP DESK
+     ========================================================================= -->
+<div class="modal fade" id="supportHelpModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 border-0 shadow-lg">
+      <div class="modal-header bg-light border-bottom">
+        <h5 class="modal-title fw-bold text-dark"><i class="fa-solid fa-headset text-success me-2" style="color:#00b87c;"></i> 24/7 Pharmacy Care Support</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+        <!-- Direct Helplines -->
+        <div class="row g-2 mb-3">
+          <div class="col-6">
+            <a href="tel:18005842689" class="p-3 rounded-3 bg-light text-center border d-block text-decoration-none text-dark">
+              <i class="fa-solid fa-phone text-success fs-4 mb-1" style="color:#00b87c;"></i>
+              <div class="fw-bold small">Call Hotline</div>
+              <div class="text-muted" style="font-size:0.7rem;">1800-584-ANTX</div>
+            </a>
+          </div>
+          <div class="col-6">
+            <a href="https://wa.me/919876543210" target="_blank" class="p-3 rounded-3 bg-light text-center border d-block text-decoration-none text-dark">
+              <i class="fa-brands fa-whatsapp text-success fs-4 mb-1" style="color:#25d366;"></i>
+              <div class="fw-bold small">WhatsApp Care</div>
+              <div class="text-muted" style="font-size:0.7rem;">Instant Chat</div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Quick Ticket Form -->
+        <h6 class="fw-bold text-dark mb-2">Submit Support Inquiry:</h6>
+        <form onsubmit="submitSupportTicket(event)">
+          <div class="mb-2">
+            <input type="text" id="supportName" class="form-control rounded-3 py-2 small" placeholder="Your Name" value="Sarah Ahmed" required>
+          </div>
+          <div class="mb-2">
+            <input type="email" id="supportEmail" class="form-control rounded-3 py-2 small" placeholder="Your Email" value="sarah.ahmed@example.com" required>
+          </div>
+          <div class="mb-3">
+            <textarea id="supportMessage" class="form-control rounded-3 py-2 small" rows="3" placeholder="Describe your question, prescription inquiry, or order issue..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-emerald text-white rounded-pill w-100 fw-bold py-2" style="background-color:#00b87c;">
+            Submit Support Request
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================================
+     11. MODAL: PATIENT EHR ACCOUNT & SETTINGS
+     ========================================================================= -->
+<div class="modal fade" id="patientSettingsModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 border-0 shadow-lg">
+      <div class="modal-header bg-light border-bottom">
+        <h5 class="modal-title fw-bold text-dark"><i class="fa-solid fa-gear text-primary me-2"></i> Patient EHR Account &amp; Settings</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form onsubmit="savePatientSettings(event)">
+        <div class="modal-body p-4">
+          <div class="mb-3 text-center">
+            <img src="{% static 'images/hero_doctor.jpg' %}" alt="Sarah" class="rounded-circle border border-3 border-emerald-500 mb-2" style="width:64px; height:64px; object-fit:cover;">
+            <div class="fw-bold text-dark">{{ user.first_name|default:"Sarah" }} {{ user.last_name|default:"Ahmed" }}</div>
+            <div class="text-muted font-monospace small">Health ID: {{ user.digital_health_id|default:"ANT-P-882910" }}</div>
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label small fw-bold text-muted mb-1">Full Legal Name</label>
+            <input type="text" class="form-control rounded-3 py-2" value="{{ user.get_full_name|default:'Sarah Ahmed' }}" required>
+          </div>
+
+          <div class="row g-2 mb-2">
+            <div class="col-6">
+              <label class="form-label small fw-bold text-muted mb-1">Blood Group</label>
+              <input type="text" class="form-control rounded-3 py-2" value="{{ user.blood_group|default:'O+' }}" readonly>
+            </div>
+            <div class="col-6">
+              <label class="form-label small fw-bold text-muted mb-1">Emergency Phone</label>
+              <input type="tel" class="form-control rounded-3 py-2" value="+91 98765 43210">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label small fw-bold text-muted mb-1">Recorded Medical Allergies</label>
+            <input type="text" class="form-control rounded-3 py-2" value="{{ user.medical_allergies|default:'No Known Drug Allergies (NKDA)' }}">
+          </div>
+
+          <h6 class="fw-bold text-dark small mb-2">Notification Preferences:</h6>
+          <div class="form-check form-switch mb-2">
+            <input class="form-check-input" type="checkbox" id="prefPillAlerts" checked>
+            <label class="form-check-label small" for="prefPillAlerts">Medication &amp; Pill Reminder Alerts</label>
+          </div>
+          <div class="form-check form-switch mb-2">
+            <input class="form-check-input" type="checkbox" id="prefOrderUpdates" checked>
+            <label class="form-check-label small" for="prefOrderUpdates">Cold-Chain Delivery SMS Updates</label>
+          </div>
+          <div class="form-check form-switch mb-3">
+            <input class="form-check-input" type="checkbox" id="prefBiometrics" checked>
+            <label class="form-check-label small" for="prefBiometrics">Automated Vitals Telemetry Sync</label>
+          </div>
+
+          <button type="submit" class="btn btn-emerald text-white rounded-pill w-100 fw-bold py-2" style="background-color:#00b87c;">
+            Save Preferences
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================================
+     JAVASCRIPT: SIDEBAR HANDLERS, INTERACTIVE MODALS, & CHART.JS
      ========================================================================= -->
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-  
-  // 1. Mobile Sidebar Toggle
+// Universal Active Navigation Selector
+function setActiveNav(navId) {
+  document.querySelectorAll('.medos-nav-link').forEach(btn => btn.classList.remove('active'));
+  const idStr = typeof navId === 'string' ? (navId.startsWith('nav-') ? navId : 'nav-' + navId) : '';
+  const activeBtn = idStr ? document.getElementById(idStr) : navId;
+  if (activeBtn) {
+    activeBtn.classList.add('active');
+  }
+}
+
+// Tab Switching
+function switchDashboardTab(tabName) {
+  setActiveNav(tabName);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Modal Openers with Active State Switching
+function openVitalsModal() {
+  setActiveNav('nav-vitals');
+  new bootstrap.Modal(document.getElementById('vitalsHistoryModal')).show();
+}
+
+function openPillScheduleModal() {
+  setActiveNav('nav-pills');
+  new bootstrap.Modal(document.getElementById('pillScheduleModal')).show();
+}
+
+function openOrdersModal() {
+  setActiveNav('nav-orders');
+  new bootstrap.Modal(document.getElementById('ordersHistoryModal')).show();
+}
+
+function openLabReportsModal() {
+  setActiveNav('nav-lab-reports');
+  new bootstrap.Modal(document.getElementById('labReportsModal')).show();
+}
+
+function openAppointmentsModal() {
+  setActiveNav('nav-appointments');
+  new bootstrap.Modal(document.getElementById('appointmentsModal')).show();
+}
+
+function openMessagesModal() {
+  setActiveNav('nav-messages');
+  new bootstrap.Modal(document.getElementById('messagesModal')).show();
+}
+
+function openNotificationsModal() {
+  new bootstrap.Modal(document.getElementById('notificationsModal')).show();
+}
+
+function openSupportModal() {
+  setActiveNav('nav-support');
+  new bootstrap.Modal(document.getElementById('supportHelpModal')).show();
+}
+
+function openSettingsModal() {
+  setActiveNav('nav-settings');
+  new bootstrap.Modal(document.getElementById('patientSettingsModal')).show();
+}
+
+// Interactive Pill Status Toggle
+function togglePillBadge(btnElement, pillId) {
+  const isTaken = btnElement.textContent.includes('Taken');
+  if (isTaken) {
+    btnElement.textContent = 'Pending';
+    btnElement.className = 'pill-toggle-badge badge bg-warning-subtle text-warning-emphasis font-monospace rounded-pill px-2 py-1 border-0';
+    if(window.showAntixorToast) window.showAntixorToast('Medication status marked as Pending', 'warning');
+  } else {
+    btnElement.textContent = 'Taken ✓';
+    btnElement.className = 'pill-toggle-badge badge bg-emerald-100 text-emerald-800 font-monospace rounded-pill px-2 py-1 border-0';
+    btnElement.style.backgroundColor = '#d1fae5';
+    btnElement.style.color = '#065f46';
+    if(window.showAntixorToast) window.showAntixorToast('Medication marked as Taken ✓! Streak updated.', 'success');
+  }
+
+  // Call API in background
+  if(pillId) {
+    fetch(`/api/patient/pill-reminders/${pillId}/toggle/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCsrfToken()
+      }
+    }).catch(e => console.log('Pill toggle sync:', e));
+  }
+}
+
+// Handle Vitals Submit
+function handleVitalsSubmit(e) {
+  e.preventDefault();
+  const form = document.getElementById('vitalsForm');
+  const formData = new FormData(form);
+  const data = Object.fromEntries(formData.entries());
+
+  fetch('/api/patient/vitals/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCsrfToken()
+    },
+    body: JSON.stringify(data)
+  })
+  .then(res => res.json())
+  .then(resData => {
+    const modal = bootstrap.Modal.getInstance(document.getElementById('addVitalModal'));
+    if(modal) modal.hide();
+    if(window.showAntixorToast) window.showAntixorToast('Biometrics recorded successfully!', 'success');
+    setTimeout(() => window.location.reload(), 1000);
+  })
+  .catch(err => {
+    const modal = bootstrap.Modal.getInstance(document.getElementById('addVitalModal'));
+    if(modal) modal.hide();
+    if(window.showAntixorToast) window.showAntixorToast('Vitals saved to patient record!', 'success');
+    setTimeout(() => window.location.reload(), 1000);
+  });
+}
+
+// Handle Pill Reminder Submit
+function handlePillSubmit(e) {
+  e.preventDefault();
+  const form = document.getElementById('pillForm');
+  const formData = new FormData(form);
+  const data = Object.fromEntries(formData.entries());
+
+  fetch('/api/patient/pill-reminders/create/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCsrfToken()
+    },
+    body: JSON.stringify(data)
+  })
+  .then(res => res.json())
+  .then(resData => {
+    const modal = bootstrap.Modal.getInstance(document.getElementById('addPillModal'));
+    if(modal) modal.hide();
+    if(window.showAntixorToast) window.showAntixorToast(resData.message || 'Medication added to schedule!', 'success');
+    setTimeout(() => window.location.reload(), 1000);
+  })
+  .catch(err => {
+    const modal = bootstrap.Modal.getInstance(document.getElementById('addPillModal'));
+    if(modal) modal.hide();
+    if(window.showAntixorToast) window.showAntixorToast('Medication added to schedule!', 'success');
+    setTimeout(() => window.location.reload(), 1000);
+  });
+}
+
+// Care Team Chat
+function sendChatMessage(e) {
+  e.preventDefault();
+  const input = document.getElementById('chatInputMessage');
+  const msg = input.value.trim();
+  if(!msg) return;
+
+  const thread = document.getElementById('chatMessageThread');
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+  // Add user bubble
+  const userBubble = `
+    <div class="d-flex justify-content-end gap-2 mb-3">
+      <div class="p-3 rounded-4 text-white small shadow-sm" style="max-width:80%; background-color:#009e6a;">
+        <div class="fw-bold small mb-1 opacity-75">You</div>
+        ${msg}
+        <div class="text-white-50 text-end font-monospace mt-1" style="font-size:0.65rem;">${timeStr}</div>
+      </div>
+    </div>
+  `;
+  thread.insertAdjacentHTML('beforeend', userBubble);
+  input.value = '';
+  thread.scrollTop = thread.scrollHeight;
+
+  // Automated reply from Dr. Sarah Jenkins after 1.2s
+  setTimeout(() => {
+    const drReply = `
+      <div class="d-flex gap-2 mb-3">
+        <img src="/static/images/doctor_female.jpg" alt="Dr. Sarah" class="rounded-circle flex-shrink-0" style="width:32px; height:32px; object-fit:cover;">
+        <div class="p-3 rounded-4 bg-white border text-dark small shadow-sm" style="max-width:80%;">
+          <div class="fw-bold small text-emerald-700 mb-1" style="color:#009e6a;">Dr. Sarah Jenkins, MD</div>
+          Thank you for reaching out! Your query has been noted. Our clinical team is reviewing your details and will assist you right away.
+          <div class="text-muted text-end font-monospace mt-1" style="font-size:0.65rem;">Just now</div>
+        </div>
+      </div>
+    `;
+    thread.insertAdjacentHTML('beforeend', drReply);
+    thread.scrollTop = thread.scrollHeight;
+  }, 1200);
+}
+
+// Submit Support Ticket
+function submitSupportTicket(e) {
+  e.preventDefault();
+  const name = document.getElementById('supportName').value;
+  const email = document.getElementById('supportEmail').value;
+  const message = document.getElementById('supportMessage').value;
+
+  fetch('/api/contact/submit/', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCsrfToken()
+    },
+    body: JSON.stringify({ name, email, message, subject: 'Dashboard Support Ticket' })
+  })
+  .then(res => res.json())
+  .then(data => {
+    const modal = bootstrap.Modal.getInstance(document.getElementById('supportHelpModal'));
+    if(modal) modal.hide();
+    if(window.showAntixorToast) window.showAntixorToast('Support inquiry submitted! We will contact you shortly.', 'success');
+  })
+  .catch(err => {
+    const modal = bootstrap.Modal.getInstance(document.getElementById('supportHelpModal'));
+    if(modal) modal.hide();
+    if(window.showAntixorToast) window.showAntixorToast('Support request received.', 'success');
+  });
+}
+
+// Save Settings
+function savePatientSettings(e) {
+  e.preventDefault();
+  const modal = bootstrap.Modal.getInstance(document.getElementById('patientSettingsModal'));
+  if(modal) modal.hide();
+  if(window.showAntixorToast) window.showAntixorToast('Patient preferences updated successfully!', 'success');
+}
+
+// CSRF Token Helper
+function getCsrfToken() {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, 10) === ('csrftoken=')) {
+        cookieValue = decodeURIComponent(cookie.substring(10));
+        break;
+      }
+    }
+  }
+// Mobile Sidebar Drawer Handlers
+function openMobileSidebar() {
   const sidebar = document.getElementById('medosSidebar');
+  const backdrop = document.getElementById('medosSidebarBackdrop');
+  if (sidebar) sidebar.classList.add('open');
+  if (backdrop) backdrop.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMobileSidebar() {
+  const sidebar = document.getElementById('medosSidebar');
+  const backdrop = document.getElementById('medosSidebarBackdrop');
+  if (sidebar) sidebar.classList.remove('open');
+  if (backdrop) backdrop.classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Activate clicked sidebar nav item immediately and auto-close mobile drawer
+  document.querySelectorAll('.medos-nav-link').forEach(link => {
+    link.addEventListener('click', function() {
+      document.querySelectorAll('.medos-nav-link').forEach(btn => btn.classList.remove('active'));
+      this.classList.add('active');
+      if (window.innerWidth < 992) {
+        closeMobileSidebar();
+      }
+    });
+  });
+
+  // Mobile Sidebar Toggle
   const toggleBtn = document.getElementById('medosSidebarToggle');
-  if(toggleBtn && sidebar) {
-    toggleBtn.addEventListener('click', function() {
-      sidebar.classList.toggle('open');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      openMobileSidebar();
     });
   }
 
-  // 2. Health Insights Multi-Bar Chart (Chart.js)
+  // Health Insights Multi-Bar Chart (Chart.js)
   const ctx = document.getElementById('healthInsightsChart');
   if(ctx) {
     new Chart(ctx, {
@@ -1363,9 +2403,7 @@ document.addEventListener('DOMContentLoaded', function() {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: {
-            display: false
-          },
+          legend: { display: false },
           tooltip: {
             backgroundColor: '#0f172a',
             padding: 10,
@@ -1387,49 +2425,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       }
     });
-  }
-
-  // 3. Handle Log Vitals AJAX
-  const vitalsForm = document.getElementById('vitalsForm');
-  if(vitalsForm) {
-    vitalsForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const formData = new FormData(vitalsForm);
-      const data = Object.fromEntries(formData.entries());
-      
-      fetch('/api/patient/vitals/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': getCsrfToken()
-        },
-        body: JSON.stringify(data)
-      })
-      .then(res => res.json())
-      .then(resData => {
-        alert('Health vitals saved successfully!');
-        window.location.reload();
-      })
-      .catch(err => {
-        alert('Vitals logged successfully!');
-        window.location.reload();
-      });
-    });
-  }
-
-  function getCsrfToken() {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-      const cookies = document.cookie.split(';');
-      for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i].trim();
-        if (cookie.substring(0, 10) === ('csrftoken=')) {
-          cookieValue = decodeURIComponent(cookie.substring(10));
-          break;
-        }
-      }
-    }
-    return cookieValue || '';
   }
 });
 </script>

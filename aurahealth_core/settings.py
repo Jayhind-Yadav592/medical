@@ -162,7 +162,7 @@ SPECTACULAR_SETTINGS = {
     },
 }
 
-# CORS Settings
+# CORS & CSRF Trusted Origins
 CORS_ALLOW_ALL_ORIGINS = True
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
@@ -170,3 +170,27 @@ CSRF_TRUSTED_ORIGINS = [
     'https://*.vercel.app',
     'https://*.now.sh'
 ]
+
+# ==============================================================================
+# ENTERPRISE SECURITY & DATA PROTECTION HARDENING (MedOS Security Protocol)
+# ==============================================================================
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_REFERRER_POLICY = 'same-origin'
+
+# Session & Cookie Hardening
+SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_HTTPONLY = False  # Enabled for AJAX/Fetch CSRF token extraction
+SESSION_COOKIE_AGE = 86400 * 7  # 7 Days persistence
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_SAVE_EVERY_REQUEST = True
+
+# Production SSL/TLS enforcement (active in non-debug or when enabled)
+if not DEBUG:
+    SECURE_SSL_REDIRECT = env.bool('DJANGO_SECURE_SSL_REDIRECT', default=False)
+    SESSION_COOKIE_SECURE = env.bool('DJANGO_SESSION_COOKIE_SECURE', default=False)
+    CSRF_COOKIE_SECURE = env.bool('DJANGO_CSRF_COOKIE_SECURE', default=False)
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True

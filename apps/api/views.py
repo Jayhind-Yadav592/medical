@@ -770,6 +770,43 @@ class PillReminderToggleAPIView(APIView):
 
 
 @extend_schema(tags=['Patient EHR & Intake'])
+class PillReminderCreateAPIView(APIView):
+    """Add a new medication reminder for patient schedule."""
+    def post(self, request):
+        if not request.user.is_authenticated:
+            return Response({'error': 'Authentication required'}, status=status.HTTP_401_UNAUTHORIZED)
+        med_name = request.data.get('medicine_name', '').strip()
+        dosage = request.data.get('dosage', '1 Tablet').strip()
+        freq = request.data.get('frequency', 'MORNING')
+        notes = request.data.get('notes', '').strip()
+        
+        time_slot = '08:00 AM'
+        if freq == 'MORNING': time_slot = '08:00 AM'
+        elif freq == 'AFTERNOON': time_slot = '12:00 PM'
+        elif freq == 'NIGHT': time_slot = '08:00 PM'
+        elif freq == 'TWICE_DAILY': time_slot = '08:00 AM & 08:00 PM'
+        elif freq == 'THRICE_DAILY': time_slot = '08:00 AM, 01:00 PM, 08:00 PM'
+
+        if not med_name:
+            return Response({'error': 'Medicine name is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        reminder = PillReminder.objects.create(
+            user=request.user,
+            medicine_name=med_name,
+            dosage=dosage,
+            frequency=freq,
+            time_slot=time_slot,
+            notes=notes,
+            streak_days=1,
+            is_taken=False
+        )
+        return Response({
+            'message': f'Medication {med_name} added to schedule successfully!',
+            'reminder': PillReminderSerializer(reminder).data
+        }, status=status.HTTP_201_CREATED)
+
+
+@extend_schema(tags=['Patient EHR & Intake'])
 class PatientIntakeSubmitAPIView(APIView):
     """Submit multi-step symptom intake with auto pharmacy assignment."""
     def post(self, request):
@@ -956,6 +993,118 @@ class RazorpayWebhookAPIView(APIView):
                 verify_payment_transaction(order, gateway='RAZORPAY', payment_id=payment_entity.get('id'))
                 
         return Response({'received': True, 'status': 'processed'}, status=status.HTTP_200_OK)
+
+
+# ==============================================================================
+# CLINICAL ENTERPRISE ERP ADMIN & PHARMACIST APIS (RBAC PROTECTED)
+# ==============================================================================
+class IsAdminOrClinicalStaff(permissions.BasePermission):
+    """Allows access only to authenticated admin, staff, pharmacist, or doctor accounts."""
+    def has_permission(self, request, view):
+        return bool(
+            request.user and request.user.is_authenticated and (
+                request.user.is_staff or 
+                request.user.is_superuser or 
+                getattr(request.user, 'user_type', None) in ['ADMIN', 'PHARMACIST', 'DOCTOR']
+            )
+        )
+
+
+@extend_schema(tags=['Admin & Clinical Operations'])
+class AdminPrescriptionReviewAPIView(APIView):
+    """Approve, reject, or mark as dispensed for a patient prescription (Pharmacist / Admin only)."""
+    permission_classes = [IsAdminOrClinicalStaff]
+
+    def post(self, request, prescription_id):
+        prescription = get_object_or_404(Prescription, id=prescription_id)
+        action = request.data.get('action', 'VERIFY').upper()
+        notes = request.data.get('notes', '')
+        
+        if action in ['VERIFY', 'APPROVE', 'VERIFIED']:
+            prescription.status = 'VERIFIED'
+            prescription.verified_by = request.user
+            prescription.pharmacist_notes = notes or 'Verified and approved for dispensing.'
+            prescription.verified_at = timezone.now()
+            prescription.save()
+            return Response({'success': True, 'status': 'VERIFIED', 'message': f'Prescription #{prescription.id} verified successfully.'})
+        elif action in ['REJECT', 'REJECTED']:
+            prescription.status = 'REJECTED'
+            prescription.rejection_reason = notes or 'Requires doctor clarification.'
+            prescription.save()
+            return Response({'success': True, 'status': 'REJECTED', 'message': f'Prescription #{prescription.id} marked as rejected.'})
+        elif action in ['DISPENSE', 'DISPENSED']:
+            prescription.status = 'DISPENSED'
+            prescription.save()
+            return Response({'success': True, 'status': 'DISPENSED', 'message': f'Prescription #{prescription.id} marked as dispensed.'})
+        
+        return Response({'error': 'Invalid action specified.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@extend_schema(tags=['Admin & Clinical Operations'])
+class AdminOrderStatusUpdateAPIView(APIView):
+    """Update order fulfillment status (Pending, Processing, Dispatched, Delivered)."""
+    permission_classes = [IsAdminOrClinicalStaff]
+
+    def post(self, request, order_number):
+        order = get_object_or_404(Order, order_number__iexact=order_number)
+        new_status = request.data.get('status', '').upper()
+        notes = request.data.get('notes', f'Status updated to {new_status} by {request.user.username}')
+
+        valid_statuses = dict(Order.ORDER_STATUS_CHOICES)
+        if new_status not in valid_statuses:
+            return Response({'error': f'Invalid status. Allowed: {list(valid_statuses.keys())}'}, status=status.HTTP_400_BAD_REQUEST)
+
+        order.order_status = new_status
+        order.save()
+
+        # Record Status History
+        OrderStatusHistory.objects.create(
+            order=order,
+            status=new_status,
+            location=request.data.get('location', 'Central Pharmacy Fulfillment Hub'),
+            notes=notes
+        )
+
+        return Response({
+            'success': True,
+            'order_number': order.order_number,
+            'new_status': order.order_status,
+            'status_display': order.get_order_status_display(),
+            'message': f'Order {order.order_number} status updated to {order.get_order_status_display()}.'
+        })
+
+
+@extend_schema(tags=['Admin & Clinical Operations'])
+class AdminInventoryStockUpdateAPIView(APIView):
+    """Quick update for pharmacy inventory stock levels and pricing."""
+    permission_classes = [IsAdminOrClinicalStaff]
+
+    def post(self, request, product_id):
+        product = get_object_or_404(Product, id=product_id)
+        stock = request.data.get('stock')
+        price = request.data.get('price')
+
+        if stock is not None:
+            try:
+                product.stock = int(stock)
+            except ValueError:
+                return Response({'error': 'Invalid stock value.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if price is not None:
+            try:
+                product.price = float(price)
+            except ValueError:
+                return Response({'error': 'Invalid price value.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        product.save()
+        return Response({
+            'success': True,
+            'product_id': product.id,
+            'name': product.name,
+            'stock': product.stock,
+            'price': float(product.price),
+            'message': f'Product {product.name} inventory updated successfully.'
+        })
 
 
 

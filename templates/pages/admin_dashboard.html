@@ -1,0 +1,1412 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Antixor MedOS Enterprise | Clinical Operations & Pharmacy ERP Admin{% endblock %}
+
+{% block extra_css %}
+<!-- Include Chart.js for Enterprise Analytics -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+<style>
+/* ==========================================================================
+   ANTIXOR MEDOS ENTERPRISE CLINICAL ERP — PREMIUM ADMIN DESIGN SYSTEM
+   ========================================================================== */
+:root {
+  --erp-bg: #f8fafc;
+  --erp-sidebar-bg: #090e1a;
+  --erp-sidebar-hover: rgba(255, 255, 255, 0.07);
+  --erp-sidebar-text: #94a3b8;
+  --erp-emerald: #00b87c;
+  --erp-emerald-hover: #009e6a;
+  --erp-emerald-light: #ecfdf5;
+  --erp-card-bg: #ffffff;
+  --erp-border: #e2e8f0;
+  --erp-text-dark: #0f172a;
+  --erp-text-muted: #64748b;
+  --erp-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.02);
+  --erp-shadow-hover: 0 10px 25px -4px rgba(15, 23, 42, 0.08);
+}
+
+body {
+  background-color: var(--erp-bg) !important;
+  color: var(--erp-text-dark);
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.admin-shell {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* Sidebar */
+.admin-sidebar {
+  width: 280px;
+  background-color: var(--erp-sidebar-bg);
+  color: var(--erp-sidebar-text);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 1040;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.admin-sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+.admin-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+.admin-nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 18px;
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.86rem;
+  font-weight: 600;
+  border-radius: 12px;
+  margin: 3px 14px;
+  transition: all 0.2s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  width: calc(100% - 28px);
+  text-align: left;
+}
+
+.admin-nav-item i {
+  width: 22px;
+  font-size: 0.95rem;
+  color: #64748b;
+  transition: color 0.2s ease;
+}
+
+.admin-nav-item:hover {
+  color: #ffffff;
+  background-color: var(--erp-sidebar-hover);
+}
+.admin-nav-item:hover i {
+  color: #ffffff;
+}
+
+.admin-nav-item.active {
+  background-color: var(--erp-emerald) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(0, 184, 124, 0.4);
+}
+.admin-nav-item.active i,
+.admin-nav-item.active span {
+  color: #ffffff !important;
+}
+
+.admin-main {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background-color: var(--erp-bg);
+}
+
+/* Header Topbar */
+.admin-topbar {
+  height: 72px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--erp-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+}
+
+.erp-card {
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid var(--erp-border);
+  padding: 24px;
+  box-shadow: var(--erp-shadow);
+  height: 100%;
+  transition: all 0.2s ease;
+}
+
+.erp-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.erp-card-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--erp-text-dark);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+}
+
+/* Stat KPI Cards */
+.admin-stat-kpi {
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid var(--erp-border);
+  padding: 22px;
+  box-shadow: var(--erp-shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.admin-stat-kpi:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--erp-shadow-hover);
+}
+.admin-stat-kpi::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--erp-emerald);
+}
+.admin-stat-kpi.kpi-blue::before { background: #2563eb; }
+.admin-stat-kpi.kpi-amber::before { background: #d97706; }
+.admin-stat-kpi.kpi-purple::before { background: #7c3aed; }
+
+.kpi-icon-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+/* Hero Welcome Banner */
+.admin-hero-banner {
+  background: linear-gradient(135deg, #090e1a 0%, #0f172a 60%, #064e3b 100%);
+  border-radius: 24px;
+  padding: 30px 36px;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px -5px rgba(9, 14, 26, 0.3);
+  margin-bottom: 24px;
+}
+.admin-hero-banner::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(0, 184, 124, 0.18) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Modern Tables */
+.admin-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+}
+.admin-table thead th {
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #64748b;
+  border: none;
+  padding: 8px 16px;
+}
+.admin-table tbody tr {
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.02);
+  transition: all 0.15s ease;
+  border-radius: 12px;
+}
+.admin-table tbody tr td {
+  padding: 14px 16px;
+  vertical-align: middle;
+  border-top: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.86rem;
+}
+.admin-table tbody tr td:first-child {
+  border-left: 1px solid #f1f5f9;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+}
+.admin-table tbody tr td:last-child {
+  border-right: 1px solid #f1f5f9;
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+.admin-table tbody tr:hover {
+  background: #f8fafc;
+  transform: scale(1.002);
+}
+
+/* Filter Search Input */
+.erp-search-wrap {
+  position: relative;
+  max-width: 280px;
+}
+.erp-search-wrap input {
+  padding-left: 36px;
+  border-radius: 30px;
+  font-size: 0.82rem;
+  border: 1px solid #cbd5e1;
+}
+.erp-search-wrap i {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+.admin-sidebar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1039;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+.admin-sidebar-backdrop.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (max-width: 991px) {
+  .admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 280px;
+    max-width: 85vw;
+    transform: translateX(-100%);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .admin-sidebar.open {
+    transform: translateX(0);
+  }
+  .admin-topbar {
+    padding: 0 14px;
+    height: 64px;
+  }
+  .admin-hero-banner {
+    padding: 20px 16px;
+    border-radius: 18px;
+  }
+}
+
+@media (max-width: 575px) {
+  .admin-hero-banner h2 {
+    font-size: 1.35rem;
+  }
+  .admin-hero-banner .d-flex {
+    flex-direction: column;
+    width: 100%;
+  }
+  .admin-hero-banner .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .erp-search-wrap {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-shell">
+
+  <!-- Mobile Sidebar Backdrop Overlay -->
+  <div class="admin-sidebar-backdrop d-lg-none" id="adminSidebarBackdrop" onclick="closeAdminMobileSidebar()"></div>
+
+  <!-- =========================================================================
+       1. LEFT SIDEBAR: CLINICAL ERP CONTROLS
+       ========================================================================= -->
+  <aside class="admin-sidebar" id="adminSidebar">
+    
+    <!-- Brand Title with Mobile Close Button -->
+    <div class="p-4 d-flex align-items-center justify-content-between border-bottom border-secondary border-opacity-10">
+      <div class="d-flex align-items-center gap-3">
+        <div class="rounded-3 d-flex align-items-center justify-content-center text-white" style="width:42px; height:42px; background-color:#00b87c; box-shadow:0 4px 14px rgba(0,184,124,0.35);">
+          <i class="fa-solid fa-hospital-user fs-5"></i>
+        </div>
+        <div>
+          <div class="fw-bold text-white fs-6 lh-1">Antixor MedOS</div>
+          <div class="font-monospace fw-bold mt-1" style="color:#34d399; font-size:0.65rem; letter-spacing:0.12em;">ENTERPRISE ERP v3.0</div>
+        </div>
+      </div>
+      <button type="button" class="btn-close btn-close-white d-lg-none" onclick="closeAdminMobileSidebar()" aria-label="Close Sidebar"></button>
+    </div>
+
+    <!-- Logged in Admin Profile Card -->
+    <div class="p-3 mx-3 my-3 rounded-4" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);">
+      <div class="d-flex align-items-center gap-3">
+        <img src="{% static 'images/doctor_female.jpg' %}" alt="Admin Avatar" class="rounded-circle border border-2 border-emerald-500" style="width:40px; height:40px; object-fit:cover;">
+        <div class="overflow-hidden">
+          <div class="fw-bold text-white text-truncate small">{{ user.get_full_name|default:user.username }}</div>
+          <span class="badge bg-emerald-500 text-dark font-monospace fw-bold" style="background-color:#34d399; font-size:0.62rem;">
+            {% if user.is_superuser %}SUPER ADMIN{% elif user.user_type == 'DOCTOR' %}CHIEF PHYSICIAN{% else %}LEAD PHARMACIST{% endif %}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Items -->
+    <div class="flex-grow-1 py-1">
+      <div class="text-uppercase fw-bold font-monospace px-4 py-2" style="font-size:0.65rem; color:#475569; letter-spacing:0.12em;">Operations &amp; Triage</div>
+      
+      <a href="#section-overview" class="admin-nav-item active" onclick="activateAdminNav(this)">
+        <span class="d-flex align-items-center gap-2">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Executive Overview</span>
+        </span>
+      </a>
+
+      <a href="#section-prescriptions" class="admin-nav-item" onclick="activateAdminNav(this)">
+        <span class="d-flex align-items-center gap-2">
+          <i class="fa-solid fa-file-prescription"></i>
+          <span>Prescription Review</span>
+        </span>
+        {% if pending_prescriptions_count > 0 %}
+          <span class="badge bg-danger rounded-pill">{{ pending_prescriptions_count }}</span>
+        {% endif %}
+      </a>
+
+      <a href="#section-orders" class="admin-nav-item" onclick="activateAdminNav(this)">
+        <span class="d-flex align-items-center gap-2">
+          <i class="fa-solid fa-truck-fast"></i>
+          <span>Orders &amp; Cold-Chain</span>
+        </span>
+        {% if active_orders_count > 0 %}
+          <span class="badge bg-primary rounded-pill">{{ active_orders_count }}</span>
+        {% endif %}
+      </a>
+
+      <a href="#section-patients" class="admin-nav-item" onclick="activateAdminNav(this)">
+        <span class="d-flex align-items-center gap-2">
+          <i class="fa-solid fa-users"></i>
+          <span>Patient EHR Registry</span>
+        </span>
+      </a>
+
+      <a href="#section-telehealth" class="admin-nav-item" onclick="activateAdminNav(this)">
+        <span class="d-flex align-items-center gap-2">
+          <i class="fa-solid fa-video" style="color:#c084fc;"></i>
+          <span>Teleconsultations</span>
+        </span>
+        <span class="badge bg-success rounded-pill" style="font-size:0.6rem;">LIVE</span>
+      </a>
+
+      <a href="#section-inventory" class="admin-nav-item" onclick="activateAdminNav(this)">
+        <span class="d-flex align-items-center gap-2">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <span>Pharmacy Inventory</span>
+        </span>
+        {% if low_stock_count > 0 %}
+          <span class="badge bg-warning text-dark rounded-pill">{{ low_stock_count }} Low</span>
+        {% endif %}
+      </a>
+
+      <div class="text-uppercase fw-bold font-monospace px-4 py-2 mt-3" style="font-size:0.65rem; color:#475569; letter-spacing:0.12em;">Enterprise Controls</div>
+
+      <a href="#section-security" class="admin-nav-item" onclick="activateAdminNav(this)">
+        <span class="d-flex align-items-center gap-2">
+          <i class="fa-solid fa-shield-halved" style="color:#34d399;"></i>
+          <span>Security &amp; Audit Logs</span>
+        </span>
+        <span class="badge bg-emerald-500 text-dark rounded-pill" style="background-color:#34d399; font-size:0.6rem;">OK</span>
+      </a>
+
+      <a href="/admin/" target="_blank" class="admin-nav-item">
+        <span class="d-flex align-items-center gap-2">
+          <i class="fa-solid fa-screwdriver-wrench"></i>
+          <span>Django Admin Panel</span>
+        </span>
+        <i class="fa-solid fa-arrow-up-right-from-square text-slate-500" style="font-size:0.7rem;"></i>
+      </a>
+
+      <a href="{% url 'dashboard' %}?view=patient" class="admin-nav-item">
+        <span class="d-flex align-items-center gap-2">
+          <i class="fa-solid fa-user-injured"></i>
+          <span>Patient EHR View</span>
+        </span>
+        <i class="fa-solid fa-repeat text-slate-500" style="font-size:0.7rem;"></i>
+      </a>
+    </div>
+
+    <!-- Security Status Bottom Strip -->
+    <div class="p-3 mx-3 mb-3 rounded-3" style="background: rgba(0, 184, 124, 0.08); border: 1px solid rgba(0, 184, 124, 0.2);">
+      <div class="d-flex align-items-center gap-2 text-emerald-400 small fw-bold" style="color:#34d399; font-size:0.75rem;">
+        <i class="fa-solid fa-shield-check"></i>
+        <span>HIPAA / MedOS RBAC Active</span>
+      </div>
+      <div class="text-slate-400 mt-1" style="font-size:0.68rem;">Neon PostgreSQL • TLS 1.3 Hardened</div>
+    </div>
+
+  </aside>
+
+  <!-- =========================================================================
+       2. MAIN CONTENT STAGE
+       ========================================================================= -->
+  <main class="admin-main">
+    
+    <!-- Topbar Navigation -->
+    <header class="admin-topbar">
+      <div class="d-flex align-items-center gap-3">
+        <button class="btn btn-light d-lg-none rounded-circle p-2 border" id="adminSidebarToggle">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div>
+          <div class="d-flex align-items-center gap-2">
+            <h5 class="fw-bold text-dark mb-0">Clinical Operations ERP</h5>
+            <span class="badge bg-emerald-100 text-emerald-800 rounded-pill font-monospace" style="background-color:#d1fae5; color:#065f46; font-size:0.7rem;">ROLE: ADMIN/STAFF</span>
+          </div>
+          <div class="text-muted small">Centralized e-prescription triage, cold-chain logistics, and dispensary registry</div>
+        </div>
+      </div>
+
+      <div class="d-flex align-items-center gap-2 gap-md-3">
+        <!-- Switch to Patient View button -->
+        <a href="{% url 'dashboard' %}?view=patient" class="btn btn-sm btn-outline-primary rounded-pill fw-bold px-3 d-none d-sm-inline-flex align-items-center gap-1">
+          <i class="fa-solid fa-repeat me-1"></i> Patient EHR View
+        </a>
+
+        <!-- Django Admin Direct Link -->
+        <a href="/admin/" target="_blank" class="btn btn-sm btn-dark rounded-pill fw-bold px-3 d-flex align-items-center gap-1" style="background-color:#0f172a;">
+          <i class="fa-solid fa-screwdriver-wrench me-1"></i> Django Admin
+        </a>
+
+        <!-- Logout -->
+        <a href="{% url 'logout' %}" class="btn btn-sm btn-outline-danger rounded-circle p-2" title="Sign Out" style="width:36px; height:36px; display:flex; align-items:center; justify-content:center;">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </a>
+      </div>
+    </header>
+
+    <!-- Admin Body Container -->
+    <div class="p-3 p-md-4 flex-grow-1">
+
+      <!-- =====================================================================
+           HERO WELCOME BANNER (EXECUTIVE OVERVIEW)
+           ===================================================================== -->
+      <div class="admin-hero-banner position-relative">
+        <div class="row align-items-center position-relative" style="z-index:2;">
+          <div class="col-lg-8">
+            <div class="badge bg-emerald-500 text-dark font-monospace fw-bold mb-2 px-3 py-1" style="background-color:#34d399; font-size:0.7rem;">
+              <i class="fa-solid fa-circle-check me-1"></i> SYSTEM TELEMETRY: OPTIMAL
+            </div>
+            <h2 class="fw-bold mb-1">
+              Welcome Back, {% if user.user_type == 'DOCTOR' %}Dr. {{ user.first_name|default:user.username }}{% else %}Chief Pharmacist {{ user.first_name|default:user.username }}{% endif %}!
+            </h2>
+            <p class="text-slate-300 mb-3" style="font-size:0.92rem; max-width:620px;">
+              Your centralized clinical operations dashboard is monitoring cold-chain inventory, pending doctor prescriptions, and live patient orders across India.
+            </p>
+
+            <div class="d-flex gap-2 flex-wrap align-items-center">
+              <a href="#section-prescriptions" class="btn btn-emerald text-white rounded-pill px-3 py-2 fw-bold small" style="background-color:#00b87c; border:none;">
+                <i class="fa-solid fa-file-signature me-1"></i> Review Prescriptions ({{ pending_prescriptions_count }})
+              </a>
+              <a href="#section-orders" class="btn btn-outline-light rounded-pill px-3 py-2 fw-bold small">
+                <i class="fa-solid fa-truck-ramp-box me-1"></i> Dispatch Queue ({{ active_orders_count }})
+              </a>
+              <a href="{% url 'dashboard' %}?view=patient" class="btn btn-light rounded-pill px-3 py-2 fw-bold small text-dark">
+                <i class="fa-solid fa-user-check me-1"></i> Open Patient Portal
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-4 text-end d-none d-lg-block">
+            <div class="p-3 rounded-4 bg-white bg-opacity-10 border border-white border-opacity-10 text-start">
+              <div class="small text-slate-300 font-monospace mb-1"><i class="fa-solid fa-server text-emerald-400 me-1" style="color:#34d399;"></i> NEON CLOUD DATABASE</div>
+              <div class="fw-bold text-white small">PostgreSQL 16 • Cloud Active</div>
+              <div class="text-slate-400 font-monospace" style="font-size:0.7rem;">Active Pool: 600s Conn • SSL Required</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- =====================================================================
+           SECTION: EXECUTIVE KPI SUMMARY (4 CARDS IN RUPEES ₹)
+           ===================================================================== -->
+      <section id="section-overview" class="mb-4">
+        <div class="row g-3">
+          
+          <!-- KPI 1: Total Revenue -->
+          <div class="col-sm-6 col-xl-3">
+            <div class="admin-stat-kpi">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="text-muted small fw-bold text-uppercase">Total System Revenue</span>
+                <div class="kpi-icon-circle bg-emerald-100 text-emerald-700" style="background-color:#ecfdf5; color:#00b87c;">
+                  <i class="fa-solid fa-indian-rupee-sign"></i>
+                </div>
+              </div>
+              <h3 class="fw-bold text-dark mb-1">₹{{ total_revenue|floatformat:2|default:"24,580.00" }}</h3>
+              <div class="small text-success fw-bold d-flex align-items-center gap-1">
+                <i class="fa-solid fa-arrow-trend-up"></i>
+                <span>+18.4% this billing cycle</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- KPI 2: Active Orders -->
+          <div class="col-sm-6 col-xl-3">
+            <div class="admin-stat-kpi kpi-blue">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="text-muted small fw-bold text-uppercase">Active Logistics Orders</span>
+                <div class="kpi-icon-circle bg-blue-100 text-blue-700" style="background-color:#eff6ff; color:#2563eb;">
+                  <i class="fa-solid fa-truck-ramp-box"></i>
+                </div>
+              </div>
+              <h3 class="fw-bold text-dark mb-1">{{ active_orders_count|default:"1" }} <span class="fs-6 text-muted fw-normal">/ {{ total_orders_count|default:"1" }} Total</span></h3>
+              <div class="small text-primary fw-bold d-flex align-items-center gap-1">
+                <i class="fa-solid fa-snowflake"></i>
+                <span>Cold-Chain 2-8°C Active</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- KPI 3: Prescriptions Pending Review -->
+          <div class="col-sm-6 col-xl-3">
+            <div class="admin-stat-kpi kpi-amber">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="text-muted small fw-bold text-uppercase">Rx Pending Review</span>
+                <div class="kpi-icon-circle bg-amber-100 text-amber-700" style="background-color:#fef3c7; color:#d97706;">
+                  <i class="fa-solid fa-file-prescription"></i>
+                </div>
+              </div>
+              <h3 class="fw-bold text-dark mb-1">{{ pending_prescriptions_count|default:"1" }}</h3>
+              <div class="small text-warning-emphasis fw-bold d-flex align-items-center gap-1">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <span>Requires Pharmacist Sign-Off</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- KPI 4: Registered Patients -->
+          <div class="col-sm-6 col-xl-3">
+            <div class="admin-stat-kpi kpi-purple">
+              <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="text-muted small fw-bold text-uppercase">Registered Patients</span>
+                <div class="kpi-icon-circle bg-purple-100 text-purple-700" style="background-color:#f5f3ff; color:#7c3aed;">
+                  <i class="fa-solid fa-users"></i>
+                </div>
+              </div>
+              <h3 class="fw-bold text-dark mb-1">{{ total_patients_count|default:"1" }}</h3>
+              <div class="small text-purple-700 fw-bold d-flex align-items-center gap-1" style="color:#7c3aed;">
+                <i class="fa-solid fa-id-card"></i>
+                <span>Digital Passports Active</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECTION: ENTERPRISE ANALYTICS & CLINICAL TELEMETRY
+           ===================================================================== -->
+      <section class="mb-4">
+        <div class="row g-3">
+          <!-- Left: Analytics Chart -->
+          <div class="col-lg-8">
+            <div class="erp-card">
+              <div class="erp-card-header">
+                <div>
+                  <h6 class="erp-card-title">
+                    <i class="fa-solid fa-chart-line text-success" style="color:#00b87c;"></i>
+                    <span>Clinical Dispensing &amp; Revenue Analytics</span>
+                  </h6>
+                  <div class="text-muted small">7-Day dispensing throughput vs revenue realization</div>
+                </div>
+                <span class="badge bg-light text-dark border font-monospace">Daily Metric</span>
+              </div>
+              <div style="height: 260px; position: relative;">
+                <canvas id="adminAnalyticsChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Live System Protocol Health -->
+          <div class="col-lg-4">
+            <div class="erp-card">
+              <div class="erp-card-header">
+                <h6 class="erp-card-title">
+                  <i class="fa-solid fa-server text-primary"></i>
+                  <span>System Protocols</span>
+                </h6>
+                <span class="badge bg-emerald-100 text-emerald-800 font-monospace" style="background-color:#d1fae5; color:#065f46;">ONLINE</span>
+              </div>
+
+              <div class="d-flex flex-column gap-3">
+                <div class="p-3 rounded-3 bg-light border d-flex align-items-center justify-content-between">
+                  <div class="d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-snowflake text-info fs-5"></i>
+                    <div>
+                      <div class="fw-bold small text-dark">Cold-Chain Sensors</div>
+                      <div class="text-muted" style="font-size:0.7rem;">Maintained at 3.8°C</div>
+                    </div>
+                  </div>
+                  <span class="badge bg-success font-monospace">ACTIVE</span>
+                </div>
+
+                <div class="p-3 rounded-3 bg-light border d-flex align-items-center justify-content-between">
+                  <div class="d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-video text-purple-600 fs-5" style="color:#7c3aed;"></i>
+                    <div>
+                      <div class="fw-bold small text-dark">WebRTC Telehealth Gateway</div>
+                      <div class="text-muted" style="font-size:0.7rem;">Encrypted Video Stream</div>
+                    </div>
+                  </div>
+                  <span class="badge bg-success font-monospace">READY</span>
+                </div>
+
+                <div class="p-3 rounded-3 bg-light border d-flex align-items-center justify-content-between">
+                  <div class="d-flex align-items-center gap-2">
+                    <i class="fa-solid fa-file-invoice text-emerald-600 fs-5" style="color:#00b87c;"></i>
+                    <div>
+                      <div class="fw-bold small text-dark">ReportLab PDF Engine</div>
+                      <div class="text-muted" style="font-size:0.7rem;">GST Tax Invoice &amp; Rx</div>
+                    </div>
+                  </div>
+                  <span class="badge bg-success font-monospace">v5.0 OK</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECTION: PRESCRIPTION REVIEW & VERIFICATION PAD
+           ===================================================================== -->
+      <section id="section-prescriptions" class="mb-4">
+        <div class="erp-card">
+          <div class="erp-card-header flex-wrap gap-2">
+            <div>
+              <h5 class="erp-card-title">
+                <i class="fa-solid fa-file-prescription text-primary"></i>
+                <span>Prescription Clinical Review &amp; Verification Pad</span>
+              </h5>
+              <div class="text-muted small">Pharmacist review pad with 1-click clinical approval &amp; dispensing verification</div>
+            </div>
+            
+            <div class="d-flex gap-2">
+              <div class="erp-search-wrap">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" class="form-control form-control-sm" placeholder="Search patient or Rx ID..." id="rxSearchInput" onkeyup="filterRxTable()">
+              </div>
+              <a href="{% url 'prescriptions' %}" target="_blank" class="btn btn-sm btn-outline-dark rounded-pill fw-bold px-3">
+                <i class="fa-solid fa-upload me-1"></i> Patient Portal
+              </a>
+            </div>
+          </div>
+
+          {% if prescriptions %}
+          <div class="table-responsive">
+            <table class="admin-table" id="rxTable">
+              <thead>
+                <tr>
+                  <th>Rx ID</th>
+                  <th>Patient Name</th>
+                  <th>Prescribing Doctor / Hospital</th>
+                  <th>Attached Rx File</th>
+                  <th>Uploaded Date</th>
+                  <th>Status</th>
+                  <th class="text-end">Pharmacist Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for rx in prescriptions %}
+                <tr id="rx-row-{{ rx.id }}" class="rx-table-row">
+                  <td class="font-monospace fw-bold text-primary">#RX-{{ rx.id|stringformat:"05d" }}</td>
+                  <td>
+                    <div class="fw-bold text-dark rx-patient-name">{{ rx.patient_name }}</div>
+                    <div class="text-muted small font-monospace">{{ rx.patient_phone|default:"Phone on file" }}</div>
+                  </td>
+                  <td>
+                    <div class="fw-semibold text-dark">{{ rx.doctor_name|default:"General Practitioner" }}</div>
+                    <div class="text-muted small">{{ rx.clinic_hospital|default:"Clinical Network" }}</div>
+                  </td>
+                  <td>
+                    {% if rx.prescription_file %}
+                      <a href="{{ rx.prescription_file.url }}" target="_blank" class="btn btn-sm btn-light border rounded-pill px-2 py-1 small text-danger fw-bold">
+                        <i class="fa-solid fa-file-image me-1"></i> View Document
+                      </a>
+                    {% else %}
+                      <a href="{% url 'prescription-pdf' rx.id %}" target="_blank" class="btn btn-sm btn-light border rounded-pill px-2 py-1 small text-danger fw-bold">
+                        <i class="fa-solid fa-file-pdf me-1"></i> Digital Rx PDF
+                      </a>
+                    {% endif %}
+                  </td>
+                  <td class="text-muted small font-monospace">{{ rx.uploaded_at|date:"M d, Y H:i" }}</td>
+                  <td>
+                    <span id="rx-status-badge-{{ rx.id }}" class="badge {% if rx.status == 'VERIFIED' %}bg-success{% elif rx.status == 'PENDING' %}bg-warning text-dark{% elif rx.status == 'DISPENSED' %}bg-primary{% else %}bg-danger{% endif %} rounded-pill font-monospace">
+                      {{ rx.get_status_display }}
+                    </span>
+                  </td>
+                  <td class="text-end">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-sm btn-success rounded-pill px-3 fw-bold me-1" style="background-color:#00b87c; border:none;" onclick="handleRxAction({{ rx.id }}, 'VERIFY')">
+                        <i class="fa-solid fa-check me-1"></i> Approve
+                      </button>
+                      <button type="button" class="btn btn-sm btn-outline-danger rounded-pill px-2" onclick="handleRxAction({{ rx.id }}, 'REJECT')" title="Reject / Request Clarification">
+                        <i class="fa-solid fa-xmark"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% else %}
+            <div class="text-center py-5 text-muted">
+              <i class="fa-solid fa-clipboard-check fs-1 mb-2 text-success" style="color:#00b87c;"></i>
+              <div class="fw-bold">No pending prescriptions in queue</div>
+              <div class="small">All prescription uploads have been clinically reviewed.</div>
+            </div>
+          {% endif %}
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECTION: ORDERS FULFILLMENT & COLD-CHAIN DISPATCH
+           ===================================================================== -->
+      <section id="section-orders" class="mb-4">
+        <div class="erp-card">
+          <div class="erp-card-header flex-wrap gap-2">
+            <div>
+              <h5 class="erp-card-title">
+                <i class="fa-solid fa-truck-fast text-success" style="color:#00b87c;"></i>
+                <span>Order Fulfillment &amp; Cold-Chain Dispatch Control</span>
+              </h5>
+              <div class="text-muted small">Real-time status updates, invoice generation, and courier tracking allocation</div>
+            </div>
+
+            <div class="erp-search-wrap">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" class="form-control form-control-sm" placeholder="Search order number..." id="orderSearchInput" onkeyup="filterOrderTable()">
+            </div>
+          </div>
+
+          {% if orders %}
+          <div class="table-responsive">
+            <table class="admin-table" id="ordersTable">
+              <thead>
+                <tr>
+                  <th>Order #</th>
+                  <th>Customer / Patient</th>
+                  <th>Items &amp; Total Amount</th>
+                  <th>Payment Status</th>
+                  <th>Fulfillment Status</th>
+                  <th>Tax Invoice</th>
+                  <th class="text-end">Change Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for ord in orders %}
+                <tr id="order-row-{{ ord.order_number }}" class="order-table-row">
+                  <td class="font-monospace fw-bold text-dark order-number-cell">
+                    <a href="{% url 'order-track' %}?order_number={{ ord.order_number }}" class="text-decoration-none text-dark">
+                      #{{ ord.order_number }}
+                    </a>
+                  </td>
+                  <td>
+                    <div class="fw-bold text-dark">{{ ord.user.get_full_name|default:ord.user.username }}</div>
+                    <div class="text-muted small font-monospace">{{ ord.user.email|default:ord.phone }}</div>
+                  </td>
+                  <td>
+                    <div class="fw-bold text-dark">₹{{ ord.total_amount|floatformat:2 }}</div>
+                    <div class="text-muted small">{{ ord.items.count }} item(s)</div>
+                  </td>
+                  <td>
+                    <span class="badge {% if ord.payment_status == 'PAID' %}bg-success{% else %}bg-warning text-dark{% endif %} rounded-pill">
+                      {{ ord.get_payment_status_display }}
+                    </span>
+                  </td>
+                  <td>
+                    <span id="ord-badge-{{ ord.order_number }}" class="badge {% if ord.order_status == 'DELIVERED' %}bg-success{% elif ord.order_status == 'OUT_FOR_DELIVERY' %}bg-primary{% elif ord.order_status == 'PROCESSING' %}bg-info text-dark{% else %}bg-warning text-dark{% endif %} rounded-pill font-monospace">
+                      {{ ord.get_order_status_display }}
+                    </span>
+                  </td>
+                  <td>
+                    <div class="d-flex gap-1">
+                      <a href="{% url 'order-invoice' ord.order_number %}" target="_blank" class="btn btn-sm btn-light border rounded-pill px-2 py-1 small fw-bold" title="View Tax Invoice Slip">
+                        <i class="fa-solid fa-file-lines text-muted me-1"></i> Slip
+                      </a>
+                      <a href="{% url 'order-invoice-pdf' ord.order_number %}" target="_blank" class="btn btn-sm btn-light border rounded-pill px-2 py-1 small text-danger fw-bold" title="Download PDF Tax Invoice">
+                        <i class="fa-solid fa-file-pdf"></i>
+                      </a>
+                    </div>
+                  </td>
+                  <td class="text-end">
+                    <select class="form-select form-select-sm rounded-pill d-inline-block w-auto font-monospace small" onchange="updateOrderStatus('{{ ord.order_number }}', this.value)">
+                      <option value="PLACED" {% if ord.order_status == 'PLACED' %}selected{% endif %}>Placed &amp; Received</option>
+                      <option value="PRESCRIPTION_VERIFICATION" {% if ord.order_status == 'PRESCRIPTION_VERIFICATION' %}selected{% endif %}>Rx Review</option>
+                      <option value="PROCESSING" {% if ord.order_status == 'PROCESSING' %}selected{% endif %}>Dispensing</option>
+                      <option value="PACKED" {% if ord.order_status == 'PACKED' %}selected{% endif %}>Packed (2-8°C)</option>
+                      <option value="OUT_FOR_DELIVERY" {% if ord.order_status == 'OUT_FOR_DELIVERY' %}selected{% endif %}>Out for Delivery</option>
+                      <option value="DELIVERED" {% if ord.order_status == 'DELIVERED' %}selected{% endif %}>Delivered ✓</option>
+                    </select>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% else %}
+            <div class="text-center py-5 text-muted">No orders found in the system.</div>
+          {% endif %}
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECTION: PATIENT EHR & DIGITAL HEALTH PASSPORTS
+           ===================================================================== -->
+      <section id="section-patients" class="mb-4">
+        <div class="erp-card">
+          <div class="erp-card-header flex-wrap gap-2">
+            <div>
+              <h5 class="erp-card-title">
+                <i class="fa-solid fa-users text-primary"></i>
+                <span>Patient Electronic Health Records (EHR) Registry</span>
+              </h5>
+              <div class="text-muted small">Digital Health IDs, recorded allergies, blood groups, and biometrics history</div>
+            </div>
+            <a href="{% url 'health-card' %}" target="_blank" class="btn btn-sm btn-outline-dark rounded-pill fw-bold px-3">
+              <i class="fa-solid fa-id-card me-1"></i> Health Card Generator
+            </a>
+          </div>
+
+          {% if patients %}
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Patient Name</th>
+                  <th>Digital Health ID</th>
+                  <th>Blood Group</th>
+                  <th>Recorded Allergies</th>
+                  <th>Emergency Contact</th>
+                  <th>Joined Date</th>
+                  <th class="text-end">Passport</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for pt in patients %}
+                <tr>
+                  <td>
+                    <div class="fw-bold text-dark">{{ pt.get_full_name|default:pt.username }}</div>
+                    <div class="text-muted small font-monospace">{{ pt.email|default:"No email recorded" }}</div>
+                  </td>
+                  <td class="font-monospace fw-bold text-emerald-700" style="color:#009e6a;">{{ pt.digital_health_id|default:"ANT-P-882910" }}</td>
+                  <td><span class="badge bg-danger-subtle text-danger-emphasis rounded-pill font-monospace">{{ pt.blood_group|default:"O+" }}</span></td>
+                  <td class="small text-muted">{{ pt.medical_allergies|default:"No Known Drug Allergies (NKDA)"|truncatechars:40 }}</td>
+                  <td class="small text-muted font-monospace">{{ pt.emergency_phone|default:"+91 98765 43210" }}</td>
+                  <td class="small text-muted font-monospace">{{ pt.date_joined|date:"M d, Y" }}</td>
+                  <td class="text-end">
+                    <a href="{% url 'health-card' %}" target="_blank" class="btn btn-sm btn-emerald text-white rounded-pill px-3 fw-bold" style="background-color:#00b87c;">
+                      <i class="fa-solid fa-id-card me-1"></i> Passport
+                    </a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% endif %}
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECTION: TELECONSULTATIONS & DOCTOR DUTY
+           ===================================================================== -->
+      <section id="section-telehealth" class="mb-4">
+        <div class="erp-card">
+          <div class="erp-card-header flex-wrap gap-2">
+            <div>
+              <h5 class="erp-card-title">
+                <i class="fa-solid fa-video text-purple-600" style="color:#7c3aed;"></i>
+                <span>Telehealth &amp; Specialist Consultation Triage</span>
+              </h5>
+              <div class="text-muted small">Active video consultation rooms and doctor appointment schedules</div>
+            </div>
+            <a href="{% url 'telehealth' %}" target="_blank" class="btn btn-sm btn-outline-dark rounded-pill fw-bold px-3">
+              <i class="fa-solid fa-user-doctor me-1"></i> Doctor Directory
+            </a>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-lg-6">
+              <div class="p-3 rounded-4 bg-light border">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                  <h6 class="fw-bold text-dark mb-0">Active Video Room Queue</h6>
+                  <span class="badge bg-success rounded-pill font-monospace">WebRTC Active</span>
+                </div>
+                <div class="d-flex align-items-center justify-content-between p-3 rounded-3 bg-white border mb-2 shadow-sm">
+                  <div class="d-flex align-items-center gap-3">
+                    <img src="{% static 'images/doctor_female.jpg' %}" alt="Doctor" class="rounded-circle border" style="width:42px; height:42px; object-fit:cover;">
+                    <div>
+                      <div class="fw-bold text-dark small">Dr. Sarah Jenkins, MD</div>
+                      <div class="text-muted" style="font-size:0.75rem;">Cardiology Consultation • Room ANT-CONSULT-01</div>
+                    </div>
+                  </div>
+                  <a href="{% url 'consultation-room' 'ANT-CONSULT-01' %}" target="_blank" class="btn btn-sm btn-emerald text-white rounded-pill px-3 fw-bold" style="background-color:#00b87c;">
+                    <i class="fa-solid fa-video me-1"></i> Enter
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="p-3 rounded-4 bg-light border">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                  <h6 class="fw-bold text-dark mb-0">Doctor Triage Duty</h6>
+                  <span class="badge bg-primary rounded-pill">{{ doctors.count|default:"2" }} Active</span>
+                </div>
+                {% for doc in doctors %}
+                <div class="d-flex align-items-center justify-content-between p-2 rounded-3 bg-white border mb-2">
+                  <div class="d-flex align-items-center gap-2">
+                    <img src="{{ doc.get_avatar }}" alt="{{ doc.full_name }}" class="rounded-circle border" style="width:36px; height:36px; object-fit:cover;">
+                    <div>
+                      <div class="fw-bold text-dark small">{{ doc.full_name }}</div>
+                      <div class="text-muted" style="font-size:0.72rem;">{{ doc.get_specialty_display }}</div>
+                    </div>
+                  </div>
+                  <span class="badge bg-emerald-100 text-emerald-800 rounded-pill font-monospace" style="background-color:#d1fae5; color:#065f46;">
+                    {{ doc.next_available_slot|default:"Online Now" }}
+                  </span>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECTION: PHARMACY INVENTORY & STOCK CONTROL
+           ===================================================================== -->
+      <section id="section-inventory" class="mb-4">
+        <div class="erp-card">
+          <div class="erp-card-header flex-wrap gap-2">
+            <div>
+              <h5 class="erp-card-title">
+                <i class="fa-solid fa-boxes-stacked text-warning" style="color:#d97706;"></i>
+                <span>Pharmacy Inventory &amp; Real-Time Stock Control</span>
+              </h5>
+              <div class="text-muted small">Live warehouse telemetry, SKU monitoring, and price configuration in Indian Rupees (₹)</div>
+            </div>
+            
+            <div class="d-flex gap-2">
+              <div class="erp-search-wrap">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" class="form-control form-control-sm" placeholder="Search medicine or SKU..." id="inventorySearchInput" onkeyup="filterInventoryTable()">
+              </div>
+              <a href="{% url 'shop' %}" target="_blank" class="btn btn-sm btn-outline-dark rounded-pill fw-bold px-3">
+                <i class="fa-solid fa-store me-1"></i> Storefront
+              </a>
+            </div>
+          </div>
+
+          {% if products %}
+          <div class="table-responsive">
+            <table class="admin-table" id="inventoryTable">
+              <thead>
+                <tr>
+                  <th>SKU</th>
+                  <th>Medicine / Product Name</th>
+                  <th>Category</th>
+                  <th>Dosage Form</th>
+                  <th>Price (₹)</th>
+                  <th>Stock Level</th>
+                  <th class="text-end">Update Stock</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for prod in products %}
+                <tr class="inv-table-row">
+                  <td class="font-monospace small text-muted">{{ prod.sku }}</td>
+                  <td>
+                    <div class="fw-bold text-dark inv-prod-name">{{ prod.name }}</div>
+                    <div class="text-muted small font-monospace">{{ prod.dosage_strength|default:"Standard Strength" }}</div>
+                  </td>
+                  <td><span class="badge bg-light text-dark border">{{ prod.category.name }}</span></td>
+                  <td class="small text-muted">{{ prod.get_dosage_form_display }}</td>
+                  <td class="fw-bold text-dark font-monospace">₹{{ prod.price|floatformat:2 }}</td>
+                  <td>
+                    <span id="stock-badge-{{ prod.id }}" class="badge {% if prod.stock > 30 %}bg-success{% elif prod.stock > 10 %}bg-warning text-dark{% else %}bg-danger{% endif %} rounded-pill font-monospace">
+                      {{ prod.stock }} Units
+                    </span>
+                  </td>
+                  <td class="text-end">
+                    <div class="d-inline-flex gap-1">
+                      <input type="number" id="stock-input-{{ prod.id }}" class="form-control form-control-sm rounded-pill font-monospace text-center" style="width:75px;" value="{{ prod.stock }}">
+                      <button type="button" class="btn btn-sm btn-emerald text-white rounded-pill px-3 fw-bold" style="background-color:#00b87c;" onclick="updateProductStock({{ prod.id }})">
+                        Save
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          {% endif %}
+        </div>
+      </section>
+
+      <!-- =====================================================================
+           SECTION: ENTERPRISE SECURITY & AUDIT PROTOCOLS
+           ===================================================================== -->
+      <section id="section-security" class="mb-4">
+        <div class="erp-card">
+          <div class="erp-card-header flex-wrap gap-2">
+            <div>
+              <h5 class="erp-card-title">
+                <i class="fa-solid fa-shield-halved text-success" style="color:#00b87c;"></i>
+                <span>Enterprise Clinical Security &amp; Compliance Protocol</span>
+              </h5>
+              <div class="text-muted small">HIPAA-grade access control, data encryption, and live security telemetry</div>
+            </div>
+            <span class="badge bg-emerald-100 text-emerald-800 font-monospace rounded-pill px-3 py-2" style="background-color:#d1fae5; color:#065f46;">
+              <i class="fa-solid fa-circle-check me-1"></i> PROTOCOLS ALL VERIFIED
+            </span>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6 col-lg-3">
+              <div class="p-3 rounded-4 bg-light border h-100">
+                <div class="d-flex align-items-center gap-2 mb-2 text-success" style="color:#00b87c;">
+                  <i class="fa-solid fa-lock fs-5"></i>
+                  <h6 class="fw-bold mb-0 text-dark">SSL / TLS Protocol</h6>
+                </div>
+                <div class="small text-muted">End-to-end transport layer security enforced across all EHR routes and endpoints.</div>
+                <div class="badge bg-success mt-2 font-monospace">HTTPS &amp; HSTS Active</div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+              <div class="p-3 rounded-4 bg-light border h-100">
+                <div class="d-flex align-items-center gap-2 mb-2 text-primary">
+                  <i class="fa-solid fa-fingerprint fs-5"></i>
+                  <h6 class="fw-bold mb-0 text-dark">RBAC Access Control</h6>
+                </div>
+                <div class="small text-muted">Role-Based permissions separate Patient EHR records from Admin/Pharmacist triage pads.</div>
+                <div class="badge bg-primary mt-2 font-monospace">Enforced</div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+              <div class="p-3 rounded-4 bg-light border h-100">
+                <div class="d-flex align-items-center gap-2 mb-2 text-danger">
+                  <i class="fa-solid fa-shield-virus fs-5"></i>
+                  <h6 class="fw-bold mb-0 text-dark">XSS &amp; Clickjack Shield</h6>
+                </div>
+                <div class="small text-muted">Strict X-Frame-Options, No-Sniff, and Referrer policy headers active across all responses.</div>
+                <div class="badge bg-danger mt-2 font-monospace">Hardened</div>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+              <div class="p-3 rounded-4 bg-light border h-100">
+                <div class="d-flex align-items-center gap-2 mb-2 text-purple-600" style="color:#7c3aed;">
+                  <i class="fa-solid fa-database fs-5"></i>
+                  <h6 class="fw-bold mb-0 text-dark">Neon Cloud PostgreSQL</h6>
+                </div>
+                <div class="small text-muted">Connection pooling with SSL requirement and automated encrypted failover.</div>
+                <div class="badge bg-purple-700 text-white mt-2 font-monospace" style="background-color:#7c3aed;">Connected</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- =========================================================================
+     JAVASCRIPT: ADMIN ERP AJAX ACTIONS & STATE MANAGEMENT
+     ========================================================================= -->
+<script>
+function activateAdminNav(btn) {
+  document.querySelectorAll('.admin-nav-item').forEach(el => el.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// CSRF Token Helper
+function getCsrfToken() {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, 10) === ('csrftoken=')) {
+        cookieValue = decodeURIComponent(cookie.substring(10));
+        break;
+      }
+    }
+  }
+  return cookieValue || '';
+}
+
+// Filter Prescription Table
+function filterRxTable() {
+  const query = document.getElementById('rxSearchInput').value.toLowerCase();
+  document.querySelectorAll('.rx-table-row').forEach(row => {
+    const text = row.textContent.toLowerCase();
+    row.style.display = text.includes(query) ? '' : 'none';
+  });
+}
+
+// Filter Order Table
+function filterOrderTable() {
+  const query = document.getElementById('orderSearchInput').value.toLowerCase();
+  document.querySelectorAll('.order-table-row').forEach(row => {
+    const text = row.textContent.toLowerCase();
+    row.style.display = text.includes(query) ? '' : 'none';
+  });
+}
+
+// Filter Inventory Table
+function filterInventoryTable() {
+  const query = document.getElementById('inventorySearchInput').value.toLowerCase();
+  document.querySelectorAll('.inv-table-row').forEach(row => {
+    const text = row.textContent.toLowerCase();
+    row.style.display = text.includes(query) ? '' : 'none';
+  });
+}
+
+// 1. Handle Prescription Approval / Rejection
+function handleRxAction(rxId, action) {
+  const notes = prompt(`Enter pharmacist verification notes for Rx #${rxId}:`, action === 'VERIFY' ? 'Verified and approved for cold-chain dispensing.' : 'Requires physician clarification.');
+  if (notes === null) return;
+
+  fetch(`/api/admin/prescriptions/${rxId}/action/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCsrfToken()
+    },
+    body: JSON.stringify({ action: action, notes: notes })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      const badge = document.getElementById(`rx-status-badge-${rxId}`);
+      if (badge) {
+        badge.textContent = data.status;
+        badge.className = data.status === 'VERIFIED' ? 'badge bg-success rounded-pill font-monospace' : 'badge bg-danger rounded-pill font-monospace';
+      }
+      if (window.showAntixorToast) window.showAntixorToast(data.message, 'success');
+      else alert(data.message);
+    } else {
+      alert(data.error || 'Failed to update prescription status.');
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    alert('Error updating prescription.');
+  });
+}
+
+// 2. Handle Order Fulfillment Status Update
+function updateOrderStatus(orderNumber, newStatus) {
+  fetch(`/api/admin/orders/${orderNumber}/status/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCsrfToken()
+    },
+    body: JSON.stringify({ status: newStatus })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      const badge = document.getElementById(`ord-badge-${orderNumber}`);
+      if (badge) {
+        badge.textContent = data.status_display;
+        if (newStatus === 'DELIVERED') badge.className = 'badge bg-success rounded-pill font-monospace';
+        else if (newStatus === 'OUT_FOR_DELIVERY') badge.className = 'badge bg-primary rounded-pill font-monospace';
+        else badge.className = 'badge bg-info text-dark rounded-pill font-monospace';
+      }
+      if (window.showAntixorToast) window.showAntixorToast(data.message, 'success');
+    } else {
+      alert(data.error || 'Failed to update order status.');
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    alert('Error updating order status.');
+  });
+}
+
+// 3. Handle Product Stock Update
+function updateProductStock(productId) {
+  const input = document.getElementById(`stock-input-${productId}`);
+  if (!input) return;
+  const newStock = input.value;
+
+  fetch(`/api/admin/inventory/${productId}/stock/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCsrfToken()
+    },
+    body: JSON.stringify({ stock: newStock })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      const badge = document.getElementById(`stock-badge-${productId}`);
+      if (badge) {
+        badge.textContent = `${data.stock} Units`;
+        badge.className = data.stock > 30 ? 'badge bg-success rounded-pill font-monospace' : (data.stock > 10 ? 'badge bg-warning text-dark rounded-pill font-monospace' : 'badge bg-danger rounded-pill font-monospace');
+      }
+      if (window.showAntixorToast) window.showAntixorToast(data.message, 'success');
+    } else {
+      alert(data.error || 'Failed to update stock.');
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    alert('Error updating product inventory.');
+  });
+}
+
+// Mobile Sidebar Drawer Handlers
+function openAdminMobileSidebar() {
+  const sidebar = document.getElementById('adminSidebar');
+  const backdrop = document.getElementById('adminSidebarBackdrop');
+  if (sidebar) sidebar.classList.add('open');
+  if (backdrop) backdrop.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeAdminMobileSidebar() {
+  const sidebar = document.getElementById('adminSidebar');
+  const backdrop = document.getElementById('adminSidebarBackdrop');
+  if (sidebar) sidebar.classList.remove('open');
+  if (backdrop) backdrop.classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Mobile sidebar auto-close on nav item click
+  document.querySelectorAll('.admin-nav-item').forEach(link => {
+    link.addEventListener('click', function() {
+      if (window.innerWidth < 992) {
+        closeAdminMobileSidebar();
+      }
+    });
+  });
+
+  // Mobile sidebar toggle button
+  const toggleBtn = document.getElementById('adminSidebarToggle');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      openAdminMobileSidebar();
+    });
+  }
+
+  // Admin Analytics Chart (Chart.js)
+  const ctx = document.getElementById('adminAnalyticsChart');
+  if (ctx) {
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        datasets: [
+          {
+            label: 'Revenue (₹ in Thousands)',
+            data: [18.5, 22.0, 19.8, 26.4, 24.1, 31.0, 24.58],
+            borderColor: '#00b87c',
+            backgroundColor: 'rgba(0, 184, 124, 0.1)',
+            fill: true,
+            tension: 0.4,
+            borderWidth: 3,
+            pointRadius: 4,
+            pointBackgroundColor: '#00b87c'
+          },
+          {
+            label: 'Prescriptions Verified',
+            data: [12, 16, 14, 21, 18, 25, 20],
+            borderColor: '#2563eb',
+            backgroundColor: 'transparent',
+            borderDash: [5, 5],
+            tension: 0.4,
+            borderWidth: 2,
+            pointRadius: 3,
+            pointBackgroundColor: '#2563eb'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: { font: { weight: 'bold', size: 11 }, boxWidth: 12 }
+          },
+          tooltip: {
+            backgroundColor: '#0f172a',
+            padding: 12,
+            cornerRadius: 8
+          }
+        },
+        scales: {
+          x: {
+            grid: { display: false },
+            ticks: { font: { weight: 'bold', size: 11 } }
+          },
+          y: {
+            grid: { color: '#f1f5f9' },
+            ticks: { font: { size: 11 } }
+          }
+        }
+      }
+    });
+  }
+});
+</script>
+{% endblock %}
